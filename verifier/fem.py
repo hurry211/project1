@@ -34,14 +34,14 @@ class MeshData:
     bdr_xy: np.ndarray        # (B, 2, 2) segment endpoints
 
 
-def _loadtxt(path: Path, ncols_min: int, dtype=float) -> np.ndarray:
+def _loadtxt(path: Path, ncols: int) -> np.ndarray:
     if not path.is_file():
         raise ArtifactError(f"missing artifact {path.name}")
     try:
-        arr = np.loadtxt(path, comments="#", dtype=dtype, ndmin=2)
-    except ValueError as exc:
+        arr = np.loadtxt(path, comments="#", ndmin=2)
+    except (ValueError, OSError) as exc:
         raise ArtifactError(f"malformed artifact {path.name}: {exc}") from exc
-    if arr.shape[0] == 0 or arr.shape[1] < ncols_min:
+    if arr.shape[0] == 0 or arr.shape[1] != ncols:
         raise ArtifactError(f"artifact {path.name} has unexpected shape {arr.shape}")
     return arr
 
@@ -53,13 +53,17 @@ def load_mesh_data(level_dir: Path) -> MeshData:
              if ln.strip() and not ln.startswith("#")] if (level_dir / "elements.txt").is_file() else None
     if not lines:
         raise ArtifactError("missing or empty artifact elements.txt")
+    if any(len(ln) < 3 for ln in lines):
+        raise ArtifactError("truncated row in elements.txt")
     geoms = {ln[1] for ln in lines}
     if len(geoms) != 1 or next(iter(geoms)) not in ("tri", "quad"):
         raise ArtifactError(f"unsupported/mixed element geometries {geoms}")
     geom = geoms.pop()
     nv = 3 if geom == "tri" else 4
     try:
-        verts = np.array([[float(v) for v in ln[3:3 + 2 * nv]] for ln in lines]).reshape(-1, nv, 2)
+        if any(int(ln[2]) != nv or len(ln) != 3 + 2 * nv for ln in lines):
+            raise ArtifactError("wrong vertex count in elements.txt")
+        verts = np.array([[float(v) for v in ln[3:]] for ln in lines]).reshape(-1, nv, 2)
         eids = np.array([int(ln[0]) for ln in lines])
     except (ValueError, IndexError) as exc:
         raise ArtifactError(f"malformed elements.txt: {exc}") from exc
@@ -75,18 +79,26 @@ def load_mesh_data(level_dir: Path) -> MeshData:
     if not (np.array_equal(ed[:, :, 0], np.repeat(np.arange(E)[:, None], nloc, 1))
             and np.array_equal(ed[:, :, 1], np.repeat(np.arange(nloc)[None, :], E, 0))):
         raise ArtifactError("element_dofs.txt is not ordered by (element, local index)")
-    elem_dofs = ed[:, :, 2].astype(np.int64)
     elem_node_xy = ed[:, :, 3:5].copy()
 
     dv = _loadtxt(level_dir / "dof_values.txt", 2)
     N = dv.shape[0]
-    if not np.array_equal(dv[:, 0].astype(np.int64), np.arange(N)):
+    if not np.array_equal(dv[:, 0], np.arange(N)):
         raise ArtifactError("dof_values.txt ids are not 0..N-1 in order")
     values = dv[:, 1].copy()
-    if elem_dofs.min() < 0 or elem_dofs.max() >= N:
-        raise ArtifactError("element dof ids out of range of dof_values.txt")
+    ids = ed[:, :, 2]
+    if not np.all((ids == np.floor(ids)) & (ids >= 0) & (ids < N)):
+        raise ArtifactError("element dof ids must be integers in range of dof_values.txt")
+    elem_dofs = ids.astype(np.int64)
 
     bd = _loadtxt(level_dir / "boundary.txt", 6)
+    if not np.array_equal(bd[:, 0], np.arange(len(bd))):
+        raise ArtifactError("boundary.txt ids are not 0..B-1 in order")
+    attrs = bd[:, 1]
+    if not np.all((attrs == np.floor(attrs)) & (attrs > 0) & (attrs <= np.iinfo(np.int32).max)):
+        raise ArtifactError("invalid boundary attribute id")
+    if not all(np.isfinite(a).all() for a in (verts, elem_node_xy, bd[:, 2:])):
+        raise ArtifactError("non-finite mesh coordinates")
     return MeshData(geom=geom, verts=verts, elem_dofs=elem_dofs, elem_node_xy=elem_node_xy,
                     values=values, bdr_attr=bd[:, 1].astype(np.int64),
                     bdr_xy=bd[:, 2:6].reshape(-1, 2, 2))

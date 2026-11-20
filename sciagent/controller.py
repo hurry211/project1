@@ -24,15 +24,11 @@ from pydantic import ValidationError
 from verifier.verifier import ACCEPTED, RETRY_ELIGIBLE, check_mms_consistency, verify_attempt
 
 from . import capability, environment, mfem_runner
-from .evidence import EvidenceStore, utc_now
+from .evidence import EvidenceStore, check_archive, sha256_file, utc_now
 from .spec import ExecutionSpec, StudySpec, canonical_json, sha256_of
 
 TERMINAL = {"ACCEPTED", "FAILED", "BLOCKED", "BUDGET_EXHAUSTED", "INVALID_SPEC"}
-STRUCTURAL_EXITS = {"INVALID_ARGUMENTS", "BOUNDARY_COVERAGE", "UNSUPPORTED_COMBINATION", "TIMEOUT"}
-
-
-def _file_sha(p: Path) -> str:
-    return hashlib.sha256(p.read_bytes()).hexdigest()
+STRUCTURAL_EXITS = {"INVALID_ARGUMENTS", "BOUNDARY_COVERAGE", "UNSUPPORTED_COMBINATION", "ARTIFACT_WRITE_ERROR", "TIMEOUT"}
 
 
 def _new_run_dir(runs_dir: Path, label: str) -> Path:
@@ -47,15 +43,15 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs") -> dict:
     store = EvidenceStore(_new_run_dir(Path(runs_dir), label))
     store.write_once("request/study_spec.json", raw)
     store.event("RECEIVED", spec_file=str(spec_path), sha256=hashlib.sha256(raw.encode()).hexdigest())
-    started = time.time()
+    started = time.monotonic()
     manifest: dict = {"run_dir": str(store.run_dir), "spec_file": str(spec_path),
                       "started_utc": utc_now(), "attempts": []}
 
     def finish(state: str, code: str, reason: str) -> dict:
         store.event(state, code=code, reason=reason)
         manifest.update({"final_state": state, "final_code": code, "final_reason": reason,
-                         "finished_utc": utc_now(), "total_wall_seconds": round(time.time() - started, 3)})
-        store.write_json_once("manifest.json", manifest)
+                         "finished_utc": utc_now(), "total_wall_seconds": round(time.monotonic() - started, 3)})
+        store.finish_manifest(manifest)
         return manifest
 
     # ---- SPEC_VALIDATED -----------------------------------------------------
@@ -110,30 +106,36 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs") -> dict:
     pol = study.policy
     execution = study.execution
     for attempt in range(1, pol.max_attempts + 1):
-        for name in frozen:
-            if _file_sha(store.path("frozen", f"{name}.json")) != hashlib.sha256(
-                    canonical_json(frozen[name]).encode()).hexdigest():
-                return finish("FAILED", "SPEC_TAMPERED", f"frozen/{name}.json changed during the run")
+        if execution.estimated_dofs(execution.mesh_levels[-1]) > pol.max_dofs_per_level:
+            return finish("BUDGET_EXHAUSTED", "RESOURCE_LIMIT", "requested mesh exceeds max_dofs_per_level")
         adir = f"attempts/attempt_{attempt:02d}"
         store.write_once(f"{adir}/execution.json", canonical_json(execution))
+        pinned = {store.path("frozen", f"{name}.json"): h for name, h in hashes.items()}
+        pinned[store.path(adir, "execution.json")] = sha256_of(execution)
+        if any(sha256_file(p) != h for p, h in pinned.items()):
+            return finish("FAILED", "SPEC_TAMPERED", "frozen inputs changed before solver execution")
         store.event("RUNNING", attempt=attempt, mesh_levels=list(execution.mesh_levels),
                     execution_sha256=sha256_of(execution))
         level_runs = []
         for n in execution.mesh_levels:
-            elapsed = time.time() - started
-            if elapsed > pol.max_total_wall_seconds:
+            elapsed = time.monotonic() - started
+            remaining = pol.max_total_wall_seconds - elapsed
+            if remaining <= 0:
                 manifest["attempts"].append({"attempt": attempt, "levels": level_runs, "verdict": None})
                 return finish("BUDGET_EXHAUSTED", "RESOURCE_LIMIT", f"wall budget exceeded ({elapsed:.1f}s)")
             lr = mfem_runner.run_level(study.problem, execution, case_id, n,
                                        store.path(adir, "levels", f"n{n:04d}"),
-                                       timeout_s=pol.per_level_timeout_seconds, mem_mb=pol.per_level_memory_mb)
+                                       timeout_s=min(pol.per_level_timeout_seconds, remaining),
+                                       mem_mb=pol.per_level_memory_mb)
             level_runs.append({"n": n, "exit_code": lr.exit_code, "exit_meaning": lr.exit_meaning,
                                "wall_seconds": lr.wall_seconds})
             store.event("LEVEL_DONE", attempt=attempt, n=n, exit=lr.exit_meaning, seconds=lr.wall_seconds)
             if lr.exit_meaning in STRUCTURAL_EXITS:
                 break
         store.event("VERIFYING", attempt=attempt)
-        verdict = verify_attempt(store.path(adir))
+        if any(sha256_file(p) != h for p, h in pinned.items()):
+            return finish("FAILED", "SPEC_TAMPERED", "frozen inputs changed during solver execution")
+        verdict = verify_attempt(store.path(adir), require_run_records=True)
         store.write_json_once(f"{adir}/verdict.json", verdict)
         summary = {
             "attempt": attempt, "mesh_levels": list(execution.mesh_levels), "levels": level_runs,
@@ -168,9 +170,30 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs") -> dict:
     return finish("BUDGET_EXHAUSTED", "BUDGET_EXHAUSTED", "attempt loop ended")  # pragma: no cover
 
 
-def reverify(attempt_dir: str | Path) -> dict:
-    """Re-run the independent verifier on stored artifacts only."""
-    return verify_attempt(Path(attempt_dir))
+def reverify(attempt_dir: str | Path, expected_digest: str | None = None) -> dict:
+    """Check the completed archive and recompute the selected numerical verdict."""
+    attempt = Path(attempt_dir)
+    out = {"levels": [], "convergence": {"pairs": []}, "failure_codes": []}
+    try:
+        mode, saved, changed = check_archive(attempt, expected_digest)
+        # Retain numerical diagnostics for damaged level files. A changed spec
+        # or archive record must never authorize a different verification job.
+        level_prefix = f"attempts/{attempt.name}/levels/"
+        if any(not p.startswith(level_prefix) for p in changed):
+            raise ValueError(f"changed archive files: {', '.join(changed)}")
+        out = verify_attempt(attempt, require_run_records=True)
+        if changed:
+            raise ValueError(f"changed level files: {', '.join(changed)}")
+        if saved["input_sha256"] != out["input_sha256"]:
+            raise ValueError("stored verifier input hashes differ from the replay")
+        if saved["verdict"] != out["verdict"]:
+            raise ValueError("stored verdict differs from numerical replay")
+        out["integrity"] = {"mode": mode, "passed": True}
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        out.update(verdict="REJECTED", statement="archive verification failed",
+                   failure_codes=sorted(set(out["failure_codes"]) | {"EVIDENCE_INTEGRITY"}),
+                   integrity={"passed": False, "detail": str(exc)})
+    return out
 
 
 def summarize(manifest: dict) -> str:

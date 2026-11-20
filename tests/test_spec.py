@@ -88,3 +88,19 @@ def test_execution_bounds():
     with pytest.raises(ValidationError):
         ExecutionSpec(mesh_levels=(0, 0))
     assert ExecutionSpec(polynomial_order=2).estimated_dofs(8) == 17 ** 2
+
+
+@pytest.mark.parametrize("section,field", [
+    ("validation", "reference_solve_rel_tol"), ("policy", "max_total_wall_seconds"),
+])
+def test_nonfinite_thresholds_rejected(specs_dir, section, field):
+    raw = _load(specs_dir, "poisson_sin_sin_p1_tri.json")
+    raw[section][field] = float("inf")
+    with pytest.raises(ValidationError):
+        StudySpec.model_validate(raw)
+
+
+@pytest.mark.parametrize("literal", ["9" * 370, "1e400"])
+def test_unrepresentable_expression_literal(literal):
+    with pytest.raises(expr.ExpressionError):
+        expr.compile_expr(literal)

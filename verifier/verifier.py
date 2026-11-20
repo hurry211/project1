@@ -11,7 +11,6 @@ check, its measured value, its threshold, and failure codes.
 
 from __future__ import annotations
 
-import hashlib
 import json
 import math
 from dataclasses import asdict, dataclass, field
@@ -22,13 +21,14 @@ import scipy.sparse as sp
 import scipy.sparse.linalg as spla
 
 from sciagent.spec import (SIDE_GEOMETRY, SIDE_NORMAL, ExecutionSpec, ProblemSpec,
-                           ValidationSpec)
+                           ValidationSpec, compact_expression)
+from sciagent.evidence import sha256_file
 
 from . import expr
 from .fem import (ArtifactError, MeshData, build_local_basis, element_quadrature,
                   gauss_01, inverse_map, load_mesh_data)
 
-VERIFIER_VERSION = "0.1.0"
+VERIFIER_VERSION = "0.2.0"
 GEOM_TOL = 1e-12
 
 ACCEPTED = "ACCEPTED"
@@ -82,7 +82,7 @@ class LevelReport:
 
 
 def _finite(v) -> bool:
-    return v is not None and isinstance(v, (int, float)) and math.isfinite(v)
+    return type(v) in (int, float) and math.isfinite(v)
 
 
 def check_mms_consistency(problem: ProblemSpec, rel_tol: float) -> Check:
@@ -120,8 +120,14 @@ def _side_of_points(xy: np.ndarray, label: str) -> np.ndarray:
     return np.abs(xy[..., c] - v) < GEOM_TOL
 
 
+def _attributes(value):
+    if isinstance(value, list) and all(type(a) is int for a in value):
+        return sorted(value)
+    return None
+
+
 def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec,
-                 validation: ValidationSpec, n: int) -> LevelReport:
+                 validation: ValidationSpec, n: int, *, require_run_record: bool = False) -> LevelReport:
     rep = LevelReport(n=n, level_dir=str(level_dir))
     level_dir = Path(level_dir)
 
@@ -132,7 +138,9 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
         return rep
     try:
         res = json.loads(rpath.read_text())
-    except json.JSONDecodeError as exc:
+        if not isinstance(res, dict):
+            raise ValueError("expected a JSON object")
+    except (OSError, ValueError) as exc:
         rep.add(Check("result_json_parse", False, "MALFORMED_ARTIFACT", str(exc)))
         return rep
     rep.self_reported_l2_error = res.get("self_reported_l2_error")
@@ -145,23 +153,37 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
         "n": (res.get("n"), n),
         "order": (res.get("order"), execution.polynomial_order),
         "mesh_type": (res.get("mesh_type"), execution.mesh_type),
-        "dirichlet_attributes": (sorted(res.get("dirichlet_attributes") or []), problem.dirichlet_attributes()),
-        "neumann_attributes": (sorted(res.get("neumann_attributes") or []), problem.neumann_attributes()),
-        "exact_solution": (res.get("case_exact_solution"), problem.exact_solution),
-        "source": (res.get("case_source"), problem.source),
+        "assembly": (res.get("assembly"), execution.assembly),
+        "solver": (res.get("solver"), execution.solver),
+        "rel_tol": (res.get("rel_tol"), execution.rel_tol),
+        "max_iter": (res.get("max_iter"), execution.max_iter),
+        "dirichlet_attributes": (_attributes(res.get("dirichlet_attributes")), problem.dirichlet_attributes()),
+        "neumann_attributes": (_attributes(res.get("neumann_attributes")), problem.neumann_attributes()),
+        "exact_solution": (compact_expression(res.get("case_exact_solution")), compact_expression(problem.exact_solution)),
+        "source": (compact_expression(res.get("case_source")), compact_expression(problem.source)),
     }
-    bad = [k for k, (got, want) in claimed.items() if got != want]
+    bad = [k for k, (got, want) in claimed.items() if got != want or isinstance(got, bool)]
     rep.add(Check("solver_claims_match_spec", not bad, "CLAIM_SPEC_MISMATCH",
                   f"mismatched fields: {bad}" if bad else "run parameters match frozen spec"))
 
-    conv = bool(res.get("solver_converged"))
+    conv = res.get("solver_converged")
     rep.add(Check("solver_reported_convergence",
-                  conv or not validation.require_solver_converged, "SOLVER_NOT_CONVERGED",
+                  type(conv) is bool and (conv or not validation.require_solver_converged), "SOLVER_NOT_CONVERGED",
                   f"solver_converged={conv} (necessary, not sufficient)"))
+
+    if require_run_record:
+        try:
+            record = json.loads((level_dir / "run_record.json").read_text())
+            ok = (isinstance(record, dict) and type(record.get("exit_code")) is int
+                  and record["exit_code"] == 0 and record.get("exit_meaning") == "OK"
+                  and record.get("timed_out") is False and record.get("n") == n)
+            rep.add(Check("process_completed", ok, "SOLVER_EXIT", "runner exit, timeout and level"))
+        except (OSError, ValueError) as exc:
+            rep.add(Check("process_completed", False, "MALFORMED_ARTIFACT", str(exc)))
 
     try:
         mesh = load_mesh_data(level_dir)
-    except ArtifactError as exc:
+    except (ArtifactError, OSError, UnicodeError) as exc:
         rep.add(Check("artifacts_load", False, "MALFORMED_ARTIFACT", str(exc)))
         return rep
     N = mesh.values.size
@@ -180,8 +202,10 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
                   "max coordinate disagreement of a global dof across elements", spread, GEOM_TOL))
 
     expected_E = n * n * (2 if execution.mesh_type == "tri" else 1)
-    rep.add(Check("element_count", mesh.verts.shape[0] == expected_E, "MESH_MISMATCH",
+    rep.add(Check("element_count", mesh.geom == execution.mesh_type and mesh.verts.shape[0] == expected_E, "MESH_MISMATCH",
                   f"{mesh.verts.shape[0]} elements, expected {expected_E}"))
+    rep.add(Check("dof_count", type(rep.num_dofs) is int and rep.num_dofs == N == execution.estimated_dofs(n),
+                  "MESH_MISMATCH", f"claimed {rep.num_dofs}, exported {N}, expected {execution.estimated_dofs(n)}"))
 
     # ---- Gate A (mesh side): boundary attribute <-> label <-> geometry ---
     by_attr = {b.attribute: b for b in problem.boundaries}
@@ -193,6 +217,7 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
                   f"undeclared mesh attributes {undeclared}; declared but absent {missing}"))
     label_bad = []
     side_len = {lbl: 0.0 for lbl in SIDE_GEOMETRY}
+    intervals = {lbl: [] for lbl in SIDE_GEOMETRY}
     for a, seg in zip(mesh.bdr_attr, mesh.bdr_xy):
         bc = by_attr.get(int(a))
         if bc is None:
@@ -201,11 +226,20 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
             label_bad.append(int(a))
         else:
             side_len[bc.label] += float(np.linalg.norm(seg[1] - seg[0]))
+            axis = 1 - SIDE_GEOMETRY[bc.label][0]
+            intervals[bc.label].append(sorted(seg[:, axis]))
     rep.add(Check("boundary_label_geometry", not label_bad, "BOUNDARY_LABEL_MISMATCH",
                   f"attributes whose segments are not on their declared side: {sorted(set(label_bad))}"))
     len_err = max(abs(v - 1.0) for v in side_len.values())
     rep.add(Check("boundary_side_length", len_err <= 1e-10, "BOUNDARY_COVERAGE",
                   "max |declared side length - 1|", len_err, 1e-10))
+    knots = np.arange(n + 1) / n
+    expected_intervals = np.column_stack((knots[:-1], knots[1:]))
+    bad_sides = [label for label, segments in intervals.items()
+                 if len(segments) != n or not np.allclose(sorted(segments), expected_intervals,
+                                                          rtol=0, atol=GEOM_TOL)]
+    rep.add(Check("boundary_partition", not bad_sides, "BOUNDARY_COVERAGE",
+                  f"sides with missing, overlapping or misplaced Cartesian segments: {bad_sides}"))
 
     u_fn = expr.compile_expr(problem.exact_solution)
     f_fn = expr.compile_expr(problem.source)
@@ -226,11 +260,11 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
     p = execution.polynomial_order
     try:
         basis = build_local_basis(mesh, p)
-    except ArtifactError as exc:
+        m = p + 1 + validation.verifier_quadrature_extra_points
+        q = element_quadrature(mesh, basis, m)
+    except (ArtifactError, np.linalg.LinAlgError) as exc:
         rep.add(Check("local_basis", False, "MALFORMED_ARTIFACT", str(exc)))
         return rep
-    m = p + 1 + validation.verifier_quadrature_extra_points
-    q = element_quadrature(mesh, basis, m)
     rep.add(Check("mesh_jacobian_positive", bool(np.all(q.detJ > 0)), "INVALID_MESH",
                   "min det J over quadrature points", float(np.min(q.detJ)), 0.0))
     U = mesh.values[mesh.elem_dofs]                      # (E, nloc)
@@ -265,7 +299,11 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
             rep.add(Check("reference_solve", False, "REFERENCE_SKIPPED_TOO_LARGE",
                           f"{N} dofs > reference_solve_max_dofs"))
         else:
-            u_ref = reference_solve(mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m)
+            try:
+                u_ref = reference_solve(mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m)
+            except (ArtifactError, np.linalg.LinAlgError) as exc:
+                rep.add(Check("reference_solve", False, "INVALID_MESH", str(exc)))
+                return rep
             rel = float(np.max(np.abs(u_ref - mesh.values)) / max(np.max(np.abs(u_ref)), 1e-300))
             rep.reference_rel_diff = rel
             rep.add(Check("reference_solve_agreement", rel <= validation.reference_solve_rel_tol,
@@ -337,21 +375,27 @@ def observed_orders(levels: list[LevelReport]) -> list[dict]:
     return pairs
 
 
-def _sha(path: Path) -> str | None:
-    return hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
-
-
-def verify_attempt(attempt_dir: Path) -> dict:
+def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False) -> dict:
     """Verify one attempt directory from its files alone."""
     attempt_dir = Path(attempt_dir)
     run_dir = attempt_dir.parent.parent
     frozen = run_dir / "frozen"
-    problem = ProblemSpec.model_validate_json((frozen / "problem.json").read_text())
-    validation = ValidationSpec.model_validate_json((frozen / "validation.json").read_text())
-    execution = ExecutionSpec.model_validate_json((attempt_dir / "execution.json").read_text())
-
-    study_checks: list[Check] = [check_mms_consistency(problem, validation.mms_consistency_rel_tol)]
-    levels = [verify_level(attempt_dir / "levels" / f"n{n:04d}", problem, execution, validation, n)
+    try:
+        problem = ProblemSpec.model_validate_json((frozen / "problem.json").read_text())
+        validation = ValidationSpec.model_validate_json((frozen / "validation.json").read_text())
+        execution = ExecutionSpec.model_validate_json((attempt_dir / "execution.json").read_text())
+        mms = check_mms_consistency(problem, validation.mms_consistency_rel_tol)
+    except (OSError, ValueError) as exc:
+        code = "MISSING_ARTIFACT" if isinstance(exc, FileNotFoundError) else "MALFORMED_ARTIFACT"
+        mms = Check("attempt_inputs", False, code, str(exc))
+    if not mms.passed:
+        return {"verifier": "verifier.verifier", "verifier_version": VERIFIER_VERSION, "verdict": REJECTED,
+                "failure_codes": [mms.code], "statement": "verification inputs failed validation",
+                "study_checks": [asdict(mms)], "accuracy_check": None, "levels": [],
+                "convergence": {"pairs": []}, "shared_assumptions": SHARED_ASSUMPTIONS, "input_sha256": {}}
+    study_checks = [mms]
+    levels = [verify_level(attempt_dir / "levels" / f"n{n:04d}", problem, execution, validation, n,
+                           require_run_record=require_run_records)
               for n in execution.mesh_levels]
 
     study_checks.append(Check("min_levels", len(levels) >= validation.min_levels, "INSUFFICIENT_LEVELS",
@@ -402,13 +446,13 @@ def verify_attempt(attempt_dir: Path) -> dict:
     else:
         verdict = ACCEPTED
 
-    inputs = {"frozen/problem.json": _sha(frozen / "problem.json"),
-              "frozen/validation.json": _sha(frozen / "validation.json"),
-              "execution.json": _sha(attempt_dir / "execution.json")}
+    inputs = {"frozen/problem.json": sha256_file(frozen / "problem.json"),
+              "frozen/validation.json": sha256_file(frozen / "validation.json"),
+              "execution.json": sha256_file(attempt_dir / "execution.json")}
     for lv in levels:
         for fn in ("result.json", "dof_values.txt", "element_dofs.txt", "elements.txt", "boundary.txt"):
             pth = Path(lv.level_dir) / fn
-            inputs[str(pth.relative_to(attempt_dir))] = _sha(pth)
+            inputs[pth.relative_to(attempt_dir).as_posix()] = sha256_file(pth)
 
     return {
         "verifier": "verifier.verifier", "verifier_version": VERIFIER_VERSION,

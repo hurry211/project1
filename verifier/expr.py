@@ -33,7 +33,12 @@ def _compile_node(node: ast.AST) -> Callable[[np.ndarray, np.ndarray], np.ndarra
     if isinstance(node, ast.Expression):
         return _compile_node(node.body)
     if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)) and not isinstance(node.value, bool):
-        v = float(node.value)
+        try:
+            v = float(node.value)
+        except OverflowError as exc:
+            raise ExpressionError("numeric literal exceeds floating-point range") from exc
+        if not np.isfinite(v):
+            raise ExpressionError("numeric literal must be finite")
         return lambda x, y: np.full_like(x, v, dtype=float)
     if isinstance(node, ast.Name):
         if node.id == "x":

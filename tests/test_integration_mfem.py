@@ -14,7 +14,7 @@ from conftest import requires_mfem
 from sciagent import controller
 from sciagent.mfem_runner import list_cases, solver_binary
 
-pytestmark = requires_mfem
+pytestmark = [pytest.mark.mfem, requires_mfem]
 
 
 def run(specs_dir, rel, tmp_path):
@@ -168,6 +168,17 @@ def test_binary_reports_nonconvergence(tmp_path):
     p = _bin(tmp_path, "--n", "32", "--max-iter", "2")
     assert p.returncode == 5
     assert json.loads((tmp_path / "result.json").read_text())["solver_converged"] is False
+
+
+@pytest.mark.parametrize("obstruction", ["missing_directory", "result.json"])
+def test_binary_reports_output_failure(tmp_path, obstruction):
+    if obstruction == "result.json":
+        (tmp_path / obstruction).mkdir()
+        output = tmp_path
+    else:
+        output = tmp_path / obstruction
+    p = _bin(output, "--n", "4")
+    assert p.returncode == 7 and "cannot write" in p.stderr
 
 
 def test_list_cases_matches_header():

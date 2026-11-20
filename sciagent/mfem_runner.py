@@ -17,11 +17,11 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from .environment import DEFAULT_SOLVER_BIN, PROJECT_ROOT, mfem_install_dir
-from .spec import ExecutionSpec, ProblemSpec
+from .spec import ExecutionSpec, ProblemSpec, compact_expression
 
 EXIT_CODES = {
     0: "OK", 2: "INVALID_ARGUMENTS", 3: "BOUNDARY_COVERAGE", 4: "UNSUPPORTED_COMBINATION",
-    5: "SOLVER_NOT_CONVERGED", 6: "NON_FINITE_SOLUTION",
+    5: "SOLVER_NOT_CONVERGED", 6: "NON_FINITE_SOLUTION", 7: "ARTIFACT_WRITE_ERROR",
 }
 
 
@@ -41,7 +41,7 @@ def build_solver(log_dir: Path | None = None) -> dict:
     cmds = [
         ["cmake", "-S", str(PROJECT_ROOT / "cpp"), "-B", str(build_dir),
          f"-DMFEM_DIR={mfem_cmake}", "-DCMAKE_BUILD_TYPE=Release"],
-        ["cmake", "--build", str(build_dir), "-j", "2"],
+        ["cmake", "--build", str(build_dir), "-j", os.environ.get("JOBS", "2")],
     ]
     record = {"commands": [], "ok": True}
     for cmd in cmds:
@@ -65,21 +65,29 @@ def list_cases(binary: Path | None = None) -> dict:
     binary = binary or solver_binary()
     if not binary.is_file():
         raise BuildError(f"solver binary not found: {binary}")
-    p = subprocess.run([str(binary), "--list-cases"], capture_output=True, text=True, timeout=30)
+    try:
+        p = subprocess.run([str(binary), "--list-cases"], capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise BuildError(f"cannot execute {binary}: {exc}") from exc
     if p.returncode != 0:
         raise BuildError(f"--list-cases failed: {p.stderr}")
-    return json.loads(p.stdout)
-
-
-def _norm(s: str) -> str:
-    return "".join(s.split())
+    try:
+        cases = json.loads(p.stdout)
+        if not isinstance(cases, dict) or not isinstance(cases.get("cases"), list):
+            raise ValueError("expected a cases array")
+        if not all(isinstance(c, dict) and all(isinstance(c.get(k), str) for k in ("id", "exact_solution", "source"))
+                   for c in cases["cases"]):
+            raise ValueError("invalid manufactured case entry")
+        return cases
+    except ValueError as exc:
+        raise BuildError(f"invalid --list-cases output: {exc}") from exc
 
 
 def bind_case(problem: ProblemSpec, cases: dict) -> str | None:
     """Return the compiled case id implementing exactly this problem, if any."""
     for c in cases["cases"]:
-        if _norm(c["exact_solution"]) == _norm(problem.exact_solution) and \
-           _norm(c["source"]) == _norm(problem.source):
+        if (compact_expression(c["exact_solution"]) == compact_expression(problem.exact_solution)
+                and compact_expression(c["source"]) == compact_expression(problem.source)):
             return c["id"]
     return None
 

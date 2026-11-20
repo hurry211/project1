@@ -6,7 +6,6 @@ to ``None`` with the reason recorded in ``notes``.
 
 from __future__ import annotations
 
-import hashlib
 import os
 import platform
 import re
@@ -14,6 +13,8 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+
+from .evidence import sha256_file
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_MFEM_INSTALL = PROJECT_ROOT / "third_party" / "mfem-install"
@@ -36,18 +37,9 @@ def _run(cmd: list[str]) -> str | None:
     return text.splitlines()[0] if text else None
 
 
-def sha256_file(path: Path) -> str | None:
-    if not path.is_file():
-        return None
-    h = hashlib.sha256()
-    with path.open("rb") as f:
-        for chunk in iter(lambda: f.read(1 << 20), b""):
-            h.update(chunk)
-    return h.hexdigest()
-
-
 def mfem_install_dir() -> Path:
-    return Path(os.environ.get("MFEM_INSTALL", DEFAULT_MFEM_INSTALL))
+    third_party = Path(os.environ.get("THIRD_PARTY", DEFAULT_MFEM_INSTALL.parent))
+    return Path(os.environ.get("MFEM_INSTALL", third_party / "mfem-install")).resolve()
 
 
 def probe_mfem(install: Path | None = None) -> dict:
@@ -94,7 +86,7 @@ def probe(solver_bin: Path | None = None) -> dict:
         "mem_total_mb": mem_total_kb // 1024 if mem_total_kb else None,
         "python": sys.version.split()[0],
         "python_packages": pkgs,
-        "cxx": _run(["g++", "--version"]),
+        "cxx": _run([os.environ.get("CXX", "g++"), "--version"]),
         "cmake": _run(["cmake", "--version"]),
         "make": _run(["make", "--version"]),
         "mpirun_path": mpirun,

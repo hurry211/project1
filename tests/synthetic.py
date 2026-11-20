@@ -132,6 +132,7 @@ def make_attempt(tmp: Path, study: StudySpec, *, shuffle: bool = False, mutate=N
         _write_values(ld, vals)
         res = {
             "n": n, "order": ex.polynomial_order, "mesh_type": ex.mesh_type,
+            "assembly": ex.assembly, "solver": ex.solver, "rel_tol": ex.rel_tol, "max_iter": ex.max_iter,
             "dirichlet_attributes": study.problem.dirichlet_attributes(),
             "neumann_attributes": study.problem.neumann_attributes(),
             "case_exact_solution": study.problem.exact_solution, "case_source": study.problem.source,

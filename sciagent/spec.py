@@ -47,7 +47,7 @@ SIDE_NORMAL: dict[str, tuple[float, float]] = {
 
 
 class _Frozen(BaseModel):
-    model_config = ConfigDict(frozen=True, extra="forbid")
+    model_config = ConfigDict(frozen=True, extra="forbid", allow_inf_nan=False)
 
 
 class BoundaryCondition(_Frozen):
@@ -166,6 +166,10 @@ class StudySpec(_Frozen):
 
 def canonical_json(model: BaseModel) -> str:
     return json.dumps(model.model_dump(mode="json"), sort_keys=True, separators=(",", ":"))
+
+
+def compact_expression(value: object) -> str | None:
+    return "".join(value.split()) if isinstance(value, str) else None
 
 
 def sha256_of(model: BaseModel) -> str:

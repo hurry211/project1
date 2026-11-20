@@ -21,7 +21,7 @@
 // Exit codes (stable contract with the Python runner):
 //   0 success, 2 invalid arguments, 3 boundary-coverage error,
 //   4 unsupported assembly/solver combination, 5 linear solver not converged,
-//   6 non-finite values in the solution.
+//   6 non-finite values in the solution, 7 artifact output failure.
 //
 // Fault injection (--inject-fault) exists ONLY to test that the downstream
 // verifier rejects wrong results. Every injected fault is recorded in
@@ -97,6 +97,13 @@ std::string JsonIntList(const std::vector<int> &v)
    for (size_t i = 0; i < v.size(); i++) { os << (i ? ", " : "") << v[i]; }
    os << "]";
    return os.str();
+}
+
+bool FinishExport(std::ofstream &stream, const char *name)
+{
+   stream.close();
+   if (stream.fail()) { std::cerr << "ERROR: cannot write " << name << "\n"; }
+   return !stream.fail();
 }
 
 void ListCases()
@@ -364,6 +371,7 @@ int main(int argc, char *argv[])
          }
          f << "\n";
       }
+      if (!FinishExport(f, "elements.txt")) { return 7; }
    }
    {
       std::ofstream f(od + "/element_dofs.txt");
@@ -385,12 +393,14 @@ int main(int argc, char *argv[])
             f << e << " " << k << " " << gd << " " << xp(0) << " " << xp(1) << "\n";
          }
       }
+      if (!FinishExport(f, "element_dofs.txt")) { return 7; }
    }
    {
       std::ofstream f(od + "/dof_values.txt");
       f << std::setprecision(17);
       f << "# global_dof value\n";
       for (int i = 0; i < x.Size(); i++) { f << i << " " << x(i) << "\n"; }
+      if (!FinishExport(f, "dof_values.txt")) { return 7; }
    }
    {
       std::ofstream f(od + "/boundary.txt");
@@ -405,14 +415,17 @@ int main(int argc, char *argv[])
          f << be << " " << mesh.GetBdrAttribute(be) << " " << c0[0] << " "
            << c0[1] << " " << c1[0] << " " << c1[1] << "\n";
       }
+      if (!FinishExport(f, "boundary.txt")) { return 7; }
    }
    {
       std::ofstream mf(od + "/mesh.mesh");
       mf.precision(17);
       mesh.Print(mf);
+      if (!FinishExport(mf, "mesh.mesh")) { return 7; }
       std::ofstream sf(od + "/solution.gf");
       sf.precision(17);
       x.Save(sf);
+      if (!FinishExport(sf, "solution.gf")) { return 7; }
    }
 
    auto ms = [](auto a_, auto b_)
@@ -459,6 +472,7 @@ int main(int argc, char *argv[])
         << "  \"time_solve_ms\": " << JsonNum(ms(t1, t2)) << ",\n"
         << "  \"time_error_ms\": " << JsonNum(ms(t2, t3)) << "\n"
         << "}\n";
+      if (!FinishExport(f, "result.json")) { return 7; }
    }
 
    std::cout << std::setprecision(6)

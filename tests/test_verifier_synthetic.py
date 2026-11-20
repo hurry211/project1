@@ -125,3 +125,73 @@ def test_unconverged_flag_rejected(tmp_path):
     r = json.loads(rp.read_text()); r["solver_converged"] = False; rp.write_text(json.dumps(r))
     v = verify_attempt(att)
     assert v["verdict"] == REJECTED and "SOLVER_NOT_CONVERGED" in v["failure_codes"]
+
+
+@pytest.mark.parametrize("field,value,code", [
+    ("solver_converged", "false", "SOLVER_NOT_CONVERGED"),
+    ("solver", "cg_none", "CLAIM_SPEC_MISMATCH"),
+    ("assembly", "partial", "CLAIM_SPEC_MISMATCH"),
+    ("rel_tol", 1e-4, "CLAIM_SPEC_MISMATCH"),
+    ("max_iter", 2, "CLAIM_SPEC_MISMATCH"),
+    ("neumann_attributes", "none", "CLAIM_SPEC_MISMATCH"),
+    ("num_dofs", 9999, "MESH_MISMATCH"),
+])
+def test_claims_cannot_relabel_a_correct_solution(tmp_path, field, value, code):
+    att = make_attempt(tmp_path, study(SIN, levels=(4, 8, 16)))
+    path = att / "levels/n0004/result.json"
+    claims = json.loads(path.read_text())
+    claims[field] = value
+    path.write_text(json.dumps(claims))
+    v = verify_attempt(att)
+    assert v["verdict"] == REJECTED and code in v["failure_codes"]
+
+
+def test_boundary_partition_detects_gap_with_unchanged_total_length(tmp_path):
+    att = make_attempt(tmp_path, study(SIN, levels=(4, 8, 16)))
+    path = att / "levels/n0004/boundary.txt"
+    rows = path.read_text().splitlines()
+    # Keep the second bottom-edge ID and attribute, duplicate the first interval.
+    rows[5] = " ".join([rows[5].split()[0], *rows[1].split()[1:]])
+    path.write_text("\n".join(rows) + "\n")
+    v = verify_attempt(att)
+    checks = {c["name"]: c["passed"] for c in v["levels"][0]["checks"]}
+    assert checks["boundary_side_length"] and not checks["boundary_partition"]
+    assert v["verdict"] == REJECTED and "BOUNDARY_COVERAGE" in v["failure_codes"]
+
+
+@pytest.mark.parametrize("filename,column,change", [
+    ("dof_values.txt", 0, "0.5"),
+    ("element_dofs.txt", 2, "0.5"),
+    ("element_dofs.txt", 3, "inf"),
+    ("elements.txt", 2, "4"),
+    ("boundary.txt", 0, "1"),
+])
+def test_malformed_mesh_records_return_a_verdict(tmp_path, filename, column, change):
+    att = make_attempt(tmp_path, study(SIN, levels=(4, 8, 16)))
+    path = att / "levels/n0004" / filename
+    rows = path.read_text().splitlines()
+    fields = rows[1].split()
+    fields[column] = change
+    rows[1] = " ".join(fields)
+    path.write_text("\n".join(rows) + "\n")
+    v = verify_attempt(att)
+    assert v["verdict"] == REJECTED and "MALFORMED_ARTIFACT" in v["failure_codes"]
+
+
+def test_degenerate_element_returns_a_verdict(tmp_path):
+    att = make_attempt(tmp_path, study(SIN, levels=(4, 8, 16)))
+    path = att / "levels/n0004/elements.txt"
+    rows = path.read_text().splitlines()
+    fields = rows[1].split()
+    fields[-2:] = fields[3:5]
+    rows[1] = " ".join(fields)
+    path.write_text("\n".join(rows) + "\n")
+    v = verify_attempt(att)
+    assert v["verdict"] == REJECTED and "MALFORMED_ARTIFACT" in v["failure_codes"]
+
+
+def test_missing_frozen_spec_returns_a_verdict(tmp_path):
+    att = make_attempt(tmp_path, study(SIN, levels=(4, 8, 16)))
+    (att.parent.parent / "frozen/validation.json").unlink()
+    v = verify_attempt(att)
+    assert v["verdict"] == REJECTED and v["failure_codes"] == ["MISSING_ARTIFACT"]
