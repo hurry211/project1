@@ -8,6 +8,7 @@
 set -uo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 THIRD_PARTY="${THIRD_PARTY:-$ROOT/third_party}"
+CXX="${CXX:-g++}"
 SRC="$THIRD_PARTY/mfem-src"; INST="${MFEM_INSTALL:-$THIRD_PARTY/mfem-install}"
 OUT="$ROOT/runs/baseline_ex1/$(date -u +%Y%m%dT%H%M%SZ)"
 mkdir -p "$OUT"
@@ -17,11 +18,11 @@ cd "$OUT"
   echo "mfem_git=$(git -C "$SRC" describe --tags --long 2>/dev/null) $(git -C "$SRC" rev-parse HEAD)"
   echo "ex1_source_sha256=$(sha256sum "$SRC/examples/ex1.cpp" | cut -d' ' -f1)"
   echo "libmfem_sha256=$(sha256sum "$INST/lib/libmfem.a" | cut -d' ' -f1)"
-  echo "cxx=$(g++ --version | head -1)"
+  echo "cxx=$("$CXX" --version | head -1)"
   echo "uname=$(uname -srm)"
 } > provenance.txt
 
-BUILD=(g++ -O3 -std=c++17 -I"$INST/include" "$SRC/examples/ex1.cpp" -o ex1 -L"$INST/lib" -lmfem)
+BUILD=("$CXX" -O3 -std=c++17 -I"$INST/include" "$SRC/examples/ex1.cpp" -o ex1 -L"$INST/lib" -lmfem)
 printf '%q ' "${BUILD[@]}" > build_command.txt; echo >> build_command.txt
 "${BUILD[@]}" > build_stdout.txt 2> build_stderr.txt
 echo $? > build_exit_code.txt

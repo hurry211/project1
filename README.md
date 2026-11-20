@@ -16,40 +16,49 @@ StudySpec (JSON) ─► schema + MMS consistency ─► freeze & hash ─► env
 
 ## Requirements
 
-Linux, g++ ≥ 11 (tested with 13.3), CMake ≥ 3.16 (tested with 3.28), git, Python ≥ 3.10 (tested with 3.13) with `numpy`, `scipy`, `pydantic>=2`, `pytest`. No MPI, GPU or optional MFEM dependency is needed.
+The reproduced configuration uses x86-64 Ubuntu 24.04, CPython 3.12, GCC 13, CMake 3.28 and double-precision serial MFEM 4.10. The solver uses POSIX process resource limits. On Windows, select the Ubuntu 24.04 WSL2 distribution shown by `wsl -l -v` and run the following commands in its Bash shell. A checkout in the Linux home directory keeps compilation and the many small evidence files on the Linux filesystem.
 
 ## Reproduce
 
+From an authenticated checkout of this private repository, start at the directory containing this README.
+
 ```bash
-cd mfem-scientific-agent
+sudo apt-get update
+sudo apt-get install -y --no-install-recommends git g++-13 cmake make python3.12-venv
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install --require-hashes --only-binary=:all: -r requirements-linux-py312.lock
+python -m pip check
+export CC=gcc-13 CXX=g++-13 OPENBLAS_NUM_THREADS=1 JOBS=2
+python -m pytest -q -m 'not mfem'
 
-# 1. Fetch and build the pinned MFEM release (v4.10, commit d964264c...) into ./third_party
-#    (714 s measured with 2 cores; nothing is installed system-wide)
 ./scripts/build_mfem.sh
-
-# 2. Baseline: build and run the UNMODIFIED official MFEM Example 1, evidence in runs/baseline_ex1/
-./scripts/run_ex1_baseline.sh
-
-# 3. Build the project's MFEM solver (cpp/poisson_mms.cpp) and list its compiled cases
 ./scripts/build_solver.sh
-
-# 4. Run the mandated benchmark end to end (exit code 0 only if ACCEPTED)
-python3 -m sciagent run specs/poisson_sin_sin_p1_tri.json
-
-# 5. Run every positive and negative spec, then regenerate docs/RESULTS.md
-./scripts/run_demo.sh
-python3 scripts/summarize_runs.py
-
-# 6. Tests: unit (no MFEM needed) + integration (real MFEM; skipped if step 3 not done)
-python3 -m pytest -q
-
-# 7. Re-verify any stored attempt from its artifacts alone
-python3 -m sciagent verify runs/<run_dir>/attempts/attempt_01
+python -m pytest -q --require-mfem
+python -m sciagent quickstart
 ```
 
-Useful extras: `python3 -m sciagent env` (environment probe), `python3 -m sciagent matrix` (capability matrix), `python3 -m sciagent cases`.
+`quickstart` reports the toolchain, runs the P1 triangle study at 8, 16, 32 and 64 cells per side, and replays the stored attempt. Exit 0 requires both numerical acceptance and successful replay. Its JSON includes the attempt directory, the finest-pair orders and the manifest digest. To check a copy of the archive on another machine, preserve the **whole run directory** and keep its manifest digest separately.
 
-Environment variables: `MFEM_INSTALL` (default `./third_party/mfem-install`), `POISSON_MMS_BIN` (default `./build/cpp/poisson_mms`), `THIRD_PARTY`, `JOBS`.
+```bash
+python -m sciagent verify <attempt_dir> --manifest-sha256 <saved_digest>
+```
+
+Replace the placeholders with the values printed by `quickstart`. The replay uses Python and the raw files and runs without the native solver. New runs inventory every regular file under the run directory, including the stored verdict, frozen policy, events, logs and native MFEM exports. A separately retained digest detects replacement of the inventory and its local checksum together. Original 0.1.0 archives report the narrower `legacy-input-hashes` mode.
+
+The MFEM source pin is `d964264cdb9a13e94a201b6c236c7721e0c8765f`. The build script checks its checkout and takes an exclusive build lock. `THIRD_PARTY` selects the source, build and installation root. `MFEM_INSTALL` overrides its installation prefix and `POISSON_MMS_BIN` selects the solver binary. Use absolute paths for overrides. The Python lock identifies the tested Linux x86-64 wheels and transitive versions. `requirements-dev.txt` retains the original dependency ranges for other environments.
+
+GitHub Actions runs Python unit tests and a separate clean MFEM source build on Ubuntu 24.04. The native job uses `-m mfem --require-mfem`, which fails immediately if the solver is missing. Plain `python -m pytest -q` keeps the original developer behavior and lists the reason for each skipped integration test.
+
+```bash
+./scripts/run_ex1_baseline.sh
+python -m sciagent run specs/poisson_sin_sin_p1_tri.json
+RUNS_DIR=runs/demo ./scripts/run_demo.sh
+python scripts/summarize_runs.py runs/demo --output runs/demo/report.md
+python scripts/compare_baseline.py runs/demo
+```
+
+The demo includes expected rejections and one exhausted retry budget. Use an empty demo directory for the historical comparison. It checks the 31 studies, frozen inputs, attempt decisions and original failure codes, and reports the relative difference in accepted error norms. `python -m sciagent env`, `cases` and `matrix` expose environment details, compiled manufactured cases and the capability matrix.
 
 ## Layout
 
