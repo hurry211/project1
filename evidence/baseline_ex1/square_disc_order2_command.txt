@@ -1,0 +1,1 @@
+./ex1 -m /home/claude/mfem-scientific-agent/third_party/mfem-src/data/square-disc.mesh -no-vis -o 2 

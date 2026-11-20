@@ -1,0 +1,232 @@
+"""Independent finite-element machinery for verification (numpy/scipy only).
+
+Nothing here is shared with, or derived from, the MFEM solver code:
+
+* geometry maps are built from exported element vertex coordinates;
+* the local Lagrange basis is constructed from the *exported physical node
+  coordinates* (inverse-mapped to the reference element) via a Vandermonde
+  matrix on the monomial basis P_p (triangles) or Q_p (quadrilaterals), so the
+  verifier does not need to know MFEM's internal node layout or numbering;
+* quadrature: Gauss-Legendre (tensor) on quads, collapsed (Duffy) Gauss on
+  triangles.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from pathlib import Path
+
+import numpy as np
+
+
+class ArtifactError(ValueError):
+    """Raised when solver artifacts are missing, malformed or inconsistent."""
+
+
+@dataclass
+class MeshData:
+    geom: str                 # "tri" or "quad"
+    verts: np.ndarray         # (E, nv, 2)
+    elem_dofs: np.ndarray     # (E, nloc) global dof ids
+    elem_node_xy: np.ndarray  # (E, nloc, 2) physical node coordinates
+    values: np.ndarray        # (N,) nodal dof values
+    bdr_attr: np.ndarray      # (B,) boundary attribute per segment
+    bdr_xy: np.ndarray        # (B, 2, 2) segment endpoints
+
+
+def _loadtxt(path: Path, ncols_min: int, dtype=float) -> np.ndarray:
+    if not path.is_file():
+        raise ArtifactError(f"missing artifact {path.name}")
+    try:
+        arr = np.loadtxt(path, comments="#", dtype=dtype, ndmin=2)
+    except ValueError as exc:
+        raise ArtifactError(f"malformed artifact {path.name}: {exc}") from exc
+    if arr.shape[0] == 0 or arr.shape[1] < ncols_min:
+        raise ArtifactError(f"artifact {path.name} has unexpected shape {arr.shape}")
+    return arr
+
+
+def load_mesh_data(level_dir: Path) -> MeshData:
+    level_dir = Path(level_dir)
+    # elements.txt: elem geom nverts coords...
+    lines = [ln.split() for ln in (level_dir / "elements.txt").read_text().splitlines()
+             if ln.strip() and not ln.startswith("#")] if (level_dir / "elements.txt").is_file() else None
+    if not lines:
+        raise ArtifactError("missing or empty artifact elements.txt")
+    geoms = {ln[1] for ln in lines}
+    if len(geoms) != 1 or next(iter(geoms)) not in ("tri", "quad"):
+        raise ArtifactError(f"unsupported/mixed element geometries {geoms}")
+    geom = geoms.pop()
+    nv = 3 if geom == "tri" else 4
+    try:
+        verts = np.array([[float(v) for v in ln[3:3 + 2 * nv]] for ln in lines]).reshape(-1, nv, 2)
+        eids = np.array([int(ln[0]) for ln in lines])
+    except (ValueError, IndexError) as exc:
+        raise ArtifactError(f"malformed elements.txt: {exc}") from exc
+    if not np.array_equal(eids, np.arange(len(eids))):
+        raise ArtifactError("elements.txt element ids are not 0..E-1 in order")
+
+    ed = _loadtxt(level_dir / "element_dofs.txt", 5)
+    E = verts.shape[0]
+    if ed.shape[0] % E != 0:
+        raise ArtifactError("element_dofs.txt row count is not a multiple of the element count")
+    nloc = ed.shape[0] // E
+    ed = ed.reshape(E, nloc, 5)
+    if not (np.array_equal(ed[:, :, 0], np.repeat(np.arange(E)[:, None], nloc, 1))
+            and np.array_equal(ed[:, :, 1], np.repeat(np.arange(nloc)[None, :], E, 0))):
+        raise ArtifactError("element_dofs.txt is not ordered by (element, local index)")
+    elem_dofs = ed[:, :, 2].astype(np.int64)
+    elem_node_xy = ed[:, :, 3:5].copy()
+
+    dv = _loadtxt(level_dir / "dof_values.txt", 2)
+    N = dv.shape[0]
+    if not np.array_equal(dv[:, 0].astype(np.int64), np.arange(N)):
+        raise ArtifactError("dof_values.txt ids are not 0..N-1 in order")
+    values = dv[:, 1].copy()
+    if elem_dofs.min() < 0 or elem_dofs.max() >= N:
+        raise ArtifactError("element dof ids out of range of dof_values.txt")
+
+    bd = _loadtxt(level_dir / "boundary.txt", 6)
+    return MeshData(geom=geom, verts=verts, elem_dofs=elem_dofs, elem_node_xy=elem_node_xy,
+                    values=values, bdr_attr=bd[:, 1].astype(np.int64),
+                    bdr_xy=bd[:, 2:6].reshape(-1, 2, 2))
+
+
+# --------------------------------------------------------------------------
+# Reference element: monomials, quadrature, geometry maps
+# --------------------------------------------------------------------------
+
+def monomial_exponents(geom: str, p: int) -> np.ndarray:
+    if geom == "tri":
+        exps = [(i, j) for j in range(p + 1) for i in range(p + 1 - j)]
+    else:
+        exps = [(i, j) for j in range(p + 1) for i in range(p + 1)]
+    return np.array(exps, dtype=np.int64)
+
+
+def eval_monomials(exps: np.ndarray, xi: np.ndarray, eta: np.ndarray):
+    """Return M, dM/dxi, dM/deta with shape xi.shape + (nmono,)."""
+    a = exps[:, 0]
+    b = exps[:, 1]
+    X = xi[..., None]
+    Y = eta[..., None]
+    M = X ** a * Y ** b
+    dX = np.where(a > 0, a * X ** np.maximum(a - 1, 0), 0.0) * Y ** b
+    dY = X ** a * np.where(b > 0, b * Y ** np.maximum(b - 1, 0), 0.0)
+    return M, dX, dY
+
+
+def gauss_01(m: int) -> tuple[np.ndarray, np.ndarray]:
+    x, w = np.polynomial.legendre.leggauss(m)
+    return 0.5 * (x + 1.0), 0.5 * w
+
+
+def reference_quadrature(geom: str, m: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Points (xi, eta) and weights on the reference element (area 1/2 or 1)."""
+    g, w = gauss_01(m)
+    U, V = np.meshgrid(g, g, indexing="ij")
+    WU, WV = np.meshgrid(w, w, indexing="ij")
+    if geom == "quad":
+        return U.ravel(), V.ravel(), (WU * WV).ravel()
+    # Duffy collapse of the unit square onto the triangle {xi,eta>=0, xi+eta<=1}
+    xi = U
+    eta = V * (1.0 - U)
+    wt = WU * WV * (1.0 - U)
+    return xi.ravel(), eta.ravel(), wt.ravel()
+
+
+def geometry_map(geom: str, verts: np.ndarray, xi: np.ndarray, eta: np.ndarray):
+    """Physical points and Jacobians for each element at reference points.
+
+    verts: (E, nv, 2); xi, eta: (Q,). Returns X (E,Q,2), J (E,Q,2,2) with
+    J[..., i, j] = d x_i / d xi_j.
+    """
+    if geom == "tri":
+        v0, v1, v2 = verts[:, 0], verts[:, 1], verts[:, 2]
+        A = np.stack([v1 - v0, v2 - v0], axis=-1)  # (E,2,2) columns dX/dxi, dX/deta
+        X = v0[:, None, :] + xi[None, :, None] * A[:, None, :, 0] + eta[None, :, None] * A[:, None, :, 1]
+        J = np.broadcast_to(A[:, None, :, :], (verts.shape[0], xi.size, 2, 2))
+        return X, J
+    v0, v1, v2, v3 = (verts[:, k][:, None, :] for k in range(4))
+    s = xi[None, :, None]
+    t = eta[None, :, None]
+    X = v0 * (1 - s) * (1 - t) + v1 * s * (1 - t) + v2 * s * t + v3 * (1 - s) * t
+    dXds = -v0 * (1 - t) + v1 * (1 - t) + v2 * t - v3 * t
+    dXdt = -v0 * (1 - s) - v1 * s + v2 * s + v3 * (1 - s)
+    J = np.stack([dXds, dXdt], axis=-1)
+    return X, J
+
+
+def inverse_map(geom: str, verts: np.ndarray, X: np.ndarray, tol: float = 1e-12) -> np.ndarray:
+    """Reference coordinates of physical points X (E,K,2) in element e."""
+    if geom == "tri":
+        v0 = verts[:, 0]
+        A = np.stack([verts[:, 1] - v0, verts[:, 2] - v0], axis=-1)
+        rhs = X - v0[:, None, :]
+        return np.linalg.solve(A[:, None, :, :], rhs[..., None])[..., 0]
+    ref = np.full(X.shape, 0.5)
+    for _ in range(30):
+        xi = ref[..., 0]
+        eta = ref[..., 1]
+        v = [verts[:, k][:, None, :] for k in range(4)]
+        s = xi[..., None]
+        t = eta[..., None]
+        F = v[0] * (1 - s) * (1 - t) + v[1] * s * (1 - t) + v[2] * s * t + v[3] * (1 - s) * t - X
+        dXds = -v[0] * (1 - t) + v[1] * (1 - t) + v[2] * t - v[3] * t
+        dXdt = -v[0] * (1 - s) - v[1] * s + v[2] * s + v[3] * (1 - s)
+        J = np.stack([dXds, dXdt], axis=-1)
+        step = np.linalg.solve(J, F[..., None])[..., 0]
+        ref = ref - step
+        if np.max(np.abs(step)) < tol:
+            break
+    return ref
+
+
+@dataclass
+class LocalBasis:
+    exps: np.ndarray       # (nloc, 2)
+    coeffs: np.ndarray     # (E, nloc, nloc): phi_k = sum_m mono_m * coeffs[e, m, k]
+    max_cond: float
+    node_ref: np.ndarray   # (E, nloc, 2)
+
+
+def build_local_basis(mesh: MeshData, p: int) -> LocalBasis:
+    exps = monomial_exponents(mesh.geom, p)
+    nloc = exps.shape[0]
+    if mesh.elem_dofs.shape[1] != nloc:
+        raise ArtifactError(
+            f"element has {mesh.elem_dofs.shape[1]} local dofs but a {mesh.geom} of order {p} "
+            f"needs {nloc}")
+    node_ref = inverse_map(mesh.geom, mesh.verts, mesh.elem_node_xy)
+    if np.any(node_ref < -1e-9) or np.any(node_ref > 1 + 1e-9) or (
+            mesh.geom == "tri" and np.any(node_ref.sum(-1) > 1 + 1e-9)):
+        raise ArtifactError("exported dof node lies outside its element")
+    V, _, _ = eval_monomials(exps, node_ref[..., 0], node_ref[..., 1])  # (E, nloc_nodes, nmono)
+    cond = np.linalg.cond(V)
+    max_cond = float(np.max(cond))
+    if not np.isfinite(max_cond) or max_cond > 1e10:
+        raise ArtifactError(f"local node set is not unisolvent (max cond {max_cond:.3e})")
+    coeffs = np.linalg.inv(V)  # V[e,i,m] C[e,m,k] = delta_ik
+    return LocalBasis(exps=exps, coeffs=coeffs, max_cond=max_cond, node_ref=node_ref)
+
+
+@dataclass
+class QuadData:
+    X: np.ndarray        # (E,Q,2)
+    wdet: np.ndarray     # (E,Q) weight * |det J|
+    detJ: np.ndarray     # (E,Q)
+    phi: np.ndarray      # (E,Q,nloc)
+    gphi: np.ndarray     # (E,Q,nloc,2) physical gradients
+
+
+def element_quadrature(mesh: MeshData, basis: LocalBasis, m: int) -> QuadData:
+    xi, eta, w = reference_quadrature(mesh.geom, m)
+    X, J = geometry_map(mesh.geom, mesh.verts, xi, eta)
+    detJ = J[..., 0, 0] * J[..., 1, 1] - J[..., 0, 1] * J[..., 1, 0]
+    M, dMx, dMy = eval_monomials(basis.exps, xi, eta)  # (Q, nmono)
+    phi = np.einsum("qm,emk->eqk", M, basis.coeffs)
+    dphi_ref = np.stack([np.einsum("qm,emk->eqk", dMx, basis.coeffs),
+                         np.einsum("qm,emk->eqk", dMy, basis.coeffs)], axis=-1)
+    Jinv = np.linalg.inv(J)  # (E,Q,2,2): d xi_j / d x_i = Jinv[j, i]
+    gphi = np.einsum("eqkj,eqji->eqki", dphi_ref, Jinv)
+    return QuadData(X=X, wdet=w[None, :] * np.abs(detJ), detJ=detJ, phi=phi, gphi=gphi)

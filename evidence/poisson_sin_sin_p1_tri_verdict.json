@@ -1,0 +1,615 @@
+{
+  "verifier": "verifier.verifier",
+  "verifier_version": "0.1.0",
+  "verdict": "ACCEPTED",
+  "failure_codes": [],
+  "statement": "numerical (code) verification passed for this manufactured-solution benchmark",
+  "study_checks": [
+    {
+      "name": "mms_consistency",
+      "passed": true,
+      "code": "MMS_INCONSISTENT",
+      "detail": "max |(-lap u_exact) - f| / (1+|f|) at 256 fixed random interior points (4th-order finite differences, h=1e-3)",
+      "value": 1.4663419917139099e-10,
+      "threshold": 1e-06
+    },
+    {
+      "name": "min_levels",
+      "passed": true,
+      "code": "INSUFFICIENT_LEVELS",
+      "detail": "4 levels, need 3",
+      "value": 4,
+      "threshold": 3
+    },
+    {
+      "name": "monotone_error_decrease",
+      "passed": true,
+      "code": "NON_MONOTONE_CONVERGENCE",
+      "detail": "L2=['2.113e-02', '5.377e-03', '1.350e-03', '3.380e-04'], H1semi=['4.318e-01', '2.175e-01', '1.090e-01', '5.451e-02']",
+      "value": null,
+      "threshold": null
+    },
+    {
+      "name": "finest_pair_l2_order",
+      "passed": true,
+      "code": "CONVERGENCE_ORDER_OUT_OF_BAND",
+      "detail": "observed L2 order on n=32->64 must lie in [1.80, 2.50]",
+      "value": 1.9983631008284015,
+      "threshold": 1.8
+    },
+    {
+      "name": "finest_pair_h1_semi_order",
+      "passed": true,
+      "code": "CONVERGENCE_ORDER_OUT_OF_BAND",
+      "detail": "observed H1-seminorm order must lie in [0.80, 1.50]",
+      "value": 0.999311941962252,
+      "threshold": 0.8
+    }
+  ],
+  "accuracy_check": null,
+  "levels": [
+    {
+      "n": 8,
+      "level_dir": "runs/20261120T155140827686Z_poisson_sin_sin_p1_tri/attempts/attempt_01/levels/n0008",
+      "l2_error": 0.021132773446722816,
+      "h1_semi_error": 0.43179828300506834,
+      "self_reported_l2_error": 0.021132772741607696,
+      "self_reported_h1_semi_error": 0.43179828308351664,
+      "reference_rel_diff": 6.211078452230355e-11,
+      "num_dofs": 81,
+      "solver_iterations": 13,
+      "injected_fault_label": "none",
+      "checks": [
+        {
+          "name": "solver_claims_match_spec",
+          "passed": true,
+          "code": "CLAIM_SPEC_MISMATCH",
+          "detail": "run parameters match frozen spec",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "solver_reported_convergence",
+          "passed": true,
+          "code": "SOLVER_NOT_CONVERGED",
+          "detail": "solver_converged=True (necessary, not sufficient)",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "finite_solution",
+          "passed": true,
+          "code": "NON_FINITE_SOLUTION",
+          "detail": "0 non-finite nodal values",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "dof_coordinate_consistency",
+          "passed": true,
+          "code": "MALFORMED_ARTIFACT",
+          "detail": "max coordinate disagreement of a global dof across elements",
+          "value": 0.0,
+          "threshold": 1e-12
+        },
+        {
+          "name": "element_count",
+          "passed": true,
+          "code": "MESH_MISMATCH",
+          "detail": "128 elements, expected 128",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "boundary_attribute_coverage",
+          "passed": true,
+          "code": "BOUNDARY_COVERAGE",
+          "detail": "undeclared mesh attributes []; declared but absent []",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "boundary_label_geometry",
+          "passed": true,
+          "code": "BOUNDARY_LABEL_MISMATCH",
+          "detail": "attributes whose segments are not on their declared side: []",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "boundary_side_length",
+          "passed": true,
+          "code": "BOUNDARY_COVERAGE",
+          "detail": "max |declared side length - 1|",
+          "value": 0.0,
+          "threshold": 1e-10
+        },
+        {
+          "name": "dirichlet_nodal_values",
+          "passed": true,
+          "code": "DIRICHLET_VIOLATION",
+          "detail": "max |u_h - u_exact| over 32 Dirichlet nodes",
+          "value": 0.0,
+          "threshold": 1e-10
+        },
+        {
+          "name": "mesh_jacobian_positive",
+          "passed": true,
+          "code": "INVALID_MESH",
+          "detail": "min det J over quadrature points",
+          "value": 0.015625,
+          "threshold": 0.0
+        },
+        {
+          "name": "independent_errors_finite",
+          "passed": true,
+          "code": "NON_FINITE_SOLUTION",
+          "detail": "L2=2.113277e-02, H1semi=4.317983e-01",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "self_report_l2",
+          "passed": true,
+          "code": "SELF_REPORT_MISMATCH",
+          "detail": "|verifier - solver| / verifier for l2 error (verifier 2.1132773447e-02, solver 2.1132772742e-02)",
+          "value": 3.336595269183764e-08,
+          "threshold": 1e-06
+        },
+        {
+          "name": "self_report_h1_semi",
+          "passed": true,
+          "code": "SELF_REPORT_MISMATCH",
+          "detail": "|verifier - solver| / verifier for h1_semi error (verifier 4.3179828301e-01, solver 4.3179828308e-01)",
+          "value": 1.8167812725633632e-10,
+          "threshold": 1e-06
+        },
+        {
+          "name": "reference_solve_agreement",
+          "passed": true,
+          "code": "REFERENCE_MISMATCH",
+          "detail": "max|u_mfem - u_ref| / max|u_ref| (independent scipy assembly + sparse direct solve)",
+          "value": 6.211078452230355e-11,
+          "threshold": 1e-07
+        }
+      ],
+      "ok": true
+    },
+    {
+      "n": 16,
+      "level_dir": "runs/20261120T155140827686Z_poisson_sin_sin_p1_tri/attempts/attempt_01/levels/n0016",
+      "l2_error": 0.005377435009899606,
+      "h1_semi_error": 0.21753633635882105,
+      "self_reported_l2_error": 0.005377434998780871,
+      "self_reported_h1_semi_error": 0.21753633636014544,
+      "reference_rel_diff": 2.4570306439545616e-13,
+      "num_dofs": 289,
+      "solver_iterations": 22,
+      "injected_fault_label": "none",
+      "checks": [
+        {
+          "name": "solver_claims_match_spec",
+          "passed": true,
+          "code": "CLAIM_SPEC_MISMATCH",
+          "detail": "run parameters match frozen spec",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "solver_reported_convergence",
+          "passed": true,
+          "code": "SOLVER_NOT_CONVERGED",
+          "detail": "solver_converged=True (necessary, not sufficient)",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "finite_solution",
+          "passed": true,
+          "code": "NON_FINITE_SOLUTION",
+          "detail": "0 non-finite nodal values",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "dof_coordinate_consistency",
+          "passed": true,
+          "code": "MALFORMED_ARTIFACT",
+          "detail": "max coordinate disagreement of a global dof across elements",
+          "value": 0.0,
+          "threshold": 1e-12
+        },
+        {
+          "name": "element_count",
+          "passed": true,
+          "code": "MESH_MISMATCH",
+          "detail": "512 elements, expected 512",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "boundary_attribute_coverage",
+          "passed": true,
+          "code": "BOUNDARY_COVERAGE",
+          "detail": "undeclared mesh attributes []; declared but absent []",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "boundary_label_geometry",
+          "passed": true,
+          "code": "BOUNDARY_LABEL_MISMATCH",
+          "detail": "attributes whose segments are not on their declared side: []",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "boundary_side_length",
+          "passed": true,
+          "code": "BOUNDARY_COVERAGE",
+          "detail": "max |declared side length - 1|",
+          "value": 0.0,
+          "threshold": 1e-10
+        },
+        {
+          "name": "dirichlet_nodal_values",
+          "passed": true,
+          "code": "DIRICHLET_VIOLATION",
+          "detail": "max |u_h - u_exact| over 64 Dirichlet nodes",
+          "value": 0.0,
+          "threshold": 1e-10
+        },
+        {
+          "name": "mesh_jacobian_positive",
+          "passed": true,
+          "code": "INVALID_MESH",
+          "detail": "min det J over quadrature points",
+          "value": 0.00390625,
+          "threshold": 0.0
+        },
+        {
+          "name": "independent_errors_finite",
+          "passed": true,
+          "code": "NON_FINITE_SOLUTION",
+          "detail": "L2=5.377435e-03, H1semi=2.175363e-01",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "self_report_l2",
+          "passed": true,
+          "code": "SELF_REPORT_MISMATCH",
+          "detail": "|verifier - solver| / verifier for l2 error (verifier 5.3774350099e-03, solver 5.3774349988e-03)",
+          "value": 2.0676652069796614e-09,
+          "threshold": 1e-06
+        },
+        {
+          "name": "self_report_h1_semi",
+          "passed": true,
+          "code": "SELF_REPORT_MISMATCH",
+          "detail": "|verifier - solver| / verifier for h1_semi error (verifier 2.1753633636e-01, solver 2.1753633636e-01)",
+          "value": 6.088109546401514e-12,
+          "threshold": 1e-06
+        },
+        {
+          "name": "reference_solve_agreement",
+          "passed": true,
+          "code": "REFERENCE_MISMATCH",
+          "detail": "max|u_mfem - u_ref| / max|u_ref| (independent scipy assembly + sparse direct solve)",
+          "value": 2.4570306439545616e-13,
+          "threshold": 1e-07
+        }
+      ],
+      "ok": true
+    },
+    {
+      "n": 32,
+      "level_dir": "runs/20261120T155140827686Z_poisson_sin_sin_p1_tri/attempts/attempt_01/levels/n0032",
+      "l2_error": 0.0013504362485498114,
+      "h1_semi_error": 0.10897542351886627,
+      "self_reported_l2_error": 0.0013504362483756757,
+      "self_reported_h1_semi_error": 0.10897542351922412,
+      "reference_rel_diff": 3.005566160590735e-14,
+      "num_dofs": 1089,
+      "solver_iterations": 40,
+      "injected_fault_label": "none",
+      "checks": [
+        {
+          "name": "solver_claims_match_spec",
+          "passed": true,
+          "code": "CLAIM_SPEC_MISMATCH",
+          "detail": "run parameters match frozen spec",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "solver_reported_convergence",
+          "passed": true,
+          "code": "SOLVER_NOT_CONVERGED",
+          "detail": "solver_converged=True (necessary, not sufficient)",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "finite_solution",
+          "passed": true,
+          "code": "NON_FINITE_SOLUTION",
+          "detail": "0 non-finite nodal values",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "dof_coordinate_consistency",
+          "passed": true,
+          "code": "MALFORMED_ARTIFACT",
+          "detail": "max coordinate disagreement of a global dof across elements",
+          "value": 0.0,
+          "threshold": 1e-12
+        },
+        {
+          "name": "element_count",
+          "passed": true,
+          "code": "MESH_MISMATCH",
+          "detail": "2048 elements, expected 2048",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "boundary_attribute_coverage",
+          "passed": true,
+          "code": "BOUNDARY_COVERAGE",
+          "detail": "undeclared mesh attributes []; declared but absent []",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "boundary_label_geometry",
+          "passed": true,
+          "code": "BOUNDARY_LABEL_MISMATCH",
+          "detail": "attributes whose segments are not on their declared side: []",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "boundary_side_length",
+          "passed": true,
+          "code": "BOUNDARY_COVERAGE",
+          "detail": "max |declared side length - 1|",
+          "value": 0.0,
+          "threshold": 1e-10
+        },
+        {
+          "name": "dirichlet_nodal_values",
+          "passed": true,
+          "code": "DIRICHLET_VIOLATION",
+          "detail": "max |u_h - u_exact| over 128 Dirichlet nodes",
+          "value": 0.0,
+          "threshold": 1e-10
+        },
+        {
+          "name": "mesh_jacobian_positive",
+          "passed": true,
+          "code": "INVALID_MESH",
+          "detail": "min det J over quadrature points",
+          "value": 0.0009765625,
+          "threshold": 0.0
+        },
+        {
+          "name": "independent_errors_finite",
+          "passed": true,
+          "code": "NON_FINITE_SOLUTION",
+          "detail": "L2=1.350436e-03, H1semi=1.089754e-01",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "self_report_l2",
+          "passed": true,
+          "code": "SELF_REPORT_MISMATCH",
+          "detail": "|verifier - solver| / verifier for l2 error (verifier 1.3504362485e-03, solver 1.3504362484e-03)",
+          "value": 1.289477105445043e-10,
+          "threshold": 1e-06
+        },
+        {
+          "name": "self_report_h1_semi",
+          "passed": true,
+          "code": "SELF_REPORT_MISMATCH",
+          "detail": "|verifier - solver| / verifier for h1_semi error (verifier 1.0897542352e-01, solver 1.0897542352e-01)",
+          "value": 3.2837921143784376e-12,
+          "threshold": 1e-06
+        },
+        {
+          "name": "reference_solve_agreement",
+          "passed": true,
+          "code": "REFERENCE_MISMATCH",
+          "detail": "max|u_mfem - u_ref| / max|u_ref| (independent scipy assembly + sparse direct solve)",
+          "value": 3.005566160590735e-14,
+          "threshold": 1e-07
+        }
+      ],
+      "ok": true
+    },
+    {
+      "n": 64,
+      "level_dir": "runs/20261120T155140827686Z_poisson_sin_sin_p1_tri/attempts/attempt_01/levels/n0064",
+      "l2_error": 0.0003379923348378704,
+      "h1_semi_error": 0.054513704535820606,
+      "self_reported_l2_error": 0.0003379923348351297,
+      "self_reported_h1_semi_error": 0.0545137045359989,
+      "reference_rel_diff": 3.198084401279716e-14,
+      "num_dofs": 4225,
+      "solver_iterations": 74,
+      "injected_fault_label": "none",
+      "checks": [
+        {
+          "name": "solver_claims_match_spec",
+          "passed": true,
+          "code": "CLAIM_SPEC_MISMATCH",
+          "detail": "run parameters match frozen spec",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "solver_reported_convergence",
+          "passed": true,
+          "code": "SOLVER_NOT_CONVERGED",
+          "detail": "solver_converged=True (necessary, not sufficient)",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "finite_solution",
+          "passed": true,
+          "code": "NON_FINITE_SOLUTION",
+          "detail": "0 non-finite nodal values",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "dof_coordinate_consistency",
+          "passed": true,
+          "code": "MALFORMED_ARTIFACT",
+          "detail": "max coordinate disagreement of a global dof across elements",
+          "value": 0.0,
+          "threshold": 1e-12
+        },
+        {
+          "name": "element_count",
+          "passed": true,
+          "code": "MESH_MISMATCH",
+          "detail": "8192 elements, expected 8192",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "boundary_attribute_coverage",
+          "passed": true,
+          "code": "BOUNDARY_COVERAGE",
+          "detail": "undeclared mesh attributes []; declared but absent []",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "boundary_label_geometry",
+          "passed": true,
+          "code": "BOUNDARY_LABEL_MISMATCH",
+          "detail": "attributes whose segments are not on their declared side: []",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "boundary_side_length",
+          "passed": true,
+          "code": "BOUNDARY_COVERAGE",
+          "detail": "max |declared side length - 1|",
+          "value": 0.0,
+          "threshold": 1e-10
+        },
+        {
+          "name": "dirichlet_nodal_values",
+          "passed": true,
+          "code": "DIRICHLET_VIOLATION",
+          "detail": "max |u_h - u_exact| over 256 Dirichlet nodes",
+          "value": 0.0,
+          "threshold": 1e-10
+        },
+        {
+          "name": "mesh_jacobian_positive",
+          "passed": true,
+          "code": "INVALID_MESH",
+          "detail": "min det J over quadrature points",
+          "value": 0.000244140625,
+          "threshold": 0.0
+        },
+        {
+          "name": "independent_errors_finite",
+          "passed": true,
+          "code": "NON_FINITE_SOLUTION",
+          "detail": "L2=3.379923e-04, H1semi=5.451370e-02",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "name": "self_report_l2",
+          "passed": true,
+          "code": "SELF_REPORT_MISMATCH",
+          "detail": "|verifier - solver| / verifier for l2 error (verifier 3.3799233484e-04, solver 3.3799233484e-04)",
+          "value": 8.108765138215792e-12,
+          "threshold": 1e-06
+        },
+        {
+          "name": "self_report_h1_semi",
+          "passed": true,
+          "code": "SELF_REPORT_MISMATCH",
+          "detail": "|verifier - solver| / verifier for h1_semi error (verifier 5.4513704536e-02, solver 5.4513704536e-02)",
+          "value": 3.2706432332761352e-12,
+          "threshold": 1e-06
+        },
+        {
+          "name": "reference_solve_agreement",
+          "passed": true,
+          "code": "REFERENCE_MISMATCH",
+          "detail": "max|u_mfem - u_ref| / max|u_ref| (independent scipy assembly + sparse direct solve)",
+          "value": 3.198084401279716e-14,
+          "threshold": 1e-07
+        }
+      ],
+      "ok": true
+    }
+  ],
+  "convergence": {
+    "pairs": [
+      {
+        "n_coarse": 8,
+        "n_fine": 16,
+        "l2_order": 1.9744920288571275,
+        "h1_semi_order": 0.989101103836095
+      },
+      {
+        "n_coarse": 16,
+        "n_fine": 32,
+        "l2_order": 1.9934926491177394,
+        "h1_semi_order": 0.9972535922789107
+      },
+      {
+        "n_coarse": 32,
+        "n_fine": 64,
+        "l2_order": 1.9983631008284015,
+        "h1_semi_order": 0.999311941962252
+      }
+    ],
+    "expected_l2_order": 2,
+    "expected_h1_semi_order": 1
+  },
+  "shared_assumptions": [
+    "Solver and verifier read the same frozen ProblemSpec; an exact solution or source that is physically wrong but mutually consistent would pass (this is code verification, not model validation).",
+    "The independent reference solve uses the same standard Galerkin weak form; it checks the implementation of that discretization, not the choice of discretization.",
+    "Element vertex coordinates and dof node coordinates are taken from solver-exported artifacts; their consistency is checked but the mesh generator itself is MFEM's.",
+    "The local basis is assumed to be nodal (Lagrange) at the exported node points, which holds for MFEM's default H1 Gauss-Lobatto basis; any violation surfaces as a self-report mismatch."
+  ],
+  "input_sha256": {
+    "frozen/problem.json": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+    "frozen/validation.json": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+    "execution.json": "9f06b430a9e18281c110a6de777e46e3863b7129d0e029b8f0ba8df8e825d2e8",
+    "levels/n0008/result.json": "9c27329844e7ca9ec90adcdade54d5808085bb16bf3663229aadaf049a801e3b",
+    "levels/n0008/dof_values.txt": "9b9f9f4f95e49905fb962125059bc8d569978ba98c6edab8da7ba353b231389a",
+    "levels/n0008/element_dofs.txt": "1d9f8a30673d04d7e0a806a9bf6e973caa0c1a0cebd07fa9fe02f0a39235e8cb",
+    "levels/n0008/elements.txt": "520bffb7a00a1e4e4941f8525c0832e1242670d33ca6298a1a870e56fc7d7f3b",
+    "levels/n0008/boundary.txt": "d321a2abe200a8d47d089d91e800dd4659966bd431c06e88dccc04ce8f1ebc02",
+    "levels/n0016/result.json": "f559a035b19a50d320bf8ccfb2763e4ff0ec0638cb26cfee629f7d4b1a94fe89",
+    "levels/n0016/dof_values.txt": "db6273448e32cd8db434d4185b75dbf65c36210de32f433f6b3d03cda72c3484",
+    "levels/n0016/element_dofs.txt": "d06eff217e49ffea1a3c58fc45a9f1c375835be79e7281f8c8b959d4986d573e",
+    "levels/n0016/elements.txt": "0e9e5a10014403009050a3613653618c2c9274c49e20f9b375cf57f9271f8313",
+    "levels/n0016/boundary.txt": "8f8ab5446afbf16f68be7b1b7c88b11658290510593df39150e322e4d4e45536",
+    "levels/n0032/result.json": "c7d9f9ccf9fbdf81a4596136df706ac87074483f743b3f5d1f1b1707d0a49dfb",
+    "levels/n0032/dof_values.txt": "481b472959352028f96b25efcaf9aafd1b0930ab9f177881f4acdd6e47c828bc",
+    "levels/n0032/element_dofs.txt": "6774e65b01e9780f48d65cfdc99a5cb2512d86bd7e220f3b06d8a81224b6d343",
+    "levels/n0032/elements.txt": "1cd9029f306dd40ffd3481499f5e91f901c7ffafc75ef9c132615778c623d19f",
+    "levels/n0032/boundary.txt": "d75968b3acf101c60ccf5769a9b670de9e50bf948459ff2f868c168a0d03c6d2",
+    "levels/n0064/result.json": "7e87b4352d47607ec5d7b14da8516c39daab4e34b59f930b32459cc5c886868f",
+    "levels/n0064/dof_values.txt": "f9a123bb80942373a690f017a778c882cbfaf103a3938a1038ecb0dfb61dee3a",
+    "levels/n0064/element_dofs.txt": "7b9fc32eab967860a2eba7aad80cc35bc9a0ecda88272783b7b64a3061c74d42",
+    "levels/n0064/elements.txt": "7fca709d17443b7c30e47a7b2d4248afab6ee64a4f2dca791f78da72c4c761b9",
+    "levels/n0064/boundary.txt": "774b28f371fdffcb21feb7f31634f705357dfc925196b97a03c873ac68355386"
+  }
+}

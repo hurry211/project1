@@ -1,0 +1,24 @@
+# Rebuildable environments and generated outputs
+/third_party/
+/build/
+/runs/
+/runs_superseded/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+*.egg-info/
+.DS_Store
+*.swp
+*.swo
+# Binary products should not be committed to the source repository
+*.o
+*.a
+*.so
+*.so.*
+*.exe

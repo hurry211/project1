@@ -1,0 +1,2275 @@
+{
+  "archive_name": "mfem-scientific-agent.zip",
+  "archive_sha256": "a49ff283314fe2ad99bf8b50f35683d0b3395f481ce2d9029da29a290ad65d11",
+  "compressed_bytes": 25075592,
+  "archive_entries": 1801,
+  "file_entries": 1458,
+  "archive_groups": {
+    "runs_superseded": 220,
+    "specs": 31,
+    "pytest.ini": 1,
+    "README.md": 1,
+    "sciagent": 8,
+    "scripts": 6,
+    "tests": 7,
+    "cpp": 3,
+    "runs": 1173,
+    "docs": 4,
+    "verifier": 4
+  },
+  "note": "All original generated outputs and compiled binaries remain in the user-provided archive. The Git repository tracks code and curated results rather than duplicating its full bulky run history.",
+  "runs": {
+    "20261120T155139943452Z_poisson_cos_exp_mixed_p2_quad_pa": {
+      "final_state": "ACCEPTED",
+      "final_code": "OK",
+      "final_reason": "numerical (code) verification passed for this manufactured-solution benchmark",
+      "started_utc": "2026-11-20T15:51:39.943+00:00",
+      "finished_utc": "2026-11-20T15:51:40.450+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            4,
+            8,
+            16,
+            32
+          ],
+          "levels": [
+            {
+              "n": 4,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0081
+            },
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0083
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0181
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0658
+            }
+          ],
+          "verdict": "ACCEPTED",
+          "failure_codes": [],
+          "errors": [
+            {
+              "n": 4,
+              "l2": 0.0034863689922224788,
+              "h1_semi": 0.09058956641008134,
+              "reference_rel_diff": 4.33538393201552e-12
+            },
+            {
+              "n": 8,
+              "l2": 0.0004391907751724055,
+              "h1_semi": 0.02278467824376326,
+              "reference_rel_diff": 1.4580887663729327e-13
+            },
+            {
+              "n": 16,
+              "l2": 5.5007748335015866e-05,
+              "h1_semi": 0.005704779486829067,
+              "reference_rel_diff": 1.0231943914614765e-12
+            },
+            {
+              "n": 32,
+              "l2": 6.879398911136549e-06,
+              "h1_semi": 0.0014267334874089438,
+              "reference_rel_diff": 1.5866619718783106e-12
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 4,
+              "n_fine": 8,
+              "l2_order": 2.9888056130936844,
+              "h1_semi_order": 1.9912809009129369
+            },
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 2.9971409974750767,
+              "h1_semi_order": 1.997820970922551
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": 2.9992804297175346,
+              "h1_semi_order": 1.999455255714008
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "ec753e19175819bdd7a15ac268ea4418e45f104be2bb523a0f32fa0ab68d0087",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "cos_exp"
+    },
+    "20261120T155158921312Z_unsupported_backend_cuda": {
+      "final_state": "BLOCKED",
+      "final_code": "UNSUPPORTED_BACKEND",
+      "final_reason": "backend 'cuda' requires MFEM_USE_CUDA, which is not enabled in the probed MFEM build (presence of an mpirun/nvcc binary is not sufficient)",
+      "started_utc": "2026-11-20T15:51:58.921+00:00",
+      "finished_utc": "2026-11-20T15:51:59.050+00:00",
+      "attempts": [],
+      "frozen_sha256": {
+        "problem": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": null
+    },
+    "20261120T155153768822Z_missing_boundary": {
+      "final_state": "INVALID_SPEC",
+      "final_code": "INVALID_SPEC",
+      "final_reason": "1 schema error(s): Value error, boundary labels do not cover the unit square; missing ['left']",
+      "started_utc": "2026-11-20T15:51:53.769+00:00",
+      "finished_utc": "2026-11-20T15:51:53.769+00:00",
+      "attempts": [],
+      "frozen_sha256": null,
+      "bound_case": null
+    },
+    "20261120T155154559030Z_not_verified_order3": {
+      "final_state": "FAILED",
+      "final_code": "NOT_VERIFIED_COMBINATION",
+      "final_reason": "combination ('tri', 3, 'full', 'cg_gs') has not been exercised by the integration tests",
+      "started_utc": "2026-11-20T15:51:54.559+00:00",
+      "finished_utc": "2026-11-20T15:51:54.700+00:00",
+      "attempts": [],
+      "frozen_sha256": {
+        "problem": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": null
+    },
+    "20261120T155136678345Z_poisson_cos_exp_mixed_p1_quad": {
+      "final_state": "ACCEPTED",
+      "final_code": "OK",
+      "final_reason": "numerical (code) verification passed for this manufactured-solution benchmark",
+      "started_utc": "2026-11-20T15:51:36.678+00:00",
+      "finished_utc": "2026-11-20T15:51:37.433+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "levels": [
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0099
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0118
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0282
+            },
+            {
+              "n": 64,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.1081
+            }
+          ],
+          "verdict": "ACCEPTED",
+          "failure_codes": [],
+          "errors": [
+            {
+              "n": 8,
+              "l2": 0.01625565686986451,
+              "h1_semi": 0.4515778869183608,
+              "reference_rel_diff": 8.398918036888792e-13
+            },
+            {
+              "n": 16,
+              "l2": 0.0040695751629841225,
+              "h1_semi": 0.22609770761995712,
+              "reference_rel_diff": 1.9347245059687905e-13
+            },
+            {
+              "n": 32,
+              "l2": 0.0010177484588851857,
+              "h1_semi": 0.11308772872525673,
+              "reference_rel_diff": 6.619804684978289e-13
+            },
+            {
+              "n": 64,
+              "l2": 0.0002544593004117539,
+              "h1_semi": 0.05654873465073188,
+              "reference_rel_diff": 2.0439557170707816e-12
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 1.997991755085106,
+              "h1_semi_order": 0.9980284764251582
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": 1.9994971575369802,
+              "h1_semi_order": 0.9995039754522643
+            },
+            {
+              "n_coarse": 32,
+              "n_fine": 64,
+              "l2_order": 1.9998742094278121,
+              "h1_semi_order": 0.9998757418158167
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "fa783e7783dd8ca63f3481b8e9121704ce56b8ebb5bd3a925050ce5856687d08",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "cos_exp"
+    },
+    "20261120T155159978072Z_unsupported_bc_value": {
+      "final_state": "INVALID_SPEC",
+      "final_code": "INVALID_SPEC",
+      "final_reason": "1 schema error(s): Input should be 'from_exact_solution'",
+      "started_utc": "2026-11-20T15:51:59.978+00:00",
+      "finished_utc": "2026-11-20T15:51:59.979+00:00",
+      "attempts": [],
+      "frozen_sha256": null,
+      "bound_case": null
+    },
+    "20261120T155153431479Z_malicious_expression": {
+      "final_state": "INVALID_SPEC",
+      "final_code": "INVALID_EXPRESSION",
+      "final_reason": "mms_expressions_parse: only whitelisted functions may be called (value=None)",
+      "started_utc": "2026-11-20T15:51:53.431+00:00",
+      "finished_utc": "2026-11-20T15:51:53.432+00:00",
+      "attempts": [],
+      "frozen_sha256": null,
+      "bound_case": null
+    },
+    "20261120T155142045852Z_poisson_sin_sin_p1_tri_jacobi": {
+      "final_state": "ACCEPTED",
+      "final_code": "OK",
+      "final_reason": "numerical (code) verification passed for this manufactured-solution benchmark",
+      "started_utc": "2026-11-20T15:51:42.046+00:00",
+      "finished_utc": "2026-11-20T15:51:42.772+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "levels": [
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0096
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0101
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0246
+            },
+            {
+              "n": 64,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.1089
+            }
+          ],
+          "verdict": "ACCEPTED",
+          "failure_codes": [],
+          "errors": [
+            {
+              "n": 8,
+              "l2": 0.021132773446720942,
+              "h1_semi": 0.43179828300506834,
+              "reference_rel_diff": 6.204600964608394e-11
+            },
+            {
+              "n": 16,
+              "l2": 0.005377435009899993,
+              "h1_semi": 0.21753633635882105,
+              "reference_rel_diff": 2.4158202478410896e-13
+            },
+            {
+              "n": 32,
+              "l2": 0.0013504362485508468,
+              "h1_semi": 0.10897542351886627,
+              "reference_rel_diff": 2.322230416131104e-14
+            },
+            {
+              "n": 64,
+              "l2": 0.00033799233483797116,
+              "h1_semi": 0.054513704535820606,
+              "reference_rel_diff": 2.509607898226444e-14
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 1.9744920288568955,
+              "h1_semi_order": 0.989101103836095
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": 1.993492649116737,
+              "h1_semi_order": 0.9972535922789107
+            },
+            {
+              "n_coarse": 32,
+              "n_fine": 64,
+              "l2_order": 1.9983631008290774,
+              "h1_semi_order": 0.999311941962252
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "da6e622b56fb443cbcf90eab5d095345b1615b45c9c79bc112e3d375e5749ba7",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "sin_sin"
+    },
+    "20261120T155155100213Z_preasymptotic_strict_band": {
+      "final_state": "FAILED",
+      "final_code": "VALIDATION_FAILED",
+      "final_reason": "verifier codes ['CONVERGENCE_ORDER_OUT_OF_BAND', 'REFERENCE_MISMATCH', 'SELF_REPORT_MISMATCH']; solver exits []",
+      "started_utc": "2026-11-20T15:51:55.100+00:00",
+      "finished_utc": "2026-11-20T15:51:55.265+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            1,
+            2,
+            4
+          ],
+          "levels": [
+            {
+              "n": 1,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0062
+            },
+            {
+              "n": 2,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0048
+            },
+            {
+              "n": 4,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0048
+            }
+          ],
+          "verdict": "REJECTED",
+          "failure_codes": [
+            "CONVERGENCE_ORDER_OUT_OF_BAND",
+            "REFERENCE_MISMATCH",
+            "SELF_REPORT_MISMATCH"
+          ],
+          "errors": [
+            {
+              "n": 1,
+              "l2": 0.5000078948228536,
+              "h1_semi": 2.2214461682260347,
+              "reference_rel_diff": 0.0
+            },
+            {
+              "n": 2,
+              "l2": 0.24962411345406918,
+              "h1_semi": 1.502091182704052,
+              "reference_rel_diff": 4.2640019255392486e-06
+            },
+            {
+              "n": 4,
+              "l2": 0.07907545169460282,
+              "h1_semi": 0.8385483442149747,
+              "reference_rel_diff": 1.6078568663084783e-08
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 1,
+              "n_fine": 2,
+              "l2_order": 1.0021935704382254,
+              "h1_semi_order": 0.5645267886469099
+            },
+            {
+              "n_coarse": 2,
+              "n_fine": 4,
+              "l2_order": 1.6584555070749099,
+              "h1_semi_order": 0.8410065266975482
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+        "validation": "ea725694bbbccf219fbd314b4517f45e3a01a8cc64a579e6bbe58efc7115b553",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "sin_sin"
+    },
+    "20261120T155152036436Z_fault_wrong_source": {
+      "final_state": "FAILED",
+      "final_code": "VALIDATION_FAILED",
+      "final_reason": "verifier codes ['CONVERGENCE_ORDER_OUT_OF_BAND', 'NON_MONOTONE_CONVERGENCE', 'REFERENCE_MISMATCH']; solver exits []",
+      "started_utc": "2026-11-20T15:51:52.036+00:00",
+      "finished_utc": "2026-11-20T15:51:52.742+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "levels": [
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0076
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0092
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0213
+            },
+            {
+              "n": 64,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0596
+            }
+          ],
+          "verdict": "REJECTED",
+          "failure_codes": [
+            "CONVERGENCE_ORDER_OUT_OF_BAND",
+            "NON_MONOTONE_CONVERGENCE",
+            "REFERENCE_MISMATCH"
+          ],
+          "errors": [
+            {
+              "n": 8,
+              "l2": 0.01361269876770759,
+              "h1_semi": 0.473861435533699,
+              "reference_rel_diff": 0.0161067924998941
+            },
+            {
+              "n": 16,
+              "l2": 0.019107295340797303,
+              "h1_semi": 0.26990313579346326,
+              "reference_rel_diff": 0.01606151210791446
+            },
+            {
+              "n": 32,
+              "l2": 0.021541818655125708,
+              "h1_semi": 0.18653132660834992,
+              "reference_rel_diff": 0.016303453296131632
+            },
+            {
+              "n": 64,
+              "l2": 0.022185160601335213,
+              "h1_semi": 0.15897275061825697,
+              "reference_rel_diff": 0.016297755173443014
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": -0.48917046284992927,
+              "h1_semi_order": 0.8120235158375892
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": -0.17301647603024847,
+              "h1_semi_order": 0.533023797258045
+            },
+            {
+              "n_coarse": 32,
+              "n_fine": 64,
+              "l2_order": -0.04245494336993808,
+              "h1_semi_order": 0.23063844559802874
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "fa783e7783dd8ca63f3481b8e9121704ce56b8ebb5bd3a925050ce5856687d08",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "cos_exp"
+    },
+    "20261120T155200406916Z_unsupported_pa_with_gs": {
+      "final_state": "FAILED",
+      "final_code": "UNSUPPORTED_COMBINATION",
+      "final_reason": "Gauss-Seidel smoothing needs an assembled SparseMatrix; partial assembly provides only a matrix-free operator (use cg_jacobi with partial assembly)",
+      "started_utc": "2026-11-20T15:52:00.407+00:00",
+      "finished_utc": "2026-11-20T15:52:00.551+00:00",
+      "attempts": [],
+      "frozen_sha256": {
+        "problem": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": null
+    },
+    "20261120T155143161774Z_poisson_sin_sin_p2_tri": {
+      "final_state": "ACCEPTED",
+      "final_code": "OK",
+      "final_reason": "numerical (code) verification passed for this manufactured-solution benchmark",
+      "started_utc": "2026-11-20T15:51:43.162+00:00",
+      "finished_utc": "2026-11-20T15:51:43.607+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            4,
+            8,
+            16,
+            32
+          ],
+          "levels": [
+            {
+              "n": 4,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.007
+            },
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0073
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0145
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0472
+            }
+          ],
+          "verdict": "ACCEPTED",
+          "failure_codes": [],
+          "errors": [
+            {
+              "n": 4,
+              "l2": 0.0043276314450149365,
+              "h1_semi": 0.12938899946721436,
+              "reference_rel_diff": 1.7808572039452285e-10
+            },
+            {
+              "n": 8,
+              "l2": 0.0005480619012004881,
+              "h1_semi": 0.033386849197651974,
+              "reference_rel_diff": 1.7149027743486653e-13
+            },
+            {
+              "n": 16,
+              "l2": 6.87391604734525e-05,
+              "h1_semi": 0.008419135858366318,
+              "reference_rel_diff": 7.305162250096166e-14
+            },
+            {
+              "n": 32,
+              "l2": 8.600535267649542e-06,
+              "h1_semi": 0.002109524424377541,
+              "reference_rel_diff": 3.5083015915925704e-14
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 4,
+              "n_fine": 8,
+              "l2_order": 2.981166886244236,
+              "h1_semi_order": 1.9543631118323541
+            },
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 2.9951347115214575,
+              "h1_semi_order": 1.9875358814821165
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": 2.9986338757800053,
+              "h1_semi_order": 1.9967543710246327
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "f0825845ae0f0dd183791855386e4de0789fc37d4f9e94400fcd257421b14452",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "sin_sin"
+    },
+    "20261120T155139062995Z_poisson_cos_exp_mixed_p2_quad": {
+      "final_state": "ACCEPTED",
+      "final_code": "OK",
+      "final_reason": "numerical (code) verification passed for this manufactured-solution benchmark",
+      "started_utc": "2026-11-20T15:51:39.063+00:00",
+      "finished_utc": "2026-11-20T15:51:39.550+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            4,
+            8,
+            16,
+            32
+          ],
+          "levels": [
+            {
+              "n": 4,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0086
+            },
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0077
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0151
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0562
+            }
+          ],
+          "verdict": "ACCEPTED",
+          "failure_codes": [],
+          "errors": [
+            {
+              "n": 4,
+              "l2": 0.003486368992222488,
+              "h1_semi": 0.09058956641008145,
+              "reference_rel_diff": 4.3340769616927205e-12
+            },
+            {
+              "n": 8,
+              "l2": 0.0004391907751719809,
+              "h1_semi": 0.022784678243763182,
+              "reference_rel_diff": 3.411192542506088e-13
+            },
+            {
+              "n": 16,
+              "l2": 5.5007748334248034e-05,
+              "h1_semi": 0.005704779486829191,
+              "reference_rel_diff": 8.525530786909971e-13
+            },
+            {
+              "n": 32,
+              "l2": 6.879398911608559e-06,
+              "h1_semi": 0.0014267334874089887,
+              "reference_rel_diff": 2.421142101574349e-12
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 4,
+              "n_fine": 8,
+              "l2_order": 2.988805613095083,
+              "h1_semi_order": 1.9912809009129433
+            },
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 2.99714099749382,
+              "h1_semi_order": 1.9978209709225148
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": 2.99928042959841,
+              "h1_semi_order": 1.9994552557139937
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "5c06b3bdd882afa0e0949a7a9885d14ad7f94cceb6a812d90d0276c01fca3ff7",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "cos_exp"
+    },
+    "20261120T155154176578Z_non_doubling_levels": {
+      "final_state": "INVALID_SPEC",
+      "final_code": "INVALID_SPEC",
+      "final_reason": "1 schema error(s): Value error, mesh_levels must be successive doublings (h, h/2, ...)",
+      "started_utc": "2026-11-20T15:51:54.176+00:00",
+      "finished_utc": "2026-11-20T15:51:54.177+00:00",
+      "attempts": [],
+      "frozen_sha256": null,
+      "bound_case": null
+    },
+    "20261120T155157553882Z_unassigned_mesh_attribute": {
+      "final_state": "FAILED",
+      "final_code": "VALIDATION_FAILED",
+      "final_reason": "verifier codes ['MISSING_ARTIFACT']; solver exits ['BOUNDARY_COVERAGE']",
+      "started_utc": "2026-11-20T15:51:57.554+00:00",
+      "finished_utc": "2026-11-20T15:51:57.686+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "levels": [
+            {
+              "n": 8,
+              "exit_code": 3,
+              "exit_meaning": "BOUNDARY_COVERAGE",
+              "wall_seconds": 0.006
+            }
+          ],
+          "verdict": "REJECTED",
+          "failure_codes": [
+            "MISSING_ARTIFACT"
+          ],
+          "errors": [
+            {
+              "n": 8,
+              "l2": null,
+              "h1_semi": null,
+              "reference_rel_diff": null
+            },
+            {
+              "n": 16,
+              "l2": null,
+              "h1_semi": null,
+              "reference_rel_diff": null
+            },
+            {
+              "n": 32,
+              "l2": null,
+              "h1_semi": null,
+              "reference_rel_diff": null
+            },
+            {
+              "n": 64,
+              "l2": null,
+              "h1_semi": null,
+              "reference_rel_diff": null
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": null,
+              "h1_semi_order": null
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": null,
+              "h1_semi_order": null
+            },
+            {
+              "n_coarse": 32,
+              "n_fine": 64,
+              "l2_order": null,
+              "h1_semi_order": null
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "e8fa3e753aa92638faa6be12fec3829fc15cbd1317d4d5108cdc76c424150a9c",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "sin_sin"
+    },
+    "20261120T155150244828Z_fault_nan_value": {
+      "final_state": "FAILED",
+      "final_code": "VALIDATION_FAILED",
+      "final_reason": "verifier codes ['NON_FINITE_SOLUTION']; solver exits ['NON_FINITE_SOLUTION']",
+      "started_utc": "2026-11-20T15:51:50.245+00:00",
+      "finished_utc": "2026-11-20T15:51:50.554+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "levels": [
+            {
+              "n": 8,
+              "exit_code": 6,
+              "exit_meaning": "NON_FINITE_SOLUTION",
+              "wall_seconds": 0.0101
+            },
+            {
+              "n": 16,
+              "exit_code": 6,
+              "exit_meaning": "NON_FINITE_SOLUTION",
+              "wall_seconds": 0.0076
+            },
+            {
+              "n": 32,
+              "exit_code": 6,
+              "exit_meaning": "NON_FINITE_SOLUTION",
+              "wall_seconds": 0.0197
+            },
+            {
+              "n": 64,
+              "exit_code": 6,
+              "exit_meaning": "NON_FINITE_SOLUTION",
+              "wall_seconds": 0.0639
+            }
+          ],
+          "verdict": "REJECTED",
+          "failure_codes": [
+            "NON_FINITE_SOLUTION"
+          ],
+          "errors": [
+            {
+              "n": 8,
+              "l2": null,
+              "h1_semi": null,
+              "reference_rel_diff": null
+            },
+            {
+              "n": 16,
+              "l2": null,
+              "h1_semi": null,
+              "reference_rel_diff": null
+            },
+            {
+              "n": 32,
+              "l2": null,
+              "h1_semi": null,
+              "reference_rel_diff": null
+            },
+            {
+              "n": 64,
+              "l2": null,
+              "h1_semi": null,
+              "reference_rel_diff": null
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": null,
+              "h1_semi_order": null
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": null,
+              "h1_semi_order": null
+            },
+            {
+              "n_coarse": 32,
+              "n_fine": 64,
+              "l2_order": null,
+              "h1_semi_order": null
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "sin_sin"
+    },
+    "20261120T155144030514Z_retry_demo_sin_sin_p1_tri": {
+      "final_state": "ACCEPTED",
+      "final_code": "OK",
+      "final_reason": "numerical (code) verification passed for this manufactured-solution benchmark",
+      "started_utc": "2026-11-20T15:51:44.030+00:00",
+      "finished_utc": "2026-11-20T15:51:47.279+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            4,
+            8,
+            16
+          ],
+          "levels": [
+            {
+              "n": 4,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0084
+            },
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0086
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0159
+            }
+          ],
+          "verdict": "RETRY_ELIGIBLE",
+          "failure_codes": [
+            "ACCURACY_NOT_MET"
+          ],
+          "errors": [
+            {
+              "n": 4,
+              "l2": 0.07907545169460282,
+              "h1_semi": 0.8385483442149747,
+              "reference_rel_diff": 1.6078568663084783e-08
+            },
+            {
+              "n": 8,
+              "l2": 0.021132773446722816,
+              "h1_semi": 0.43179828300506834,
+              "reference_rel_diff": 6.211078452230355e-11
+            },
+            {
+              "n": 16,
+              "l2": 0.005377435009899606,
+              "h1_semi": 0.21753633635882105,
+              "reference_rel_diff": 2.4570306439545616e-13
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 4,
+              "n_fine": 8,
+              "l2_order": 1.903747773990449,
+              "h1_semi_order": 0.9575364541651613
+            },
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 1.9744920288571275,
+              "h1_semi_order": 0.989101103836095
+            }
+          ]
+        },
+        {
+          "attempt": 2,
+          "mesh_levels": [
+            4,
+            8,
+            16,
+            32
+          ],
+          "levels": [
+            {
+              "n": 4,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0074
+            },
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0085
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0122
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0289
+            }
+          ],
+          "verdict": "RETRY_ELIGIBLE",
+          "failure_codes": [
+            "ACCURACY_NOT_MET"
+          ],
+          "errors": [
+            {
+              "n": 4,
+              "l2": 0.07907545169460282,
+              "h1_semi": 0.8385483442149747,
+              "reference_rel_diff": 1.6078568663084783e-08
+            },
+            {
+              "n": 8,
+              "l2": 0.021132773446722816,
+              "h1_semi": 0.43179828300506834,
+              "reference_rel_diff": 6.211078452230355e-11
+            },
+            {
+              "n": 16,
+              "l2": 0.005377435009899606,
+              "h1_semi": 0.21753633635882105,
+              "reference_rel_diff": 2.4570306439545616e-13
+            },
+            {
+              "n": 32,
+              "l2": 0.0013504362485498114,
+              "h1_semi": 0.10897542351886627,
+              "reference_rel_diff": 3.005566160590735e-14
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 4,
+              "n_fine": 8,
+              "l2_order": 1.903747773990449,
+              "h1_semi_order": 0.9575364541651613
+            },
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 1.9744920288571275,
+              "h1_semi_order": 0.989101103836095
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": 1.9934926491177394,
+              "h1_semi_order": 0.9972535922789107
+            }
+          ]
+        },
+        {
+          "attempt": 3,
+          "mesh_levels": [
+            4,
+            8,
+            16,
+            32,
+            64
+          ],
+          "levels": [
+            {
+              "n": 4,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0068
+            },
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0064
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0095
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0252
+            },
+            {
+              "n": 64,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.1251
+            }
+          ],
+          "verdict": "RETRY_ELIGIBLE",
+          "failure_codes": [
+            "ACCURACY_NOT_MET"
+          ],
+          "errors": [
+            {
+              "n": 4,
+              "l2": 0.07907545169460282,
+              "h1_semi": 0.8385483442149747,
+              "reference_rel_diff": 1.6078568663084783e-08
+            },
+            {
+              "n": 8,
+              "l2": 0.021132773446722816,
+              "h1_semi": 0.43179828300506834,
+              "reference_rel_diff": 6.211078452230355e-11
+            },
+            {
+              "n": 16,
+              "l2": 0.005377435009899606,
+              "h1_semi": 0.21753633635882105,
+              "reference_rel_diff": 2.4570306439545616e-13
+            },
+            {
+              "n": 32,
+              "l2": 0.0013504362485498114,
+              "h1_semi": 0.10897542351886627,
+              "reference_rel_diff": 3.005566160590735e-14
+            },
+            {
+              "n": 64,
+              "l2": 0.0003379923348378704,
+              "h1_semi": 0.054513704535820606,
+              "reference_rel_diff": 3.198084401279716e-14
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 4,
+              "n_fine": 8,
+              "l2_order": 1.903747773990449,
+              "h1_semi_order": 0.9575364541651613
+            },
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 1.9744920288571275,
+              "h1_semi_order": 0.989101103836095
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": 1.9934926491177394,
+              "h1_semi_order": 0.9972535922789107
+            },
+            {
+              "n_coarse": 32,
+              "n_fine": 64,
+              "l2_order": 1.9983631008284015,
+              "h1_semi_order": 0.999311941962252
+            }
+          ]
+        },
+        {
+          "attempt": 4,
+          "mesh_levels": [
+            4,
+            8,
+            16,
+            32,
+            64,
+            128
+          ],
+          "levels": [
+            {
+              "n": 4,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0086
+            },
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0084
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0113
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0303
+            },
+            {
+              "n": 64,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.1115
+            },
+            {
+              "n": 128,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.4547
+            }
+          ],
+          "verdict": "ACCEPTED",
+          "failure_codes": [],
+          "errors": [
+            {
+              "n": 4,
+              "l2": 0.07907545169460282,
+              "h1_semi": 0.8385483442149747,
+              "reference_rel_diff": 1.6078568663084783e-08
+            },
+            {
+              "n": 8,
+              "l2": 0.021132773446722816,
+              "h1_semi": 0.43179828300506834,
+              "reference_rel_diff": 6.211078452230355e-11
+            },
+            {
+              "n": 16,
+              "l2": 0.005377435009899606,
+              "h1_semi": 0.21753633635882105,
+              "reference_rel_diff": 2.4570306439545616e-13
+            },
+            {
+              "n": 32,
+              "l2": 0.0013504362485498114,
+              "h1_semi": 0.10897542351886627,
+              "reference_rel_diff": 3.005566160590735e-14
+            },
+            {
+              "n": 64,
+              "l2": 0.0003379923348378704,
+              "h1_semi": 0.054513704535820606,
+              "reference_rel_diff": 3.198084401279716e-14
+            },
+            {
+              "n": 128,
+              "l2": 8.45220980693411e-05,
+              "h1_semi": 0.027260104093899548,
+              "reference_rel_diff": 7.805259670696805e-14
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 4,
+              "n_fine": 8,
+              "l2_order": 1.903747773990449,
+              "h1_semi_order": 0.9575364541651613
+            },
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 1.9744920288571275,
+              "h1_semi_order": 0.989101103836095
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": 1.9934926491177394,
+              "h1_semi_order": 0.9972535922789107
+            },
+            {
+              "n_coarse": 32,
+              "n_fine": 64,
+              "l2_order": 1.9983631008284015,
+              "h1_semi_order": 0.999311941962252
+            },
+            {
+              "n_coarse": 64,
+              "n_fine": 128,
+              "l2_order": 1.9995900442447982,
+              "h1_semi_order": 0.999827892327556
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "43b26b5cec4cff355c4b4a8437dd86949a1b7c439f906ca2879b9eabfd4441d2",
+        "validation": "4ccf408a0c1260632fff37c9e5cf828ffaf34f70345a22ea67252e977907ca71",
+        "policy": "c44ac770a9ad9d2b979bda80ffe8612816fcbdbbdcf3e38da506b8cc161cf358"
+      },
+      "bound_case": "sin_sin"
+    },
+    "20261120T155155707632Z_strict_band_resolved": {
+      "final_state": "FAILED",
+      "final_code": "VALIDATION_FAILED",
+      "final_reason": "verifier codes ['CONVERGENCE_ORDER_OUT_OF_BAND']; solver exits []",
+      "started_utc": "2026-11-20T15:51:55.707+00:00",
+      "finished_utc": "2026-11-20T15:51:55.910+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            4,
+            8,
+            16
+          ],
+          "levels": [
+            {
+              "n": 4,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0068
+            },
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0068
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0117
+            }
+          ],
+          "verdict": "REJECTED",
+          "failure_codes": [
+            "CONVERGENCE_ORDER_OUT_OF_BAND"
+          ],
+          "errors": [
+            {
+              "n": 4,
+              "l2": 0.07907545169460282,
+              "h1_semi": 0.8385483442149747,
+              "reference_rel_diff": 1.6078568663084783e-08
+            },
+            {
+              "n": 8,
+              "l2": 0.021132773446722816,
+              "h1_semi": 0.43179828300506834,
+              "reference_rel_diff": 6.211078452230355e-11
+            },
+            {
+              "n": 16,
+              "l2": 0.005377435009899606,
+              "h1_semi": 0.21753633635882105,
+              "reference_rel_diff": 2.4570306439545616e-13
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 4,
+              "n_fine": 8,
+              "l2_order": 1.903747773990449,
+              "h1_semi_order": 0.9575364541651613
+            },
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 1.9744920288571275,
+              "h1_semi_order": 0.989101103836095
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+        "validation": "d707859f0c82b6b1a3d7e24789e11319919ed5510fe767d82e86528662e47fb7",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "sin_sin"
+    },
+    "20261120T155140827686Z_poisson_sin_sin_p1_tri": {
+      "final_state": "ACCEPTED",
+      "final_code": "OK",
+      "final_reason": "numerical (code) verification passed for this manufactured-solution benchmark",
+      "started_utc": "2026-11-20T15:51:40.828+00:00",
+      "finished_utc": "2026-11-20T15:51:41.606+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "levels": [
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0102
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0121
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0305
+            },
+            {
+              "n": 64,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.1144
+            }
+          ],
+          "verdict": "ACCEPTED",
+          "failure_codes": [],
+          "errors": [
+            {
+              "n": 8,
+              "l2": 0.021132773446722816,
+              "h1_semi": 0.43179828300506834,
+              "reference_rel_diff": 6.211078452230355e-11
+            },
+            {
+              "n": 16,
+              "l2": 0.005377435009899606,
+              "h1_semi": 0.21753633635882105,
+              "reference_rel_diff": 2.4570306439545616e-13
+            },
+            {
+              "n": 32,
+              "l2": 0.0013504362485498114,
+              "h1_semi": 0.10897542351886627,
+              "reference_rel_diff": 3.005566160590735e-14
+            },
+            {
+              "n": 64,
+              "l2": 0.0003379923348378704,
+              "h1_semi": 0.054513704535820606,
+              "reference_rel_diff": 3.198084401279716e-14
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 1.9744920288571275,
+              "h1_semi_order": 0.989101103836095
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": 1.9934926491177394,
+              "h1_semi_order": 0.9972535922789107
+            },
+            {
+              "n_coarse": 32,
+              "n_fine": 64,
+              "l2_order": 1.9983631008284015,
+              "h1_semi_order": 0.999311941962252
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "sin_sin"
+    },
+    "20261120T155148156171Z_fault_drop_dirichlet_attr": {
+      "final_state": "FAILED",
+      "final_code": "VALIDATION_FAILED",
+      "final_reason": "verifier codes ['CONVERGENCE_ORDER_OUT_OF_BAND', 'DIRICHLET_VIOLATION', 'NON_MONOTONE_CONVERGENCE', 'REFERENCE_MISMATCH']; solver exits []",
+      "started_utc": "2026-11-20T15:51:48.156+00:00",
+      "finished_utc": "2026-11-20T15:51:48.862+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "levels": [
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.011
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.014
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0415
+            },
+            {
+              "n": 64,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.1206
+            }
+          ],
+          "verdict": "REJECTED",
+          "failure_codes": [
+            "CONVERGENCE_ORDER_OUT_OF_BAND",
+            "DIRICHLET_VIOLATION",
+            "NON_MONOTONE_CONVERGENCE",
+            "REFERENCE_MISMATCH"
+          ],
+          "errors": [
+            {
+              "n": 8,
+              "l2": 0.26926639615497905,
+              "h1_semi": 1.3006025600710187,
+              "reference_rel_diff": 1.008873106978608
+            },
+            {
+              "n": 16,
+              "l2": 0.2759094122313063,
+              "h1_semi": 1.2637735975943396,
+              "reference_rel_diff": 0.9994042038045603
+            },
+            {
+              "n": 32,
+              "l2": 0.27765538570940573,
+              "h1_semi": 1.2542008413187224,
+              "reference_rel_diff": 0.9970539027264822
+            },
+            {
+              "n": 64,
+              "l2": 0.2780972947459998,
+              "h1_semi": 1.2517836969954905,
+              "reference_rel_diff": 0.9964674563278232
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": -0.03516047693136571,
+              "h1_semi_order": 0.04144213780173225
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": -0.009100707416888495,
+              "h1_semi_order": 0.010969638396941865
+            },
+            {
+              "n_coarse": 32,
+              "n_fine": 64,
+              "l2_order": -0.002294330310604071,
+              "h1_semi_order": 0.002783100339502131
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "sin_sin"
+    },
+    "20261120T155158065044Z_unbound_case": {
+      "final_state": "FAILED",
+      "final_code": "UNSUPPORTED_PROBLEM",
+      "final_reason": "no compiled manufactured case matches the ProblemSpec expressions exactly",
+      "started_utc": "2026-11-20T15:51:58.065+00:00",
+      "finished_utc": "2026-11-20T15:51:58.216+00:00",
+      "attempts": [],
+      "frozen_sha256": {
+        "problem": "27c4e5f3fb4055c63889386f81070df8b8bca599566d76b1db48db72b6480f71",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": null
+    },
+    "20261120T155137876054Z_poisson_cos_exp_mixed_p1_quad_pa": {
+      "final_state": "ACCEPTED",
+      "final_code": "OK",
+      "final_reason": "numerical (code) verification passed for this manufactured-solution benchmark",
+      "started_utc": "2026-11-20T15:51:37.876+00:00",
+      "finished_utc": "2026-11-20T15:51:38.651+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "levels": [
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0082
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0107
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0267
+            },
+            {
+              "n": 64,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.1116
+            }
+          ],
+          "verdict": "ACCEPTED",
+          "failure_codes": [],
+          "errors": [
+            {
+              "n": 8,
+              "l2": 0.016255656869859914,
+              "h1_semi": 0.4515778869183608,
+              "reference_rel_diff": 7.067442020537038e-13
+            },
+            {
+              "n": 16,
+              "l2": 0.004069575162985092,
+              "h1_semi": 0.22609770761995712,
+              "reference_rel_diff": 1.627178051885088e-13
+            },
+            {
+              "n": 32,
+              "l2": 0.001017748458885945,
+              "h1_semi": 0.11308772872525674,
+              "reference_rel_diff": 7.200589622172213e-13
+            },
+            {
+              "n": 64,
+              "l2": 0.00025445930040651386,
+              "h1_semi": 0.05654873465073188,
+              "reference_rel_diff": 1.1984101003617532e-12
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 1.9979917550843547,
+              "h1_semi_order": 0.9980284764251582
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": 1.9994971575362472,
+              "h1_semi_order": 0.9995039754522641
+            },
+            {
+              "n_coarse": 32,
+              "n_fine": 64,
+              "l2_order": 1.9998742094585977,
+              "h1_semi_order": 0.9998757418158168
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "64a776b75d9302addc150d57c30da62661891cfc470c27ae5a907d3ea1f26925",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "cos_exp"
+    },
+    "20261120T155156387621Z_swapped_boundary_labels": {
+      "final_state": "FAILED",
+      "final_code": "VALIDATION_FAILED",
+      "final_reason": "verifier codes ['BOUNDARY_COVERAGE', 'BOUNDARY_LABEL_MISMATCH', 'DIRICHLET_VIOLATION', 'REFERENCE_MISMATCH']; solver exits []",
+      "started_utc": "2026-11-20T15:51:56.387+00:00",
+      "finished_utc": "2026-11-20T15:51:57.144+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "levels": [
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0096
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0104
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0216
+            },
+            {
+              "n": 64,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0662
+            }
+          ],
+          "verdict": "REJECTED",
+          "failure_codes": [
+            "BOUNDARY_COVERAGE",
+            "BOUNDARY_LABEL_MISMATCH",
+            "DIRICHLET_VIOLATION",
+            "REFERENCE_MISMATCH"
+          ],
+          "errors": [
+            {
+              "n": 8,
+              "l2": 0.016758101033768392,
+              "h1_semi": 0.4516000147721341,
+              "reference_rel_diff": 0.1260173219391578
+            },
+            {
+              "n": 16,
+              "l2": 0.004203468499944545,
+              "h1_semi": 0.2261008592055454,
+              "reference_rel_diff": 0.13400194538882967
+            },
+            {
+              "n": 32,
+              "l2": 0.0010517474107389275,
+              "h1_semi": 0.11308813868428633,
+              "reference_rel_diff": 0.13421819230791807
+            },
+            {
+              "n": 64,
+              "l2": 0.00026299202469624893,
+              "h1_semi": 0.05654878651885717,
+              "reference_rel_diff": 0.13427627800546182
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 1.995206510464672,
+              "h1_semi_order": 0.9980790588192399
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": 1.9987919954487718,
+              "h1_semi_order": 0.9995188551354816
+            },
+            {
+              "n_coarse": 32,
+              "n_fine": 64,
+              "l2_order": 1.9996973112102159,
+              "h1_semi_order": 0.9998796484993782
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "85f0768d85eb76e6afb22b294b3c0c2400157483aadf5e603d8bf0cb23bcba57",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "cos_exp"
+    },
+    "20261120T155149205353Z_fault_early_stop_lie": {
+      "final_state": "FAILED",
+      "final_code": "VALIDATION_FAILED",
+      "final_reason": "verifier codes ['CONVERGENCE_ORDER_OUT_OF_BAND', 'REFERENCE_MISMATCH']; solver exits []",
+      "started_utc": "2026-11-20T15:51:49.205+00:00",
+      "finished_utc": "2026-11-20T15:51:49.848+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "levels": [
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0081
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.01
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0236
+            },
+            {
+              "n": 64,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0877
+            }
+          ],
+          "verdict": "REJECTED",
+          "failure_codes": [
+            "CONVERGENCE_ORDER_OUT_OF_BAND",
+            "REFERENCE_MISMATCH"
+          ],
+          "errors": [
+            {
+              "n": 8,
+              "l2": 0.021133481043697996,
+              "h1_semi": 0.4318636649358396,
+              "reference_rel_diff": 0.002816094933260353
+            },
+            {
+              "n": 16,
+              "l2": 0.006167527757759871,
+              "h1_semi": 0.21859700287346487,
+              "reference_rel_diff": 0.007384798934194831
+            },
+            {
+              "n": 32,
+              "l2": 0.0023674227664062693,
+              "h1_semi": 0.11030438098223723,
+              "reference_rel_diff": 0.004225022270485871
+            },
+            {
+              "n": 64,
+              "l2": 0.0007457344634054252,
+              "h1_semi": 0.0551777892751726,
+              "reference_rel_diff": 0.0013618426046539817
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 1.7767662145632277,
+              "h1_semi_order": 0.9823023190566645
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": 1.3813749428628057,
+              "h1_semi_order": 0.9867835288409285
+            },
+            {
+              "n_coarse": 32,
+              "n_fine": 64,
+              "l2_order": 1.6665834397638712,
+              "h1_semi_order": 0.9993305312019742
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "sin_sin"
+    },
+    "20261120T155147782554Z_duplicate_attribute": {
+      "final_state": "INVALID_SPEC",
+      "final_code": "INVALID_SPEC",
+      "final_reason": "1 schema error(s): Value error, duplicate boundary attribute in ProblemSpec",
+      "started_utc": "2026-11-20T15:51:47.783+00:00",
+      "finished_utc": "2026-11-20T15:51:47.783+00:00",
+      "attempts": [],
+      "frozen_sha256": null,
+      "bound_case": null
+    },
+    "20261120T155150920930Z_fault_self_report_lie": {
+      "final_state": "FAILED",
+      "final_code": "VALIDATION_FAILED",
+      "final_reason": "verifier codes ['SELF_REPORT_MISMATCH']; solver exits []",
+      "started_utc": "2026-11-20T15:51:50.921+00:00",
+      "finished_utc": "2026-11-20T15:51:51.593+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "levels": [
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0083
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0115
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0304
+            },
+            {
+              "n": 64,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.106
+            }
+          ],
+          "verdict": "REJECTED",
+          "failure_codes": [
+            "SELF_REPORT_MISMATCH"
+          ],
+          "errors": [
+            {
+              "n": 8,
+              "l2": 0.021132773446722816,
+              "h1_semi": 0.43179828300506834,
+              "reference_rel_diff": 6.211078452230355e-11
+            },
+            {
+              "n": 16,
+              "l2": 0.005377435009899606,
+              "h1_semi": 0.21753633635882105,
+              "reference_rel_diff": 2.4570306439545616e-13
+            },
+            {
+              "n": 32,
+              "l2": 0.0013504362485498114,
+              "h1_semi": 0.10897542351886627,
+              "reference_rel_diff": 3.005566160590735e-14
+            },
+            {
+              "n": 64,
+              "l2": 0.0003379923348378704,
+              "h1_semi": 0.054513704535820606,
+              "reference_rel_diff": 3.198084401279716e-14
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 1.9744920288571275,
+              "h1_semi_order": 0.989101103836095
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": 1.9934926491177394,
+              "h1_semi_order": 0.9972535922789107
+            },
+            {
+              "n_coarse": 32,
+              "n_fine": 64,
+              "l2_order": 1.9983631008284015,
+              "h1_semi_order": 0.999311941962252
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": "sin_sin"
+    },
+    "20261120T155159381213Z_unsupported_backend_mpi": {
+      "final_state": "BLOCKED",
+      "final_code": "UNSUPPORTED_BACKEND",
+      "final_reason": "backend 'mpi_cpu' requires MFEM_USE_MPI, which is not enabled in the probed MFEM build (presence of an mpirun/nvcc binary is not sufficient)",
+      "started_utc": "2026-11-20T15:51:59.381+00:00",
+      "finished_utc": "2026-11-20T15:51:59.539+00:00",
+      "attempts": [],
+      "frozen_sha256": {
+        "problem": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": null
+    },
+    "20261120T155135958265Z_budget_demo_sin_sin_p1_tri": {
+      "final_state": "BUDGET_EXHAUSTED",
+      "final_code": "BUDGET_EXHAUSTED",
+      "final_reason": "accuracy target not met after 2 attempt(s) (max_attempts=2)",
+      "started_utc": "2026-11-20T15:51:35.958+00:00",
+      "finished_utc": "2026-11-20T15:51:36.311+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "mesh_levels": [
+            4,
+            8,
+            16
+          ],
+          "levels": [
+            {
+              "n": 4,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0059
+            },
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0055
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0091
+            }
+          ],
+          "verdict": "RETRY_ELIGIBLE",
+          "failure_codes": [
+            "ACCURACY_NOT_MET"
+          ],
+          "errors": [
+            {
+              "n": 4,
+              "l2": 0.07907545169460282,
+              "h1_semi": 0.8385483442149747,
+              "reference_rel_diff": 1.6078568663084783e-08
+            },
+            {
+              "n": 8,
+              "l2": 0.021132773446722816,
+              "h1_semi": 0.43179828300506834,
+              "reference_rel_diff": 6.211078452230355e-11
+            },
+            {
+              "n": 16,
+              "l2": 0.005377435009899606,
+              "h1_semi": 0.21753633635882105,
+              "reference_rel_diff": 2.4570306439545616e-13
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 4,
+              "n_fine": 8,
+              "l2_order": 1.903747773990449,
+              "h1_semi_order": 0.9575364541651613
+            },
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 1.9744920288571275,
+              "h1_semi_order": 0.989101103836095
+            }
+          ]
+        },
+        {
+          "attempt": 2,
+          "mesh_levels": [
+            4,
+            8,
+            16,
+            32
+          ],
+          "levels": [
+            {
+              "n": 4,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0053
+            },
+            {
+              "n": 8,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.006
+            },
+            {
+              "n": 16,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.0099
+            },
+            {
+              "n": 32,
+              "exit_code": 0,
+              "exit_meaning": "OK",
+              "wall_seconds": 0.024
+            }
+          ],
+          "verdict": "RETRY_ELIGIBLE",
+          "failure_codes": [
+            "ACCURACY_NOT_MET"
+          ],
+          "errors": [
+            {
+              "n": 4,
+              "l2": 0.07907545169460282,
+              "h1_semi": 0.8385483442149747,
+              "reference_rel_diff": 1.6078568663084783e-08
+            },
+            {
+              "n": 8,
+              "l2": 0.021132773446722816,
+              "h1_semi": 0.43179828300506834,
+              "reference_rel_diff": 6.211078452230355e-11
+            },
+            {
+              "n": 16,
+              "l2": 0.005377435009899606,
+              "h1_semi": 0.21753633635882105,
+              "reference_rel_diff": 2.4570306439545616e-13
+            },
+            {
+              "n": 32,
+              "l2": 0.0013504362485498114,
+              "h1_semi": 0.10897542351886627,
+              "reference_rel_diff": 3.005566160590735e-14
+            }
+          ],
+          "orders": [
+            {
+              "n_coarse": 4,
+              "n_fine": 8,
+              "l2_order": 1.903747773990449,
+              "h1_semi_order": 0.9575364541651613
+            },
+            {
+              "n_coarse": 8,
+              "n_fine": 16,
+              "l2_order": 1.9744920288571275,
+              "h1_semi_order": 0.989101103836095
+            },
+            {
+              "n_coarse": 16,
+              "n_fine": 32,
+              "l2_order": 1.9934926491177394,
+              "h1_semi_order": 0.9972535922789107
+            }
+          ]
+        }
+      ],
+      "frozen_sha256": {
+        "problem": "4fe9ce11c79f9d20b672e35cd8777e8f40802e82dc76055488d793b76b0a5d2e",
+        "validation": "652a86fc83732d26a37b9728203950e7cf87fdc9a12dd7dfdb147f982b50a920",
+        "policy": "0fe7ce90d8b36bc3f127e6ab2826024410dcf6a02ebc7176e0302d566b69e3df"
+      },
+      "bound_case": "sin_sin"
+    },
+    "20261120T155200975722Z_unsupported_solver_umfpack": {
+      "final_state": "FAILED",
+      "final_code": "UNSUPPORTED_SOLVER",
+      "final_reason": "solver 'umfpack' requires MFEM_USE_SUITESPARSE (enabled=False) and has no adapter in poisson_mms",
+      "started_utc": "2026-11-20T15:52:00.976+00:00",
+      "finished_utc": "2026-11-20T15:52:01.133+00:00",
+      "attempts": [],
+      "frozen_sha256": {
+        "problem": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+        "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+        "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+      },
+      "bound_case": null
+    },
+    "20261120T155158565311Z_unknown_field": {
+      "final_state": "INVALID_SPEC",
+      "final_code": "INVALID_SPEC",
+      "final_reason": "1 schema error(s): Extra inputs are not permitted",
+      "started_utc": "2026-11-20T15:51:58.565+00:00",
+      "finished_utc": "2026-11-20T15:51:58.565+00:00",
+      "attempts": [],
+      "frozen_sha256": null,
+      "bound_case": null
+    },
+    "20261120T155153118500Z_inconsistent_mms_source": {
+      "final_state": "INVALID_SPEC",
+      "final_code": "MMS_INCONSISTENT",
+      "final_reason": "mms_consistency: max |(-lap u_exact) - f| / (1+|f|) at 256 fixed random interior points (4th-order finite differences, h=1e-3) (value=0.9077978025468044)",
+      "started_utc": "2026-11-20T15:51:53.118+00:00",
+      "finished_utc": "2026-11-20T15:51:53.119+00:00",
+      "attempts": [],
+      "frozen_sha256": null,
+      "bound_case": null
+    }
+  }
+}

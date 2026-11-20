@@ -1,0 +1,55 @@
+{
+  "schema_version": "0.2",
+  "problem": {
+    "id": "poisson_unit_square_mms",
+    "equation": "-laplacian(u) = f",
+    "domain": "unit_square_2d",
+    "exact_solution": "sin(pi*x)*sin(pi*y)",
+    "source": "2*pi**2*sin(pi*x)*sin(pi*y)",
+    "boundaries": [
+      {
+        "attribute": 1,
+        "label": "bottom",
+        "kind": "dirichlet",
+        "value": "from_exact_solution"
+      },
+      {
+        "attribute": 2,
+        "label": "right",
+        "kind": "dirichlet",
+        "value": "from_exact_solution"
+      },
+      {
+        "attribute": 3,
+        "label": "top",
+        "kind": "dirichlet",
+        "value": "from_exact_solution"
+      },
+      {
+        "attribute": 4,
+        "label": "left",
+        "kind": "dirichlet",
+        "value": "from_exact_solution"
+      }
+    ]
+  },
+  "execution": {
+    "mesh_type": "tri",
+    "polynomial_order": 1,
+    "mesh_levels": [
+      1,
+      2,
+      4
+    ],
+    "backend": "serial_cpu",
+    "assembly": "full",
+    "solver": "cg_gs"
+  },
+  "validation": {
+    "l2_order_min_offset": 0.05,
+    "l2_order_max_offset": 0.05,
+    "h1_order_min_offset": 0.05,
+    "h1_order_max_offset": 0.05
+  },
+  "policy": {}
+}
