@@ -20,11 +20,15 @@ The reproduced configuration uses x86-64 Ubuntu 24.04, CPython 3.12, GCC 13, CMa
 
 ## Reproduce
 
-From an authenticated checkout of this private repository, start at the directory containing this README.
+With GitHub access to this private repository, clone it inside Ubuntu. For an existing checkout, start at the directory containing this README.
 
 ```bash
 sudo apt-get update
 sudo apt-get install -y --no-install-recommends git g++-13 cmake make python3.12-venv
+# New checkout
+git clone https://github.com/rodriguezrobertbfrkx6857-sudo/project.git
+cd project
+# From the repository root
 python3.12 -m venv .venv
 source .venv/bin/activate
 python -m pip install --require-hashes --only-binary=:all: -r requirements-linux-py312.lock

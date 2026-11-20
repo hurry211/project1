@@ -1,0 +1,26 @@
+{
+  "tools": {
+    "python": "3.12.3",
+    "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "cmake": "cmake version 3.28.3",
+    "mfem": "4.10.0",
+    "solver_available": true
+  },
+  "run_dir": "runs/stage0-quick/20261120T164342213690Z_poisson_sin_sin_p1_tri",
+  "state": "ACCEPTED",
+  "code": "OK",
+  "reason": "numerical (code) verification passed for this manufactured-solution benchmark",
+  "manifest_sha256": "72882d13a9b03d7b7bd3e689f62a90161c1c606559b4f6948bde2e32c20c92f5",
+  "attempt_dir": "runs/stage0-quick/20261120T164342213690Z_poisson_sin_sin_p1_tri/attempts/attempt_01",
+  "replay": "ACCEPTED",
+  "integrity": {
+    "mode": "sha256-inventory",
+    "passed": true
+  },
+  "finest_orders": {
+    "n_coarse": 32,
+    "n_fine": 64,
+    "l2_order": 1.9983631008284015,
+    "h1_semi_order": 0.999311941962252
+  }
+}

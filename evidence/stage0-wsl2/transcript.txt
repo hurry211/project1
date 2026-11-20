@@ -1,0 +1,399 @@
+Stage 0 WSL2 execution record — 2026-11-20 UTC
+Original source 34d3d66602d41c141a5cb4f6d6fdfaed8a2a3227. Final code and CI tree 9573a56bc3fc38f1e66f0f7ac26977b3ed9f69e1.
+
+Original Python suite without poisson_mms
+$ python -m pytest -q
+.................ssssssssssssssssssssssssssssssssss..................... [ 75%]
+........................                                                 [100%]
+=========================== short test summary info ============================
+SKIPPED [7] tests/test_integration_mfem.py:24: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [6] tests/test_integration_mfem.py:42: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [8] tests/test_integration_mfem.py:56: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:73: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:79: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:89: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:98: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:114: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:120: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:129: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:147: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:152: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:157: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:162: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:167: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:173: poisson_mms binary not built (run scripts/build_solver.sh)
+62 passed, 34 skipped in 7.02s
+
+Original suite after the pinned build, isolated original checkout
+$ python -m pytest -q
+........................................................................ [ 75%]
+........................                                                 [100%]
+96 passed in 21.67s
+
+Original numerical and archived-verdict checks on otherwise clean synthetic P1 data
+Measured with tests.synthetic.make_attempt, verifier.verify_attempt and controller.reverify on the import revision.
+clean: ACCEPTED
+stored verdict changed: ACCEPTED
+solver_converged 'false' ACCEPTED
+solver 'cg_none' ACCEPTED
+num_dofs 9999 ACCEPTED
+duplicate bottom segment, equal total length: ACCEPTED
+
+Original binary output check
+$ poisson_mms --n 4 --out <missing-directory>
+poisson_mms case=sin_sin mesh=tri n=4 order=1 dofs=25 cg_iters=5 converged=1 L2=0.0790754 H1semi=0.838548 fault=none
+original solver exit=0, files=0
+
+Clean Stage 0 build (selected build log lines)
+$ CC=gcc-13 CXX=g++-13 JOBS=6 THIRD_PARTY=/root/mfem-stage0/clean/third_party ./scripts/build_mfem.sh
+Cloning into '/root/mfem-stage0/clean/third_party/mfem-src'...
+Note: switching to 'd964264cdb9a13e94a201b6c236c7721e0c8765f'.
+-- CMake version: 3.28.3
+-- The CXX compiler identification is GNU 13.3.0
+-- Floating-point precision: MFEM_PRECISION = double
+-- Build files have been written to: /root/mfem-stage0/clean/third_party/mfem-build
+[100%] Built target mfem
+MFEM installed to /root/mfem-stage0/clean/third_party/mfem-install
+Clean build elapsed 272 seconds
+Full clean-build.log SHA-256 4306e41ee34c7464577011c2f826061387cb197d6b749db329afcaf899d4438a
+
+Native solver
+$ ./scripts/build_solver.sh
+-- Configuring done (0.1s)
+-- Generating done (0.3s)
+-- Build files have been written to: /mnt/d/github项目/project/build/cpp
+[ 50%] Building CXX object CMakeFiles/poisson_mms.dir/poisson_mms.cpp.o
+[100%] Linking CXX executable poisson_mms
+[100%] Built target poisson_mms
+{
+  "mfem_version": "MFEM v4.10.0 (release)",
+  "cases": [
+    {"id": "sin_sin", "exact_solution": "sin(pi*x)*sin(pi*y)", "source": "2*pi**2*sin(pi*x)*sin(pi*y)"},
+    {"id": "cos_exp", "exact_solution": "cos(pi*x)*exp(y)", "source": "(pi**2 - 1)*cos(pi*x)*exp(y)"}
+  ]
+}
+
+Build safeguards (intentionally mismatched commit, modified scratch tree, competing lock and missing prefix)
+Same source build script and project CMake configure entry point.
+ERROR: MFEM checkout is d964264cdb9a13e94a201b6c236c7721e0c8765f, expected pinned 0000000
+ERROR: MFEM source tree has local changes: /root/mfem-stage0/build-check.clkQxK/mfem-src
+Another build owns /root/mfem-stage0/third_party
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/g++-13 - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake Error at CMakeLists.txt:7 (message):
+  MFEMConfig.cmake is missing from
+  MFEM_DIR=/root/mfem-stage0/build-check.clkQxK/missing
+
+
+-- Configuring incomplete, errors occurred!
+
+Locked environment, Python job
+$ python -m pytest -q -m "not mfem"
+........................................................................ [ 85%]
+............                                                             [100%]
+84 passed, 54 deselected in 6.38s
+
+Locked environment, native job
+$ python -m pytest -q -m mfem --require-mfem
+......................................................                   [100%]
+54 passed, 84 deselected in 26.50s
+
+Locked environment, complete suite
+$ python -m pytest -q --require-mfem
+........................................................................ [ 52%]
+..................................................................       [100%]
+138 passed in 30.81s
+
+Deliberately absent binary
+$ POISSON_MMS_BIN=/root/mfem-stage0/absent python -m pytest -q
+ssssssssssssssssss.................ssssssssssssssssssssssssssssssssssss. [ 52%]
+..................................................................       [100%]
+=========================== short test summary info ============================
+SKIPPED [1] tests/test_archive_mfem.py:37: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [12] tests/test_archive_mfem.py:44: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_archive_mfem.py:84: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_archive_mfem.py:93: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_archive_mfem.py:106: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_archive_mfem.py:116: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_archive_mfem.py:138: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [7] tests/test_integration_mfem.py:24: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [6] tests/test_integration_mfem.py:42: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [8] tests/test_integration_mfem.py:56: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:73: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:79: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:89: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:98: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:114: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:120: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:129: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:147: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:152: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:157: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:162: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:167: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [2] tests/test_integration_mfem.py:173: poisson_mms binary not built (run scripts/build_solver.sh)
+SKIPPED [1] tests/test_integration_mfem.py:184: poisson_mms binary not built (run scripts/build_solver.sh)
+84 passed, 54 skipped in 7.02s
+
+Deliberately absent binary in strict mode
+$ POISSON_MMS_BIN=/root/mfem-stage0/absent/poisson_mms python -m pytest -q -m mfem --require-mfem
+ERROR: --require-mfem needs an executable solver at /root/mfem-stage0/absent/poisson_mms
+
+pytest exit code: 4
+
+Finite element identities on the real n=8 exports
+Sum of quadrature weights, sum of shape functions and sum of physical shape gradients.
+poisson_sin_sin_p1_tri n=8 absolute deviations (unit area, partition of unity, zero gradient sum): 2.220e-16 1.110e-16 0.000e+00
+poisson_sin_sin_p2_tri n=8 absolute deviations (unit area, partition of unity, zero gradient sum): 0.000e+00 4.441e-16 7.105e-15
+poisson_cos_exp_mixed_p1_quad n=8 absolute deviations (unit area, partition of unity, zero gradient sum): 1.110e-16 1.110e-16 8.882e-16
+poisson_cos_exp_mixed_p2_quad n=8 absolute deviations (unit area, partition of unity, zero gradient sum): 0.000e+00 2.665e-15 2.220e-14
+
+Official MFEM Example 1
+$ ./scripts/run_ex1_baseline.sh
+star_default exit=0
+square_disc_order2 exit=0
+evidence in /mnt/d/github项目/project/runs/baseline_ex1/20261120T164243Z
+
+Official example provenance
+$ cat provenance.txt
+mfem_git=v4.10-0-gd964264 d964264cdb9a13e94a201b6c236c7721e0c8765f
+ex1_source_sha256=8a5841730522a7e5fb38bd1280c5129935450601f358f01b5b26076b6a2a9f29
+libmfem_sha256=a4b8138ccb7eaf2c1f38c4d0434ebbee7bbd0b20318d6f0864779a5f4efd0234
+cxx=g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+uname=Linux 6.6.87.2-microsoft-standard-WSL2 x86_64
+
+star_default
+./ex1 -m /root/mfem-stage0/clean/third_party/mfem-src/data/star.mesh -no-vis
+Number of finite element unknowns: 20801
+   Iteration : 109  (B r, r) = 2.55846e-15
+   Iteration : 110  (B r, r) = 1.76748e-15
+   Iteration : 111  (B r, r) = 1.10523e-15
+Average reduction factor = 0.882852
+exit code 0
+
+square_disc_order2
+./ex1 -m /root/mfem-stage0/clean/third_party/mfem-src/data/square-disc.mesh -no-vis -o 2
+Number of finite element unknowns: 79616
+   Iteration : 200  (B r, r) = 3.1598e-12
+PCG: Number of iterations: 200
+Average reduction factor = 0.963677
+PCG: No convergence!
+exit code 0
+
+Reproduction of all supplied specifications
+$ RUNS_DIR=runs/stage0-verified ./scripts/run_demo.sh
+specs/budget_demo_sin_sin_p1_tri.json                   BUDGET_EXHAUSTED BUDGET_EXHAUSTED
+specs/poisson_cos_exp_mixed_p1_quad.json                ACCEPTED OK
+specs/poisson_cos_exp_mixed_p1_quad_pa.json             ACCEPTED OK
+specs/poisson_cos_exp_mixed_p2_quad.json                ACCEPTED OK
+specs/poisson_cos_exp_mixed_p2_quad_pa.json             ACCEPTED OK
+specs/poisson_sin_sin_p1_tri.json                       ACCEPTED OK
+specs/poisson_sin_sin_p1_tri_jacobi.json                ACCEPTED OK
+specs/poisson_sin_sin_p2_tri.json                       ACCEPTED OK
+specs/retry_demo_sin_sin_p1_tri.json                    ACCEPTED OK
+specs/negative/duplicate_attribute.json                 INVALID_SPEC INVALID_SPEC
+specs/negative/fault_drop_dirichlet_attr.json           FAILED VALIDATION_FAILED
+specs/negative/fault_early_stop_lie.json                FAILED VALIDATION_FAILED
+specs/negative/fault_nan_value.json                     FAILED VALIDATION_FAILED
+specs/negative/fault_self_report_lie.json               FAILED VALIDATION_FAILED
+specs/negative/fault_wrong_source.json                  FAILED VALIDATION_FAILED
+specs/negative/inconsistent_mms_source.json             INVALID_SPEC MMS_INCONSISTENT
+specs/negative/malicious_expression.json                INVALID_SPEC INVALID_EXPRESSION
+specs/negative/missing_boundary.json                    INVALID_SPEC INVALID_SPEC
+specs/negative/non_doubling_levels.json                 INVALID_SPEC INVALID_SPEC
+specs/negative/not_verified_order3.json                 FAILED NOT_VERIFIED_COMBINATION
+specs/negative/preasymptotic_strict_band.json           FAILED VALIDATION_FAILED
+specs/negative/strict_band_resolved.json                FAILED VALIDATION_FAILED
+specs/negative/swapped_boundary_labels.json             FAILED VALIDATION_FAILED
+specs/negative/unassigned_mesh_attribute.json           FAILED VALIDATION_FAILED
+specs/negative/unbound_case.json                        FAILED UNSUPPORTED_PROBLEM
+specs/negative/unknown_field.json                       INVALID_SPEC INVALID_SPEC
+specs/negative/unsupported_backend_cuda.json            BLOCKED UNSUPPORTED_BACKEND
+specs/negative/unsupported_backend_mpi.json             BLOCKED UNSUPPORTED_BACKEND
+specs/negative/unsupported_bc_value.json                INVALID_SPEC INVALID_SPEC
+specs/negative/unsupported_pa_with_gs.json              FAILED UNSUPPORTED_COMBINATION
+specs/negative/unsupported_solver_umfpack.json          FAILED UNSUPPORTED_SOLVER
+
+Historical comparison and independent error norms
+$ python scripts/compare_baseline.py runs/stage0-verified
+{
+  "accepted_final_norm_values": 68,
+  "expected_studies": 31,
+  "max_relative_norm_difference": 1.1793946007066676e-13,
+  "mismatches": [],
+  "missing": [],
+  "observed_studies": 31,
+  "states": {
+    "ACCEPTED": 8,
+    "BLOCKED": 2,
+    "BUDGET_EXHAUSTED": 1,
+    "FAILED": 13,
+    "INVALID_SPEC": 7
+  }
+}
+
+Numerical replay of every stored attempt
+from collections import Counter
+from pathlib import Path
+import json
+from sciagent.controller import reverify
+
+report = json.loads(Path('/root/mfem-stage0/logs/final-comparison.json').read_text())
+counts = Counter()
+for name, entry in sorted(report['studies'].items()):
+    run = Path('runs/stage0-verified') / entry['directory']
+    manifest = json.loads((run / 'manifest.json').read_text())
+    for row in manifest['attempts']:
+        attempt = run / 'attempts' / f"attempt_{row['attempt']:02d}"
+        replay = reverify(attempt, entry['manifest_sha256'])
+        assert replay['integrity']['passed'], (name, attempt, replay['integrity'])
+        assert replay['verdict'] == row['verdict'], (name, replay['failure_codes'])
+        counts[replay['verdict']] += 1
+        print(name, attempt.name, replay['verdict'], 'integrity OK')
+print('Replayed', sum(counts.values()), 'attempts:', dict(sorted(counts.items())))
+budget_demo_sin_sin_p1_tri attempt_01 RETRY_ELIGIBLE integrity OK
+budget_demo_sin_sin_p1_tri attempt_02 RETRY_ELIGIBLE integrity OK
+fault_drop_dirichlet_attr attempt_01 REJECTED integrity OK
+fault_early_stop_lie attempt_01 REJECTED integrity OK
+fault_nan_value attempt_01 REJECTED integrity OK
+fault_self_report_lie attempt_01 REJECTED integrity OK
+fault_wrong_source attempt_01 REJECTED integrity OK
+poisson_cos_exp_mixed_p1_quad attempt_01 ACCEPTED integrity OK
+poisson_cos_exp_mixed_p1_quad_pa attempt_01 ACCEPTED integrity OK
+poisson_cos_exp_mixed_p2_quad attempt_01 ACCEPTED integrity OK
+poisson_cos_exp_mixed_p2_quad_pa attempt_01 ACCEPTED integrity OK
+poisson_sin_sin_p1_tri attempt_01 ACCEPTED integrity OK
+poisson_sin_sin_p1_tri_jacobi attempt_01 ACCEPTED integrity OK
+poisson_sin_sin_p2_tri attempt_01 ACCEPTED integrity OK
+preasymptotic_strict_band attempt_01 REJECTED integrity OK
+retry_demo_sin_sin_p1_tri attempt_01 RETRY_ELIGIBLE integrity OK
+retry_demo_sin_sin_p1_tri attempt_02 RETRY_ELIGIBLE integrity OK
+retry_demo_sin_sin_p1_tri attempt_03 RETRY_ELIGIBLE integrity OK
+retry_demo_sin_sin_p1_tri attempt_04 ACCEPTED integrity OK
+strict_band_resolved attempt_01 REJECTED integrity OK
+swapped_boundary_labels attempt_01 REJECTED integrity OK
+unassigned_mesh_attribute attempt_01 REJECTED integrity OK
+Replayed 22 attempts: {'ACCEPTED': 8, 'REJECTED': 9, 'RETRY_ELIGIBLE': 5}
+
+A relocated quickstart archive with both MFEM paths set to absent locations
+$ python -m sciagent verify <moved-attempt> --manifest-sha256 72882d13a9b03d7b7bd3e689f62a90161c1c606559b4f6948bde2e32c20c92f5
+{
+  "verdict": "ACCEPTED",
+  "failure_codes": [],
+  "integrity": {
+    "mode": "sha256-inventory",
+    "passed": true
+  },
+  "levels": [
+    {
+      "n": 8,
+      "l2": 0.021132773446722816,
+      "h1_semi": 0.43179828300506834
+    },
+    {
+      "n": 16,
+      "l2": 0.005377435009899606,
+      "h1_semi": 0.21753633635882105
+    },
+    {
+      "n": 32,
+      "l2": 0.0013504362485498114,
+      "h1_semi": 0.10897542351886627
+    },
+    {
+      "n": 64,
+      "l2": 0.0003379923348378704,
+      "h1_semi": 0.054513704535820606
+    }
+  ],
+  "orders": [
+    {
+      "n_coarse": 8,
+      "n_fine": 16,
+      "l2_order": 1.9744920288571275,
+      "h1_semi_order": 0.989101103836095
+    },
+    {
+      "n_coarse": 16,
+      "n_fine": 32,
+      "l2_order": 1.9934926491177394,
+      "h1_semi_order": 0.9972535922789107
+    },
+    {
+      "n_coarse": 32,
+      "n_fine": 64,
+      "l2_order": 1.9983631008284015,
+      "h1_semi_order": 0.999311941962252
+    }
+  ]
+}
+
+Replay of an original-format run produced from commit 34d3d66
+$ python -m sciagent verify /root/mfem-stage0/legacy-runs/*/attempts/attempt_01
+{
+  "verdict": "ACCEPTED",
+  "failure_codes": [],
+  "integrity": {
+    "mode": "legacy-input-hashes",
+    "passed": true
+  },
+  "levels": [
+    {
+      "n": 8,
+      "l2": 0.021132773446722816,
+      "h1_semi": 0.43179828300506834
+    },
+    {
+      "n": 16,
+      "l2": 0.005377435009899606,
+      "h1_semi": 0.21753633635882105
+    },
+    {
+      "n": 32,
+      "l2": 0.0013504362485498114,
+      "h1_semi": 0.10897542351886627
+    },
+    {
+      "n": 64,
+      "l2": 0.0003379923348378704,
+      "h1_semi": 0.054513704535820606
+    }
+  ],
+  "orders": [
+    {
+      "n_coarse": 8,
+      "n_fine": 16,
+      "l2_order": 1.9744920288571275,
+      "h1_semi_order": 0.989101103836095
+    },
+    {
+      "n_coarse": 16,
+      "n_fine": 32,
+      "l2_order": 1.9934926491177394,
+      "h1_semi_order": 0.9972535922789107
+    },
+    {
+      "n_coarse": 32,
+      "n_fine": 64,
+      "l2_order": 1.9983631008284015,
+      "h1_semi_order": 0.999311941962252
+    }
+  ]
+}
+
+Hosted GitHub Actions log extract
+https://github.com/rodriguezrobertbfrkx6857-sudo/project/actions/runs/44776289242
+Tested commit 9573a56bc3fc38f1e66f0f7ac26977b3ed9f69e1
+Conclusion success
+Python unit tests	Run python -m pytest -q -m 'not mfem'	2026-11-20T16:44:28.3560423Z 84 passed, 54 deselected in 9.85s
+MFEM source build and integration	Run python -m pytest -q -m mfem --require-mfem	2026-11-20T17:03:39.6771596Z 54 passed, 84 deselected in 19.14s
+MFEM source build and integration	Run python -m sciagent quickstart	2026-11-20T17:03:41.4356327Z     "python": "3.12.16",
+MFEM source build and integration	Run python -m sciagent quickstart	2026-11-20T17:03:41.4358027Z     "mfem": "4.10.0",
+MFEM source build and integration	Run python -m sciagent quickstart	2026-11-20T17:03:41.4362153Z   "manifest_sha256": "74a23f494f37daa1403f1abe5f822d0442534b3c40a53015e50a2f6115618bd8",
+MFEM source build and integration	Run python -m sciagent quickstart	2026-11-20T17:03:41.4364517Z   "replay": "ACCEPTED",
+MFEM source build and integration	Run python -m sciagent quickstart	2026-11-20T17:03:41.4367886Z     "l2_order": 1.9983631008284015,
+MFEM source build and integration	Run python -m sciagent quickstart	2026-11-20T17:03:41.4368358Z     "h1_semi_order": 0.999311941962252

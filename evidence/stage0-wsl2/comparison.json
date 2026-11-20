@@ -1,0 +1,234 @@
+{
+  "accepted_final_norm_values": 68,
+  "expected_studies": 31,
+  "max_relative_norm_difference": 1.1793946007066676e-13,
+  "mismatches": [],
+  "missing": [],
+  "observed_studies": 31,
+  "states": {
+    "ACCEPTED": 8,
+    "BLOCKED": 2,
+    "BUDGET_EXHAUSTED": 1,
+    "FAILED": 13,
+    "INVALID_SPEC": 7
+  },
+  "studies": {
+    "budget_demo_sin_sin_p1_tri": {
+      "attempts": 2,
+      "code": "BUDGET_EXHAUSTED",
+      "directory": "20261120T164409738030Z_budget_demo_sin_sin_p1_tri",
+      "manifest_sha256": "0811061faab1eac5ced06bb6759d497772edaf2b82ba2ed69ebe0e9c24cb2f9c",
+      "state": "BUDGET_EXHAUSTED"
+    },
+    "duplicate_attribute": {
+      "attempts": 0,
+      "code": "INVALID_SPEC",
+      "directory": "20261120T164514637656Z_duplicate_attribute",
+      "manifest_sha256": "67103a934976c0040aa95118d80060acf7220579d6a18cfc0cac049bdae66c47",
+      "state": "INVALID_SPEC"
+    },
+    "fault_drop_dirichlet_attr": {
+      "attempts": 1,
+      "code": "VALIDATION_FAILED",
+      "directory": "20261120T164515252526Z_fault_drop_dirichlet_attr",
+      "manifest_sha256": "22293f67621d4768a0f112b37c97c32300c60c8f66073c1ead9b6da7ab835966",
+      "state": "FAILED"
+    },
+    "fault_early_stop_lie": {
+      "attempts": 1,
+      "code": "VALIDATION_FAILED",
+      "directory": "20261120T164520179512Z_fault_early_stop_lie",
+      "manifest_sha256": "c06ad321c189b3a135cf11ef08a84502336bdfe389f39b44d4354ae4ca408e5c",
+      "state": "FAILED"
+    },
+    "fault_nan_value": {
+      "attempts": 1,
+      "code": "VALIDATION_FAILED",
+      "directory": "20261120T164525353065Z_fault_nan_value",
+      "manifest_sha256": "335bae6089bb940ca82843425437e5655ff85900c11a1352d187f89a03bd40b3",
+      "state": "FAILED"
+    },
+    "fault_self_report_lie": {
+      "attempts": 1,
+      "code": "VALIDATION_FAILED",
+      "directory": "20261120T164530097298Z_fault_self_report_lie",
+      "manifest_sha256": "f64a706472048a060e181abfcc56086a3678487f6ef41205b35d8d1327c1dde8",
+      "state": "FAILED"
+    },
+    "fault_wrong_source": {
+      "attempts": 1,
+      "code": "VALIDATION_FAILED",
+      "directory": "20261120T164535514747Z_fault_wrong_source",
+      "manifest_sha256": "cae69a6bb00b85b02e923f506dea581e28b5f7cf6a34ca5afd800a67a8b3ecea",
+      "state": "FAILED"
+    },
+    "inconsistent_mms_source": {
+      "attempts": 0,
+      "code": "MMS_INCONSISTENT",
+      "directory": "20261120T164540621830Z_inconsistent_mms_source",
+      "manifest_sha256": "7773301648688ca237a3c992ed86523a5209fdabd9b1efd7f0ae02b4088689a3",
+      "state": "INVALID_SPEC"
+    },
+    "malicious_expression": {
+      "attempts": 0,
+      "code": "INVALID_EXPRESSION",
+      "directory": "20261120T164541279269Z_malicious_expression",
+      "manifest_sha256": "06e21726698f9c2048bce38d15388249f5c23a3342b5a5a0b2c02b968bfcb614",
+      "state": "INVALID_SPEC"
+    },
+    "missing_boundary": {
+      "attempts": 0,
+      "code": "INVALID_SPEC",
+      "directory": "20261120T164541853902Z_missing_boundary",
+      "manifest_sha256": "9978b8f8091fdbc42b77b9452f998467204be79d52fb11675c0c3cbad091a3c0",
+      "state": "INVALID_SPEC"
+    },
+    "non_doubling_levels": {
+      "attempts": 0,
+      "code": "INVALID_SPEC",
+      "directory": "20261120T164542461978Z_non_doubling_levels",
+      "manifest_sha256": "6451b9962cabda47cc2b05425d49bdb0a41cb505a7a1be72f0b560eaa4e8e00a",
+      "state": "INVALID_SPEC"
+    },
+    "not_verified_order3": {
+      "attempts": 0,
+      "code": "NOT_VERIFIED_COMBINATION",
+      "directory": "20261120T164543066065Z_not_verified_order3",
+      "manifest_sha256": "b5a9ada7bc16cdbaca63f76f1ac74d97d43732f536404910430a5669eaa2dcdf",
+      "state": "FAILED"
+    },
+    "poisson_cos_exp_mixed_p1_quad": {
+      "attempts": 1,
+      "code": "OK",
+      "directory": "20261120T164417826860Z_poisson_cos_exp_mixed_p1_quad",
+      "manifest_sha256": "4cfe683baddd24c8ffa3620c765cb49679b64aeef534026be70d02859c7b922c",
+      "state": "ACCEPTED"
+    },
+    "poisson_cos_exp_mixed_p1_quad_pa": {
+      "attempts": 1,
+      "code": "OK",
+      "directory": "20261120T164423108119Z_poisson_cos_exp_mixed_p1_quad_pa",
+      "manifest_sha256": "37009b29c34b02057c7d26baf8da3975874adc28e99c979341fb43a3f3b313a9",
+      "state": "ACCEPTED"
+    },
+    "poisson_cos_exp_mixed_p2_quad": {
+      "attempts": 1,
+      "code": "OK",
+      "directory": "20261120T164428823945Z_poisson_cos_exp_mixed_p2_quad",
+      "manifest_sha256": "44ce496c919a57a1400993860a9e38ea654a40170d8c8d71ad89351b1531291f",
+      "state": "ACCEPTED"
+    },
+    "poisson_cos_exp_mixed_p2_quad_pa": {
+      "attempts": 1,
+      "code": "OK",
+      "directory": "20261120T164434177931Z_poisson_cos_exp_mixed_p2_quad_pa",
+      "manifest_sha256": "3b6c999e4f80bc48aec0f42a2ee93093e464643be3a120e76464afdb195d4e12",
+      "state": "ACCEPTED"
+    },
+    "poisson_sin_sin_p1_tri": {
+      "attempts": 1,
+      "code": "OK",
+      "directory": "20261120T164439372420Z_poisson_sin_sin_p1_tri",
+      "manifest_sha256": "edfd7c6b0891f120ce96bedb5b7a735ebc598189b0075298a738f9ac2bce71e5",
+      "state": "ACCEPTED"
+    },
+    "poisson_sin_sin_p1_tri_jacobi": {
+      "attempts": 1,
+      "code": "OK",
+      "directory": "20261120T164445154933Z_poisson_sin_sin_p1_tri_jacobi",
+      "manifest_sha256": "b216b26554b63b55806599c65509734070677e00b3c38c1ec0ea5f8d4babce28",
+      "state": "ACCEPTED"
+    },
+    "poisson_sin_sin_p2_tri": {
+      "attempts": 1,
+      "code": "OK",
+      "directory": "20261120T164449994795Z_poisson_sin_sin_p2_tri",
+      "manifest_sha256": "6be8e62058fe291cc3024c096e556eb68029dad54db2457e88a5bfc91e0fbbff",
+      "state": "ACCEPTED"
+    },
+    "preasymptotic_strict_band": {
+      "attempts": 1,
+      "code": "VALIDATION_FAILED",
+      "directory": "20261120T164544353198Z_preasymptotic_strict_band",
+      "manifest_sha256": "c447f709373a1a4a1400d8819181a2848945994a9e265a3d5b5213bf0e066fa6",
+      "state": "FAILED"
+    },
+    "retry_demo_sin_sin_p1_tri": {
+      "attempts": 4,
+      "code": "OK",
+      "directory": "20261120T164455166724Z_retry_demo_sin_sin_p1_tri",
+      "manifest_sha256": "32cebf0363176a4bbc10b2c295c67319d922b6990a54e311d1bbab16614eefa4",
+      "state": "ACCEPTED"
+    },
+    "strict_band_resolved": {
+      "attempts": 1,
+      "code": "VALIDATION_FAILED",
+      "directory": "20261120T164548808775Z_strict_band_resolved",
+      "manifest_sha256": "7d68d75daf8eb272b9192a9cdebd35cd7f36f4a615dfa61ef60334a6e2239c77",
+      "state": "FAILED"
+    },
+    "swapped_boundary_labels": {
+      "attempts": 1,
+      "code": "VALIDATION_FAILED",
+      "directory": "20261120T164552645911Z_swapped_boundary_labels",
+      "manifest_sha256": "9bd5a182657bc83ea52e15413d0453f84ae55916efe2e5a5d25d49ced08d2633",
+      "state": "FAILED"
+    },
+    "unassigned_mesh_attribute": {
+      "attempts": 1,
+      "code": "VALIDATION_FAILED",
+      "directory": "20261120T164557517147Z_unassigned_mesh_attribute",
+      "manifest_sha256": "bbcad746000c955fdce0f0d0aa60b9bd3f586e93114308fc630be372522695c9",
+      "state": "FAILED"
+    },
+    "unbound_case": {
+      "attempts": 0,
+      "code": "UNSUPPORTED_PROBLEM",
+      "directory": "20261120T164559607629Z_unbound_case",
+      "manifest_sha256": "cb2a5d197834f5b6b0ccd96ef799d87311118ce59f4be37b94c4d7327f931865",
+      "state": "FAILED"
+    },
+    "unknown_field": {
+      "attempts": 0,
+      "code": "INVALID_SPEC",
+      "directory": "20261120T164600845662Z_unknown_field",
+      "manifest_sha256": "df29f9f838bcedec4e2626ab5d19c22557a637349b982659876c535eaa969137",
+      "state": "INVALID_SPEC"
+    },
+    "unsupported_backend_cuda": {
+      "attempts": 0,
+      "code": "UNSUPPORTED_BACKEND",
+      "directory": "20261120T164601451520Z_unsupported_backend_cuda",
+      "manifest_sha256": "f3b916788796fde3da225a89511db3f592d4ad773dd09538d8ad6dc8fab81599",
+      "state": "BLOCKED"
+    },
+    "unsupported_backend_mpi": {
+      "attempts": 0,
+      "code": "UNSUPPORTED_BACKEND",
+      "directory": "20261120T164602676272Z_unsupported_backend_mpi",
+      "manifest_sha256": "0b693c8873ec746f0eec7c250b4ef69d5112d8c317025119dd40d0d375397203",
+      "state": "BLOCKED"
+    },
+    "unsupported_bc_value": {
+      "attempts": 0,
+      "code": "INVALID_SPEC",
+      "directory": "20261120T164603904338Z_unsupported_bc_value",
+      "manifest_sha256": "9040e5ccdec57a1b1d1c91872dfbd740983d850012264d8983fcc590d2d26f0a",
+      "state": "INVALID_SPEC"
+    },
+    "unsupported_pa_with_gs": {
+      "attempts": 0,
+      "code": "UNSUPPORTED_COMBINATION",
+      "directory": "20261120T164604503862Z_unsupported_pa_with_gs",
+      "manifest_sha256": "3da4835345aeae469f8329d90a32ed2d8a91d2881bebfbde19e6f191e685ac16",
+      "state": "FAILED"
+    },
+    "unsupported_solver_umfpack": {
+      "attempts": 0,
+      "code": "UNSUPPORTED_SOLVER",
+      "directory": "20261120T164605666044Z_unsupported_solver_umfpack",
+      "manifest_sha256": "bf5e39a2654cf92c237a7065cff5149b6cb972af0dbb7f0937aa78d932a9dcbb",
+      "state": "FAILED"
+    }
+  }
+}

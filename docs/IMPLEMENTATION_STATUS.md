@@ -1,6 +1,40 @@
 # Implementation Status
 
-**Date:** 2026-11-20. **Overall status:** the first vertical slice is implemented and verified on real MFEM computations. Everything below was executed in this session; items not executed are marked **BLOCKED** or **NOT DONE**.
+## Stage 0 handoff, 2026-11-20
+
+The independent reproduction started at `34d3d66`. The original suite passed on a new MFEM source build. The updated suite exercises the same two manufactured solutions, seven supported configurations, numerical thresholds and bounded refinement studies. The original implementation record follows this section.
+
+| Component | Stage 0 finding and change | Evidence |
+|---|---|---|
+| Mathematical path | Reviewed the C++ gradient and source for both manufactured solutions, Dirichlet interpolation, the Neumann flux sign, the Galerkin assembly and CG stopping conditions. The verifier reconstructs the nodal field with inverse maps and a Vandermonde basis, integrates with Gauss/Duffy rules and solves a separate SciPy system. Seven native positive configurations reproduced their accepted verdicts. | [WSL2 study tables](../evidence/stage0-wsl2/studies.md) |
+| Process and policy | The original controller applied the DOF cap only to a retry. It now checks initial levels, caps a level timeout at the remaining wall budget and checks frozen inputs again after solver execution. A native nonzero exit cannot produce numerical acceptance. | `tests/test_workflow.py`, `tests/test_archive_mfem.py` |
+| Solver output | The original binary exited 0 with zero files when given a missing output directory. Each export now checks its stream after close and reports exit 7 on failure. | `test_binary_reports_output_failure` and [execution transcript](../evidence/stage0-wsl2/transcript.txt) |
+| Independent verifier | The previous implementation accepted a string convergence flag, incorrect solver/DOF claims and equal-length boundary segments with a gap and overlap. Typed claims, checked indices, finite coordinates, a Cartesian boundary partition and malformed-input verdicts now gate these cases. | `tests/test_verifier_synthetic.py` |
+| Archive | Replay checks the complete file inventory and the stored verdict, matches frozen inputs to the request and reconstructs the permitted execution for the selected attempt. The report generator checks the inventory before writing. A relocated clean run and an original-format run both replayed successfully. | `tests/test_archive_mfem.py`, [quickstart verdict](../evidence/stage0-wsl2/quickstart.json) |
+| Build and CI | The Python wheel lock includes all transitive hashes for CPython 3.12 on Linux x86-64. The MFEM source build checks the commit and working tree and locks its build root. CMake requires MFEM 4.10.0. Separate CI jobs run the Python suite and a clean native build with strict integration tests. | [setup and commands](../README.md), [CI workflow](../.github/workflows/verify.yml) |
+
+**Local configuration.** Windows had Git, GitHub CLI, MinGW and multiple Python installations. The default WSL2 distribution was Ubuntu 20.04.6 with GCC 9.4 and Python 3.8. The independent runs used the separate Ubuntu 24.04.1 WSL2 distribution, kernel 6.6.87.2, GCC 13.3.0, CMake 3.28.3 and Python 3.12.3. The machine reported 22 logical CPUs and 15,794 MiB of RAM. The final clean build used six compile jobs, a Linux-filesystem dependency prefix and the pinned serial double-precision MFEM commit. Clone, configure, build and installation took 272 seconds. The installed library and solver hashes are in the [generated study tables](../evidence/stage0-wsl2/studies.md).
+
+The existing workstation build can be resumed in its `Ubuntu` WSL2 distribution with the commands below. The unabridged native outputs are in `runs/stage0-verified/` and the clean build log is in `runs/stage0-logs/clean-build.log`. New machines can follow the [repository setup](../README.md).
+
+```bash
+cd '/mnt/d/github项目/project'
+source /root/mfem-stage0/locked/bin/activate
+export THIRD_PARTY=/root/mfem-stage0/clean/third_party CXX=g++-13 OPENBLAS_NUM_THREADS=1
+python -m sciagent quickstart
+```
+
+**Remaining limits.** The requester, the local solver and verifier binaries, and the shared mathematical specification remain trust inputs. A study author can choose validation overrides before freezing. Every published positive benchmark here required the independent reference solve. A writer who controls the directory can replace both a manifest and its local checksum. For independent provenance, retain the digest outside that directory. Mesh checks cover the supported Cartesian geometry and boundary partition. Interior mesh topology and shared formulation errors still need independent challenges. The solver subprocess has an address-space limit and timeout. The in-process SciPy reference solve has a DOF gate and can run past the wall deadline.
+
+**CI permissions.** The repository API reported Actions enabled and default workflow permissions set to read. The workflow requests `contents: read` and disables credential persistence at checkout. Each native job builds the pinned MFEM source. Only Python package downloads use a CI cache.
+
+**Hosted reproduction.** The initial push exposed a YAML parsing error in the pip install step. Commit `9573a56` fixed the command scalar. Both jobs then passed on Ubuntu 24.04. The hosted MFEM source build took 18 min 58 s, and the hosted quickstart reproduced the WSL2 finest-pair orders under Python 3.12.16. [Successful GitHub Actions run](https://github.com/rodriguezrobertbfrkx6857-sudo/project/actions/runs/44776289242)
+
+**Next milestone.** Begin Stage 1 with clean-positive controls and independent mesh-connectivity, quadrature and reference-assembly mutations. Record which gates fire, the number of trials per configuration, false accepts and false rejects. The current deterministic regression set has no population-level error-rate estimate.
+
+## Original Claude implementation record
+
+The following sections describe Claude's original environment, measurements and proposed next actions at import. The Stage 0 record above supersedes the earlier milestone ordering.
 
 ## 1. Environment (measured, `python3 -m sciagent env`, `runs/*/environment.json`)
 

@@ -44,7 +44,8 @@ Compiled manufactured cases (`cpp/manufactured_cases.hpp`):
 | Level artifacts | MFEM solver | written once per level directory (`exist_ok=False`) | `attempts/attempt_NN/levels/nNNNN/` |
 | Verdict | verifier | written once per attempt | `attempts/attempt_NN/verdict.json` |
 | Events | controller | append-only JSON lines | `events.jsonl` |
-| Manifest | controller | written once at termination | `manifest.json` |
+| Manifest | controller | written once at termination with a relative-path SHA-256 inventory of all run artifacts | `manifest.json` |
+| Manifest digest | controller | checksum of the complete manifest bytes | `manifest.sha256` |
 
 Schema definitions are in `sciagent/spec.py` (pydantic v2, `frozen=True`, `extra="forbid"`).
 
@@ -60,7 +61,9 @@ Schema definitions are in `sciagent/spec.py` (pydantic v2, `frozen=True`, `extra
 | `mesh.mesh`, `solution.gf` | native MFEM/GLVis output (not read by the verifier) |
 | `stdout.txt`, `stderr.txt`, `command.json`, `run_record.json` | written by the runner |
 
-Solver exit codes: 0 OK, 2 invalid arguments, 3 boundary-coverage error, 4 unsupported combination, 5 CG not converged, 6 non-finite solution.
+Solver exit codes are 0 for success, 2 for invalid arguments, 3 for a boundary-coverage error, 4 for an unsupported combination, 5 for CG non-convergence, 6 for a non-finite solution and 7 for an artifact write or close failure.
+
+Completed-run replay checks the archive inventory, the saved decision and the recomputed numerical verdict. The frozen models must agree with the original request. Each execution must match the initial execution plus the number of level doublings authorized by preceding retry decisions. An archive mismatch yields `REJECTED / EVIDENCE_INTEGRITY`. A caller can supply a separately saved manifest SHA-256 to detect coordinated changes to the archive and its local checksum. Historical 0.1.0 runs have verifier-input and frozen-model hashes with narrower coverage.
 
 ## 4. State machine
 
@@ -88,15 +91,18 @@ Terminal codes: `INVALID_SPEC`, `MMS_INCONSISTENT`, `INVALID_EXPRESSION`, `MFEM_
 
 | Check | Code on failure | Threshold | Rationale |
 |---|---|---|---|
-| Solver claims match frozen spec (n, p, mesh, BC sets, expressions) | `CLAIM_SPEC_MISMATCH` | exact | a run of a different problem is not evidence |
+| Solver claims match frozen spec (n, p, mesh, BC sets, expressions, assembly, solver, iteration cap, relative tolerance) | `CLAIM_SPEC_MISMATCH` | exact, allowing the documented expression whitespace | binds the computation to the requested configuration |
+| Recorded process completed at the requested level | `SOLVER_EXIT` | zero exit and no timeout | required for controller runs and archive replay |
 | Solver reported convergence | `SOLVER_NOT_CONVERGED` | true | necessary, never sufficient |
 | Artifacts present, parseable, ids contiguous | `MISSING_ARTIFACT` / `MALFORMED_ARTIFACT` | — | |
 | All nodal values finite | `NON_FINITE_SOLUTION` | — | |
 | Global-dof coordinates agree across elements | `MALFORMED_ARTIFACT` | $10^{-12}$ | export/numbering consistency |
 | Element count equals $n^2$ (quad) or $2n^2$ (tri) | `MESH_MISMATCH` | exact | |
+| Geometry matches the requested type and reported/exported DOF counts equal $(np+1)^2$ | `MESH_MISMATCH` | exact | dimension of the supported conforming Cartesian spaces |
 | Mesh boundary attributes = declared attributes | `BOUNDARY_COVERAGE` | exact | no silent natural BC |
 | Every segment of attribute *a* lies on the side declared for *a* | `BOUNDARY_LABEL_MISMATCH` | $10^{-12}$ | catches label swaps |
 | Each side fully covered (total length 1) | `BOUNDARY_COVERAGE` | $10^{-10}$ | |
+| Sorted side intervals partition $[0,1]$ at the requested Cartesian knots | `BOUNDARY_COVERAGE` | endpoint tolerance $10^{-12}$ | catches a gap compensated by an overlapping segment |
 | $\max \lvert u_h - u_\ast\rvert$ at Dirichlet nodes (located geometrically) | `DIRICHLET_VIOLATION` | $10^{-10}$ | nodal interpolation is exact up to rounding |
 | Positive Jacobian at all quadrature points | `INVALID_MESH` | $>0$ | |
 | Self-reported L2 and $H^1$-seminorm errors agree with the verifier | `SELF_REPORT_MISMATCH` | rel. $10^{-6}$ | both integrate the same $u_h$ with high-order rules; disagreement means a wrong claim or export |

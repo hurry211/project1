@@ -1,5 +1,7 @@
 # Codex development handoff — MFEM Scientific Computing Agent
 
+The 2026-11-20 Stage 0 reproduction and build instructions are recorded in [implementation status](docs/IMPLEMENTATION_STATUS.md) and [experimental results](docs/RESULTS.md). The next development milestone is Stage 1 verifier robustness.
+
 ## Project goal
 
 Turn the **existing** deterministic, verified MFEM Poisson vertical slice into a robust, extensible scientific-computing agent system. Keep the principle **planner proposes, independent verifier accepts**. Preserve scientific correctness, explicit failure modes, and reproducible evidence over breadth or agent count.
