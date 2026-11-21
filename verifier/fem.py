@@ -34,6 +34,43 @@ class MeshData:
     bdr_xy: np.ndarray        # (B, 2, 2) segment endpoints
 
 
+def lattice_indices(xy, subdivisions, tol):
+    """Return integer coordinates on the closed unit-square grid."""
+    if np.any(xy < -tol) or np.any(xy > 1 + tol):
+        return None
+    nearest = np.rint(xy * subdivisions)
+    if np.any(np.abs(xy - nearest / subdivisions) > tol):
+        return None
+    return nearest.astype(np.int64)
+
+
+def cartesian_partition(mesh, n, tol):
+    """Check every Cartesian cell once, allowing either triangle diagonal."""
+    tri = mesh.geom == "tri"
+    if len(mesh.verts) != n * n * (2 if tri else 1):
+        return False
+    grid = lattice_indices(mesh.verts, n, tol)
+    if grid is None:
+        return False
+    lower = grid.min(axis=1)
+    if np.any(grid.max(axis=1) - lower != 1):
+        return False
+    dx, dy = (grid - lower[:, None, :]).transpose(2, 0, 1)
+    corners = dx + 2 * dy
+    if np.any(np.diff(np.sort(corners, axis=1), axis=1) == 0):
+        return False
+    cells = lower[:, 0] + n * lower[:, 1]
+    if np.any(np.bincount(cells, minlength=n*n) != (2 if tri else 1)):
+        return False
+    if tri:
+        # Each triangle omits one of 0,1,2,3. Opposite missing corners
+        # (0+3 or 1+2) give two complementary halves of the same square.
+        missing = 6 - corners.sum(axis=1)
+        return bool(np.all(np.bincount(cells, weights=missing) == 3))
+    edges = grid - np.roll(grid, 1, axis=1)
+    return bool(np.all(np.abs(edges).sum(axis=2) == 1))
+
+
 def _loadtxt(path: Path, ncols: int) -> np.ndarray:
     if not path.is_file():
         raise ArtifactError(f"missing artifact {path.name}")

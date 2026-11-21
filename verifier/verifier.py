@@ -25,10 +25,10 @@ from sciagent.spec import (SIDE_GEOMETRY, SIDE_NORMAL, ExecutionSpec, ProblemSpe
 from sciagent.evidence import sha256_file
 
 from . import expr
-from .fem import (ArtifactError, MeshData, build_local_basis, element_quadrature,
-                  gauss_01, inverse_map, load_mesh_data)
+from .fem import (ArtifactError, MeshData, build_local_basis, cartesian_partition,
+                  element_quadrature, gauss_01, inverse_map, lattice_indices, load_mesh_data)
 
-VERIFIER_VERSION = "0.2.0"
+VERIFIER_VERSION = "0.3.0"
 GEOM_TOL = 1e-12
 
 ACCEPTED = "ACCEPTED"
@@ -41,8 +41,8 @@ SHARED_ASSUMPTIONS = [
     "validation).",
     "The independent reference solve uses the same standard Galerkin weak form; it checks the "
     "implementation of that discretization, not the choice of discretization.",
-    "Element vertex coordinates and dof node coordinates are taken from solver-exported "
-    "artifacts; their consistency is checked but the mesh generator itself is MFEM's.",
+    "The verifier checks the exported Cartesian cell partition and supported P1/P2 node "
+    "lattice. Its integration and reference solve still use the same exported coordinates.",
     "The local basis is assumed to be nodal (Lagrange) at the exported node points, which holds "
     "for MFEM's default H1 Gauss-Lobatto basis; any violation surfaces as a self-report mismatch.",
 ]
@@ -82,7 +82,10 @@ class LevelReport:
 
 
 def _finite(v) -> bool:
-    return type(v) in (int, float) and math.isfinite(v)
+    try:
+        return type(v) in (int, float) and math.isfinite(v)
+    except OverflowError:
+        return False
 
 
 def check_mms_consistency(problem: ProblemSpec, rel_tol: float) -> Check:
@@ -124,6 +127,25 @@ def _attributes(value):
     if isinstance(value, list) and all(type(a) is int for a in value):
         return sorted(value)
     return None
+
+
+def _native_claims(res, execution, rep):
+    degree = 2 * execution.polynomial_order + 4
+    orders = [res.get(key) for key in ("rhs_quadrature_order", "error_quadrature_order")]
+    rep.add(Check("quadrature_orders", all(type(q) is int and q == degree for q in orders),
+                  "QUADRATURE_CLAIM_MISMATCH", f"reported RHS/error orders {orders}, expected {degree}"))
+    iterations = res.get("solver_iterations")
+    initial, final = res.get("solver_initial_norm"), res.get("solver_final_norm")
+    absolute = res.get("abs_tol")
+    valid = (type(iterations) is int and 0 <= iterations <= execution.max_iter
+             and _finite(initial) and initial >= 0 and _finite(final) and final >= 0
+             and _finite(absolute) and absolute == 0)
+    # MFEM CG compares squared preconditioned norms before reporting their roots.
+    if valid and res.get("solver_converged") is True:
+        limit = math.nextafter(execution.rel_tol * initial, math.inf)
+        valid = final <= limit and (iterations != 0 or final == initial)
+    rep.add(Check("cg_stopping_record", valid, "CG_RECORD_INCONSISTENT",
+                  f"iterations={iterations}, initial={initial}, final={final}, abs_tol={absolute}"))
 
 
 def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec,
@@ -171,6 +193,9 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
                   type(conv) is bool and (conv or not validation.require_solver_converged), "SOLVER_NOT_CONVERGED",
                   f"solver_converged={conv} (necessary, not sufficient)"))
 
+    if require_run_record or res.get("producer") == "poisson_mms":
+        _native_claims(res, execution, rep)
+
     if require_run_record:
         try:
             record = json.loads((level_dir / "run_record.json").read_text())
@@ -206,6 +231,15 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
                   f"{mesh.verts.shape[0]} elements, expected {expected_E}"))
     rep.add(Check("dof_count", type(rep.num_dofs) is int and rep.num_dofs == N == execution.estimated_dofs(n),
                   "MESH_MISMATCH", f"claimed {rep.num_dofs}, exported {N}, expected {execution.estimated_dofs(n)}"))
+    rep.add(Check("cartesian_cell_partition", cartesian_partition(mesh, n, GEOM_TOL), "MESH_MISMATCH",
+                  "each unit-grid cell has one cyclic quadrilateral or two complementary triangles"))
+    p = execution.polynomial_order
+    if p in (1, 2):
+        grid = lattice_indices(coords, n * p, GEOM_TOL)
+        complete = (grid is not None and len(coords) == (n * p + 1) ** 2
+                    and len(np.unique(grid[:, 0] + (n * p + 1) * grid[:, 1])) == len(coords))
+        rep.add(Check("cartesian_node_lattice", complete, "MESH_MISMATCH",
+                      f"bijective coordinates on the {n*p + 1} by {n*p + 1} nodal lattice"))
 
     # ---- Gate A (mesh side): boundary attribute <-> label <-> geometry ---
     by_attr = {b.attribute: b for b in problem.boundaries}
@@ -257,7 +291,6 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
                   dmax, validation.dirichlet_nodal_abs_tol))
 
     # ---- Gate C: independent error integration ---------------------------
-    p = execution.polynomial_order
     try:
         basis = build_local_basis(mesh, p)
         m = p + 1 + validation.verifier_quadrature_extra_points

@@ -34,6 +34,26 @@ def archive(original, tmp_path):
     return shutil.copytree(original, tmp_path / "relocated")
 
 
+@pytest.mark.parametrize("field,value,gate", [
+    ("rhs_quadrature_order", 1, "quadrature_orders"),
+    ("error_quadrature_order", 1, "quadrature_orders"),
+    ("solver_iterations", 20001, "cg_stopping_record"),
+    ("solver_iterations", True, "cg_stopping_record"),
+    ("solver_final_norm", 1.0, "cg_stopping_record"),
+    ("solver_initial_norm", 10**400, "cg_stopping_record"),
+    ("abs_tol", 1.0, "cg_stopping_record"),
+])
+def test_native_record_cannot_describe_an_incompatible_solve(archive, field, value, gate):
+    attempt = archive / "attempts/attempt_01"
+    path = attempt / "levels/n0004/result.json"
+    data = json.loads(path.read_text())
+    data[field] = value
+    path.write_text(json.dumps(data))
+    report = verify_attempt(attempt, require_run_records=True)
+    assert report["verdict"] == "REJECTED"
+    assert [c["name"] for c in report["levels"][0]["checks"] if not c["passed"]] == [gate]
+
+
 def test_relocated_archive_with_trusted_digest(archive, original):
     digest = hashlib.sha256((original / "manifest.json").read_bytes()).hexdigest()
     result = controller.reverify(archive / "attempts/attempt_01", digest)
