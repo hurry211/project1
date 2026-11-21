@@ -1,0 +1,70 @@
+Stage 1 local verification, 2026-11-20 (America/Los_Angeles)
+Control manifests use UTC, including 2026-11-21.
+
+Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39
+Python 3.12.3, NumPy 2.5.5, SciPy 1.18.1, scikit-fem 12.0.2
+g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+CMake 3.28.3
+MFEM 4.10.0
+Native executable SHA-256 5ef56119015223311dfbab6973b1a7e2920af107661eb6b50bb837e66dd14a06
+THIRD_PARTY=/root/mfem-stage0/clean/third_party
+OPENBLAS_NUM_THREADS=1
+
+$ python -m pip check   # Stage 1 challenge lock
+No broken requirements found.
+
+$ python -m pytest -q --require-mfem   # pristine Stage 0 at 46eebcd
+........................................................................ [ 52%]
+..................................................................       [100%]
+138 passed in 32.12s
+
+$ python -m pytest -q --require-mfem   # Stage 1
+........................................................................ [ 47%]
+........................................................................ [ 95%]
+.......                                                                  [100%]
+151 passed in 39.71s
+
+$ python -m pytest -q -m 'not mfem'   # original locked environment without scikit-fem
+........................................................................ [ 80%]
+..................                                                       [100%]
+90 passed, 61 deselected in 7.01s
+
+$ python -m pytest -q -m mfem --require-mfem   # original locked environment
+.............................................................            [100%]
+61 passed, 90 deselected in 32.76s
+
+$ python -m sciagent quickstart --runs-dir /root/mfem-stage1/quickstart
+state=ACCEPTED replay=ACCEPTED integrity={'mode': 'sha256-inventory', 'passed': True} finest_orders={'n_coarse': 32, 'n_fine': 64, 'l2_order': 1.9983631008284015, 'h1_semi_order': 0.999311941962252}
+
+$ RUNS_DIR=/root/mfem-stage1/canonical ./scripts/run_demo.sh
+$ python scripts/compare_baseline.py /root/mfem-stage1/canonical
+{"accepted_final_norm_values": 68, "expected_studies": 31, "max_relative_norm_difference": 1.1793946007066676e-13, "mismatches": [], "missing": [], "observed_studies": 31, "states": {"ACCEPTED": 8, "BLOCKED": 2, "BUDGET_EXHAUSTED": 1, "FAILED": 13, "INVALID_SPEC": 7}}
+
+Manifest-digest replay of each saved attempt using sciagent.controller.reverify
+stage0: 22 passed integrity, {"ACCEPTED": 8, "REJECTED": 9, "RETRY_ELIGIBLE": 5}
+stage1: 22 passed integrity, {"ACCEPTED": 8, "REJECTED": 9, "RETRY_ELIGIBLE": 5}
+
+$ python -m benchmarks.robustness --controls /root/mfem-stage1/controls --report /root/mfem-stage1/logs/stage0-challenge.json
+Historical worktree, exit status 1 after writing all trials
+panel {'numerical_fault': (98, {'ACCEPTED': 28, 'REJECTED': 70}), 'numerical_clean': (14, {'ACCEPTED': 14}), 'archive_fault': (21, {'REJECTED': 21}), 'archive_clean': (7, {'ACCEPTED': 7})}
+iid {'numerical_fault': (64, {'ACCEPTED': 17, 'REJECTED': 47}), 'numerical_clean': (32, {'ACCEPTED': 32}), 'archive_fault': (32, {'REJECTED': 32}), 'archive_clean': (16, {'ACCEPTED': 16})}
+14 reference checker controls; saved /root/mfem-stage1/logs/stage0-challenge.json
+
+$ python -m benchmarks.robustness --controls /root/mfem-stage1/controls --report /root/mfem-stage1/logs/stage1-challenge.json
+Repaired verifier, exit status 0
+panel {'numerical_fault': (98, {'REJECTED': 98}), 'numerical_clean': (14, {'ACCEPTED': 14}), 'archive_fault': (21, {'REJECTED': 21}), 'archive_clean': (7, {'ACCEPTED': 7})}
+iid {'numerical_fault': (64, {'REJECTED': 64}), 'numerical_clean': (32, {'ACCEPTED': 32}), 'archive_fault': (32, {'REJECTED': 32}), 'archive_clean': (16, {'ACCEPTED': 16})}
+14 reference checker controls; saved /root/mfem-stage1/logs/stage1-challenge.json
+
+Offline replay on the extracted release bundle with absent POISSON_MMS_BIN and MFEM_INSTALL
+panel {'numerical_fault': (98, {'REJECTED': 98}), 'numerical_clean': (14, {'ACCEPTED': 14}), 'archive_fault': (21, {'REJECTED': 21}), 'archive_clean': (7, {'ACCEPTED': 7})}
+iid {'numerical_fault': (64, {'REJECTED': 64}), 'numerical_clean': (32, {'ACCEPTED': 32}), 'archive_fault': (32, {'REJECTED': 32}), 'archive_clean': (16, {'ACCEPTED': 16})}
+14 reference checker controls; saved /root/mfem-stage1/published/offline.json
+
+$ sha256sum evidence/stage1/verifier-after.json /root/mfem-stage1/published/offline.json
+968bf7aafe7562d5bd0a7b41c4f2b362a1de463725834fcd540798ca0ab8cf7a  evidence/stage1/verifier-after.json
+968bf7aafe7562d5bd0a7b41c4f2b362a1de463725834fcd540798ca0ab8cf7a  /root/mfem-stage1/published/offline.json
+
+WSL2 Stage 0 canonical manifests vs fresh Stage 1 canonical manifests
+31 identical study identities, 158 identical finite float64 L2/H1 values across all attempts
+Changed diagnostic lists: {"fault_early_stop_lie": [["CONVERGENCE_ORDER_OUT_OF_BAND", "REFERENCE_MISMATCH"], ["CG_RECORD_INCONSISTENT", "CONVERGENCE_ORDER_OUT_OF_BAND", "REFERENCE_MISMATCH"]]}

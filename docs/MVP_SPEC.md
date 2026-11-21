@@ -94,10 +94,14 @@ Terminal codes: `INVALID_SPEC`, `MMS_INCONSISTENT`, `INVALID_EXPRESSION`, `MFEM_
 | Solver claims match frozen spec (n, p, mesh, BC sets, expressions, assembly, solver, iteration cap, relative tolerance) | `CLAIM_SPEC_MISMATCH` | exact, allowing the documented expression whitespace | binds the computation to the requested configuration |
 | Recorded process completed at the requested level | `SOLVER_EXIT` | zero exit and no timeout | required for controller runs and archive replay |
 | Solver reported convergence | `SOLVER_NOT_CONVERGED` | true | necessary, never sufficient |
+| Native CG iteration and stopping record | `CG_RECORD_INCONSISTENT` | integer iterations within the requested budget, zero requested absolute tolerance, finite nonnegative norms | A convergence claim requires the final norm to meet the relative stopping threshold. One floating-point step accounts for reporting the square roots of MFEM's squared norms. |
+| Native RHS and error quadrature declarations | `QUADRATURE_CLAIM_MISMATCH` | both integers equal to $2p+4$ | the integration rule specified by the supported C++ producer |
 | Artifacts present, parseable, ids contiguous | `MISSING_ARTIFACT` / `MALFORMED_ARTIFACT` | — | |
 | All nodal values finite | `NON_FINITE_SOLUTION` | — | |
 | Global-dof coordinates agree across elements | `MALFORMED_ARTIFACT` | $10^{-12}$ | export/numbering consistency |
 | Element count equals $n^2$ (quad) or $2n^2$ (tri) | `MESH_MISMATCH` | exact | |
+| Every Cartesian cell has one quadrilateral with cyclic edges or two complementary triangles | `MESH_MISMATCH` | complete coverage with vertex tolerance $10^{-12}$ | permits either triangle diagonal and consistent numbering changes |
+| P1/P2 global nodes cover the requested Cartesian lattice bijectively | `MESH_MISMATCH` | coordinate tolerance $10^{-12}$ | checks each requested physical node location |
 | Geometry matches the requested type and reported/exported DOF counts equal $(np+1)^2$ | `MESH_MISMATCH` | exact | dimension of the supported conforming Cartesian spaces |
 | Mesh boundary attributes = declared attributes | `BOUNDARY_COVERAGE` | exact | no silent natural BC |
 | Every segment of attribute *a* lies on the side declared for *a* | `BOUNDARY_LABEL_MISMATCH` | $10^{-12}$ | catches label swaps |

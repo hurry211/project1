@@ -1,6 +1,6 @@
 # Codex development handoff — MFEM Scientific Computing Agent
 
-The 2026-11-20 Stage 0 reproduction and build instructions are recorded in [implementation status](docs/IMPLEMENTATION_STATUS.md) and [experimental results](docs/RESULTS.md). The next development milestone is Stage 1 verifier robustness.
+Stage 0 and Stage 1 were completed on 2026-11-20. The original 31 studies reproduced their historical decisions. In Stage 1 the repaired verifier rejected all 98 fixed-panel and 64 sampled numerical faults and accepted all 46 clean numerical controls. The next milestone starts with a reviewed registry for the two existing manufactured cases. [Implementation status](docs/IMPLEMENTATION_STATUS.md) · [Verifier challenge and trust boundaries](docs/VERIFIER_CHALLENGE.md)
 
 ## Project goal
 
@@ -34,6 +34,8 @@ Turn the **existing** deterministic, verified MFEM Poisson vertical slice into a
 - Keep failing cases as named regression tests.
 
 **Acceptance:** evidence-based verifier metrics with known test-generation rules and machine-readable test outputs, and no regression in the original Poisson benchmarks.
+
+The published challenge includes both verifier revisions, externally pinned control archives, independently recomputed clean labels and a separate calibration of the reference checker. [Results and reproducible commands](docs/VERIFIER_CHALLENGE.md)
 
 ## Stage 2 — Make the mathematical scope extensible
 

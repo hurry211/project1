@@ -54,6 +54,13 @@ The MFEM source pin is `d964264cdb9a13e94a201b6c236c7721e0c8765f`. The build scr
 
 GitHub Actions runs Python unit tests and a separate clean MFEM source build on Ubuntu 24.04. The native job uses `-m mfem --require-mfem`, which fails immediately if the solver is missing. Plain `python -m pytest -q` keeps the original developer behavior and lists the reason for each skipped integration test.
 
+The native CI job also runs a 284-trial verifier challenge and 14 deliberate reference-checker mutations. To run it locally, use a new control directory for each fresh native capture. Retained archives support Python-only replay of the same inputs. [Design, measured error rates and replay instructions](docs/VERIFIER_CHALLENGE.md)
+
+```bash
+python -m pip install --require-hashes --only-binary=:all: -r requirements-challenge.lock
+python -m benchmarks.robustness --generate-controls runs/challenge-controls --report runs/challenge.json
+```
+
 ```bash
 ./scripts/run_ex1_baseline.sh
 python -m sciagent run specs/poisson_sin_sin_p1_tri.json

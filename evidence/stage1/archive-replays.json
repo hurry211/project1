@@ -1,0 +1,328 @@
+{
+  "stage0": {
+    "counts": {
+      "RETRY_ELIGIBLE": 5,
+      "ACCEPTED": 8,
+      "REJECTED": 9
+    },
+    "attempts": [
+      {
+        "run": "20261120T164409738030Z_budget_demo_sin_sin_p1_tri",
+        "attempt": "attempt_01",
+        "manifest_sha256": "0811061faab1eac5ced06bb6759d497772edaf2b82ba2ed69ebe0e9c24cb2f9c",
+        "verdict": "RETRY_ELIGIBLE",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164409738030Z_budget_demo_sin_sin_p1_tri",
+        "attempt": "attempt_02",
+        "manifest_sha256": "0811061faab1eac5ced06bb6759d497772edaf2b82ba2ed69ebe0e9c24cb2f9c",
+        "verdict": "RETRY_ELIGIBLE",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164417826860Z_poisson_cos_exp_mixed_p1_quad",
+        "attempt": "attempt_01",
+        "manifest_sha256": "4cfe683baddd24c8ffa3620c765cb49679b64aeef534026be70d02859c7b922c",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164423108119Z_poisson_cos_exp_mixed_p1_quad_pa",
+        "attempt": "attempt_01",
+        "manifest_sha256": "37009b29c34b02057c7d26baf8da3975874adc28e99c979341fb43a3f3b313a9",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164428823945Z_poisson_cos_exp_mixed_p2_quad",
+        "attempt": "attempt_01",
+        "manifest_sha256": "44ce496c919a57a1400993860a9e38ea654a40170d8c8d71ad89351b1531291f",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164434177931Z_poisson_cos_exp_mixed_p2_quad_pa",
+        "attempt": "attempt_01",
+        "manifest_sha256": "3b6c999e4f80bc48aec0f42a2ee93093e464643be3a120e76464afdb195d4e12",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164439372420Z_poisson_sin_sin_p1_tri",
+        "attempt": "attempt_01",
+        "manifest_sha256": "edfd7c6b0891f120ce96bedb5b7a735ebc598189b0075298a738f9ac2bce71e5",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164445154933Z_poisson_sin_sin_p1_tri_jacobi",
+        "attempt": "attempt_01",
+        "manifest_sha256": "b216b26554b63b55806599c65509734070677e00b3c38c1ec0ea5f8d4babce28",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164449994795Z_poisson_sin_sin_p2_tri",
+        "attempt": "attempt_01",
+        "manifest_sha256": "6be8e62058fe291cc3024c096e556eb68029dad54db2457e88a5bfc91e0fbbff",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164455166724Z_retry_demo_sin_sin_p1_tri",
+        "attempt": "attempt_01",
+        "manifest_sha256": "32cebf0363176a4bbc10b2c295c67319d922b6990a54e311d1bbab16614eefa4",
+        "verdict": "RETRY_ELIGIBLE",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164455166724Z_retry_demo_sin_sin_p1_tri",
+        "attempt": "attempt_02",
+        "manifest_sha256": "32cebf0363176a4bbc10b2c295c67319d922b6990a54e311d1bbab16614eefa4",
+        "verdict": "RETRY_ELIGIBLE",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164455166724Z_retry_demo_sin_sin_p1_tri",
+        "attempt": "attempt_03",
+        "manifest_sha256": "32cebf0363176a4bbc10b2c295c67319d922b6990a54e311d1bbab16614eefa4",
+        "verdict": "RETRY_ELIGIBLE",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164455166724Z_retry_demo_sin_sin_p1_tri",
+        "attempt": "attempt_04",
+        "manifest_sha256": "32cebf0363176a4bbc10b2c295c67319d922b6990a54e311d1bbab16614eefa4",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164515252526Z_fault_drop_dirichlet_attr",
+        "attempt": "attempt_01",
+        "manifest_sha256": "22293f67621d4768a0f112b37c97c32300c60c8f66073c1ead9b6da7ab835966",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164520179512Z_fault_early_stop_lie",
+        "attempt": "attempt_01",
+        "manifest_sha256": "c06ad321c189b3a135cf11ef08a84502336bdfe389f39b44d4354ae4ca408e5c",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164525353065Z_fault_nan_value",
+        "attempt": "attempt_01",
+        "manifest_sha256": "335bae6089bb940ca82843425437e5655ff85900c11a1352d187f89a03bd40b3",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164530097298Z_fault_self_report_lie",
+        "attempt": "attempt_01",
+        "manifest_sha256": "f64a706472048a060e181abfcc56086a3678487f6ef41205b35d8d1327c1dde8",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164535514747Z_fault_wrong_source",
+        "attempt": "attempt_01",
+        "manifest_sha256": "cae69a6bb00b85b02e923f506dea581e28b5f7cf6a34ca5afd800a67a8b3ecea",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164544353198Z_preasymptotic_strict_band",
+        "attempt": "attempt_01",
+        "manifest_sha256": "c447f709373a1a4a1400d8819181a2848945994a9e265a3d5b5213bf0e066fa6",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164548808775Z_strict_band_resolved",
+        "attempt": "attempt_01",
+        "manifest_sha256": "7d68d75daf8eb272b9192a9cdebd35cd7f36f4a615dfa61ef60334a6e2239c77",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164552645911Z_swapped_boundary_labels",
+        "attempt": "attempt_01",
+        "manifest_sha256": "9bd5a182657bc83ea52e15413d0453f84ae55916efe2e5a5d25d49ced08d2633",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261120T164557517147Z_unassigned_mesh_attribute",
+        "attempt": "attempt_01",
+        "manifest_sha256": "bbcad746000c955fdce0f0d0aa60b9bd3f586e93114308fc630be372522695c9",
+        "verdict": "REJECTED",
+        "integrity": true
+      }
+    ]
+  },
+  "stage1": {
+    "counts": {
+      "RETRY_ELIGIBLE": 5,
+      "ACCEPTED": 8,
+      "REJECTED": 9
+    },
+    "attempts": [
+      {
+        "run": "20261121T025425344166Z_budget_demo_sin_sin_p1_tri",
+        "attempt": "attempt_01",
+        "manifest_sha256": "c3d3205138964dbab8f2d2f3964a478c8009c1f6e8874889b17d3278bb16e59b",
+        "verdict": "RETRY_ELIGIBLE",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025425344166Z_budget_demo_sin_sin_p1_tri",
+        "attempt": "attempt_02",
+        "manifest_sha256": "c3d3205138964dbab8f2d2f3964a478c8009c1f6e8874889b17d3278bb16e59b",
+        "verdict": "RETRY_ELIGIBLE",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025427070546Z_poisson_cos_exp_mixed_p1_quad",
+        "attempt": "attempt_01",
+        "manifest_sha256": "baf811492fd02aac69ef2944b82923722fda40557efe8a67175662c03f212552",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025428884681Z_poisson_cos_exp_mixed_p1_quad_pa",
+        "attempt": "attempt_01",
+        "manifest_sha256": "c3c2c2aaf4f0429249a930cb33d4e03f508a1dd7d54210c3a2cdad802f653d86",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025430735423Z_poisson_cos_exp_mixed_p2_quad",
+        "attempt": "attempt_01",
+        "manifest_sha256": "81d777557014a1cb449c4de367b870404dc68c5ac1b9da55ac3a2bd1c98c21eb",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025432205698Z_poisson_cos_exp_mixed_p2_quad_pa",
+        "attempt": "attempt_01",
+        "manifest_sha256": "bd811ace4cb737ae3853ce6a12429bb3a535052e819bbad7b2e399d5dde9ac10",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025433898765Z_poisson_sin_sin_p1_tri",
+        "attempt": "attempt_01",
+        "manifest_sha256": "9aa7fcf70342ee2e58888d4191bb118b1bc12c6bdfea19baf59ad92fdc73cf30",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025435690360Z_poisson_sin_sin_p1_tri_jacobi",
+        "attempt": "attempt_01",
+        "manifest_sha256": "118a0f10f9c7ceba60155b5a9eee4dd7eb8a159a0d03e061b0952c78d528492d",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025437369662Z_poisson_sin_sin_p2_tri",
+        "attempt": "attempt_01",
+        "manifest_sha256": "498e97044cdeae2b8a0366b40469caef1bde9e7e0923880b2461d1fa21d42354",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025438976841Z_retry_demo_sin_sin_p1_tri",
+        "attempt": "attempt_01",
+        "manifest_sha256": "83bb21150c9ba75ed67d04597b3d681d6de225e9ed6e6777657ddd69cc435dcc",
+        "verdict": "RETRY_ELIGIBLE",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025438976841Z_retry_demo_sin_sin_p1_tri",
+        "attempt": "attempt_02",
+        "manifest_sha256": "83bb21150c9ba75ed67d04597b3d681d6de225e9ed6e6777657ddd69cc435dcc",
+        "verdict": "RETRY_ELIGIBLE",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025438976841Z_retry_demo_sin_sin_p1_tri",
+        "attempt": "attempt_03",
+        "manifest_sha256": "83bb21150c9ba75ed67d04597b3d681d6de225e9ed6e6777657ddd69cc435dcc",
+        "verdict": "RETRY_ELIGIBLE",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025438976841Z_retry_demo_sin_sin_p1_tri",
+        "attempt": "attempt_04",
+        "manifest_sha256": "83bb21150c9ba75ed67d04597b3d681d6de225e9ed6e6777657ddd69cc435dcc",
+        "verdict": "ACCEPTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025443699112Z_fault_drop_dirichlet_attr",
+        "attempt": "attempt_01",
+        "manifest_sha256": "3d8d4fee71815734063fd78eed0dcd67dde66198d0b71070ca957b2c985faac0",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025445718468Z_fault_early_stop_lie",
+        "attempt": "attempt_01",
+        "manifest_sha256": "b9c5e04c61d6c9a0dd449870a490d16de4c2552240abe1a7cf4bf986ad32503b",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025447451831Z_fault_nan_value",
+        "attempt": "attempt_01",
+        "manifest_sha256": "67a121913e393b0a23535beb9a5d670db9ee04f3d284f468bcb2c430993136f5",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025448983350Z_fault_self_report_lie",
+        "attempt": "attempt_01",
+        "manifest_sha256": "6c4a1864d952bffb06d2259c1e4dc17fb20c231428f400d144dfbbdc776160ce",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025450656410Z_fault_wrong_source",
+        "attempt": "attempt_01",
+        "manifest_sha256": "e6b4d9eb081d794ab30bd66bbbd05ca272dee05ed521ba7944697ce13c6d7f5a",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025456115167Z_preasymptotic_strict_band",
+        "attempt": "attempt_01",
+        "manifest_sha256": "3180dd595a1a47cbbfaf38259c504e11cb19c326f24fe7f94737488c533ec805",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025457452081Z_strict_band_resolved",
+        "attempt": "attempt_01",
+        "manifest_sha256": "596a209f20d9a85ff7af30eadb5d8a97d6d6979170c5c20ac4ece1d45f824aa4",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025458853662Z_swapped_boundary_labels",
+        "attempt": "attempt_01",
+        "manifest_sha256": "9df8a4b6eba7fd191d2160f4a2b70b1d7c90ea5052e1088048e3d5b95e57b86c",
+        "verdict": "REJECTED",
+        "integrity": true
+      },
+      {
+        "run": "20261121T025500566902Z_unassigned_mesh_attribute",
+        "attempt": "attempt_01",
+        "manifest_sha256": "dcf2f062a7171d976eb5c826d4d82296bc9fa9895cc69d22b61cfd4281d06bc5",
+        "verdict": "REJECTED",
+        "integrity": true
+      }
+    ]
+  }
+}

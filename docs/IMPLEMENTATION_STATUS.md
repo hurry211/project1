@@ -1,5 +1,15 @@
 # Implementation Status
 
+## Stage 1 handoff, 2026-11-20
+
+Verifier 0.3.0 checks the native integration-order fields and the consistency of the CG stopping record. It checks the Cartesian partition in the interior, complementary triangles and the complete P1/P2 node lattice. Native numerical regressions and geometry tests cover the newly rejected inputs. The solver, manufactured functions, validation defaults and seven supported configurations retain their Stage 0 implementation. [Verifier changes](../verifier/verifier.py) · [Mesh implementation](../verifier/fem.py) · [Acceptance contract](MVP_SPEC.md)
+
+The optional challenge package regenerates the seven control meshes using scikit-fem and compares all 21 levels to a separately assembled solution and analytic error integrals. Both verifier revisions were scored on byte-identical native inputs. The challenge is part of the native GitHub Actions job, which retains its JSON report as an artifact. The local environment ran 151 tests with zero skips and replayed the saved Stage 0 and Stage 1 canonical attempts. [Measured results](RESULTS.md) · [Generation rules and trust boundaries](VERIFIER_CHALLENGE.md)
+
+The private-repository evidence release contains the full WSL2 control bundle and the independently generated GitHub Actions report. The bundle digest and both local scored reports are versioned. The local run directories are under `/root/mfem-stage1` in the `Ubuntu` WSL2 distribution. [Bundle checksum](../evidence/stage1/controls.sha256) · [Evidence release](https://github.com/rodriguezrobertbfrkx6857-sudo/project/releases/tag/stage1-verifier-2026-11-20)
+
+The next low-risk Stage 2 step is to register the two current manufactured solutions through a reviewed case registry and demonstrate numerical parity for all 31 requests. A new PDE or mesh family will need its own independent construction, boundary tests and convergence evidence. The live SciPy reference solve still runs in the controller process and has a DOF cap. A separately enforced time and memory budget remains open.
+
 ## Stage 0 handoff, 2026-11-20
 
 The independent reproduction started at `34d3d66`. The original suite passed on a new MFEM source build. The updated suite exercises the same two manufactured solutions, seven supported configurations, numerical thresholds and bounded refinement studies. The original implementation record follows this section.
@@ -30,7 +40,7 @@ python -m sciagent quickstart
 
 **Hosted reproduction.** The initial push exposed a YAML parsing error in the pip install step. Commit `9573a56` fixed the command scalar. Both jobs then passed on Ubuntu 24.04. The hosted MFEM source build took 18 min 58 s, and the hosted quickstart reproduced the WSL2 finest-pair orders under Python 3.12.16. [Successful GitHub Actions run](https://github.com/rodriguezrobertbfrkx6857-sudo/project/actions/runs/44776289242)
 
-**Next milestone.** Begin Stage 1 with clean-positive controls and independent mesh-connectivity, quadrature and reference-assembly mutations. Record which gates fire, the number of trials per configuration, false accepts and false rejects. The current deterministic regression set has no population-level error-rate estimate.
+**Follow-up.** The Stage 1 challenge above measures the false-accept and false-reject rates under a declared sampling distribution.
 
 ## Original Claude implementation record
 
