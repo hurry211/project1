@@ -56,6 +56,11 @@ jobs:
       - run: ./scripts/build_solver.sh
       - run: python -m pytest -q -m mfem --require-mfem
       - run: python -m sciagent quickstart
+      - name: Verify the candidate-to-solver path and replay its evidence
+        run: |
+          python -m sciagent plan specs/stage4/choose_diffusion.json --directory runs/planner-smoke --execute > runs/planner-receipt.json
+          digest="$(python -c "import json; print(json.load(open('runs/planner-receipt.json'))['manifest_sha256'])")"
+          python -m sciagent verify-plan runs/planner-smoke --manifest-sha256 "$digest"
       - name: Verify generated and Gmsh scalar studies against scikit-fem
         run: python -m benchmarks.stage2 --directory runs/stage2 --report runs/stage2.json
       - name: Challenge the verifier on independently certified MFEM controls

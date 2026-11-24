@@ -37,13 +37,19 @@ def _new_run_dir(runs_dir: Path, label: str) -> Path:
     return Path(runs_dir) / f"{stamp}_{label}"
 
 
-def run_study(spec_path: str | Path, runs_dir: str | Path = "runs") -> dict:
+def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
+              expected_spec_sha256: str | None = None) -> dict:
     spec_path = Path(spec_path)
-    raw = spec_path.read_text()
+    received = spec_path.read_bytes()
+    raw = received.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
     label = spec_path.stem[:60]
     store = EvidenceStore(_new_run_dir(Path(runs_dir), label))
-    store.write_once("request/study_spec.json", raw)
-    store.event("RECEIVED", spec_file=str(spec_path), sha256=hashlib.sha256(raw.encode()).hexdigest())
+    # Preserve historical text archives. A planner pin covers the exact bytes
+    # consumed at this boundary, including the original line endings.
+    archived = received if expected_spec_sha256 is not None else raw.encode("utf-8")
+    store.write_bytes_once("request/study_spec.json", archived)
+    input_digest = hashlib.sha256(archived).hexdigest()
+    store.event("RECEIVED", spec_file=str(spec_path), sha256=input_digest)
     started = time.monotonic()
     manifest: dict = {"run_dir": str(store.run_dir), "spec_file": str(spec_path),
                       "started_utc": utc_now(), "attempts": []}
@@ -54,6 +60,9 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs") -> dict:
                          "finished_utc": utc_now(), "total_wall_seconds": round(time.monotonic() - started, 3)})
         store.finish_manifest(manifest)
         return manifest
+
+    if expected_spec_sha256 is not None and input_digest != expected_spec_sha256:
+        return finish("FAILED", "SPEC_TAMPERED", "received study text differs from the approved template")
 
     # ---- SPEC_VALIDATED -----------------------------------------------------
     try:

@@ -1,0 +1,6 @@
+{
+  "case": "sin_sin",
+  "mesh_type": "tri",
+  "polynomial_order": 1,
+  "description": "Prefer diagonal Jacobi preconditioning for this comparison."
+}
