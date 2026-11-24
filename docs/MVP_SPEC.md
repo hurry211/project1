@@ -46,6 +46,7 @@ Compiled manufactured cases (`cpp/manufactured_cases.hpp`):
 | Events | controller | append-only JSON lines | `events.jsonl` |
 | Manifest | controller | written once at termination with a relative-path SHA-256 inventory of all run artifacts | `manifest.json` |
 | Manifest digest | controller | checksum of the complete manifest bytes | `manifest.sha256` |
+| Compiled case registry | controller | snapshot of the solver catalog used for case binding, covered by the manifest inventory | `case_registry.json` |
 
 Schema definitions are in `sciagent/spec.py` (pydantic v2, `frozen=True`, `extra="forbid"`).
 
@@ -64,6 +65,21 @@ Schema definitions are in `sciagent/spec.py` (pydantic v2, `frozen=True`, `extra
 Solver exit codes are 0 for success, 2 for invalid arguments, 3 for a boundary-coverage error, 4 for an unsupported combination, 5 for CG non-convergence, 6 for a non-finite solution and 7 for an artifact write or close failure.
 
 Completed-run replay checks the archive inventory, the saved decision and the recomputed numerical verdict. The frozen models must agree with the original request. Each execution must match the initial execution plus the number of level doublings authorized by preceding retry decisions. An archive mismatch yields `REJECTED / EVIDENCE_INTEGRITY`. A caller can supply a separately saved manifest SHA-256 to detect coordinated changes to the archive and its local checksum. Historical 0.1.0 runs have verifier-input and frozen-model hashes with narrower coverage.
+
+### Native diagnostics
+
+The version-1 compiled catalog lists the common equation, domain, scalar H¹ space, diffusion integrator and essential/natural trace definitions alongside the case entries. The controller records the selected case ID in the run manifest. `StudySpec` retains its v0.2 representation. The independent verifier evaluates the expressions in the frozen request.
+
+The native `result.json` object `diagnostics` has `schema_version: 1`. These solver measurements carry no acceptance thresholds.
+
+| Field | Measurement |
+|---|---|
+| `algebraic_residual.absolute_l2` | Euclidean norm of `A X − B` after CG, using the actual constrained MFEM operator and vectors returned by `FormLinearSystem`. The operator is applied in both full and partial assembly. |
+| `algebraic_residual.rhs_l2`, `relative_l2` | Euclidean norm of `B` and the ratio of the absolute residual to that norm. For a zero RHS the absolute norm remains available and the ratio is JSON `null`. CG's preconditioned initial and final norms remain separate fields. |
+| `boundary_flux.outward_by_side`, `outward_total` | The signed integral of `−grad(u_h)·n` on each exterior side (bottom, right, top, left) and their sum. Gradients are taken from adjacent elements. |
+| `boundary_flux.source_integral`, `signed_imbalance` | The volume integral of the RHS coefficient used in assembly, including a deliberately scaled source in fault tests. The imbalance is the outward total minus this volume integral. No normalization is required for a cancelling source. |
+
+A nonfinite exported field yields `null` fluxes and imbalance. The source integral is still recorded. The algebraic residual precedes field recovery and any injected export corruption. For conforming H¹ fields the gradient flux generally has discretization error. An accurately solved incorrect RHS can also yield a small native residual. Scientific acceptance continues to use the independent checks in Section 6. Older archives can be replayed without the catalog snapshot or diagnostic fields.
 
 ## 4. State machine
 

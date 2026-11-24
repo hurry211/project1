@@ -1,5 +1,13 @@
 # Implementation Status
 
+## Stage 2, first increment, 2026-11-23
+
+The existing C++ function registry now publishes a version-1 formulation descriptor. Python checks that its equation, domain, space, integrator and trace semantics match the supported adapter before binding an expression pair. Case IDs and normalized formula pairs must be unique. Historical binaries can still advertise their original formula-only catalogs. A run saves the catalog used for binding alongside the frozen inputs and inventories its hash. [Native definitions](../cpp/manufactured_cases.hpp) · [Adapter](../sciagent/mfem_runner.py) · [Observed catalog](../evidence/stage2-registry/validation.json)
+
+The real solver records unpreconditioned residual and outward boundary-flux measurements for full and partial assembly. The archived raw record includes per-side fluxes and the generated study report includes totals for accepted studies. The reporting layer also processed the 31 original Stage 1 archives. Both boundary-flux imbalance and the residual are diagnostics. New tolerances would require separate calibration. [Contract and zero-RHS convention](MVP_SPEC.md#native-diagnostics) · [Direct and independent-integral tests](../tests/test_native_diagnostics.py)
+
+The next increment can introduce one positive scalar coefficient on the unit square, preserving the existing v0.2 requests. It needs an explicit coefficient in the new formulation, an independently derived manufactured load and boundary term, plus a fault that drops the coefficient-gradient contribution. [Numerical regression results](RESULTS.md)
+
 ## Stage 1 handoff, 2026-11-20
 
 Verifier 0.3.0 checks the native integration-order fields and the consistency of the CG stopping record. It checks the Cartesian partition in the interior, complementary triangles and the complete P1/P2 node lattice. Native numerical regressions and geometry tests cover the newly rejected inputs. The solver, manufactured functions, validation defaults and seven supported configurations retain their Stage 0 implementation. [Verifier changes](../verifier/verifier.py) · [Mesh implementation](../verifier/fem.py) · [Acceptance contract](MVP_SPEC.md)

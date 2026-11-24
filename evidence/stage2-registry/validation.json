@@ -1,0 +1,149 @@
+{
+  "code_commit": "eca008f",
+  "baseline_commit": "52fed54",
+  "environment": {
+    "python": "3.12.3",
+    "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "cmake": "cmake version 3.28.3",
+    "mfem": "4.10.0",
+    "solver_available": true
+  },
+  "raw_directory": "/root/mfem-stage2-registry-Plx3ck",
+  "solver_sha256": "9e169a852129cec4cf746bdc52781aab319d5ba65f0bd0f37e5c9b2e30362336",
+  "pytest": "167 passed in 94.66s (0:01:34)",
+  "quickstart": {
+    "tools": {
+      "python": "3.12.3",
+      "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "cmake": "cmake version 3.28.3",
+      "mfem": "4.10.0",
+      "solver_available": true
+    },
+    "run_dir": "/root/mfem-stage2-registry-Plx3ck/quickstart/20261124T035957542682Z_poisson_sin_sin_p1_tri",
+    "state": "ACCEPTED",
+    "code": "OK",
+    "reason": "numerical (code) verification passed for this manufactured-solution benchmark",
+    "manifest_sha256": "33af38d20527e9924070734874e3862dab1ea0e1d447358461eb6b2fe574a4f7",
+    "attempt_dir": "/root/mfem-stage2-registry-Plx3ck/quickstart/20261124T035957542682Z_poisson_sin_sin_p1_tri/attempts/attempt_01",
+    "replay": "ACCEPTED",
+    "integrity": {
+      "mode": "sha256-inventory",
+      "passed": true
+    },
+    "finest_orders": {
+      "n_coarse": 32,
+      "n_fine": 64,
+      "l2_order": 1.9983631008284015,
+      "h1_semi_order": 0.999311941962252
+    }
+  },
+  "catalog": {
+    "mfem_version": "MFEM v4.10.0 (release)",
+    "registry_version": 1,
+    "formulation": {
+      "equation": "-laplacian(u) = f",
+      "domain": "unit_square_2d",
+      "space": "scalar_H1",
+      "bilinear_integrator": "DiffusionIntegrator",
+      "dirichlet_trace": "u_exact",
+      "neumann_trace": "grad(u_exact).n"
+    },
+    "cases": [
+      {
+        "id": "sin_sin",
+        "exact_solution": "sin(pi*x)*sin(pi*y)",
+        "source": "2*pi**2*sin(pi*x)*sin(pi*y)"
+      },
+      {
+        "id": "cos_exp",
+        "exact_solution": "cos(pi*x)*exp(y)",
+        "source": "(pi**2 - 1)*cos(pi*x)*exp(y)"
+      }
+    ]
+  },
+  "challenge": {
+    "metrics_equal_to_stage1": true,
+    "matched_trial_verdicts_and_gates": 284,
+    "incorrect_reference_checks_detected": 14,
+    "metrics": {
+      "panel": {
+        "numerical_fault": {
+          "n": 98,
+          "verdicts": {
+            "REJECTED": 98
+          }
+        },
+        "numerical_clean": {
+          "n": 14,
+          "verdicts": {
+            "ACCEPTED": 14
+          }
+        },
+        "archive_fault": {
+          "n": 21,
+          "verdicts": {
+            "REJECTED": 21
+          }
+        },
+        "archive_clean": {
+          "n": 7,
+          "verdicts": {
+            "ACCEPTED": 7
+          }
+        }
+      },
+      "iid": {
+        "numerical_fault": {
+          "n": 64,
+          "verdicts": {
+            "REJECTED": 64
+          }
+        },
+        "numerical_clean": {
+          "n": 32,
+          "verdicts": {
+            "ACCEPTED": 32
+          }
+        },
+        "archive_fault": {
+          "n": 32,
+          "verdicts": {
+            "REJECTED": 32
+          }
+        },
+        "archive_clean": {
+          "n": 16,
+          "verdicts": {
+            "ACCEPTED": 16
+          }
+        }
+      }
+    }
+  },
+  "comparison_to_imported_studies": {
+    "accepted_final_norm_values": 68,
+    "expected_studies": 31,
+    "max_relative_norm_difference": 1.1793946007066676e-13,
+    "mismatches": [],
+    "missing": [],
+    "observed_studies": 31,
+    "states": {
+      "ACCEPTED": 8,
+      "BLOCKED": 2,
+      "BUDGET_EXHAUSTED": 1,
+      "FAILED": 13,
+      "INVALID_SPEC": 7
+    }
+  },
+  "raw_sha256": {
+    "registry.json": "dddcb7c63b4da7672b78079e739853b970e4a2052791f4e53da832eb00b505c1",
+    "build.log": "2715c08a2494a368e944c9f42bc3d48d9ecb3227e4779bd04130876723fe10b6",
+    "pytest.txt": "eb52b4350b30a0eb61d7f29e7ea1abc0db55b58c7d48430011442093965b8a35",
+    "canonical-comparison.json": "e54ce14dd79dfd322fb57944f864ec4d0fcb4e2f08e260d884ee350b08852d0d",
+    "parity.json": "474e0e3f74bce480931280cca40c5ff0e24f8162cbe7d30bfc2fba5e280cacbb",
+    "quickstart.json": "6f18a02591f1272d7fc7caba7c9719f27cb82e680c9f19c9d87ac24fa26a1f60",
+    "challenge.json": "e7ff9e62a813563731a6f1ef4b267618e6d92e03daa74aafae6c187121768277",
+    "studies.md": "daf589acbb718bb3e8aec08c1061db3f6cfe299ef0e0750fdc8ecaeaa37d0407",
+    "original-report.md": "62d98a2aa8f2c9b90a8f7b4587cbebf44db19d1b0e26c814f51beecf8b495252"
+  }
+}

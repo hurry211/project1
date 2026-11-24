@@ -1,5 +1,20 @@
 # Numerical results
 
+## Stage 2 registry and native diagnostics, 2026-11-23
+
+The WSL2 Ubuntu 24.04 configuration rebuilt the C++ driver against the pinned double-precision serial MFEM 4.10 installation. **167 tests passed with zero skips** on code commit `eca008f`. The P1 quickstart and its digest-checked replay both returned `ACCEPTED`. The fresh 284-trial verifier challenge matched the previous per-trial decisions and gate results, and all 14 deliberate reference-checker mutations were detected. [Local validation record](../evidence/stage2-registry/validation.json)
+
+Two comparisons used the full 31-request demo. Against the imported results, all study decisions matched and the largest relative difference in the 68 accepted L2/H1 errors was `1.18e-13`. Against the retained Stage 1 WSL2 runs, all final states, codes, frozen hashes, attempt verdicts, failure codes and 158 available L2/H1 error values matched exactly. All 83 native level results preserved their original non-timing fields, and the six mesh/field export files were byte-identical at every such level. The independent verifier replayed 22 historical and 22 fresh attempts with passing archive integrity. [Paired archives and diagnostics](../evidence/stage2-registry/parity.json)
+
+| Measurement | Result |
+|---|---|
+| Native residual on seven positive configurations, four levels each | Three of 28 unpreconditioned ratios exceeded the CG relative tolerance of `1e-12`. The largest was `1.4011e-12`. All seven studies passed the existing criteria. |
+| P1 sine study on 64 cells per side | Outward gradient flux `7.99357660`, integrated volume source `8.00000000`, signed imbalance `−0.00642340`. |
+| Early-stop fault and wrong-source fault at eight cells per side | The true relative residuals were `9.4202e-3` and `3.8546e-13`, respectively. Independent numerical verification rejected both studies. |
+| Nonfinite exported field | Algebraic measurements describe the solved vector before export corruption. Field fluxes and imbalance are JSON `null` and the verifier rejects the field. |
+
+For a fresh run, use the build instructions in the README, then run `python -m pytest -q --require-mfem`, `RUNS_DIR=runs/stage2-demo ./scripts/run_demo.sh` and `python scripts/compare_baseline.py runs/stage2-demo`. Start with an empty output directory. To repeat the exact WSL2 archive comparison, pass the directory of the pinned Stage 1 runs and the fresh directory to [compare_archives.py](../evidence/stage2-registry/compare_archives.py). The validation record includes the binary hash and location of the local raw reports.
+
 ## Stage 1 verifier challenge, 2026-11-20
 
 The baseline verifier accepted 28/98 fixed numerical faults and 17/64 seeded draws. Four fault families accounted for every false accept. After fixing the Cartesian geometry and native CG and quadrature checks, the verifier rejected all 162 numerical fault trials. All 46 independently certified clean numerical trials passed. For the 64 sampled faults the two-sided exact 95% upper bound on the false-accept rate is 5.60% under the declared generator. All 53 archive faults were rejected and all 23 clean archive trials passed. Fourteen additional calibration trials exposed deliberately incorrect reference assemblies. [Per-gate results, uncertainty and fault witnesses](VERIFIER_CHALLENGE.md)

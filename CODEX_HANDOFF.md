@@ -1,6 +1,6 @@
 # Codex development handoff — MFEM Scientific Computing Agent
 
-Stage 0 and Stage 1 were completed on 2026-11-20. The original 31 studies reproduced their historical decisions. In Stage 1 the repaired verifier rejected all 98 fixed-panel and 64 sampled numerical faults and accepted all 46 clean numerical controls. The next milestone starts with a reviewed registry for the two existing manufactured cases. [Implementation status](docs/IMPLEMENTATION_STATUS.md) · [Verifier challenge and trust boundaries](docs/VERIFIER_CHALLENGE.md)
+Stage 0 and Stage 1 were completed on 2026-11-20. The first Stage 2 increment binds the two existing cases through a versioned formulation catalog and reports native residual and boundary-flux diagnostics. All 31 study decisions and all 83 sets of finite-element exports reproduced on the reference WSL2 environment. The next increment is one manufactured variable-coefficient diffusion problem with independently derived source and boundary data. [Implementation status](docs/IMPLEMENTATION_STATUS.md) · [Stage 2 parity evidence](evidence/stage2-registry/parity.json)
 
 ## Project goal
 

@@ -20,7 +20,7 @@ The reproduced configuration uses x86-64 Ubuntu 24.04, CPython 3.12, GCC 13, CMa
 
 ## Reproduce
 
-With GitHub access to this private repository, clone it inside Ubuntu. For an existing checkout, start at the directory containing this README.
+Clone the public repository inside Ubuntu. For an existing checkout, start at the directory containing this README.
 
 ```bash
 sudo apt-get update
@@ -70,6 +70,8 @@ python scripts/compare_baseline.py runs/demo
 ```
 
 The demo includes expected rejections and one exhausted retry budget. Use an empty demo directory for the historical comparison. It checks the 31 studies, frozen inputs, attempt decisions and original failure codes, and reports the relative difference in accepted error norms. `python -m sciagent env`, `cases` and `matrix` expose environment details, compiled manufactured cases and the capability matrix.
+
+`python -m sciagent cases` shows the formulation, boundary traces and manufactured expressions compiled into the binary. Runs that reach case binding save this catalog in `case_registry.json`. Each new native level's `result.json` includes the true algebraic residual of the constrained system and integrated outward flux on all four sides. The generated Markdown report shows their totals for accepted studies. Use these measurements to investigate solver accuracy and flux convergence. The independent reference solve and frozen convergence criteria still determine acceptance. [Field definitions](docs/MVP_SPEC.md#native-diagnostics)
 
 ## Layout
 
