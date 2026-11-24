@@ -1,6 +1,6 @@
 # Codex development handoff — MFEM Scientific Computing Agent
 
-Stages 0 and 1 were completed on 2026-11-20, Stage 2 on 2026-11-23, and Stage 3 locally on 2026-11-24. The scalar matrix covers 42 verified serial studies. The paired MPI workflow adds one P1 Poisson case on 1, 2 and 4 ranks with numerical gates before performance measurement. The 31 historical studies retain their original decisions. The next planned milestone is a candidate-only planner bounded to reviewed configurations. [Implementation status](docs/IMPLEMENTATION_STATUS.md) · [Serial matrix](evidence/stage2/coverage.json) · [Parallel results](evidence/stage3/results.json)
+All five stages of this handoff have reached their stated acceptance criteria locally. Stages 0 and 1 completed on 2026-11-20, Stage 2 on 2026-11-23, and Stages 3 and 4 on 2026-11-24. Stage 4 restricts the optional local model to nine reviewed serial requests and measures its selections against the rule baseline. The broader research agenda remains a separate planning document. [Implementation status](docs/IMPLEMENTATION_STATUS.md) · [Serial matrix](evidence/stage2/coverage.json) · [Parallel results](evidence/stage3/results.json) · [Planner comparison](docs/RESULTS.md#stage-4-controlled-planning-2026-11-24)
 
 ## Project goal
 

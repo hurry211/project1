@@ -1,12 +1,20 @@
 # Implementation Status
 
+## Completed Stage 4, 2026-11-24
+
+The optional local Ollama provider and the deterministic selection rule use the same reviewed catalog. The user's structured constraints determine eligible template IDs before proposal. Model text only nominates one ID or abstains. The controller checks the approved input digest when consuming it, and numerical acceptance requires an intact child archive and independent replay. A change to physics, validation or budgets takes the human review route. The ordinary serial and MPI commands remain available. [Planner contract and examples](PLANNER.md)
+
+Two live paired campaigns ran on a fixed bilingual panel. Both paths completed all 14 eligible numerical studies in each campaign. The review gate held all five review controls, and the post-proposal gate rejected all four supplemental candidates. Live model choices varied on three tasks across captures. The archives preserve the exact prompt, response, model provenance and the outcome of numerical verification for each decision. [Benchmark protocol](PLANNING_BENCHMARK.md) · [Measured results](RESULTS.md#stage-4-controlled-planning-2026-11-24)
+
+The five handoff stages are complete for the measured configurations. Open research questions include preference generalization beyond this panel, additional finite-element families, and larger parallel workloads. The Stage 4 changes and performance measurements are local. Hosted CI has not run this revision.
+
 ## Completed Stage 3, 2026-11-24
 
 The `mpi-study` entry point runs a matched serial control and a separate P1 triangle MPI executable against the pinned MFEM 4.10.0 revision. The MPI installation uses Open MPI 4.1.6, hypre 2.28.0 and the METIS 5.1.0 partitioner interface. Toolchain checks cover the installed header, MFEM archive, launcher, linked runtime libraries and package versions. The WSL2 build used private development headers and a separate install prefix. [Build profile](MPI_BUILD.md) · [Numerical and archive contract](MPI.md)
 
 All three rank counts passed at 8, 16, 32 and 64 cells per side. Independent checks cover triangle ownership and orientation, shared nodes, boundary edges, the constrained residual, the SciPy field and error norms. Every timed sample passed the same level checks. The single-host timings and transfer/replay evidence accompany the numerical results. A separate manual Actions workflow defines the clean CI reproduction. Hosted CI remains unmeasured for this local revision. [Measurements](RESULTS.md#stage-3-mpi-poisson-2026-11-24) · [Manual CI workflow](../.github/workflows/parallel.yml)
 
-The measured domain is generated triangles, full assembly, one linear scalar equation and up to four ranks on one host. Data for other parallel problems, GPUs and multi-node performance require additional experiments. Stage 4 can begin with a candidate generator that selects these reviewed configurations and passes its requests to the existing deterministic validators.
+The measured parallel domain is generated triangles, full assembly, one linear scalar equation and up to four ranks on one host. Data for other parallel problems, GPUs and multi-node performance require additional experiments.
 
 ## Completed Stage 2, 2026-11-23
 

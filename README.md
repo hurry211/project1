@@ -73,6 +73,10 @@ The demo includes expected rejections and one exhausted retry budget. Use an emp
 
 `python -m sciagent cases` shows the formulation, boundary traces and manufactured expressions compiled into the binary. Runs that reach case binding save this catalog in `case_registry.json`. Each new native level's `result.json` includes the true algebraic residual of the constrained system and integrated outward flux on all four sides. The generated Markdown report shows their totals for accepted studies. Use these measurements to investigate solver accuracy and flux convergence. The independent reference solve and frozen convergence criteria still determine acceptance. [Field definitions](docs/MVP_SPEC.md#native-diagnostics)
 
+## Select a reviewed study
+
+Use `python -m sciagent plan-catalog` to inspect nine pinned serial templates. A task JSON specifies the authorized physics and discretization constraints. The default rule or an optional local language model nominates a template. With `--execute`, the established controller runs it and the independent verifier checks the numerical evidence. [Planning CLI, review decisions and replay](docs/PLANNER.md) · [Rules versus local-model results](docs/RESULTS.md#stage-4-controlled-planning-2026-11-24)
+
 ## Verified MPI Poisson benchmark
 
 The separate Stage 3 MPI workflow verifies the original P1 triangle Poisson benchmark using 1, 2 and 4 processes. Its timing campaign begins after all ranks pass the matched serial comparison and independent SciPy solve at four resolutions. See the parallel guide for the second MFEM build, the `mpi-study` command and digest-checked offline replay. [MPI setup and experiment](docs/MPI.md) · [Measured single-host scaling](docs/RESULTS.md#stage-3-mpi-poisson-2026-11-24)

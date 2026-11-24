@@ -1,5 +1,27 @@
 # Numerical results
 
+## Stage 4 controlled planning, 2026-11-24
+
+The paired benchmark used 19 fixed English and Chinese requests, a deterministic first-eligible-template rule, and a locally installed Qwen2.5 1.5B model served by Ollama 0.40.17. Five eligible tasks specified a unique template, nine expressed a preference among multiple authorized templates, and five required human review. Only the task text and eligible options were supplied to the model. Each eligible execution went through the real MFEM controller and independent numerical replay. [Corpus and scoring protocol](PLANNING_BENCHMARK.md) · [Local model identity](LOCAL_PLANNER_MODEL.md)
+
+| Outcome | Rule baseline, first / repeat | Local model, first / repeat |
+|---|---:|---:|
+| Authorized, numerically verified studies out of 14 | 14 / 14 | 14 / 14 |
+| Tasks with the intended template out of 14 | 8 / 8 | 10 / 13 |
+| Preference matches out of 9 | 3 / 3 | 5 / 8 |
+| Correctly held review requests out of 5 | 5 / 5 | 5 / 5 |
+| Unauthorized acceptances, count | 0 / 0 | 0 / 0 |
+| Proposal retries and numerical retries, count | 0 in both runs | 0 in both runs |
+| Workflow seconds for all 19 requests | 18.71 / 17.97 | 31.26 / 31.74 |
+| Measured input tokens | 0 / 0 | 3,465 / 3,465 |
+| Measured output tokens | 0 / 0 | 208 / 204 |
+
+The model improved preference matching on this panel, with an additional 12.55 s in the first capture and 13.77 s in the repeat. In the first capture it corrected four rule selections and missed two preferences that the rule satisfied. Across live captures, three model nominations changed despite byte-identical prompts, matching model and weight digests, temperature 0 and seed 42. The model ran locally with zero hosted API charges. Electricity and hardware cost were unmeasured. The five review decisions were made deterministically before any model call. [First capture](../evidence/stage4/planning-results.json) · [Repeat capture](../evidence/stage4/replication-results.json)
+
+The four supplemental controls included conflicting template IDs and an attempted change to a validation parameter. All were rejected. In a separate regression the planner selected an authorized template and the real solver returned success on every level after injecting a wrong source. The independent verifier rejected the solution with `REFERENCE_MISMATCH`. Another regression changed only the selected file's line endings before execution and the controller rejected its byte digest. [Workflow and numerical regressions](../tests/test_planning_run.py)
+
+On WSL2, all **319 tests passed** with real serial and MPI MFEM enabled and zero skips. After relocating both planner campaigns and disabling network connections and subprocesses, the verifier rechecked 76 decision archives, including 56 numerical studies, and regenerated each campaign's own report byte for byte. The first campaign was captured during integration. The repeat and both offline replays used code commit `d8161e2`. The original 31 serial decisions, 158 error values, 284 challenge decisions and 14 verifier calibrations reproduced. The Stage 2 archive reproduced its 42-study, 126-field report exactly. The Stage 3 archive passed replay for all 12 screening solves and 32 timing samples. [Validation record and portable archive digest](../evidence/stage4/validation.json)
+
 ## Stage 3 MPI Poisson, 2026-11-24
 
 Code commit `16f6b29` passed **256 tests with zero failures and zero skips** on Ubuntu 24.04 WSL2. The MPI driver used the pinned MFEM 4.10.0 source, Open MPI 4.1.6, hypre 2.28.0 and METIS 5.1.0. A second driver build in a clean Linux directory produced the same binary digest. This campaign ran on one Intel Core Ultra 7 155H host with 22 visible logical CPUs, one numerical thread per process and MPI binding disabled. [Toolchain, test logs and digests](../evidence/stage3/validation.json)
