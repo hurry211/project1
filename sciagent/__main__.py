@@ -77,7 +77,9 @@ def main(argv: list[str] | None = None) -> int:
         out = controller.reverify(a.attempt_dir, a.manifest_sha256)
         print(json.dumps({"verdict": out["verdict"], "failure_codes": out["failure_codes"],
                           "integrity": out["integrity"],
-                          "levels": [{"n": lv["n"], "l2": lv["l2_error"], "h1_semi": lv["h1_semi_error"]}
+                          "levels": [{"n": lv["n"], "l2": lv["l2_error"], "h1_semi": lv["h1_semi_error"],
+                                      **({"physics_checks": [c for c in lv["checks"] if c["name"].startswith("layered_")]}
+                                         if out["convergence"].get("mode") == "exact_in_q1" else {})}
                                      for lv in out["levels"]], "orders": out["convergence"]["pairs"]}, indent=2))
         return 0 if out["verdict"] == "ACCEPTED" else 1
     return 0

@@ -104,3 +104,47 @@ def test_search_obeys_frozen_accuracy_and_acceptance(specs_dir, tmp_path):
     assert [row["feasible"] for row in report["candidates"]] == [False, False, True, True]
     assert all(row["trials"][0]["finest_errors"]["l2"] <= report["l2_target"]
                for row in report["candidates"] if row["feasible"])
+
+
+def test_layered_archive_and_incorrect_material(specs_dir, tmp_path):
+    source = specs_dir / "extensions/layered_unit_drop_10000.json"
+    small = write_variant(source, tmp_path / "small.json", "execution", mesh_levels=[4, 8, 16])
+    for fault in ("none", "wrong_diffusion", "wrong_source"):
+        spec = write_variant(small, tmp_path / f"{fault}.json", "execution", inject_fault=fault)
+        run = controller.run_study(spec, tmp_path)
+        root = Path(run["run_dir"])
+        attempt = root / "attempts/attempt_01"
+        out = controller.reverify(attempt, sha256_file(root / "manifest.json"))
+        assert out["integrity"]["passed"] and out["convergence"]["mode"] == "exact_in_q1"
+        assert out["convergence"]["pairs"] == []
+        assert all(lv["exit_code"] == 0 for lv in run["attempts"][0]["levels"])
+        if fault == "none":
+            assert out["verdict"] == "ACCEPTED"
+            assert {c["name"] for c in out["levels"][-1]["checks"] if c["name"].startswith("layered_")} == {
+                "layered_nodal_abs", "layered_flux_rel", "layered_jump_rel", "layered_energy_rel"}
+        elif fault == "wrong_diffusion":
+            assert out["verdict"] == "REJECTED"
+            assert {"REFERENCE_MISMATCH", "LAYERED_JUMP_REL", "LAYERED_ENERGY_REL"} <= set(out["failure_codes"])
+        else:
+            assert out["verdict"] == "REJECTED"
+            assert {"REFERENCE_MISMATCH", "LAYERED_FLUX_REL"} <= set(out["failure_codes"])
+    unaligned = write_variant(source, tmp_path / "unaligned.json", "execution", mesh_levels=[5, 10, 20])
+    blocked = controller.run_study(unaligned, tmp_path)
+    assert blocked["final_code"] == "NOT_VERIFIED_COMBINATION" and not blocked["attempts"]
+
+
+@pytest.mark.parametrize("assembly", ["full", "partial"])
+def test_localized_gaussian_q2(specs_dir, tmp_path, assembly):
+    source = specs_dir / "experiments/gaussian_offset_q2.json"
+    spec = write_variant(source, tmp_path / "gaussian.json", "execution", assembly=assembly)
+    run = controller.run_study(spec, tmp_path)
+    assert run["final_state"] == "ACCEPTED", run["final_reason"]
+    order = run["attempts"][-1]["orders"][-1]
+    assert order["l2_order"] == pytest.approx(3, abs=0.05)
+    assert order["h1_semi_order"] == pytest.approx(2, abs=0.05)
+
+
+def test_swapped_neumann_label_preserves_reference_diagnostic(specs_dir, tmp_path):
+    run = controller.run_study(specs_dir / "negative/swapped_boundary_labels.json", tmp_path)
+    codes = set(run["attempts"][0]["failure_codes"])
+    assert {"BOUNDARY_COVERAGE", "BOUNDARY_LABEL_MISMATCH", "DIRICHLET_VIOLATION", "REFERENCE_MISMATCH"} <= codes

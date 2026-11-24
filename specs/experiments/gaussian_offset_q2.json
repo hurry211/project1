@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.2",
+  "problem": {
+    "id": "gaussian_offset_q2",
+    "equation": "-laplacian(u) = f",
+    "domain": "unit_square_2d",
+    "exact_solution": "exp(-25*((x-0.375)**2+(y-0.625)**2))",
+    "source": "(100-2500*((x-0.375)**2+(y-0.625)**2))*exp(-25*((x-0.375)**2+(y-0.625)**2))",
+    "boundaries": [
+      {"attribute": 1, "label": "bottom", "kind": "dirichlet", "value": "from_exact_solution"},
+      {"attribute": 2, "label": "right", "kind": "dirichlet", "value": "from_exact_solution"},
+      {"attribute": 3, "label": "top", "kind": "dirichlet", "value": "from_exact_solution"},
+      {"attribute": 4, "label": "left", "kind": "dirichlet", "value": "from_exact_solution"}
+    ]
+  },
+  "execution": {"mesh_type": "quad", "polynomial_order": 2, "assembly": "full", "solver": "cg_jacobi",
+                "mesh_levels": [32, 64, 128]}
+}

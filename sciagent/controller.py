@@ -88,7 +88,7 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *, reuse_lev
         return finish("BLOCKED", "BUILD_MISSING", f"solver binary not found at {env['solver_binary']}")
 
     # ---- READY: capability + case binding -------------------------------------
-    decision = capability.evaluate(study.execution, env, study.problem.equation)
+    decision = capability.evaluate(study.execution, env, study.problem.equation, exact_solution=study.problem.exact_solution)
     manifest["capability"] = decision.__dict__
     if decision.status != "tested":
         state = "BLOCKED" if decision.code == "UNSUPPORTED_BACKEND" else "FAILED"
@@ -207,6 +207,9 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *, reuse_lev
                           f"next level n={n_next} would need ~{execution.estimated_dofs(n_next)} dofs "
                           f"> max_dofs_per_level={pol.max_dofs_per_level}")
         new_exec = ExecutionSpec.model_validate({**execution.model_dump(), "mesh_levels": [*execution.mesh_levels, n_next]})
+        decision = capability.evaluate(new_exec, env, study.problem.equation, exact_solution=study.problem.exact_solution)
+        if decision.status != "tested":
+            return finish("BLOCKED", decision.code, decision.reason)
         store.event("RETRY_ALLOWED", attempt=attempt, action=pol.action, old_levels=list(execution.mesh_levels),
                     new_levels=list(new_exec.mesh_levels),
                     unchanged=["problem", "validation", "policy"], reason="ACCURACY_NOT_MET")

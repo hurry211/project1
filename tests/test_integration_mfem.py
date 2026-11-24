@@ -183,4 +183,4 @@ def test_binary_reports_output_failure(tmp_path, obstruction):
 
 def test_list_cases_matches_header():
     ids = {c["id"] for c in list_cases()["cases"]}
-    assert ids == {"sin_sin", "cos_exp", "anisotropic_1000_sin_sin"}
+    assert ids == {"sin_sin", "cos_exp", "anisotropic_1000_sin_sin", "layered_unit_drop_10000", "gaussian_offset"}

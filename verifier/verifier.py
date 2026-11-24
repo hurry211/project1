@@ -20,15 +20,16 @@ import numpy as np
 import scipy.sparse as sp
 import scipy.sparse.linalg as spla
 
-from sciagent.spec import (ANISOTROPIC, POISSON, SIDE_GEOMETRY, SIDE_NORMAL, ExecutionSpec, ProblemSpec,
+from sciagent.spec import (ANISOTROPIC, LAYERED, LAYERED_EXACT, LAYERED_LEVELS, POISSON,
+                           SIDE_GEOMETRY, SIDE_NORMAL, ExecutionSpec, ProblemSpec,
                            ValidationSpec, compact_expression)
 from sciagent.evidence import artifact_hashes, sha256_file
 
-from . import expr
+from . import expr, layered
 from .fem import (ArtifactError, MeshData, build_local_basis, cartesian_partition,
                   element_quadrature, gauss_01, inverse_map, lattice_indices, load_mesh_data)
 
-VERIFIER_VERSION = "0.4.0"
+VERIFIER_VERSION = "0.5.0"
 GEOM_TOL = 1e-12
 
 ACCEPTED = "ACCEPTED"
@@ -95,6 +96,13 @@ def check_mms_consistency(problem: ProblemSpec, rel_tol: float) -> Check:
         f = expr.compile_expr(problem.source)
     except expr.ExpressionError as exc:
         return Check("mms_expressions_parse", False, "INVALID_EXPRESSION", str(exc))
+    if problem.equation == LAYERED:
+        x = np.array([0., 0.25, 0.5, 0.75, 1.])
+        match = (compact_expression(problem.exact_solution) == LAYERED_EXACT
+                 and compact_expression(problem.source) == "0")
+        error = float(np.max(np.abs(u(x, x) - layered.field(x))))
+        return Check("layered_exact_unit_drop", match and error <= 1e-14, "MMS_INCONSISTENT",
+                     "registered solution matches the continuous unit drop with constant a*du/dx", error, 1e-14)
     rng = np.random.default_rng(12345)
     pts = rng.uniform(0.05, 0.95, size=(256, 2))
     diffusion_x = 1000.0 if problem.equation == ANISOTROPIC else 1.0
@@ -302,14 +310,7 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
         return rep
     rep.add(Check("mesh_jacobian_positive", bool(np.all(q.detJ > 0)), "INVALID_MESH",
                   "min det J over quadrature points", float(np.min(q.detJ)), 0.0))
-    U = mesh.values[mesh.elem_dofs]                      # (E, nloc)
-    uh = np.einsum("eqk,ek->eq", q.phi, U)
-    guh = np.einsum("eqki,ek->eqi", q.gphi, U)
-    Xq = q.X
-    ue = u_fn(Xq[..., 0], Xq[..., 1])
-    gx, gy = expr.gradient(u_fn, Xq[..., 0], Xq[..., 1])
-    l2 = float(np.sqrt(np.sum(q.wdet * (uh - ue) ** 2)))
-    h1 = float(np.sqrt(np.sum(q.wdet * ((guh[..., 0] - gx) ** 2 + (guh[..., 1] - gy) ** 2))))
+    l2, h1 = integrated_errors(mesh, q, u_fn, problem.equation)
     rep.l2_error, rep.h1_semi_error = l2, h1
     rep.add(Check("independent_errors_finite", math.isfinite(l2) and math.isfinite(h1),
                   "NON_FINITE_SOLUTION", f"L2={l2:.6e}, H1semi={h1:.6e}"))
@@ -321,12 +322,31 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
             rep.add(Check(f"self_report_{name}", False, "SELF_REPORT_MISMATCH",
                           f"self-reported {name} error is missing or non-finite"))
             continue
+        if validation.layered_q1:
+            # Q1 contains the exact field. Near zero a relative comparison is singular.
+            tol = max(validation.layered_q1.self_report_abs_tol, validation.self_report_rel_tol * abs(mine))
+            rep.add(Check(f"self_report_{name}", abs(mine - theirs) <= tol, "SELF_REPORT_MISMATCH",
+                          f"absolute difference between verifier and native {name}", abs(mine - theirs), tol))
+            continue
         rel = abs(mine - theirs) / max(abs(mine), 1e-300)
         rep.add(Check(f"self_report_{name}", rel <= validation.self_report_rel_tol,
                       "SELF_REPORT_MISMATCH",
                       f"|verifier - solver| / verifier for {name} error "
                       f"(verifier {mine:.10e}, solver {theirs:.10e})",
                       rel, validation.self_report_rel_tol))
+
+    if validation.layered_q1:
+        try:
+            measured = layered.diagnostics(mesh, n)
+        except ArtifactError as exc:
+            rep.add(Check("layered_geometry", False, "MESH_MISMATCH", str(exc)))
+            return rep
+        for key in ("nodal_abs", "flux_rel", "jump_rel", "energy_rel"):
+            tol = getattr(validation.layered_q1, f"{key}_tol")
+            detail = (f"integral a|grad u_h|^2 = {measured['energy']:.16g}, exact {layered.FLUX:.16g}"
+                      if key == "energy_rel" else "from exported physical Q1 corners")
+            rep.add(Check(f"layered_{key}", measured[key] <= tol, f"LAYERED_{key.upper()}",
+                          detail, measured[key], tol))
 
     # ---- Gate D: independent reference solve -----------------------------
     if validation.require_reference_solve:
@@ -348,13 +368,43 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
     return rep
 
 
+def integrated_errors(mesh, q, u_fn, equation):
+    # Bound temporaries for FD gradients, field interpolation and quadrature.
+    batch = max(1, 65536 // q.X.shape[1])
+    l2_sq, h1_sq = 0.0, 0.0
+    for start in range(0, len(mesh.verts), batch):
+        s = slice(start, start + batch)
+        U = mesh.values[mesh.elem_dofs[s]]
+        uh = np.einsum("eqk,ek->eq", q.phi[s], U)
+        guh = np.einsum("eqki,ek->eqi", q.gphi[s], U)
+        x, y = q.X[s, :, 0], q.X[s, :, 1]
+        if equation == LAYERED:
+            gx, gy = layered.FLUX / layered.coefficient(x), 0.0
+        else:
+            gx, gy = expr.gradient(u_fn, x, y)
+        l2_sq += np.sum(q.wdet[s] * (uh - u_fn(x, y))**2)
+        h1_sq += np.sum(q.wdet[s] * ((guh[..., 0] - gx)**2 + (guh[..., 1] - gy)**2))
+    return float(np.sqrt(l2_sq)), float(np.sqrt(h1_sq))
+
+
 def reference_solve(mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m) -> np.ndarray:
     N = coords.shape[0]
     E, nloc = mesh.elem_dofs.shape
+    shared = q.wdet.strides[0] == 0 and q.gphi.strides[0] == 0
+    weights = q.wdet[:1] if shared else q.wdet
+    grads = q.gphi[:1] if shared else q.gphi
     if problem.equation == ANISOTROPIC:
-        Ke = np.einsum("eq,eqid,d,eqjd->eij", q.wdet, q.gphi, [1000.0, 1.0], q.gphi)
+        Ke = np.einsum("eq,eqid,d,eqjd->eij", weights, grads, [1000.0, 1.0], grads)
     else:
-        Ke = np.einsum("eq,eqid,eqjd->eij", q.wdet, q.gphi, q.gphi)
+        Ke = np.einsum("eq,eqid,eqjd->eij", weights, grads, grads)
+    if shared:
+        Ke = np.broadcast_to(Ke, (E, nloc, nloc))
+    if problem.equation == LAYERED:
+        # The reviewed grid places the material interface on whole element faces.
+        material = layered.coefficient(q.X[..., 0])
+        if not np.all(material == material[:, :1]):
+            raise ArtifactError("layered interface cuts an element")
+        Ke = Ke * material[:, :1, None]
     fq = f_fn(q.X[..., 0], q.X[..., 1])
     Fe = np.einsum("eq,eq,eqi->ei", q.wdet, fq, q.phi)
     rows = np.repeat(mesh.elem_dofs, nloc, axis=1).ravel()
@@ -367,8 +417,11 @@ def reference_solve(mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m) -> n
     if neu:
         nv = mesh.verts.shape[1]
         edge_owner = {}
-        for e in range(E):
-            for k in range(nv):
+        # Locate all exterior edges geometrically. A swapped declaration must still
+        # reach the independent solve so its reference mismatch stays observable.
+        for label in SIDE_GEOMETRY:
+            on_side = _side_of_points(mesh.verts, label)
+            for e, k in zip(*np.nonzero(on_side & np.roll(on_side, -1, axis=1))):
                 a = tuple(np.round(mesh.verts[e, k], 12))
                 b = tuple(np.round(mesh.verts[e, (k + 1) % nv], 12))
                 edge_owner[frozenset((a, b))] = e
@@ -387,7 +440,10 @@ def reference_solve(mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m) -> n
             from .fem import eval_monomials
             M, _, _ = eval_monomials(basis.exps, ref[:, 0], ref[:, 1])
             phi = M @ basis.coeffs[e]
-            gx, gy = expr.gradient(u_fn, pts[:, 0], pts[:, 1])
+            if problem.equation == LAYERED:
+                gx, gy = layered.FLUX, 0.0  # a*grad(u_exact) on either material
+            else:
+                gx, gy = expr.gradient(u_fn, pts[:, 0], pts[:, 1])
             nx, ny = SIDE_NORMAL[lbl]
             gn = gx * nx + gy * ny
             F[mesh.elem_dofs[e]] += (w1 * L * gn) @ phi
@@ -423,6 +479,11 @@ def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False,
         problem = ProblemSpec.model_validate_json((frozen / "problem.json").read_text())
         validation = ValidationSpec.model_validate_json((frozen / "validation.json").read_text())
         execution = ExecutionSpec.model_validate_json((attempt_dir / "execution.json").read_text())
+        validation.check_problem(problem)
+        if problem.equation == LAYERED and (
+                (execution.mesh_type, execution.polynomial_order, execution.backend, execution.assembly, execution.solver)
+                != ("quad", 1, "serial_cpu", "full", "cg_gs") or any(n not in LAYERED_LEVELS for n in execution.mesh_levels)):
+            raise ValueError("frozen execution is outside the reviewed aligned layered Q1 case")
         mms = check_mms_consistency(problem, validation.mms_consistency_rel_tol)
     except (OSError, ValueError) as exc:
         code = "MISSING_ARTIFACT" if isinstance(exc, FileNotFoundError) else "MALFORMED_ARTIFACT"
@@ -463,7 +524,9 @@ def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False,
     errors_available = all(_finite(lv.l2_error) and _finite(lv.h1_semi_error) for lv in levels)
     p = execution.polynomial_order
     conv = {"pairs": pairs, "expected_l2_order": p + 1, "expected_h1_semi_order": p}
-    if errors_available and pairs:
+    if problem.equation == LAYERED:
+        conv = {"mode": "exact_in_q1", "pairs": [], "criterion": "per-level field, flux, interface jump and energy"}
+    elif errors_available and pairs:
         l2s = [lv.l2_error for lv in levels]
         h1s = [lv.h1_semi_error for lv in levels]
         if validation.require_monotone_decrease:

@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
    args.AddOption(&out_dir, "-out", "--out", "Existing output directory.");
    args.AddOption(&fault, "-fault", "--inject-fault",
                   "none, wrong_source, drop_dirichlet_attr, nan_value, "
-                  "early_stop_lie, self_report_lie (testing only).");
+                  "early_stop_lie, self_report_lie, wrong_diffusion (testing only).");
    args.AddOption(&list_cases, "-list", "--list-cases", "-no-list",
                   "--no-list-cases", "Print compiled cases as JSON and exit.");
    args.Parse();
@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
    const std::set<std::string> known_faults =
    {
       "none", "wrong_source", "drop_dirichlet_attr", "nan_value",
-      "early_stop_lie", "self_report_lie"
+      "early_stop_lie", "self_report_lie", "wrong_diffusion"
    };
    if (!known_faults.count(fault_s))
    {
@@ -279,6 +279,20 @@ int main(int argc, char *argv[])
       std::cerr << "ERROR: anisotropic case requires full Q1 CG+Jacobi and all Dirichlet\n";
       return 4;
    }
+   if (mc->layered && (mt != "quad" || order != 1 || asm_s != "full" || sol_s != "cg_gs" ||
+                       n < 4 || n > 128 || (n & (n-1)) != 0 ||
+                       dset != std::set<int>{2, 4} || nset != std::set<int>{1, 3}))
+   {
+      std::cerr << "ERROR: layered case requires aligned Q1, full CG+GS and a horizontal unit drop\n";
+      return 4;
+   }
+   if (fault_s == "wrong_diffusion" && !mc->layered) { return 4; }
+   if (mc->id == "gaussian_offset" && (mt != "quad" || order != 2 || sol_s != "cg_jacobi" ||
+                                       !nset.empty() || n < 32 || n > 256 || (n & (n-1)) != 0))
+   {
+      std::cerr << "ERROR: localized Gaussian requires all-Dirichlet Q2 CG+Jacobi on reviewed levels\n";
+      return 4;
+   }
 
    // 3. Finite element space.
    H1_FECollection fec(order, dim);
@@ -305,6 +319,8 @@ int main(int argc, char *argv[])
    const double src_scale = (fault_s == "wrong_source") ? 1.1 : 1.0;
    FunctionCoefficient f_coef([mc, src_scale](const Vector &p)
    {
+      // Scaling a homogeneous source is a no-op. Use a unit load for this control.
+      if (mc->layered && src_scale != 1.0) { return 1.0; }
       return src_scale * mc->f(p);
    });
    const Geometry::Type geom = mesh.GetTypicalElementGeometry();
@@ -315,7 +331,8 @@ int main(int argc, char *argv[])
    const auto rhs_start = std::chrono::steady_clock::now();
    LinearForm b(&fespace);
    b.AddDomainIntegrator(new DomainLFIntegrator(f_coef, &ir_dom));
-   if (!nset.empty())
+   // Both horizontal boundaries in the layered benchmark have exactly zero flux.
+   if (!nset.empty() && !mc->layered)
    {
       auto *bn = new BoundaryNormalLFIntegrator(grad_coef);
       bn->SetIntRule(&ir_bdr);
@@ -333,9 +350,11 @@ int main(int argc, char *argv[])
    diffusion_tensor.Diag(1.0, dim);
    diffusion_tensor(0, 0) = mc->diffusion_x;
    MatrixConstantCoefficient diffusion(diffusion_tensor);
+   FunctionCoefficient layers(mms::layered_a);
    BilinearForm a(&fespace);
    if (asm_s == "partial") { a.SetAssemblyLevel(AssemblyLevel::PARTIAL); }
-   if (mc->diffusion_x == 1.0) { a.AddDomainIntegrator(new DiffusionIntegrator); }
+   if (mc->layered && fault_s != "wrong_diffusion") { a.AddDomainIntegrator(new DiffusionIntegrator(layers)); }
+   else if (mc->diffusion_x == 1.0) { a.AddDomainIntegrator(new DiffusionIntegrator); }
    else { a.AddDomainIntegrator(new DiffusionIntegrator(diffusion)); }
    a.Assemble();
 

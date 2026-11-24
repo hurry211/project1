@@ -237,6 +237,7 @@ class LocalBasis:
     coeffs: np.ndarray     # (E, nloc, nloc): phi_k = sum_m mono_m * coeffs[e, m, k]
     max_cond: float
     node_ref: np.ndarray   # (E, nloc, 2)
+    translated: bool = False
 
 
 def build_local_basis(mesh: MeshData, p: int) -> LocalBasis:
@@ -246,7 +247,15 @@ def build_local_basis(mesh: MeshData, p: int) -> LocalBasis:
         raise ArtifactError(
             f"element has {mesh.elem_dofs.shape[1]} local dofs but a {mesh.geom} of order {p} "
             f"needs {nloc}")
-    node_ref = inverse_map(mesh.geom, mesh.verts, mesh.elem_node_xy)
+    origin = mesh.verts[:, :1]
+    def same_offsets(points):
+        return np.all(points - origin == points[:1] - origin[:1])
+
+    # Prove congruence including local node ordering from the raw tables.
+    translated = bool(same_offsets(mesh.verts) and same_offsets(mesh.elem_node_xy))
+    verts = mesh.verts[:1] if translated else mesh.verts
+    nodes = mesh.elem_node_xy[:1] if translated else mesh.elem_node_xy
+    node_ref = inverse_map(mesh.geom, verts, nodes)
     if np.any(node_ref < -1e-9) or np.any(node_ref > 1 + 1e-9) or (
             mesh.geom == "tri" and np.any(node_ref.sum(-1) > 1 + 1e-9)):
         raise ArtifactError("exported dof node lies outside its element")
@@ -256,7 +265,10 @@ def build_local_basis(mesh: MeshData, p: int) -> LocalBasis:
     if not np.isfinite(max_cond) or max_cond > 1e10:
         raise ArtifactError(f"local node set is not unisolvent (max cond {max_cond:.3e})")
     coeffs = np.linalg.inv(V)  # V[e,i,m] C[e,m,k] = delta_ik
-    return LocalBasis(exps=exps, coeffs=coeffs, max_cond=max_cond, node_ref=node_ref)
+    if translated:
+        coeffs = np.broadcast_to(coeffs, (len(origin), nloc, nloc))
+        node_ref = np.broadcast_to(node_ref, mesh.elem_node_xy.shape)
+    return LocalBasis(exps, coeffs, max_cond, node_ref, translated)
 
 
 @dataclass
@@ -270,12 +282,22 @@ class QuadData:
 
 def element_quadrature(mesh: MeshData, basis: LocalBasis, m: int) -> QuadData:
     xi, eta, w = reference_quadrature(mesh.geom, m)
-    X, J = geometry_map(mesh.geom, mesh.verts, xi, eta)
+    verts = mesh.verts
+    coeffs = basis.coeffs
+    if basis.translated:
+        verts = verts[:1] - verts[:1, :1]
+        coeffs = coeffs[:1]
+    X, J = geometry_map(mesh.geom, verts, xi, eta)
     detJ = J[..., 0, 0] * J[..., 1, 1] - J[..., 0, 1] * J[..., 1, 0]
     M, dMx, dMy = eval_monomials(basis.exps, xi, eta)  # (Q, nmono)
-    phi = np.einsum("qm,emk->eqk", M, basis.coeffs)
-    dphi_ref = np.stack([np.einsum("qm,emk->eqk", dMx, basis.coeffs),
-                         np.einsum("qm,emk->eqk", dMy, basis.coeffs)], axis=-1)
+    phi = np.einsum("qm,emk->eqk", M, coeffs)
+    dphi_ref = np.stack([np.einsum("qm,emk->eqk", dMx, coeffs),
+                         np.einsum("qm,emk->eqk", dMy, coeffs)], axis=-1)
     Jinv = np.linalg.inv(J)  # (E,Q,2,2): d xi_j / d x_i = Jinv[j, i]
     gphi = np.einsum("eqkj,eqji->eqki", dphi_ref, Jinv)
-    return QuadData(X=X, wdet=w[None, :] * np.abs(detJ), detJ=detJ, phi=phi, gphi=gphi)
+    wdet = w[None, :] * np.abs(detJ)
+    if basis.translated:
+        X = X + mesh.verts[:, :1]
+        wdet, detJ, phi, gphi = (np.broadcast_to(a, (len(X), *a.shape[1:]))
+                                 for a in (wdet, detJ, phi, gphi))
+    return QuadData(X, wdet, detJ, phi, gphi)

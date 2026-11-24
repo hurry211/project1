@@ -19,7 +19,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
-from .spec import ANISOTROPIC, POISSON, ExecutionSpec
+from .spec import (ANISOTROPIC, GAUSSIAN_EXACT, GAUSSIAN_LEVELS, LAYERED, LAYERED_LEVELS,
+                   POISSON, ExecutionSpec, compact_expression)
 
 Status = Literal["tested", "unsupported", "not_verified"]
 
@@ -46,7 +47,7 @@ TESTED: frozenset[tuple[str, int, str, str]] = frozenset({
 
 
 def evaluate(execution: ExecutionSpec, env: dict | None = None,
-             equation: str = POISSON) -> CapabilityDecision:
+             equation: str = POISSON, *, exact_solution: str | None = None) -> CapabilityDecision:
     """Decide whether an execution configuration may run.
 
     ``env`` is the environment probe (sciagent.environment.probe()); it is
@@ -84,6 +85,18 @@ def evaluate(execution: ExecutionSpec, env: dict | None = None,
         )
 
     key = (execution.mesh_type, execution.polynomial_order, execution.assembly, execution.solver)
+    if compact_expression(exact_solution) == GAUSSIAN_EXACT and (
+            equation != POISSON or key not in {("quad", 2, a, "cg_jacobi") for a in ("full", "partial")}
+            or any(n not in GAUSSIAN_LEVELS for n in execution.mesh_levels)):
+        return CapabilityDecision("not_verified", "NOT_VERIFIED_COMBINATION",
+                                  f"localized Gaussian is tested with Q2 CG+Jacobi on n={GAUSSIAN_LEVELS}")
+    if execution.inject_fault == "wrong_diffusion" and equation != LAYERED:
+        return CapabilityDecision("unsupported", "UNSUPPORTED_COMBINATION",
+                                  "the wrong_diffusion control targets the layered coefficient")
+    if equation == LAYERED and (key != ("quad", 1, "full", "cg_gs")
+                                or any(n not in LAYERED_LEVELS for n in execution.mesh_levels)):
+        return CapabilityDecision("not_verified", "NOT_VERIFIED_COMBINATION",
+                                  f"layered diffusion is tested with full Q1 CG+GS on n={LAYERED_LEVELS}")
     if equation == ANISOTROPIC and key != ("quad", 1, "full", "cg_jacobi"):
         return CapabilityDecision("not_verified", "NOT_VERIFIED_COMBINATION",
                                   "the anisotropic benchmark is tested only with full Q1 CG+Jacobi")
@@ -107,4 +120,10 @@ def matrix_as_rows() -> list[dict]:
                                  "status": d.status, "code": d.code})
     rows.append({"equation": ANISOTROPIC, "mesh_type": "quad", "order": 1,
                  "assembly": "full", "solver": "cg_jacobi", "status": "tested", "code": "OK"})
+    rows.append({"equation": LAYERED, "mesh_type": "quad", "order": 1, "mesh_levels": LAYERED_LEVELS,
+                 "assembly": "full", "solver": "cg_gs", "status": "tested", "code": "OK"})
+    for assembly in ("full", "partial"):
+        rows.append({"equation": POISSON, "case": "gaussian_offset", "mesh_type": "quad", "order": 2,
+                     "assembly": assembly, "solver": "cg_jacobi", "mesh_levels": GAUSSIAN_LEVELS,
+                     "status": "tested", "code": "OK"})
     return rows

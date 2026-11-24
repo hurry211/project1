@@ -32,6 +32,7 @@ struct ManufacturedCase
    mfem::real_t (*f)(const mfem::Vector &);
    std::string equation = "-laplacian(u) = f";
    double diffusion_x = 1.0;
+   bool layered = false;
 };
 
 // ---------------------------------------------------------------------------
@@ -77,10 +78,47 @@ inline mfem::real_t cos_exp_f(const mfem::Vector &p)
    return (M_PI * M_PI - 1.0) * std::cos(M_PI * p(0)) * std::exp(p(1));
 }
 
+inline mfem::real_t layered_a(const mfem::Vector &p) { return p(0) < 0.5 ? 1.0 : 10000.0; }
+inline mfem::real_t layered_u(const mfem::Vector &p)
+{
+   const double flux = 2.0 / (1.0 + 1.0 / 10000.0);
+   return p(0) < 0.5 ? flux * p(0) : 1.0 + flux * (p(0) - 1.0) / 10000.0;
+}
+inline void layered_grad(const mfem::Vector &p, mfem::Vector &g)
+{
+   g.SetSize(2);
+   g(0) = (2.0 / (1.0 + 1.0 / 10000.0)) / layered_a(p);
+   g(1) = 0.0;
+}
+inline mfem::real_t zero_source(const mfem::Vector &) { return 0.0; }
+
+inline double gaussian_r2(const mfem::Vector &p)
+{
+   const double x = p(0) - 0.375, y = p(1) - 0.625;
+   return x*x + y*y;
+}
+inline mfem::real_t gaussian_u(const mfem::Vector &p) { return std::exp(-25.0 * gaussian_r2(p)); }
+inline void gaussian_grad(const mfem::Vector &p, mfem::Vector &g)
+{
+   g.SetSize(2);
+   const double scale = -50.0 * gaussian_u(p);
+   g(0) = scale * (p(0) - 0.375);
+   g(1) = scale * (p(1) - 0.625);
+}
+inline mfem::real_t gaussian_f(const mfem::Vector &p)
+{
+   return (100.0 - 2500.0 * gaussian_r2(p)) * gaussian_u(p);
+}
+
 inline const std::vector<ManufacturedCase> &Registry()
 {
    static const std::vector<ManufacturedCase> cases =
    {
+      {
+         "gaussian_offset", "exp(-25*((x-0.375)**2+(y-0.625)**2))",
+         "(100-2500*((x-0.375)**2+(y-0.625)**2))*exp(-25*((x-0.375)**2+(y-0.625)**2))",
+         gaussian_u, gaussian_grad, gaussian_f
+      },
       {
          "sin_sin",
          "sin(pi*x)*sin(pi*y)",
@@ -99,6 +137,12 @@ inline const std::vector<ManufacturedCase> &Registry()
          "1001*pi**2*sin(pi*x)*sin(pi*y)",
          sin_sin_u, sin_sin_grad, anisotropic_f,
          "-div(diag(1000,1)*grad(u)) = f", 1000.0
+      },
+      {
+         "layered_unit_drop_10000",
+         "(10001*x-9999*(sqrt((x-0.5)**2)-0.5))/10001", "0",
+         layered_u, layered_grad, zero_source,
+         "-div(a(x)*grad(u)) = f, a(x)=1 (x<0.5), 10000 (x>=0.5)", 1.0, true
       }
    };
    return cases;

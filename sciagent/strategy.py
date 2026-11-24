@@ -31,7 +31,7 @@ def search(study: StudySpec, output: Path, repeats: int) -> dict:
             key = f"q{order}-{assembly}-cg-jacobi"
             execution = study.execution.model_copy(update={
                 "polynomial_order": order, "assembly": assembly, "solver": "cg_jacobi"})
-            decision = capability.evaluate(execution, env, study.problem.equation)
+            decision = capability.evaluate(execution, env, study.problem.equation, exact_solution=study.problem.exact_solution)
             dofs = execution.estimated_dofs(execution.mesh_levels[-1])
             row = {"id": key, "capability": decision.__dict__, "initial_finest_dofs": dofs, "trials": []}
             candidates.append(row)

@@ -118,18 +118,25 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path, help="new experiment directory")
     parser.add_argument("--repeats", type=int, default=5)
-    parser.add_argument("--mixed-boundary", action="store_true",
+    loads = parser.add_mutually_exclusive_group()
+    loads.add_argument("--mixed-boundary", action="store_true",
                         help="compare only the mixed-boundary Poisson case on meshes 16, 32, 64")
+    loads.add_argument("--gaussian", action="store_true",
+                       help="compare Q2 localized Gaussian loads at finest n=128 and n=256")
     args = parser.parse_args()
     if args.repeats < 2:
         parser.error("at least two measured repetitions are required")
     args.output.mkdir(parents=True, exist_ok=False)
     specs = PROJECT_ROOT / "specs"
     base_name = "poisson_cos_exp_mixed_p1_quad.json" if args.mixed_boundary else "poisson_sin_sin_p1_tri.json"
+    if args.gaussian:
+        base_name = "experiments/gaussian_offset_q2.json"
     base = load_study(specs / base_name)
     level_sets = ((16, 32, 64),) if args.mixed_boundary else ((8, 16, 32), (16, 32, 64))
+    if args.gaussian:
+        level_sets = ((32, 64, 128), (64, 128, 256))
     report = {"environment": probe(), "measured_repeats": args.repeats, "base_spec": base_name, "groups": {}}
-    for order in (1, 2):
+    for order in ((2,) if args.gaussian else (1, 2)):
         for levels in level_sets:
             group = f"q{order}-n{levels[-1]}"
             arms = []
@@ -141,7 +148,7 @@ def main():
                 spec.write_text(base.model_copy(update={"execution": execution}).model_dump_json(indent=2))
                 arms.append((assembly, spec, True))
             report["groups"][group] = compare(arms, args.output, args.repeats)
-    if not args.mixed_boundary:
+    if not args.mixed_boundary and not args.gaussian:
         retry = specs / "retry_demo_sin_sin_p1_tri.json"
         report["groups"]["retry"] = compare([("recompute", retry, False), ("reuse", retry, True)],
                                            args.output, args.repeats)

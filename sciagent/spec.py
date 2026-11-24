@@ -47,6 +47,11 @@ SIDE_NORMAL: dict[str, tuple[float, float]] = {
 
 POISSON = "-laplacian(u) = f"
 ANISOTROPIC = "-div(diag(1000,1)*grad(u)) = f"
+LAYERED = "-div(a(x)*grad(u)) = f, a(x)=1 (x<0.5), 10000 (x>=0.5)"
+LAYERED_EXACT = "(10001*x-9999*(sqrt((x-0.5)**2)-0.5))/10001"
+LAYERED_LEVELS = (4, 8, 16, 32, 64, 128)
+GAUSSIAN_EXACT = "exp(-25*((x-0.375)**2+(y-0.625)**2))"
+GAUSSIAN_LEVELS = (32, 64, 128, 256)
 VERIFIER_TIMEOUT_SECONDS = 300.0
 VERIFIER_MEMORY_MB = 3072
 
@@ -67,7 +72,7 @@ class BoundaryCondition(_Frozen):
 
 class ProblemSpec(_Frozen):
     id: str = Field(min_length=1, max_length=80, pattern=r"^[A-Za-z0-9_\-]+$")
-    equation: Literal["-laplacian(u) = f", "-div(diag(1000,1)*grad(u)) = f"]
+    equation: Literal[POISSON, ANISOTROPIC, LAYERED]
     domain: Literal["unit_square_2d"]
     exact_solution: str = Field(min_length=1, max_length=400)
     source: str = Field(min_length=1, max_length=400)
@@ -88,6 +93,11 @@ class ProblemSpec(_Frozen):
             raise ValueError("pure Neumann problem (constant nullspace) is not supported")
         if self.equation == ANISOTROPIC and any(b.kind != "dirichlet" for b in self.boundaries):
             raise ValueError("the anisotropic benchmark requires all-Dirichlet boundaries")
+        if self.equation == LAYERED and any((b.kind == "dirichlet") != (b.label in ("left", "right"))
+                                             for b in self.boundaries):
+            raise ValueError("layered unit drop requires essential left/right and insulated top/bottom")
+        if compact_expression(self.exact_solution) == GAUSSIAN_EXACT and any(b.kind != "dirichlet" for b in self.boundaries):
+            raise ValueError("the localized Gaussian benchmark requires all-Dirichlet boundaries")
         return self
 
     def dirichlet_attributes(self) -> list[int]:
@@ -95,6 +105,14 @@ class ProblemSpec(_Frozen):
 
     def neumann_attributes(self) -> list[int]:
         return sorted(b.attribute for b in self.boundaries if b.kind == "neumann")
+
+
+class LayeredCriteria(_Frozen):
+    nodal_abs_tol: float = Field(default=1e-8, gt=0, le=1e-8)
+    flux_rel_tol: float = Field(default=1e-5, gt=0, le=1e-5)
+    jump_rel_tol: float = Field(default=1e-5, gt=0, le=1e-5)
+    energy_rel_tol: float = Field(default=1e-7, gt=0, le=1e-7)
+    self_report_abs_tol: float = Field(default=1e-10, gt=0, le=1e-10)
 
 
 class ValidationSpec(_Frozen):
@@ -119,6 +137,14 @@ class ValidationSpec(_Frozen):
     reference_solve_max_dofs: int = Field(default=300_000, ge=1)
     mms_consistency_rel_tol: float = Field(default=1e-6, gt=0.0)
     verifier_quadrature_extra_points: int = Field(default=3, ge=1, le=10)
+    layered_q1: LayeredCriteria | None = None
+
+    def check_problem(self, problem: ProblemSpec) -> None:
+        if (self.layered_q1 is not None) != (problem.equation == LAYERED):
+            raise ValueError("layered_q1 acceptance criteria must match the layered equation")
+        if self.layered_q1 and (self.require_monotone_decrease or not self.require_reference_solve
+                                or not self.require_solver_converged):
+            raise ValueError("exact-in-Q1 requires physical checks, reference solve and solver convergence")
 
 
 class RetryPolicy(_Frozen):
@@ -143,7 +169,7 @@ class ExecutionSpec(_Frozen):
     max_iter: int = Field(default=20_000, ge=1)
     inject_fault: Literal[
         "none", "wrong_source", "drop_dirichlet_attr", "nan_value",
-        "early_stop_lie", "self_report_lie",
+        "early_stop_lie", "self_report_lie", "wrong_diffusion",
     ] = "none"
 
     @field_validator("mesh_levels")
@@ -172,9 +198,16 @@ class StudySpec(_Frozen):
     validation: ValidationSpec = ValidationSpec()
     policy: RetryPolicy = RetryPolicy()
 
+    @model_validator(mode="after")
+    def _acceptance_criteria(self) -> "StudySpec":
+        self.validation.check_problem(self.problem)
+        return self
+
 
 def canonical_json(model: BaseModel) -> str:
     data = model.model_dump(mode="json")
+    if isinstance(model, ValidationSpec) and data["layered_q1"] is None:
+        del data["layered_q1"]  # Preserve frozen validation hashes of existing studies.
     if isinstance(model, RetryPolicy):
         # Preserve the hashes of policies and archives written before verifier budgets.
         for name in ("verifier_timeout_seconds", "verifier_memory_mb"):

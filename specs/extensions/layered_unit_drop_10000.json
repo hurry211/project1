@@ -1,0 +1,19 @@
+{
+  "schema_version": "0.2",
+  "problem": {
+    "id": "layered_unit_drop_10000",
+    "equation": "-div(a(x)*grad(u)) = f, a(x)=1 (x<0.5), 10000 (x>=0.5)",
+    "domain": "unit_square_2d",
+    "exact_solution": "(10001*x-9999*(sqrt((x-0.5)**2)-0.5))/10001",
+    "source": "0",
+    "boundaries": [
+      {"attribute": 1, "label": "bottom", "kind": "neumann", "value": "from_exact_solution"},
+      {"attribute": 2, "label": "right", "kind": "dirichlet", "value": "from_exact_solution"},
+      {"attribute": 3, "label": "top", "kind": "neumann", "value": "from_exact_solution"},
+      {"attribute": 4, "label": "left", "kind": "dirichlet", "value": "from_exact_solution"}
+    ]
+  },
+  "execution": {"mesh_type": "quad", "polynomial_order": 1, "assembly": "full", "solver": "cg_gs",
+                "mesh_levels": [4, 8, 16, 32, 64, 128], "rel_tol": 1e-13},
+  "validation": {"require_monotone_decrease": false, "layered_q1": {}}
+}
