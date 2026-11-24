@@ -18,3 +18,9 @@ add_executable(poisson_mms poisson_mms.cpp)
 target_include_directories(poisson_mms PRIVATE ${MFEM_INCLUDE_DIRS})
 target_link_libraries(poisson_mms PRIVATE ${MFEM_LIBRARIES})
 target_compile_options(poisson_mms PRIVATE -Wall -Wextra)
+
+# Experimental high-contrast diffusion adapter; production Poisson remains unchanged.
+add_executable(layered_diffusion layered_diffusion.cpp)
+target_include_directories(layered_diffusion PRIVATE ${MFEM_INCLUDE_DIRS})
+target_link_libraries(layered_diffusion PRIVATE ${MFEM_LIBRARIES})
+target_compile_options(layered_diffusion PRIVATE -Wall -Wextra)

@@ -35,3 +35,14 @@
 2. 用同一机器多次测量，识别真正的时间、内存瓶颈；在生产工作流引入有资源上限的验证子进程及可靠的重试缓存（冻结输入、内容哈希、独立复核）。
 3. 注册强跳跃扩散新算例，建立独立验证标准，完成 CPU 对照，再接入 MFEM 并行后端。
 4. 基于经过验证的配置形成确定性自动选型基线；之后评估学习型/LLM 规划的实际增益。
+
+## D. 强跳跃扩散独立原型（候选代码）
+
+新增 cpp/layered_diffusion.cpp 和 benchmarks/layered_diffusion.py：使用 MFEM H1/Q1 与系数 DiffusionIntegrator 计算界面对齐的强跳跃扩散。Python 从实际单元节点重建 Q1 梯度，检查完整拓扑、共享节点、左右边界、全域 x/y 通量与积分能量。它不复用 MFEM 的误差报告，也不错误要求 p+1 收敛阶。阈值预设为节点及边界绝对误差 1e-8、通量相对误差 1e-5、能量相对误差 1e-7，尚需原生试验校验。不是通用变系数 ProblemSpec 支持，不修改原生产能力矩阵。
+
+    ./scripts/build_solver.sh
+    python -m pytest -q --require-mfem
+    python -m benchmarks.layered_diffusion --output runs/layered-k100 --n 16 --kappa 100
+    python -m benchmarks.layered_diffusion --output runs/layered-k1e6 --n 16 --kappa 1000000
+
+解析场 fixtures 覆盖四个对比度，原生 smoke 仅要求 kappa=1、100。高对比度结果必须独立通过才接受，不能推断 1e6 已成功。后续考察不同预条件器、资源及极端条件下稳定性，增加系数误设及非对齐界面的测试。
