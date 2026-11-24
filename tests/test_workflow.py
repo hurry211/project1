@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from sciagent import controller
+from sciagent import capability, controller
 
 
 @pytest.mark.parametrize("spec,code", [
@@ -42,7 +42,8 @@ def test_initial_dof_budget_stops_before_any_solver_call(specs_dir, tmp_path, mo
     spec["policy"]["max_dofs_per_level"] = 100
     path.write_text(json.dumps(spec))
     monkeypatch.setattr(controller.environment, "probe", lambda: {
-        "mfem": {"found": True}, "solver_binary_sha256": "test", "cxx": "test",
+        "mfem": {"found": True, "git": capability.MFEM_COMMIT, "version": capability.MFEM_VERSION,
+                 "config": capability.REVIEWED_FLAGS}, "solver_binary_sha256": "test", "cxx": "test",
     })
     monkeypatch.setattr(controller.mfem_runner, "list_cases", lambda: {
         "cases": [{**spec["problem"], "id": "sin_sin"}],

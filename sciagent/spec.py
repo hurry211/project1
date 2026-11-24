@@ -24,7 +24,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-SCHEMA_VERSION = "0.2"
+SCHEMA_VERSION = "0.3"
 
 SideLabel = Literal["bottom", "right", "top", "left"]
 
@@ -55,14 +55,16 @@ class BoundaryCondition(_Frozen):
     label: SideLabel
     kind: Literal["dirichlet", "neumann"]
     # MVP restriction: boundary data is always derived from the manufactured
-    # exact solution (u for Dirichlet, grad(u).n for Neumann). Any other value
+    # exact solution (u for Dirichlet, kappa * grad(u).n for Neumann). Any other value
     # is rejected rather than silently interpreted.
     value: Literal["from_exact_solution"]
 
 
 class ProblemSpec(_Frozen):
     id: str = Field(min_length=1, max_length=80, pattern=r"^[A-Za-z0-9_\-]+$")
-    equation: Literal["-laplacian(u) = f"]
+    equation: Literal["-laplacian(u) = f", "-div(kappa*grad(u)) = f"]
+    # Preserve canonical JSON (and archive hashes) for the original Poisson equation.
+    kappa: Literal["1", "1+x"] = Field(default="1", exclude_if=lambda k: k == "1")
     domain: Literal["unit_square_2d"]
     exact_solution: str = Field(min_length=1, max_length=400)
     source: str = Field(min_length=1, max_length=400)
@@ -70,6 +72,10 @@ class ProblemSpec(_Frozen):
 
     @model_validator(mode="after")
     def _check_boundaries(self) -> "ProblemSpec":
+        if self.equation == "-div(kappa*grad(u)) = f" and self.kappa != "1+x":
+            raise ValueError("the reviewed diffusion equation requires kappa='1+x'")
+        if self.equation == "-laplacian(u) = f" and "kappa" in self.model_fields_set:
+            raise ValueError("the Poisson equation uses implicit unit diffusivity")
         attrs = [b.attribute for b in self.boundaries]
         if len(set(attrs)) != len(attrs):
             raise ValueError("duplicate boundary attribute in ProblemSpec")
@@ -134,7 +140,7 @@ class ExecutionSpec(_Frozen):
     max_iter: int = Field(default=20_000, ge=1)
     inject_fault: Literal[
         "none", "wrong_source", "drop_dirichlet_attr", "nan_value",
-        "early_stop_lie", "self_report_lie",
+        "early_stop_lie", "self_report_lie", "omit_coefficient_gradient", "omit_neumann_coefficient",
     ] = "none"
 
     @field_validator("mesh_levels")
@@ -154,14 +160,35 @@ class ExecutionSpec(_Frozen):
         return (n * p + 1) ** 2  # P_p on a uniformly split Cartesian triangulation
 
 
+class ExternalMeshSpec(_Frozen):
+    """A pinned Gmsh MSH 2.2 ASCII file alongside the study request."""
+
+    file: str = Field(max_length=150, pattern=r"^[A-Za-z0-9_-][A-Za-z0-9_.-]*\.msh$")
+    sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
 class StudySpec(_Frozen):
     """A complete user-facing specification file."""
 
-    schema_version: Literal["0.2"]
+    schema_version: Literal["0.2", "0.3"]
     problem: ProblemSpec
     execution: ExecutionSpec
     validation: ValidationSpec = ValidationSpec()
     policy: RetryPolicy = RetryPolicy()
+    external_mesh: ExternalMeshSpec | None = Field(default=None, exclude_if=lambda value: value is None)
+
+    @model_validator(mode="after")
+    def _check_stage2_features(self) -> "StudySpec":
+        if self.schema_version == "0.2" and (
+            self.problem.kappa != "1" or "external_mesh" in self.model_fields_set
+        ):
+            raise ValueError("variable diffusivity and external_mesh require schema_version 0.3")
+        if self.execution.inject_fault in ("omit_coefficient_gradient", "omit_neumann_coefficient"):
+            if self.problem.kappa == "1":
+                raise ValueError("this fault requires a variable diffusion problem")
+            if self.execution.inject_fault == "omit_neumann_coefficient" and not self.problem.neumann_attributes():
+                raise ValueError("omit_neumann_coefficient requires a Neumann boundary")
+        return self
 
 
 def canonical_json(model: BaseModel) -> str:

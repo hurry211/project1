@@ -1,0 +1,55 @@
+{
+  "schema_version": "0.3",
+  "problem": {
+    "id": "variable_diffusion_mixed",
+    "equation": "-div(kappa*grad(u)) = f",
+    "domain": "unit_square_2d",
+    "exact_solution": "sin(pi*x)*sin(2*pi*y)",
+    "source": "5*pi**2*(1+x)*sin(pi*x)*sin(2*pi*y)-pi*cos(pi*x)*sin(2*pi*y)",
+    "boundaries": [
+      {
+        "attribute": 11,
+        "label": "bottom",
+        "kind": "dirichlet",
+        "value": "from_exact_solution"
+      },
+      {
+        "attribute": 22,
+        "label": "right",
+        "kind": "dirichlet",
+        "value": "from_exact_solution"
+      },
+      {
+        "attribute": 33,
+        "label": "top",
+        "kind": "neumann",
+        "value": "from_exact_solution"
+      },
+      {
+        "attribute": 44,
+        "label": "left",
+        "kind": "dirichlet",
+        "value": "from_exact_solution"
+      }
+    ],
+    "kappa": "1+x"
+  },
+  "execution": {
+    "mesh_type": "quad",
+    "polynomial_order": 2,
+    "mesh_levels": [
+      8,
+      16,
+      32
+    ],
+    "backend": "serial_cpu",
+    "assembly": "partial",
+    "solver": "cg_jacobi"
+  },
+  "validation": {},
+  "policy": {},
+  "external_mesh": {
+    "file": "unit_square_quad.msh",
+    "sha256": "8cbdcba503f59b1b0dd258e3121348cda0d3802d452e0a6db43305dbf1f3adaa"
+  }
+}

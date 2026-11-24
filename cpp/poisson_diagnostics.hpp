@@ -35,7 +35,7 @@ inline Residual MeasureResidual(const mfem::Operator &A, const mfem::Vector &X,
 
 struct BoundaryFlux
 {
-   // MakeCartesian2D attributes 1..4 denote bottom, right, top, left.
+   // Physical sides in bottom, right, top, left order (independent of tag IDs).
    std::array<double, 4> outward_by_side{};
    double source_integral = 0.0;
 
@@ -45,10 +45,22 @@ struct BoundaryFlux
    }
 };
 
+inline int UnitSquareSide(const mfem::real_t *a, const mfem::real_t *b)
+{
+   constexpr double tol = 1e-12;
+   if (std::abs(a[1]) <= tol && std::abs(b[1]) <= tol) { return 0; }
+   if (std::abs(a[0] - 1.0) <= tol && std::abs(b[0] - 1.0) <= tol) { return 1; }
+   if (std::abs(a[1] - 1.0) <= tol && std::abs(b[1] - 1.0) <= tol) { return 2; }
+   if (std::abs(a[0]) <= tol && std::abs(b[0]) <= tol) { return 3; }
+   return -1;
+}
+
 inline BoundaryFlux MeasureBoundaryFlux(mfem::Mesh &mesh, const mfem::GridFunction &u,
                                         bool field_is_finite, mfem::Coefficient &source,
                                         const mfem::IntegrationRule &volume_rule,
-                                        const mfem::IntegrationRule &boundary_rule)
+                                        const mfem::IntegrationRule &boundary_rule,
+                                        mfem::Coefficient *diffusivity,
+                                        const mfem::Array<int> &boundary_sides)
 {
    BoundaryFlux flux;
    // Integrate the volume coefficient actually used by the native RHS,
@@ -74,7 +86,7 @@ inline BoundaryFlux MeasureBoundaryFlux(mfem::Mesh &mesh, const mfem::GridFuncti
    for (int be = 0; be < mesh.GetNBE(); be++)
    {
       auto *face = mesh.GetBdrFaceTransformations(be);
-      double &side = flux.outward_by_side.at(mesh.GetBdrAttribute(be) - 1);
+      double &side = flux.outward_by_side.at(boundary_sides[be]);
       for (int q = 0; q < boundary_rule.GetNPoints(); q++)
       {
          const auto &ip = boundary_rule.IntPoint(q);
@@ -83,7 +95,9 @@ inline BoundaryFlux MeasureBoundaryFlux(mfem::Mesh &mesh, const mfem::GridFuncti
          // On an exterior face CalcOrtho gives the outward normal scaled by
          // the surface Jacobian. The trace comes from the adjacent element.
          mfem::CalcOrtho(face->Jacobian(), normal);
-         side -= ip.weight * (gradient * normal);
+         const double kappa = diffusivity ?
+                              diffusivity->Eval(*face->Elem1, face->GetElement1IntPoint()) : 1.0;
+         side -= ip.weight * kappa * (gradient * normal);
       }
    }
    return flux;

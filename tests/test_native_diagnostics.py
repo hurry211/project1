@@ -45,22 +45,28 @@ def test_sine_flux_integral_converges_to_eight(tmp_path):
     assert abs(8.0 - totals[1]) < abs(8.0 - totals[0]) / 2
 
 
-def tensor_quad_flux(directory, n, order):
-    """Integrate the exported piecewise Q1/Q2 inward derivatives on each boundary."""
+def tensor_quad_flux(directory, n, order, diffusivity=lambda x: 1.0):
+    """Integrate the flux of the exported tensor field for linear or constant kappa(x)."""
     mesh = load_mesh_data(directory)
     grid = np.full((n * order + 1, n * order + 1), np.nan)
     ix, iy = np.rint(mesh.elem_node_xy * n * order).astype(int).transpose(2, 0, 1)
     grid[ix, iy] = mesh.values[mesh.elem_dofs]
-    # The first axis of each view goes inward. Flux = -du/dn = du/d(inward).
+    # The first axis of each view goes inward. Flux = kappa * du/d(inward).
     sides = {"left": grid, "right": grid[::-1], "bottom": grid.T, "top": grid.T[::-1]}
+    x_nodes = np.linspace(0, 1, 2 * n + 1)
+    side_x = {"left": 0.0, "right": 1.0, "bottom": x_nodes, "top": x_nodes}
     integrals = {}
     for side, u in sides.items():
         if order == 1:
-            derivative = n * (u[1] - u[0])
-            integrals[side] = (derivative[:-1] + derivative[1:]).sum() / (2 * n)
+            endpoint = n * (u[1] - u[0])
+            derivative = np.empty(2 * n + 1)
+            derivative[::2] = endpoint
+            derivative[1::2] = (endpoint[1:] + endpoint[:-1]) / 2
         else:
             derivative = n * (-3 * u[0] + 4 * u[1] - u[2])
-            integrals[side] = (derivative[:-1:2] + 4 * derivative[1::2] + derivative[2::2]).sum() / (6 * n)
+        # Simpson integrates the linear coefficient times the Q1/Q2 trace exactly.
+        flux = derivative * diffusivity(side_x[side])
+        integrals[side] = (flux[:-1:2] + 4 * flux[1::2] + flux[2::2]).sum() / (6 * n)
     return integrals
 
 
@@ -85,6 +91,21 @@ def test_mixed_quad_flux_matches_independent_face_integrals(tmp_path, order, ass
     assert residual["rhs_l2"] > 0
     assert residual["relative_l2"] == pytest.approx(residual["absolute_l2"] / residual["rhs_l2"], abs=1e-25)
     assert 0 <= residual["relative_l2"] < 1e-10
+
+
+@pytest.mark.parametrize("order,assembly,solver", [(1, "full", "cg_gs"), (2, "partial", "cg_jacobi")])
+def test_variable_flux_matches_weighted_exported_gradient(tmp_path, order, assembly, solver):
+    n = 16
+    directory = tmp_path / "level"
+    native = run_level(directory, "--case", "sin_sin_variable", "--mesh-type", "quad",
+                       "--n", str(n), "--order", str(order), "--assembly", assembly, "--solver", solver,
+                       "--dirichlet", "1,2,4", "--neumann", "3")
+    by_side = native["diagnostics"]["boundary_flux"]["outward_by_side"]
+    discrete = tensor_quad_flux(directory, n, order, diffusivity=lambda x: 1 + x)
+    assert by_side == pytest.approx(discrete, abs=1e-11)
+    # The exact outward diffusive flux integrates to +6 at the bottom and -6 at the top.
+    assert by_side["bottom"] == pytest.approx(6.0, abs=0.3)
+    assert by_side["top"] == pytest.approx(-6.0, abs=0.3)
 
 
 def test_wrong_source_and_early_stop_have_distinct_residuals(tmp_path):
@@ -130,7 +151,7 @@ def test_replay_of_native_result_without_optional_diagnostics(specs_dir, tmp_pat
 
 
 def test_residual_normalization_with_zero_and_nonzero_rhs(tmp_path):
-    # Neither registered MMS has an exactly zero discrete RHS. Use a known
+    # The registered MMS cases have nonzero discrete RHSs. Use a known
     # operator and retain a measurable absolute residual for the zero-RHS case.
     build = tmp_path / "build"
     subprocess.run(["cmake", "-S", str(ROOT / "tests/native"), "-B", str(build),

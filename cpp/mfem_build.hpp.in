@@ -1,0 +1,3 @@
+#pragma once
+
+constexpr char MfemBuildFlags[] = R"json({@config_json@})json";

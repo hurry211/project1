@@ -5,7 +5,8 @@ import pytest
 from sciagent import capability
 from sciagent.spec import ExecutionSpec
 
-ENV_SERIAL = {"mfem": {"config": {"MFEM_USE_MPI": False, "MFEM_USE_CUDA": False, "MFEM_USE_SUITESPARSE": False}}}
+ENV_SERIAL = {"mfem": {"version": capability.MFEM_VERSION, "git": capability.MFEM_COMMIT,
+                       "config": capability.REVIEWED_FLAGS.copy()}}
 
 
 @pytest.mark.parametrize("kw,code", [
@@ -39,3 +40,35 @@ def test_tested_entries_accepted(key):
 def test_matrix_rows_cover_all_statuses():
     statuses = {r["status"] for r in capability.matrix_as_rows()}
     assert statuses == {"tested", "unsupported", "not_verified"}
+
+
+@pytest.mark.parametrize("overrides", [
+    {"version": "4.9"}, {"git": None}, {"git": capability.MFEM_COMMIT + "-dirty"},
+    {"config": {}}, {"config": {**capability.REVIEWED_FLAGS, "MFEM_USE_SINGLE": True}},
+])
+def test_unreviewed_build_cannot_inherit_tested_status(overrides):
+    env = {"mfem": {**ENV_SERIAL["mfem"], **overrides}}
+    assert capability.evaluate(ExecutionSpec(), env).code == "NOT_VERIFIED_BUILD"
+
+
+def test_reviewed_coverage_is_explicit():
+    assert capability.evaluate(ExecutionSpec(), case_id="unreviewed").status == "not_verified"
+    assert capability.evaluate(ExecutionSpec(), mesh_source="curved").status == "not_verified"
+    rows = capability.matrix_as_rows("sin_sin_variable", "gmsh22")
+    tested = [r for r in rows if r["status"] == "tested"]
+    assert len(tested) == 7
+    for row in tested:
+        assert row["verification"]["case_ids"] == ["sin_sin_variable"]
+        assert row["verification"]["preconditioner"].endswith("Smoother") or row["solver"] == "cg_gs"
+        assert row["reviewed_build"]["flags"] == capability.REVIEWED_FLAGS
+
+
+def test_probe_for_another_install_cannot_certify_a_different_solver():
+    catalog = {"registry_version": 2, "mfem_git": capability.MFEM_COMMIT,
+               "mfem_version": "MFEM v4.10.0 (release)", "mfem_config": capability.REVIEWED_FLAGS}
+    assert capability.evaluate(ExecutionSpec(), ENV_SERIAL, catalog=catalog).code == "OK"
+    assert capability.evaluate(ExecutionSpec(), ENV_SERIAL, mesh_source="gmsh22", catalog=catalog).status == "not_verified"
+    assert capability.evaluate(ExecutionSpec(), ENV_SERIAL, mesh_source="gmsh22",
+                               catalog={**catalog, "mesh_sources": ["gmsh22"]}).status == "tested"
+    for fields in ({"mfem_config": {}}, {"mfem_git": "other"}, {"mfem_version": "MFEM v4.9"}):
+        assert capability.evaluate(ExecutionSpec(), ENV_SERIAL, catalog={**catalog, **fields}).code == "NOT_VERIFIED_BUILD"

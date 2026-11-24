@@ -81,15 +81,20 @@ def _require_text_fields(record, keys, name: str):
 def _validate_registry(catalog):
     if not isinstance(catalog, dict) or not isinstance(catalog.get("cases"), list):
         raise ValueError("expected a cases array")
+    version = catalog.get("registry_version")
     if "registry_version" in catalog or "formulation" in catalog:
-        version = catalog.get("registry_version")
-        if type(version) is not int or version != 1:
+        if type(version) is not int or version not in (1, 2):
             raise ValueError("unsupported case registry version")
         _require_text_fields(catalog.get("formulation"), ("equation", "domain", *_POISSON_FORM), "formulation")
 
     ids, signatures = set(), set()
     for case in catalog["cases"]:
         _require_text_fields(case, ("id", "exact_solution", "source"), "manufactured case entry")
+        if "formulation" in case:
+            if version != 2:
+                raise ValueError("case-specific formulations require registry version 2")
+            _require_text_fields(case["formulation"], ("equation", "domain", "kappa", *_POISSON_FORM),
+                                 "case-specific formulation")
         signature = (compact_expression(case["exact_solution"]), compact_expression(case["source"]))
         if case["id"] in ids or signature in signatures:
             raise ValueError("duplicate case identifier or formula signature")
@@ -121,11 +126,19 @@ def bind_case(problem: ProblemSpec, cases: dict) -> str | None:
         _validate_registry(cases)
     except ValueError:
         return None
-    if "registry_version" in cases:
-        expected = {"equation": problem.equation, "domain": problem.domain, **_POISSON_FORM}
-        if any(cases["formulation"].get(key) != value for key, value in expected.items()):
-            return None
+    expected = {"equation": problem.equation, "domain": problem.domain, **_POISSON_FORM}
+    variable = problem.equation == "-div(kappa*grad(u)) = f"
+    if variable:
+        expected["neumann_trace"] = "kappa*grad(u_exact).n"
     for c in cases["cases"]:
+        if variable and "formulation" not in c:
+            continue  # Historical solvers implement only unit diffusion.
+        form = c.get("formulation", cases.get("formulation"))
+        if form is not None and (
+            any(form[key] != value for key, value in expected.items())
+            or compact_expression(form.get("kappa", "1")) != compact_expression(problem.kappa)
+        ):
+            continue
         if (compact_expression(c["exact_solution"]) == compact_expression(problem.exact_solution)
                 and compact_expression(c["source"]) == compact_expression(problem.source)):
             return c["id"]
@@ -153,7 +166,8 @@ def _limits(mem_mb: int):
 
 
 def run_level(problem: ProblemSpec, execution: ExecutionSpec, case_id: str, n: int,
-              level_dir: Path, timeout_s: float, mem_mb: int, binary: Path | None = None) -> LevelRun:
+              level_dir: Path, timeout_s: float, mem_mb: int, binary: Path | None = None, *,
+              mesh_path: Path | None = None, refinements: int = 0) -> LevelRun:
     binary = binary or solver_binary()
     level_dir.mkdir(parents=True, exist_ok=False)  # never overwrite evidence
     cmd = [
@@ -165,6 +179,8 @@ def run_level(problem: ProblemSpec, execution: ExecutionSpec, case_id: str, n: i
         "--rel-tol", repr(execution.rel_tol), "--max-iter", str(execution.max_iter),
         "--inject-fault", execution.inject_fault, "--out", str(level_dir),
     ]
+    if mesh_path is not None:
+        cmd.extend(["--mesh", str(mesh_path), "--mesh-refinements", str(refinements)])
     (level_dir / "command.json").write_text(json.dumps({"argv": cmd, "shell": shlex.join(cmd)}, indent=2))
     t0 = time.time()
     timed_out = False

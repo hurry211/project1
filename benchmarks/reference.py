@@ -10,6 +10,16 @@ from skfem import (Basis, ElementQuad1, ElementQuad2, ElementTriP1, ElementTriP2
 from skfem.models.poisson import laplace
 
 
+def tensor_basis(execution, n):
+    tri = execution["mesh_type"] == "tri"
+    p = execution["polynomial_order"]
+    knots = np.linspace(0, 1, n + 1)
+    mesh = (MeshTri if tri else MeshQuad).init_tensor(knots, knots)
+    element = {(True, 1): ElementTriP1, (True, 2): ElementTriP2,
+               (False, 1): ElementQuad1, (False, 2): ElementQuad2}[tri, p]()
+    return Basis(mesh, element, intorder=12)
+
+
 def exact(mixed, x, y):
     if mixed:
         return np.cos(np.pi * x) * np.exp(y)
@@ -37,13 +47,7 @@ class Reference:
             mixed = True
         else:
             raise ValueError(f"unknown oracle problem {name}")
-        tri = execution["mesh_type"] == "tri"
-        p = execution["polynomial_order"]
-        knots = np.linspace(0, 1, n + 1)
-        mesh = (MeshTri if tri else MeshQuad).init_tensor(knots, knots)
-        element = {(True, 1): ElementTriP1, (True, 2): ElementTriP2,
-                   (False, 1): ElementQuad1, (False, 2): ElementQuad2}[tri, p]()
-        return cls(Basis(mesh, element, intorder=12), mixed)
+        return cls(tensor_basis(execution, n), mixed)
 
     def solve(self, source_scale=1.0, stiffness_scale=1.0):
         b, mixed = self.basis, self.mixed
@@ -105,7 +109,7 @@ class Reference:
         field[order] = values[:, 1]
         return field, order
 
-    def check_topology(self, level, order, n):
+    def check_topology(self, level, order, n, *, side_tags=(1, 2, 3, 4)):
         """Compare per-cell incidence and all labelled edges to the regenerated grid."""
         incidence = np.loadtxt(level / "element_dofs.txt", dtype=int, usecols=(2,))
         local_size = self.basis.element_dofs.shape[0]
@@ -126,9 +130,10 @@ class Reference:
             raise ValueError("cell vertices, orientation or local DOF incidence differ from the independent mesh")
         edges = np.loadtxt(level / "boundary.txt")
         expected = []
+        bottom, right, top, left = side_tags
         for k in range(n):
-            expected.extend([(1, (k, 0), (k + 1, 0)), (2, (n, k), (n, k + 1)),
-                             (3, (k, n), (k + 1, n)), (4, (0, k), (0, k + 1))])
+            expected.extend([(bottom, (k, 0), (k + 1, 0)), (right, (n, k), (n, k + 1)),
+                             (top, (k, n), (k + 1, n)), (left, (0, k), (0, k + 1))])
         xy = edges[:, 2:].reshape(-1, 2, 2)
         ij = np.rint(xy * n).astype(int)
         reported = [(attr, *sorted(map(tuple, ends))) for attr, ends in zip(edges[:, 1], ij)]

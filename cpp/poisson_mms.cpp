@@ -1,10 +1,10 @@
 // poisson_mms.cpp
 //
-// MFEM-based solver for the scalar Poisson problem on the unit square
+// MFEM-based solver for scalar diffusion on the unit square
 //
-//     -lap(u) = f            in Omega = (0,1)^2
+//     -div(kappa grad(u)) = f in Omega = (0,1)^2
 //           u = u_exact      on Gamma_D  (boundary attributes in --dirichlet)
-//   grad(u).n = grad(u_exact).n on Gamma_N (boundary attributes in --neumann)
+//   kappa grad(u).n = kappa grad(u_exact).n on Gamma_N (--neumann)
 //
 // with a manufactured solution selected from manufactured_cases.hpp.
 //
@@ -28,6 +28,7 @@
 // result.json under "injected_fault".
 
 #include "mfem.hpp"
+#include "mfem_build.hpp"
 #include "manufactured_cases.hpp"
 #include "poisson_diagnostics.hpp"
 
@@ -107,26 +108,39 @@ bool FinishExport(std::ofstream &stream, const char *name)
    return !stream.fail();
 }
 
+void PrintFormulation(const mms::Formulation &form, bool include_kappa)
+{
+   std::cout << "{\"equation\": \"" << JsonEscape(form.equation)
+             << "\", \"domain\": \"" << JsonEscape(form.domain)
+             << "\", \"space\": \"" << JsonEscape(form.space)
+             << "\", \"bilinear_integrator\": \"" << JsonEscape(form.bilinear_integrator)
+             << "\", \"dirichlet_trace\": \"" << JsonEscape(form.dirichlet_trace)
+             << "\", \"neumann_trace\": \"" << JsonEscape(form.neumann_trace) << "\"";
+   if (include_kappa) { std::cout << ", \"kappa\": \"" << JsonEscape(form.kappa) << "\""; }
+   std::cout << "}";
+}
+
 void ListCases()
 {
-   const auto &form = mms::UnitSquarePoisson;
    std::cout << "{\n  \"mfem_version\": \"" << GetVersionStr() << "\",\n"
-             << "  \"registry_version\": 1,\n"
-             << "  \"formulation\": {\n"
-             << "    \"equation\": \"" << JsonEscape(form.equation) << "\",\n"
-             << "    \"domain\": \"" << JsonEscape(form.domain) << "\",\n"
-             << "    \"space\": \"" << JsonEscape(form.space) << "\",\n"
-             << "    \"bilinear_integrator\": \"" << JsonEscape(form.bilinear_integrator) << "\",\n"
-             << "    \"dirichlet_trace\": \"" << JsonEscape(form.dirichlet_trace) << "\",\n"
-             << "    \"neumann_trace\": \"" << JsonEscape(form.neumann_trace) << "\"\n  },\n"
-             << "  \"cases\": [\n";
+             << "  \"mfem_git\": \"" << JsonEscape(GetGitStr()) << "\",\n"
+             << "  \"mfem_config\": " << MfemBuildFlags << ",\n"
+             << "  \"mesh_sources\": [\"cartesian\", \"gmsh22\"],\n"
+             << "  \"registry_version\": 2,\n  \"formulation\": ";
+   PrintFormulation(mms::UnitSquarePoisson, false);
+   std::cout << ",\n  \"cases\": [\n";
    const auto &reg = mms::Registry();
    for (size_t i = 0; i < reg.size(); i++)
    {
       std::cout << "    {\"id\": \"" << JsonEscape(reg[i].id) << "\", \"exact_solution\": \""
                 << JsonEscape(reg[i].exact_solution) << "\", \"source\": \""
-                << JsonEscape(reg[i].source) << "\"}" << (i + 1 < reg.size() ? "," : "")
-                << "\n";
+                << JsonEscape(reg[i].source) << "\"";
+      if (reg[i].diffusivity)
+      {
+         std::cout << ", \"formulation\": ";
+         PrintFormulation(reg[i].form, true);
+      }
+      std::cout << "}" << (i + 1 < reg.size() ? "," : "") << "\n";
    }
    std::cout << "  ]\n}\n";
 }
@@ -137,6 +151,8 @@ int main(int argc, char *argv[])
 {
    const char *case_id = "sin_sin";
    const char *mesh_type = "tri";
+   const char *mesh_file = "";
+   int mesh_refinements = 0;
    int n = 8;
    int order = 1;
    const char *dirichlet_str = "1,2,3,4";
@@ -153,6 +169,8 @@ int main(int argc, char *argv[])
    OptionsParser args(argc, argv);
    args.AddOption(&case_id, "-c", "--case", "Manufactured case id.");
    args.AddOption(&mesh_type, "-mt", "--mesh-type", "tri or quad.");
+   args.AddOption(&mesh_file, "-m", "--mesh", "Preflighted unit-square Gmsh input.");
+   args.AddOption(&mesh_refinements, "-mr", "--mesh-refinements", "Uniform refinements of imported mesh.");
    args.AddOption(&n, "-n", "--n", "Elements per side of the unit square.");
    args.AddOption(&order, "-o", "--order", "H1 polynomial order.");
    args.AddOption(&dirichlet_str, "-dir", "--dirichlet",
@@ -168,7 +186,8 @@ int main(int argc, char *argv[])
    args.AddOption(&out_dir, "-out", "--out", "Existing output directory.");
    args.AddOption(&fault, "-fault", "--inject-fault",
                   "none, wrong_source, drop_dirichlet_attr, nan_value, "
-                  "early_stop_lie, self_report_lie (testing only).");
+                  "early_stop_lie, self_report_lie, omit_coefficient_gradient, "
+                  "omit_neumann_coefficient (testing only).");
    args.AddOption(&list_cases, "-list", "--list-cases", "-no-list",
                   "--no-list-cases", "Print compiled cases as JSON and exit.");
    args.Parse();
@@ -179,7 +198,8 @@ int main(int argc, char *argv[])
    const std::set<std::string> known_faults =
    {
       "none", "wrong_source", "drop_dirichlet_attr", "nan_value",
-      "early_stop_lie", "self_report_lie"
+      "early_stop_lie", "self_report_lie", "omit_coefficient_gradient",
+      "omit_neumann_coefficient"
    };
    if (!known_faults.count(fault_s))
    {
@@ -189,6 +209,11 @@ int main(int argc, char *argv[])
 
    const mms::ManufacturedCase *mc = mms::Find(case_id);
    if (!mc) { std::cerr << "ERROR: unknown case '" << case_id << "'\n"; return 2; }
+   if ((fault_s == "omit_coefficient_gradient" && !mc->source_without_coefficient_gradient)
+       || (fault_s == "omit_neumann_coefficient" && !mc->diffusivity))
+   {
+      std::cerr << "ERROR: this fault requires a variable diffusion case\n"; return 2;
+   }
    const std::string mt(mesh_type);
    if (mt != "tri" && mt != "quad")
    {
@@ -229,12 +254,52 @@ int main(int argc, char *argv[])
 
    auto t0 = std::chrono::steady_clock::now();
 
-   // 1. Mesh: n x n Cartesian mesh of the unit square. Boundary attributes
-   //    (MFEM v4.10 Mesh::Make2D): 1 = y=0, 2 = x=1, 3 = y=1, 4 = x=0.
+   // 1. Construct the default Cartesian grid or load the submitted topology
+   //    and physical attributes directly through MFEM's mesh reader.
    const Element::Type etype = (mt == "tri") ? Element::TRIANGLE
                                              : Element::QUADRILATERAL;
-   Mesh mesh = Mesh::MakeCartesian2D(n, n, etype, true, 1.0, 1.0);
+   const bool imported = mesh_file[0] != '\0';
+   if (mesh_refinements < 0 || mesh_refinements > 12 || (!imported && mesh_refinements))
+   {
+      std::cerr << "ERROR: invalid mesh refinement count\n"; return 2;
+   }
+   Mesh mesh = imported ? Mesh(mesh_file, 1, 1) : Mesh::MakeCartesian2D(n, n, etype, true, 1.0, 1.0);
+   if (imported)
+   {
+      const int factor = 1 << mesh_refinements;
+      const int base = n / factor;
+      if (n % factor || mesh.Dimension() != 2 || mesh.SpaceDimension() != 2 ||
+          mesh.GetNE() != base * base * (mt == "tri" ? 2 : 1) ||
+          mesh.GetNBE() != 4 * base)
+      {
+         std::cerr << "ERROR: imported mesh dimensions or element counts differ from request\n"; return 2;
+      }
+      for (int e = 0; e < mesh.GetNE(); ++e)
+      {
+         if (mesh.GetElementType(e) != etype)
+         {
+            std::cerr << "ERROR: imported mesh element type differs from request\n"; return 2;
+         }
+      }
+      for (int k = 0; k < mesh_refinements; ++k) { mesh.UniformRefinement(); }
+   }
    const int dim = mesh.Dimension();
+
+   Array<int> boundary_sides(mesh.GetNBE()), boundary_vertices;
+   for (int be = 0; be < mesh.GetNBE(); be++)
+   {
+      mesh.GetBdrElementVertices(be, boundary_vertices);
+      if (boundary_vertices.Size() != 2)
+      {
+         std::cerr << "ERROR: expected boundary segments in the unit square\n"; return 3;
+      }
+      boundary_sides[be] = poisson_diagnostics::UnitSquareSide(
+         mesh.GetVertex(boundary_vertices[0]), mesh.GetVertex(boundary_vertices[1]));
+      if (boundary_sides[be] < 0)
+      {
+         std::cerr << "ERROR: boundary segment is off the unit square\n"; return 3;
+      }
+   }
 
    // 2. Boundary coverage: each mesh attribute exactly once; no unknown ones.
    std::set<int> mesh_attrs;
@@ -244,6 +309,11 @@ int main(int argc, char *argv[])
    }
    std::set<int> dset(dir_attrs.begin(), dir_attrs.end());
    std::set<int> nset(neu_attrs.begin(), neu_attrs.end());
+   if (fault_s == "omit_neumann_coefficient" && nset.empty())
+   {
+      std::cerr << "ERROR: omit_neumann_coefficient requires a Neumann boundary\n";
+      return 2;
+   }
    bool bc_ok = (dset.size() == dir_attrs.size()) &&
                 (nset.size() == neu_attrs.size());
    for (int a : dset) { if (nset.count(a) || !mesh_attrs.count(a)) { bc_ok = false; } }
@@ -286,10 +356,16 @@ int main(int argc, char *argv[])
    // 4. Coefficients and integration rules.
    FunctionCoefficient u_coef(mc->u);
    VectorFunctionCoefficient grad_coef(dim, mc->grad_u);
+   // A null coefficient selects MFEM's original unit-diffusion assembly path.
+   std::unique_ptr<FunctionCoefficient> diffusivity;
+   if (mc->diffusivity) { diffusivity = std::make_unique<FunctionCoefficient>(mc->diffusivity); }
+   VectorFunctionCoefficient conormal_coef(dim, mc->grad_u, diffusivity.get());
    const double src_scale = (fault_s == "wrong_source") ? 1.1 : 1.0;
-   FunctionCoefficient f_coef([mc, src_scale](const Vector &p)
+   const auto source = fault_s == "omit_coefficient_gradient" ?
+                       mc->source_without_coefficient_gradient : mc->f;
+   FunctionCoefficient f_coef([source, src_scale](const Vector &p)
    {
-      return src_scale * mc->f(p);
+      return src_scale * source(p);
    });
    const Geometry::Type geom = mesh.GetTypicalElementGeometry();
    const int rhs_q = 2 * order + 4;
@@ -300,7 +376,8 @@ int main(int argc, char *argv[])
    b.AddDomainIntegrator(new DomainLFIntegrator(f_coef, &ir_dom));
    if (!nset.empty())
    {
-      auto *bn = new BoundaryNormalLFIntegrator(grad_coef);
+      auto &natural_flux = fault_s == "omit_neumann_coefficient" ? grad_coef : conormal_coef;
+      auto *bn = new BoundaryNormalLFIntegrator(natural_flux);
       bn->SetIntRule(&ir_bdr);
       b.AddBoundaryIntegrator(bn, neu_bdr);
    }
@@ -312,7 +389,17 @@ int main(int argc, char *argv[])
 
    BilinearForm a(&fespace);
    if (asm_s == "partial") { a.SetAssemblyLevel(AssemblyLevel::PARTIAL); }
-   a.AddDomainIntegrator(new DiffusionIntegrator);
+   const int stiffness_q = 2 * order + 1;
+   if (diffusivity)
+   {
+      // Linear kappa raises the polynomial degree. On an affine triangle
+      // kappa grad(phi_i).grad(phi_j) has total degree 2p-1; on an axis-aligned
+      // quad either coordinate can reach degree 2p+1.
+      auto *stiffness = new DiffusionIntegrator(*diffusivity);
+      stiffness->SetIntRule(&IntRules.Get(geom, stiffness_q));
+      a.AddDomainIntegrator(stiffness);
+   }
+   else { a.AddDomainIntegrator(new DiffusionIntegrator); }
    a.Assemble();
 
    OperatorPtr A;
@@ -364,7 +451,8 @@ int main(int argc, char *argv[])
    double h1s_err = finite ? x.ComputeGradError(&grad_coef, irs) : NAN;
    if (fault_s == "self_report_lie") { l2_err = 0.0; h1s_err = 0.0; }
    auto t3 = std::chrono::steady_clock::now();
-   const auto flux = poisson_diagnostics::MeasureBoundaryFlux(mesh, x, finite, f_coef, ir_dom, ir_bdr);
+   const auto flux = poisson_diagnostics::MeasureBoundaryFlux(
+      mesh, x, finite, f_coef, ir_dom, ir_bdr, diffusivity.get(), boundary_sides);
    const double outward_total = flux.OutwardTotal();
 
    // 7. Export raw data for the independent verifier.
@@ -454,8 +542,14 @@ int main(int argc, char *argv[])
         << "  \"mfem_git\": \"" << JsonEscape(GetGitStr()) << "\",\n"
         << "  \"case\": \"" << mc->id << "\",\n"
         << "  \"case_exact_solution\": \"" << JsonEscape(mc->exact_solution) << "\",\n"
-        << "  \"case_source\": \"" << JsonEscape(mc->source) << "\",\n"
-        << "  \"mesh_type\": \"" << mt << "\",\n"
+        << "  \"case_source\": \"" << JsonEscape(mc->source) << "\",\n";
+      if (mc->diffusivity)
+      {
+         f << "  \"case_equation\": \"" << JsonEscape(mc->form.equation) << "\",\n"
+           << "  \"case_diffusivity\": \"" << JsonEscape(mc->form.kappa) << "\",\n"
+           << "  \"stiffness_quadrature_order\": " << stiffness_q << ",\n";
+      }
+      f << "  \"mesh_type\": \"" << mt << "\",\n"
         << "  \"n\": " << n << ",\n"
         << "  \"h\": " << JsonNum(1.0 / n) << ",\n"
         << "  \"order\": " << order << ",\n"

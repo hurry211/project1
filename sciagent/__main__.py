@@ -17,7 +17,9 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("env", help="print the environment probe as JSON")
     sub.add_parser("build", help="build cpp/poisson_mms against the pinned MFEM install")
     sub.add_parser("cases", help="list manufactured cases compiled into the solver")
-    sub.add_parser("matrix", help="print the capability matrix")
+    matrix = sub.add_parser("matrix", help="print reviewed build and solver coverage as JSON lines")
+    matrix.add_argument("--case", choices=capability.CASE_IDS)
+    matrix.add_argument("--mesh-source", choices=capability.MESH_SOURCES, default="cartesian")
     r = sub.add_parser("run", help="run a study spec end to end")
     r.add_argument("spec")
     r.add_argument("--runs-dir", default="runs")
@@ -37,7 +39,7 @@ def main(argv: list[str] | None = None) -> int:
     elif a.cmd == "cases":
         print(json.dumps(mfem_runner.list_cases(), indent=2))
     elif a.cmd == "matrix":
-        for row in capability.matrix_as_rows():
+        for row in capability.matrix_as_rows(a.case, a.mesh_source):
             print(json.dumps(row))
     elif a.cmd == "run":
         m = controller.run_study(a.spec, a.runs_dir)

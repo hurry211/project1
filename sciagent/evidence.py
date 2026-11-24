@@ -24,6 +24,7 @@ import json
 from pathlib import Path
 
 from .spec import StudySpec, sha256_of
+from .gmsh import ARCHIVED_MESH
 
 
 def utc_now() -> str:
@@ -97,6 +98,8 @@ def check_archive(attempt: Path, expected_digest: str | None) -> tuple[str, dict
     if mode == "legacy-input-hashes" and stored.get("verifier_version") != "0.1.0":
         raise ValueError("missing evidence inventory")
     request = StudySpec.model_validate_json((run / "request/study_spec.json").read_text())
+    if actual.get(ARCHIVED_MESH) != (request.external_mesh.sha256 if request.external_mesh else None):
+        changed.add(ARCHIVED_MESH)
     for name in ("problem", "validation", "policy"):
         path = f"frozen/{name}.json"
         if actual.get(path) != manifest["frozen_sha256"][name] or actual.get(path) != sha256_of(getattr(request, name)):
@@ -134,6 +137,13 @@ class EvidenceStore:
 
     def write_json_once(self, rel: str, obj) -> Path:
         return self.write_once(rel, json.dumps(obj, indent=2, sort_keys=False) + "\n")
+
+    def write_bytes_once(self, rel: str, data: bytes) -> Path:
+        path = self.run_dir / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("xb") as stream:
+            stream.write(data)
+        return path
 
     def finish_manifest(self, manifest: dict) -> None:
         manifest["evidence_version"] = 1

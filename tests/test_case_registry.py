@@ -43,7 +43,7 @@ def test_duplicate_entries_are_rejected_before_binding(monkeypatch, specs_dir, d
 
 
 @pytest.mark.parametrize("metadata", [
-    {"formulation": {}}, {"registry_version": True}, {"registry_version": 2},
+    {"formulation": {}}, {"registry_version": True}, {"registry_version": 3},
     {"registry_version": 1}, {"registry_version": 1, "formulation": {"equation": "-laplacian(u) = f"}},
 ])
 def test_invalid_versioned_metadata_fails_before_binding(monkeypatch, specs_dir, metadata):
@@ -56,9 +56,9 @@ def test_invalid_versioned_metadata_fails_before_binding(monkeypatch, specs_dir,
 
 @pytest.mark.mfem
 @requires_mfem
-def test_native_formulation_binds_both_problems_and_checks_trace_and_operator(specs_dir):
+def test_native_formulation_binds_poisson_problems_and_checks_trace_and_operator(specs_dir):
     catalog = mfem_runner.list_cases()
-    assert catalog["registry_version"] == 1
+    assert catalog["registry_version"] == 2
     form = catalog["formulation"]
     assert form == {"equation": "-laplacian(u) = f", "domain": "unit_square_2d", "space": "scalar_H1",
                     "bilinear_integrator": "DiffusionIntegrator", "dirichlet_trace": "u_exact",
@@ -70,3 +70,35 @@ def test_native_formulation_binds_both_problems_and_checks_trace_and_operator(sp
         for key in form:
             changed = {**catalog, "formulation": {**form, key: "other"}}
             assert mfem_runner.bind_case(problem, changed) is None, key
+
+
+def test_variable_case_requires_a_versioned_coefficient_and_conormal(monkeypatch, specs_dir):
+    problem = load_study(specs_dir / "stage2/diffusion_mixed_p1_tri.json").problem
+    entry = legacy_entry(problem)
+    default = {"equation": "-laplacian(u) = f", "domain": "unit_square_2d", "space": "scalar_H1",
+               "bilinear_integrator": "DiffusionIntegrator", "dirichlet_trace": "u_exact",
+               "neumann_trace": "grad(u_exact).n"}
+    override = {**default, "equation": problem.equation, "kappa": problem.kappa,
+                "neumann_trace": "kappa*grad(u_exact).n"}
+    catalog = {"registry_version": 2, "formulation": default, "cases": [{**entry, "formulation": override}]}
+    assert mfem_runner.bind_case(problem, binary_catalog(monkeypatch, catalog)) == entry["id"]
+    for key in override:
+        wrong = {**entry, "formulation": {**override, key: "wrong"}}
+        assert mfem_runner.bind_case(problem, {**catalog, "cases": [wrong]}) is None, key
+    for old in ({"cases": [entry]}, {"registry_version": 1, "formulation": default, "cases": [entry]},
+                {**catalog, "cases": [entry]}):
+        assert mfem_runner.bind_case(problem, old) is None
+    with pytest.raises(mfem_runner.BuildError, match="case-specific"):
+        binary_catalog(monkeypatch, {**catalog, "registry_version": 1})
+    incomplete = {key: value for key, value in override.items() if key != "kappa"}
+    with pytest.raises(mfem_runner.BuildError, match="case-specific"):
+        binary_catalog(monkeypatch, {**catalog, "cases": [{**entry, "formulation": incomplete}]})
+
+
+def test_v1_registry_binds_legacy_poisson(specs_dir):
+    problem = load_study(specs_dir / "poisson_sin_sin_p1_tri.json").problem
+    form = {"equation": problem.equation, "domain": problem.domain, "space": "scalar_H1",
+            "bilinear_integrator": "DiffusionIntegrator", "dirichlet_trace": "u_exact",
+            "neumann_trace": "grad(u_exact).n"}
+    catalog = {"registry_version": 1, "formulation": form, "cases": [legacy_entry(problem)]}
+    assert mfem_runner.bind_case(problem, catalog) == "old-id"

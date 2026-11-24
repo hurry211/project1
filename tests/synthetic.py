@@ -139,6 +139,8 @@ def make_attempt(tmp: Path, study: StudySpec, *, shuffle: bool = False, mutate=N
             "solver_converged": True, "solver_iterations": 1, "num_dofs": N,
             "self_reported_l2_error": 0.0, "self_reported_h1_semi_error": 0.0, "injected_fault": "none",
         }
+        if study.problem.kappa != "1":
+            res.update(case_equation=study.problem.equation, case_diffusivity=study.problem.kappa)
         (ld / "result.json").write_text(json.dumps(res))
         if self_report == "verifier" and np.all(np.isfinite(vals)):
             lv = verify_level(ld, study.problem, ex, study.validation, n)
