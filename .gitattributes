@@ -4,3 +4,5 @@ evidence/stage2/*.json text eol=lf
 evidence/stage3/*.json text eol=lf
 benchmarks/data/planning*.json text eol=lf
 evidence/stage4/*.json text eol=lf
+evidence/e1/*.json text eol=lf
+evidence/e1/*.json.gz binary

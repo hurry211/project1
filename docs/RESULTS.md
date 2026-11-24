@@ -1,5 +1,39 @@
 # Numerical results
 
+## Verified performance experiments
+
+The end-to-end paired preconditioner study uses real MFEM and independent accuracy targets on one pinned CPU. It compares the reviewed Gauss–Seidel default with Jacobi and includes an independently executed second Gauss–Seidel arm in each block to measure timing noise. The preregistered workload definitions and digests were recorded before the first timed run. [Protocol and commands](VERIFIED_PERFORMANCE.md) · [Acquisition configuration](../evidence/e1/paired-design.json)
+
+**Preconditioners at matched accuracy.** The campaign completed 396 independently accepted runs. Each of four workloads supplied 30 scored three-arm blocks and three discarded warm-up blocks. Times below are seconds. The difference and interval use within-block subtraction, so subtracting the displayed marginal medians can give a different value. [Paired scores and uncertainty](../evidence/e1/paired-analysis.json) · [Compressed per-run records](../evidence/e1/paired-campaign.json.gz)
+
+| Workload and finest size | GS median | Jacobi median | Median paired difference | 95% paired interval | Practical margin | Primary result |
+|---|---:|---:|---:|---:|---:|---|
+| C1, 64 | 1.068 | 1.083 | -0.003 | [-0.028, +0.033] | 0.053 | Within margin |
+| C2, 128 | 1.969 | 1.977 | -0.013 | [-0.035, +0.038] | 0.098 | Within margin |
+| H1, 512 | 28.473 | 27.805 | -0.850 | [-1.665, -0.217] | 1.424 | Inconclusive |
+| H2, 128 | 2.292 | 2.209 | -0.061 | [-0.160, +0.022] | 0.115 | Inconclusive |
+
+On H1 the paired interval favors Jacobi relative to zero, but it includes savings smaller than the prespecified 1.42 s practical margin. At 263,169 DOFs the finest solves took 467 iterations with GS and 845 with Jacobi. Across all four levels of this workload the median native CG times were 3.80 s and 3.01 s respectively. Full numerical verification occupied a median 62.0% of external wall time. The median peak RSS of the controller/verifier worker was 2.42 GiB. On H2, the median absolute A/A difference was 150 ms and 17/30 A/A differences exceeded the margin. The absolute-noise sensitivity analysis was added after these data were seen.
+
+**Prospective selection.** C1 and C2 supplied no material Jacobi advantage, so the policy retained GS and skipped pilots by default. A separately pinned calibration report contained only the 198 C1/C2 records, including warm-ups. Its source attestation reproduces the implementation and environment used for the measured verifier. Four subsequent full CLI invocations used the two held-out workloads with and without compulsory diagnostic pilots. The decision was recorded before execution. All four results passed an additional independent numerical replay. [Decisions, charged costs and study digests](../evidence/e1/live-selection.json)
+
+| Held-out workload | Default CLI (s) | CLI with forced pilots (s) | Four pilots alone (s) | Selected solver |
+|---|---:|---:|---:|---|
+| H1 | 32.612 | 31.992 | 0.818 | cg_gs |
+| H2 | 3.304 | 3.267 | 0.082 | cg_gs |
+
+Each live cell contains one observation. The CLI clock includes interpreter startup, calibration checks, hardware and binary checks, decision making, pilots when requested, and the final verified run. These observations demonstrate the execution path and expose its overhead. The paired study above supplies the repeated performance comparison.
+
+Using only the archived first two levels, the retrospective forecast picked the faster complete workflow in 22/30 H1 pairs and 20/30 H2 pairs. Against the fastest verified arm in each observed block, the default policy's median excess times were 0.850 and 0.061 s respectively. The hindsight reference includes ordinary timing noise.
+
+**Cost of full numerical verification.** On identical retained 8–64 level fields, the optimized verifier reduced median verification time from 340 to 221 ms on P1 sine triangles and from 367 to 219 ms on mixed-boundary Q1 quadrilaterals. These are 1.54× and 1.67× speedups of the verification step. Each of the 12 paired repetitions per case had an identical complete verdict hash between implementations. The median paired differences (new minus old) were −116 ms and −148 ms, with separate paired 95% bootstrap intervals of [−123, −100] and [−164, −127] ms. [Individual times and verdict hashes](../evidence/e1/verifier-cost.json)
+
+**Low-cost screening.** In a shadow experiment on warm local archives, stopping and quadrature metadata identified 36 of 162 faulty inputs and rejected none of 46 clean controls. The other 126 faults and all 46 clean controls needed full verification. The screen took 0.044 s across all 208 trials. The measured full checks took 9.600 s in total. Charging all screen costs and the full checks for escalated inputs gives a projected 7.882 s for this fault-heavy mix (17.9% lower). A clean candidate pays both costs. All final study acceptances in the solver experiments used full verification. [Per-trial results](../evidence/e1/screen-cost.json)
+
+**Assembly and parallelism.** Full and partial assembly using matched Jacobi actions passed 24 studies with 72 independently checked fields, spanning Q1/Q2, three cases and two mesh sources. The 36 matched levels agreed on CG iteration counts, and the largest relative field difference was `4.59e-14`. With eight timed pairs per order, the end-to-end intervals for partial minus full crossed zero for Q1 and Q2. On the four-core MPI diagnostic, increasing ranks from one to four increased the median empty launch from 402 to 653 ms. At `n=64`, the longest rank-local numerical window fell from 68 to 41 ms while the verified workflow rose from 585 to 794 ms. The empty launch isolates real rank-dependent process cost. Its duration cannot be subtracted from another campaign to assign an exact causal fraction. [Assembly measurements](../evidence/e1/assembly.json) · [MPI samples and independent replay](../evidence/e1/mpi-phases.json)
+
+All **385 tests passed** with real serial and MPI MFEM enabled and zero skips. Fresh builds reproduced both native executable digests. The final audit checked all 396 study inventories and reran full numerical verification for the first eligible scored study in each workload/arm cell (12 replays). All 284 historical challenge decisions, 14 checker calibrations, 31 serial study states, and the Stage 2, 3 and 4 archive regressions reproduced. [Audit of raw study records](../evidence/e1/paired-audit.json) · [Builds, tests and portable archive digest](../evidence/e1/validation.json)
+
 ## Stage 4 controlled planning, 2026-11-24
 
 The paired benchmark used 19 fixed English and Chinese requests, a deterministic first-eligible-template rule, and a locally installed Qwen2.5 1.5B model served by Ollama 0.40.17. Five eligible tasks specified a unique template, nine expressed a preference among multiple authorized templates, and five required human review. Only the task text and eligible options were supplied to the model. Each eligible execution went through the real MFEM controller and independent numerical replay. [Corpus and scoring protocol](PLANNING_BENCHMARK.md) · [Local model identity](LOCAL_PLANNER_MODEL.md)

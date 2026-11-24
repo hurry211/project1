@@ -1,0 +1,72 @@
+{
+  "campaign_sha256": "aa8c0e96efd881327a4a6622f34854db21a3dbffa8a241d618696dae34cf9640",
+  "config_sha256": "3a2380693d2c4c2c6b3e0af1bf45bdcda68b0969d3c1c1f57a668b1bb9d685e5",
+  "campaign_status": "COMPLETE",
+  "mode": "first eligible scored per arm",
+  "eligible": 396,
+  "ineligible": 0,
+  "inventories_checked": 396,
+  "replayed": 12,
+  "study_archives": [
+    {
+      "directory": "C1_block000_gs_repeat",
+      "manifest_sha256": "705cf04df9411642fa772a1c6803168d002f0602f634c79efb4b2675f4b6b350",
+      "levels": 4
+    },
+    {
+      "directory": "C1_block000_gs",
+      "manifest_sha256": "aaf8061424cce32613bc2049c3b4241a9057f079ad3bb14ae866374ee5b3cd85",
+      "levels": 4
+    },
+    {
+      "directory": "C1_block000_jacobi",
+      "manifest_sha256": "cf1c5d62f3b10c70f5676a920e6aac90dcb6394eec22994e2569d37b68ffb81b",
+      "levels": 4
+    },
+    {
+      "directory": "C2_block000_gs_repeat",
+      "manifest_sha256": "2f28c6593856d252c20a481e12d0ee04d8dea9e4180393fb497dadb3fa633b3b",
+      "levels": 4
+    },
+    {
+      "directory": "C2_block000_jacobi",
+      "manifest_sha256": "33b2d1b3e0c4b175bed952988e1dc748b278d186cb69b93fa1d91104c04ebc3e",
+      "levels": 4
+    },
+    {
+      "directory": "C2_block000_gs",
+      "manifest_sha256": "9ee9b39837c75af0520c90382f4aa91751c6540de0b75d1770fa416987142c9a",
+      "levels": 4
+    },
+    {
+      "directory": "H2_block000_jacobi",
+      "manifest_sha256": "351756e9534d80d0f34803157eba4bae951daf65e67fe5befbba509f3089f5e2",
+      "levels": 4
+    },
+    {
+      "directory": "H2_block000_gs",
+      "manifest_sha256": "e330376ea4fe0a77e30d3886cf6d5f12a2b7f18e18132d73a296e56a9215e3b0",
+      "levels": 4
+    },
+    {
+      "directory": "H2_block000_gs_repeat",
+      "manifest_sha256": "0156f348af9cda9429ebf8f93807f90ab51be454a51d45146137b0b3546d2945",
+      "levels": 4
+    },
+    {
+      "directory": "H1_block000_gs_repeat",
+      "manifest_sha256": "758de3dad55e8949742d3150ed9b739ea7f99964d074f1748254d58102547560",
+      "levels": 4
+    },
+    {
+      "directory": "H1_block000_gs",
+      "manifest_sha256": "24132298607bb4eced27e8d58d2d56ca3191fdb0f09a45b7f7a5681dfd5321d0",
+      "levels": 4
+    },
+    {
+      "directory": "H1_block000_jacobi",
+      "manifest_sha256": "83d9afae24c1b76bea6fd77751f942e18a14d569648c9648b059733fc27493f6",
+      "levels": 4
+    }
+  ]
+}

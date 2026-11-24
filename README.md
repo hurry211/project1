@@ -77,6 +77,10 @@ The demo includes expected rejections and one exhausted retry budget. Use an emp
 
 Use `python -m sciagent plan-catalog` to inspect nine pinned serial templates. A task JSON specifies the authorized physics and discretization constraints. The default rule or an optional local language model nominates a template. With `--execute`, the established controller runs it and the independent verifier checks the numerical evidence. [Planning CLI, review decisions and replay](docs/PLANNER.md) · [Rules versus local-model results](docs/RESULTS.md#stage-4-controlled-planning-2026-11-24)
 
+## Time to an independently verified solution
+
+`python -m sciagent select-solver` uses a pinned calibration campaign to select an authorized serial preconditioner, execute it and verify the result. It can use two-level native pilots when calibration justifies their cost. The paired benchmark includes cold worker startup, solving, exporting, checking and archiving. [Workloads, operating limits and reproduction](docs/VERIFIED_PERFORMANCE.md) · [Experimental results](docs/RESULTS.md#verified-performance-experiments)
+
 ## Verified MPI Poisson benchmark
 
 The separate Stage 3 MPI workflow verifies the original P1 triangle Poisson benchmark using 1, 2 and 4 processes. Its timing campaign begins after all ranks pass the matched serial comparison and independent SciPy solve at four resolutions. See the parallel guide for the second MFEM build, the `mpi-study` command and digest-checked offline replay. [MPI setup and experiment](docs/MPI.md) · [Measured single-host scaling](docs/RESULTS.md#stage-3-mpi-poisson-2026-11-24)
@@ -91,7 +95,7 @@ python -m sciagent run specs/stage2/diffusion_gmsh_p2_quad.json
 python -m sciagent matrix --case sin_sin_variable --mesh-source gmsh22
 ```
 
-The optional scikit-fem benchmark exercises all three cases on both mesh sources and all seven reviewed solver configurations. Use a fresh capture directory and the locked dependencies from `requirements-challenge.lock`. Replay takes the original manifest digests from the saved report and works with the retained raw archives.
+The optional scikit-fem benchmark exercises all three cases on both mesh sources and the seven original Stage 2 solver configurations. The subsequent matched assembly experiment also certifies full-assembly Jacobi on Q1 and Q2 quadrilaterals. Use a fresh capture directory and the locked dependencies from `requirements-challenge.lock`. Replay takes the original manifest digests from the saved report and works with the retained raw archives. [Matched assembly evidence](evidence/e1/assembly.json)
 
 ```bash
 python -m benchmarks.stage2 --directory runs/scalar-coverage --report runs/scalar-coverage.json

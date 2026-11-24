@@ -1,5 +1,11 @@
 # Implementation Status
 
+## Verified performance on scalar workloads
+
+The agent now offers a calibrated serial solver selector and a paired benchmark from request submission to verified result. Each winner must meet independent L2 and H1 accuracy targets and the original numerical gates. The selector checks the mathematical and hardware envelope, records its decision before execution, and can run four coarse native pilots when calibration warrants their cost. Source or build mismatches disable automatic switching. The benchmark preserves unsuccessful runs and an A/A noise control. [Operation and scope](VERIFIED_PERFORMANCE.md)
+
+The production verifier now shares identical local bases, reuses affine triangle geometry and restricts natural-boundary edge lookup to the requested segments. A separate metadata screen measures early rejection and escalation on the historical numerical corpus. Two additional Jacobi quadrilateral controls isolate assembly effects. An MPI experiment measures empty-launch overhead alongside rank-local numerical phases. [Verified performance results](RESULTS.md#verified-performance-experiments)
+
 ## Completed Stage 4, 2026-11-24
 
 The optional local Ollama provider and the deterministic selection rule use the same reviewed catalog. The user's structured constraints determine eligible template IDs before proposal. Model text only nominates one ID or abstains. The controller checks the approved input digest when consuming it, and numerical acceptance requires an intact child archive and independent replay. A change to physics, validation or budgets takes the human review route. The ordinary serial and MPI commands remain available. [Planner contract and examples](PLANNER.md)

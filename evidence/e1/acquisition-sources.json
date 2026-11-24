@@ -1,0 +1,23 @@
+{
+  "benchmarks/e1.py": "668ce557314db24f3f99a41a4511fdafdb21e27e137a93d7457b0eb7dfa9da1d",
+  "benchmarks/e1_analysis.py": "982d23d4d0460743708d1dc8c8d40ce3ae2c2a2ed2317b1ec828a93fb132ddfd",
+  "sciagent/__init__.py": "2e12a30f3b1d3f578ec4fa7095c5a289d9d7690b9b2831e1972149a9c982b940",
+  "sciagent/__main__.py": "f19bfa1749afac08336e4bffbde0d19b49b01802783e0a9dca1cf86b42b38ed4",
+  "sciagent/capability.py": "0dc2a345574279bb13b3e48294e2d4d79abf66197f7725a9195a865f4d209a3a",
+  "sciagent/controller.py": "9625c973119b349d144cfdd13bd0a7852e08307f8866b3ee41b3480daeb104bd",
+  "sciagent/environment.py": "a2595725bff8c6b900d66487d97ce703587f4838bdcd6e7e24fdfdf94e1c890e",
+  "sciagent/evidence.py": "a4501ad04f03571ee749d18b27429b166ea35257cc8b606e2c96d013627d5982",
+  "sciagent/gmsh.py": "1de26e0f802d65dd2b5f3d95507272a8547f8184788b85ea2228b0156dc6f494",
+  "sciagent/local_llm.py": "cf7bfc7c3354d0f70dcc2fb950a0f2df48492f841a177dc597b6291f844241c2",
+  "sciagent/mfem_runner.py": "13bbc0a7229623fe297ecbb2b1c30b1451a511bb666ec360ad3f042c6ac8af36",
+  "sciagent/mpi_study.py": "1d6f9601dbcd0f6d863cb2ca3fb30602e3bda25651d75c2ef8b2aa9fdc60d51e",
+  "sciagent/planner.py": "0c455a0fd1bce10b594650fec3f08cda8e6170b320d3b3821a92aecf80ff0a87",
+  "sciagent/planning_run.py": "991f14c8ef14d048414e8e0954f4eae8ea6a515754e133198b40483d1e7e29c2",
+  "sciagent/profiling.py": "e09eb18e3b6c47e2a67b992e129d1654763f88ba71b77a4e743653c9f36eb4ca",
+  "sciagent/spec.py": "02b0a59a9e7be51cd0a220061d2814a19b7fa8567360993509d063baf238f3d9",
+  "verifier/__init__.py": "900ac57bd3a37700ba343b98fcdc2cde8af1a8b3ba384e777d7e8ac97d618f3f",
+  "verifier/expr.py": "955752968ef00ff57d4a1cce1b81e7edddcce4f0196343e42052f7e4c1d3c183",
+  "verifier/fem.py": "2ecdc0b5a9122968343d3dbef94203f3b12d69d77f69d549c88a02b897fb07a0",
+  "verifier/mpi.py": "5e6f005dcb5f10e5eda30edeb2a6ad5d9faa17b688f39a6bff617698a9e40dc0",
+  "verifier/verifier.py": "120987b430b285e0f22f7007fdb1c99d9f34471ee5e91f3546654a0d3a745d98"
+}
