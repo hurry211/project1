@@ -7,7 +7,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import capability, controller, environment, mfem_runner
+from . import capability, controller, environment, mfem_runner, mpi_study
 from .evidence import sha256_file
 
 
@@ -20,6 +20,13 @@ def main(argv: list[str] | None = None) -> int:
     matrix = sub.add_parser("matrix", help="print reviewed build and solver coverage as JSON lines")
     matrix.add_argument("--case", choices=capability.CASE_IDS)
     matrix.add_argument("--mesh-source", choices=capability.MESH_SOURCES, default="cartesian")
+    matrix.add_argument("--backend", choices=("serial_cpu", "mpi_cpu"), default="serial_cpu")
+    mpi = sub.add_parser("mpi-study", help="verify MPI against serial and measure strong and weak scaling")
+    mpi.add_argument("--directory", type=Path, required=True, help="new campaign directory")
+    mpi.add_argument("--repetitions", type=int, default=3, help="timing samples per configuration (3 to 15)")
+    mpiv = sub.add_parser("verify-mpi", help="replay an MPI campaign from archived fields and timing records")
+    mpiv.add_argument("directory", type=Path)
+    mpiv.add_argument("--manifest-sha256", help="externally retained campaign manifest digest")
     r = sub.add_parser("run", help="run a study spec end to end")
     r.add_argument("spec")
     r.add_argument("--runs-dir", default="runs")
@@ -39,8 +46,24 @@ def main(argv: list[str] | None = None) -> int:
     elif a.cmd == "cases":
         print(json.dumps(mfem_runner.list_cases(), indent=2))
     elif a.cmd == "matrix":
-        for row in capability.matrix_as_rows(a.case, a.mesh_source):
-            print(json.dumps(row))
+        if a.backend == "mpi_cpu":
+            reviewed = a.mesh_source == "cartesian" and a.case in (None, "sin_sin")
+            print(json.dumps({"status": "tested", **mpi_study.reviewed_configuration()} if reviewed else
+                             {"status": "not_verified", "case": a.case, "mesh_source": a.mesh_source,
+                              "backend": a.backend}))
+        else:
+            for row in capability.matrix_as_rows(a.case, a.mesh_source):
+                print(json.dumps(row))
+    elif a.cmd in ("mpi-study", "verify-mpi"):
+        try:
+            if a.cmd == "mpi-study":
+                report = mpi_study.run(a.directory, a.repetitions)
+            else:
+                report = mpi_study.replay(a.directory, a.manifest_sha256)
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            report = {"state": "FAILED", "reason": str(exc)}
+        print(json.dumps(report, indent=2, allow_nan=False))
+        return 0 if report["state"] == "ACCEPTED" else 1
     elif a.cmd == "run":
         m = controller.run_study(a.spec, a.runs_dir)
         print(controller.summarize(m))
