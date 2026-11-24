@@ -1,0 +1,175 @@
+{
+  "run_dir": "runs/anisotropic/20261124T140224616957Z_anisotropic_1000_q1",
+  "spec_file": "specs/extensions/anisotropic_1000_q1.json",
+  "started_utc": "2026-11-24T14:02:24.618+00:00",
+  "attempts": [
+    {
+      "attempt": 1,
+      "mesh_levels": [
+        8,
+        16,
+        32,
+        64
+      ],
+      "levels": [
+        {
+          "n": 8,
+          "exit_code": 0,
+          "exit_meaning": "OK",
+          "wall_seconds": 0.0085
+        },
+        {
+          "n": 16,
+          "exit_code": 0,
+          "exit_meaning": "OK",
+          "wall_seconds": 0.0093
+        },
+        {
+          "n": 32,
+          "exit_code": 0,
+          "exit_meaning": "OK",
+          "wall_seconds": 0.0183
+        },
+        {
+          "n": 64,
+          "exit_code": 0,
+          "exit_meaning": "OK",
+          "wall_seconds": 0.0594
+        }
+      ],
+      "verdict": "ACCEPTED",
+      "failure_codes": [],
+      "verification": {
+        "timeout_seconds": 300.0,
+        "memory_mb": 3072,
+        "peak_rss_kib": 104484,
+        "exit_code": 0,
+        "stderr": "",
+        "wall_seconds": 0.6494625670000005
+      },
+      "errors": [
+        {
+          "n": 8,
+          "l2": 0.007600995927482459,
+          "h1_semi": 0.2515137695778819,
+          "reference_rel_diff": 4.480280135353102e-12
+        },
+        {
+          "n": 16,
+          "l2": 0.0019005741911829804,
+          "h1_semi": 0.12587387273236572,
+          "reference_rel_diff": 1.1177296589935478e-14
+        },
+        {
+          "n": 32,
+          "l2": 0.0004751661479458221,
+          "h1_semi": 0.06295197000127464,
+          "reference_rel_diff": 5.657591843287599e-14
+        },
+        {
+          "n": 64,
+          "l2": 0.00011879298543408237,
+          "h1_semi": 0.03147787698630323,
+          "reference_rel_diff": 2.456430268547051e-13
+        }
+      ],
+      "orders": [
+        {
+          "n_coarse": 8,
+          "n_fine": 16,
+          "l2_order": 1.9997531177631878,
+          "h1_semi_order": 0.9986585269650999
+        },
+        {
+          "n_coarse": 16,
+          "n_fine": 32,
+          "l2_order": 1.9999313800025578,
+          "h1_semi_order": 0.9996554271298022
+        },
+        {
+          "n_coarse": 32,
+          "n_fine": 64,
+          "l2_order": 1.9999824090543696,
+          "h1_semi_order": 0.9999132838478115
+        }
+      ]
+    }
+  ],
+  "frozen_sha256": {
+    "problem": "25fc22f7fcb192fe543b5b15eeb02a596d08c918e528fa9d4856d3a0dbc2461c",
+    "validation": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+    "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+  },
+  "environment": {
+    "mfem_version": "4.10.0",
+    "mfem_git": "(unknown)",
+    "solver_binary_sha256": "d46193e73b4e37de2b4663f881b7452092c39e5877d7cedd62a8cb35b0a0d6c3",
+    "cxx": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  },
+  "capability": {
+    "status": "tested",
+    "code": "OK",
+    "reason": "combination ('quad', 1, 'full', 'cg_jacobi') is covered by integration tests"
+  },
+  "bound_case": "anisotropic_1000_sin_sin",
+  "final_state": "ACCEPTED",
+  "final_code": "OK",
+  "final_reason": "numerical (code) verification passed for this manufactured-solution benchmark",
+  "finished_utc": "2026-11-24T14:02:25.609+00:00",
+  "total_wall_seconds": 0.991,
+  "evidence_version": 1,
+  "artifact_sha256": {
+    "attempts/attempt_01/execution.json": "bf75ac1b8fde68197f8644a925261684afdbb5976c3ad5afe8a7cfd9a814715a",
+    "attempts/attempt_01/levels/n0008/boundary.txt": "d321a2abe200a8d47d089d91e800dd4659966bd431c06e88dccc04ce8f1ebc02",
+    "attempts/attempt_01/levels/n0008/command.json": "1c28e264352f98aa75ac1fa9d109908c5c0ab49064746fe1ca663d32cd3e65fb",
+    "attempts/attempt_01/levels/n0008/dof_values.txt": "10855e3ae4bec96d215b3ac981e47f42109f15f46e47f1a4f02a4c6451d1503d",
+    "attempts/attempt_01/levels/n0008/element_dofs.txt": "d9b5c8937e89508d090a88592ce713fd98f9c64d9d69bd455c53ff1e7abd5f5c",
+    "attempts/attempt_01/levels/n0008/elements.txt": "eed9602cd0f99ffad7a115aad67ebc2734776ff35f1ff49d36564bef0abbb61e",
+    "attempts/attempt_01/levels/n0008/mesh.mesh": "f7d315799ad60924b9affc01b8365df754395da64d4de678a4d15a736c0ba2dd",
+    "attempts/attempt_01/levels/n0008/result.json": "cd5d7a8cfa3d54c062908b204189b6f8ee2a2ec370799774400c881c3a4758d7",
+    "attempts/attempt_01/levels/n0008/run_record.json": "5fc6bbce59fbf530f72262756a0e96d8398453f20ecb56c87491d541de04d2b6",
+    "attempts/attempt_01/levels/n0008/solution.gf": "77195c0dea64bcf79c8f18ac29929a809919a281ad8ae37182a4e68e5fafd53b",
+    "attempts/attempt_01/levels/n0008/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "attempts/attempt_01/levels/n0008/stdout.txt": "1baf64dec5382b899de8edd220db372cf66b37d6fadc254f0bf5822cfa01893f",
+    "attempts/attempt_01/levels/n0016/boundary.txt": "8f8ab5446afbf16f68be7b1b7c88b11658290510593df39150e322e4d4e45536",
+    "attempts/attempt_01/levels/n0016/command.json": "fd95e298681ecd42a1a98c5f808145e152c2bda180781985f6d791f5f6843c73",
+    "attempts/attempt_01/levels/n0016/dof_values.txt": "c00bb2582da010bab93a62ccb64a15d6d6d2ce841ab590a7bf13992642437af6",
+    "attempts/attempt_01/levels/n0016/element_dofs.txt": "03bbdf6d1e3a6a290ceb4dbc0dced060815fa4f92d1f14239862134bad3003b4",
+    "attempts/attempt_01/levels/n0016/elements.txt": "131bb01b08313c397132cb6767caed161cfed8ec612aeb4032d05373876a4f31",
+    "attempts/attempt_01/levels/n0016/mesh.mesh": "5d19b06b7819a04ccf69445508ca564dab9aee36bea6783bd2a2eb9a4806c54a",
+    "attempts/attempt_01/levels/n0016/result.json": "6817153ec4eb1f5c40bf6ce167accde7ce8597782de03788f2c37b7401194094",
+    "attempts/attempt_01/levels/n0016/run_record.json": "a0de6802792ac3d27409e857cfa0ea150524468f89b5b10d66649dd6ef423217",
+    "attempts/attempt_01/levels/n0016/solution.gf": "b02144e8cd92b3ecbcf9e46230926f934e6ad18041f9adf2266fb24f8cdc5ba3",
+    "attempts/attempt_01/levels/n0016/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "attempts/attempt_01/levels/n0016/stdout.txt": "61143078f6ec0172ae494fdb8b9de81e7656398179867621c5f8d3093ed1112a",
+    "attempts/attempt_01/levels/n0032/boundary.txt": "d75968b3acf101c60ccf5769a9b670de9e50bf948459ff2f868c168a0d03c6d2",
+    "attempts/attempt_01/levels/n0032/command.json": "02a35cd3213f313ca920860f7c4e9168f7950f1360707815f46dcc4dcfa470e7",
+    "attempts/attempt_01/levels/n0032/dof_values.txt": "f773b3d24aa5c03b030f3411bd774b5777dc677fcd00c4d674ec290d1fe30dcf",
+    "attempts/attempt_01/levels/n0032/element_dofs.txt": "6a36354e545e7fea0f5df1007052aa499a1719f9feaa246295575ec189398b4d",
+    "attempts/attempt_01/levels/n0032/elements.txt": "a046698f8bd44be30f7fcb7544d4d8a77fa2066f8e234222156f89b09046582c",
+    "attempts/attempt_01/levels/n0032/mesh.mesh": "8286ed57a8812bcbe90fcf7f417ba5aebc38a9b1e09a3b486649068b1bf02a39",
+    "attempts/attempt_01/levels/n0032/result.json": "31f8659b722470d90363b960b690811b15e713e9182d9c4f1031f77afac2bd7e",
+    "attempts/attempt_01/levels/n0032/run_record.json": "a2504f16163dfeefea9b37a189e3200dc5619b435cbba5a1606aa4a0b370677a",
+    "attempts/attempt_01/levels/n0032/solution.gf": "41e2410ee2d706718e6a957f8f9fd9c3eb5f017a6f692927b792b8843c8298c4",
+    "attempts/attempt_01/levels/n0032/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "attempts/attempt_01/levels/n0032/stdout.txt": "bae7d5860d447f58848737c31f5a827c6956324fe1ec7470e78f1fad7a6b347a",
+    "attempts/attempt_01/levels/n0064/boundary.txt": "774b28f371fdffcb21feb7f31634f705357dfc925196b97a03c873ac68355386",
+    "attempts/attempt_01/levels/n0064/command.json": "6e918bf38569fd0908c187903944d80e90f0ee61b5674f5a578e1bc3434a093a",
+    "attempts/attempt_01/levels/n0064/dof_values.txt": "a33f266c355b5781996304b91fde9ae61af5ef39931b35f2700e49c42275752a",
+    "attempts/attempt_01/levels/n0064/element_dofs.txt": "23ab3f7fe457070d5ee8bf2d8984eae3ed426ea938f5867d62b2bbee74fc4839",
+    "attempts/attempt_01/levels/n0064/elements.txt": "1c65e51acea8ae6fa68beae298e1b00ef175af1594aa730d0222136f1b712008",
+    "attempts/attempt_01/levels/n0064/mesh.mesh": "2aa58e97cc7592398146d19af92add4ff4b816bab4610b4f417f6628f83b582a",
+    "attempts/attempt_01/levels/n0064/result.json": "ff43bebf1ebf4837da2749d3bb3126286c9a9393466679ce8efc35fc911b554a",
+    "attempts/attempt_01/levels/n0064/run_record.json": "dab72ad8955eadb2894a745b3f57749013a30cc1f56055b0c1dfb2afcca3489e",
+    "attempts/attempt_01/levels/n0064/solution.gf": "6ff31718f81ef4d695f0a9d5a14e704f1424df240456e3e585c5da61a4f7b160",
+    "attempts/attempt_01/levels/n0064/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "attempts/attempt_01/levels/n0064/stdout.txt": "01be83d435122c6a9d418498cbc1678ba658df26673ad6aae8887c821c6ec02c",
+    "attempts/attempt_01/verdict.json": "da0f7b163a07402963d7ebef178f47c80bbb0a41d4afe09e27409b834c154e95",
+    "environment.json": "9a6c897a8cade6d322d49ebbaa45c6284c6bb2bf1c151362a523771ec5aeae72",
+    "events.jsonl": "1a93c74116482062ede076ba32d71a77d1279451685d6faa2efac9b36789902e",
+    "frozen/policy.json": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f",
+    "frozen/problem.json": "25fc22f7fcb192fe543b5b15eeb02a596d08c918e528fa9d4856d3a0dbc2461c",
+    "frozen/validation.json": "4cfaa7ea9b762a4a88c13a9d4af385731e5599f6d9bfddf2880c28502ce43274",
+    "request/study_spec.json": "dcccb5cf22a0e438c4e7040b07b9824dc6085bcef6f2c5701986c445a3469c6a"
+  }
+}

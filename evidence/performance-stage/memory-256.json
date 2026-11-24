@@ -1,0 +1,52 @@
+{
+  "schema_version": "0.2",
+  "problem": {
+    "id": "poisson_mixed_bc_mms_p2",
+    "equation": "-laplacian(u) = f",
+    "domain": "unit_square_2d",
+    "exact_solution": "cos(pi*x)*exp(y)",
+    "source": "(pi**2 - 1)*cos(pi*x)*exp(y)",
+    "boundaries": [
+      {
+        "attribute": 1,
+        "label": "bottom",
+        "kind": "dirichlet",
+        "value": "from_exact_solution"
+      },
+      {
+        "attribute": 2,
+        "label": "right",
+        "kind": "dirichlet",
+        "value": "from_exact_solution"
+      },
+      {
+        "attribute": 3,
+        "label": "top",
+        "kind": "neumann",
+        "value": "from_exact_solution"
+      },
+      {
+        "attribute": 4,
+        "label": "left",
+        "kind": "dirichlet",
+        "value": "from_exact_solution"
+      }
+    ]
+  },
+  "execution": {
+    "mesh_type": "quad",
+    "polynomial_order": 2,
+    "mesh_levels": [
+      32,
+      64,
+      128
+    ],
+    "assembly": "full",
+    "solver": "cg_jacobi"
+  },
+  "validation": {},
+  "policy": {
+    "verifier_timeout_seconds": 60,
+    "verifier_memory_mb": 256
+  }
+}

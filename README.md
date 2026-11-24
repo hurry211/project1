@@ -20,14 +20,14 @@ The reproduced configuration uses x86-64 Ubuntu 24.04, CPython 3.12, GCC 13, CMa
 
 ## Reproduce
 
-With GitHub access to this private repository, clone it inside Ubuntu. For an existing checkout, start at the directory containing this README.
+Clone this repository inside Ubuntu. For an existing checkout, start at the directory containing this README.
 
 ```bash
 sudo apt-get update
 sudo apt-get install -y --no-install-recommends git g++-13 cmake make python3.12-venv
 # New checkout
-git clone https://github.com/rodriguezrobertbfrkx6857-sudo/project.git
-cd project
+git clone https://github.com/hurry211/project1.git
+cd project1
 # From the repository root
 python3.12 -m venv .venv
 source .venv/bin/activate
@@ -71,6 +71,22 @@ python scripts/compare_baseline.py runs/demo
 
 The demo includes expected rejections and one exhausted retry budget. Use an empty demo directory for the historical comparison. It checks the 31 studies, frozen inputs, attempt decisions and original failure codes, and reports the relative difference in accepted error norms. `python -m sciagent env`, `cases` and `matrix` expose environment details, compiled manufactured cases and the capability matrix.
 
+## Performance and extension experiments
+
+Run these commands after building the native solver. Each command takes a fresh output directory.
+
+```bash
+python -m benchmarks.performance --output runs/performance --repeats 5
+python -m sciagent search specs/experiments/strategy_poisson.json --output runs/strategy --repeats 3
+python -m sciagent run specs/extensions/anisotropic_1000_q1.json --runs-dir runs/anisotropic
+```
+
+The verifier runs in a separate POSIX process with a 300-second wall limit and a 3072 MiB address-space limit by default. A study can freeze separate values in `policy.verifier_timeout_seconds` and `policy.verifier_memory_mb`. Live verification also respects the remaining study wall budget. A timed-out or failed verifier cannot accept a run.
+
+An accuracy-only retry copies the previous independently verified levels into the new attempt, checks every copied file's digest, and verifies the newly added level. It reevaluates the study-level convergence and accuracy gates over all levels. Archive replay recomputes the independent checks for every level, including copied levels.
+
+See [experimental protocol and results](docs/PERFORMANCE_STAGE.md) for measurement definitions and the tested scope.
+
 ## Layout
 
 ```
@@ -113,7 +129,7 @@ third_party/          MFEM source/build/install (not part of this project; BSD-3
 }
 ```
 
-Empty `validation` / `policy` objects mean the frozen defaults documented in `docs/MVP_SPEC.md` §5–6. A problem runs only if its expressions match a compiled case in `cpp/manufactured_cases.hpp` exactly.
+Empty `validation` / `policy` objects use the frozen defaults documented in `docs/MVP_SPEC.md` §5–6 and the verifier budgets above. A problem runs only if its equation and expressions match a compiled case in `cpp/manufactured_cases.hpp`.
 
 ## What "ACCEPTED" means
 

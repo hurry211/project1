@@ -1,0 +1,624 @@
+-- CMake version: 3.28.3
+-- Loading USER_CONFIG = /home/fy/project1-stage/mfem-src/config/user.cmake (NOTFOUND)
+-- USE_XSDK_DEFAULTS = 'OFF'
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/g++-13 - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Floating-point precision: MFEM_PRECISION = double
+-- Looking for POSIXClocks ...
+--    checking library: <standard c/c++>
+-- Found POSIXClocks: TRUE
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- MFEM: using package POSIXCLOCKS
+-- MFEM shared library: BUILD_SHARED_LIBS = OFF
+-- MFEM build type: CMAKE_BUILD_TYPE = Release
+-- MFEM version: v4.10.0
+-- MFEM git string: (unknown)
+-- TPL_INCLUDE_DIRS =
+-- Writing substitute header --> "mfem.hpp"
+-- Writing substitute header --> "mfem-performance.hpp"
+-- performance_ex1: add flags "-march=native -Wall -pedantic --param max-completely-peel-times=3"
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE)
+-- CMAKE_INSTALL_PREFIX = /home/fy/project1-stage/mfem-install
+-- Configuring done (5.1s)
+-- Generating done (0.2s)
+-- Build files have been written to: /home/fy/project1-stage/mfem-build
+[  0%] Building CXX object CMakeFiles/mfem.dir/general/gecko.cpp.o
+[  0%] Building CXX object CMakeFiles/mfem.dir/general/binaryio.cpp.o
+[  2%] Building CXX object CMakeFiles/mfem.dir/general/error.cpp.o
+[  0%] Building CXX object CMakeFiles/mfem.dir/general/device.cpp.o
+[  0%] Building CXX object CMakeFiles/mfem.dir/general/hash.cpp.o
+[  0%] Building CXX object CMakeFiles/mfem.dir/general/globals.cpp.o
+[  2%] Building CXX object CMakeFiles/mfem.dir/general/cuda.cpp.o
+[  2%] Building CXX object CMakeFiles/mfem.dir/general/array.cpp.o
+[  2%] Building CXX object CMakeFiles/mfem.dir/general/hash_util.cpp.o
+[  5%] Building CXX object CMakeFiles/mfem.dir/general/isockstream.cpp.o
+[  5%] Building CXX object CMakeFiles/mfem.dir/general/mem_manager.cpp.o
+[  5%] Building CXX object CMakeFiles/mfem.dir/general/occa.cpp.o
+[  5%] Building CXX object CMakeFiles/mfem.dir/general/optparser.cpp.o
+[  5%] Building CXX object CMakeFiles/mfem.dir/general/osockstream.cpp.o
+[  5%] Building CXX object CMakeFiles/mfem.dir/general/sets.cpp.o
+[  7%] Building CXX object CMakeFiles/mfem.dir/general/socketstream.cpp.o
+[  7%] Building CXX object CMakeFiles/mfem.dir/general/stable3d.cpp.o
+[  7%] Building CXX object CMakeFiles/mfem.dir/general/table.cpp.o
+[  7%] Building CXX object CMakeFiles/mfem.dir/general/tic_toc.cpp.o
+[  7%] Building CXX object CMakeFiles/mfem.dir/general/tinyxml2.cpp.o
+[  7%] Building CXX object CMakeFiles/mfem.dir/general/version.cpp.o
+[ 10%] Building CXX object CMakeFiles/mfem.dir/general/hip.cpp.o
+[ 10%] Building CXX object CMakeFiles/mfem.dir/linalg/auxiliary.cpp.o
+[ 10%] Building CXX object CMakeFiles/mfem.dir/linalg/batched/batched.cpp.o
+[ 10%] Building CXX object CMakeFiles/mfem.dir/linalg/batched/gpu_blas.cpp.o
+[ 10%] Building CXX object CMakeFiles/mfem.dir/linalg/batched/magma.cpp.o
+[ 10%] Building CXX object CMakeFiles/mfem.dir/linalg/batched/native.cpp.o
+[ 10%] Building CXX object CMakeFiles/mfem.dir/linalg/batched/solver.cpp.o
+[ 12%] Building CXX object CMakeFiles/mfem.dir/linalg/blockmatrix.cpp.o
+[ 12%] Building CXX object CMakeFiles/mfem.dir/linalg/blockoperator.cpp.o
+[ 12%] Building CXX object CMakeFiles/mfem.dir/linalg/blockvector.cpp.o
+[ 12%] Building CXX object CMakeFiles/mfem.dir/linalg/complex_densemat.cpp.o
+[ 12%] Building CXX object CMakeFiles/mfem.dir/linalg/complex_operator.cpp.o
+[ 12%] Building CXX object CMakeFiles/mfem.dir/linalg/constraints.cpp.o
+[ 15%] Building CXX object CMakeFiles/mfem.dir/linalg/filteredsolver.cpp.o
+[ 15%] Building CXX object CMakeFiles/mfem.dir/linalg/densemat.cpp.o
+[ 15%] Building CXX object CMakeFiles/mfem.dir/linalg/handle.cpp.o
+[ 15%] Building CXX object CMakeFiles/mfem.dir/linalg/matrix.cpp.o
+[ 15%] Building CXX object CMakeFiles/mfem.dir/linalg/mma.cpp.o
+[ 15%] Building CXX object CMakeFiles/mfem.dir/linalg/multivector.cpp.o
+[ 17%] Building CXX object CMakeFiles/mfem.dir/linalg/ode.cpp.o
+[ 17%] Building CXX object CMakeFiles/mfem.dir/linalg/operator.cpp.o
+[ 17%] Building CXX object CMakeFiles/mfem.dir/linalg/ordering.cpp.o
+[ 17%] Building CXX object CMakeFiles/mfem.dir/linalg/particlevector.cpp.o
+[ 17%] Building CXX object CMakeFiles/mfem.dir/linalg/solvers.cpp.o
+[ 17%] Building CXX object CMakeFiles/mfem.dir/linalg/sparsemat.cpp.o
+[ 17%] Building CXX object CMakeFiles/mfem.dir/linalg/sparsesmoothers.cpp.o
+[ 20%] Building CXX object CMakeFiles/mfem.dir/linalg/symmat.cpp.o
+[ 20%] Building CXX object CMakeFiles/mfem.dir/linalg/vector.cpp.o
+[ 20%] Building CXX object CMakeFiles/mfem.dir/mesh/attribute_sets.cpp.o
+[ 20%] Building CXX object CMakeFiles/mfem.dir/mesh/element.cpp.o
+[ 20%] Building CXX object CMakeFiles/mfem.dir/mesh/exodus_writer.cpp.o
+[ 20%] Building CXX object CMakeFiles/mfem.dir/mesh/face_nbr_geom.cpp.o
+[ 22%] Building CXX object CMakeFiles/mfem.dir/mesh/gmsh.cpp.o
+[ 22%] Building CXX object CMakeFiles/mfem.dir/mesh/hexahedron.cpp.o
+[ 22%] Building CXX object CMakeFiles/mfem.dir/mesh/mesh.cpp.o
+[ 22%] Building CXX object CMakeFiles/mfem.dir/mesh/mesh_operators.cpp.o
+[ 22%] Building CXX object CMakeFiles/mfem.dir/mesh/mesh_readers.cpp.o
+[ 22%] Building CXX object CMakeFiles/mfem.dir/mesh/ncmesh.cpp.o
+[ 25%] Building CXX object CMakeFiles/mfem.dir/mesh/ncnurbs.cpp.o
+[ 25%] Building CXX object CMakeFiles/mfem.dir/mesh/nurbs.cpp.o
+[ 25%] Building CXX object CMakeFiles/mfem.dir/mesh/point.cpp.o
+[ 25%] Building CXX object CMakeFiles/mfem.dir/mesh/pyramid.cpp.o
+[ 25%] Building CXX object CMakeFiles/mfem.dir/mesh/quadrilateral.cpp.o
+[ 25%] Building CXX object CMakeFiles/mfem.dir/mesh/segment.cpp.o
+[ 25%] Building CXX object CMakeFiles/mfem.dir/mesh/spacing.cpp.o
+[ 27%] Building CXX object CMakeFiles/mfem.dir/mesh/tetrahedron.cpp.o
+[ 27%] Building CXX object CMakeFiles/mfem.dir/mesh/triangle.cpp.o
+[ 27%] Building CXX object CMakeFiles/mfem.dir/mesh/vertex.cpp.o
+[ 27%] Building CXX object CMakeFiles/mfem.dir/mesh/vtk.cpp.o
+[ 27%] Building CXX object CMakeFiles/mfem.dir/mesh/vtkhdf.cpp.o
+[ 27%] Building CXX object CMakeFiles/mfem.dir/mesh/wedge.cpp.o
+[ 30%] Building CXX object CMakeFiles/mfem.dir/mesh/submesh/submesh.cpp.o
+[ 30%] Building CXX object CMakeFiles/mfem.dir/mesh/submesh/ncsubmesh.cpp.o
+[ 30%] Building CXX object CMakeFiles/mfem.dir/mesh/submesh/submesh_utils.cpp.o
+[ 30%] Building CXX object CMakeFiles/mfem.dir/mesh/submesh/transfermap.cpp.o
+[ 30%] Building CXX object CMakeFiles/mfem.dir/mesh/bb_grid_map.cpp.o
+[ 30%] Building CXX object CMakeFiles/mfem.dir/fem/bilinearform.cpp.o
+[ 32%] Building CXX object CMakeFiles/mfem.dir/fem/bilinearform_ext.cpp.o
+[ 32%] Building CXX object CMakeFiles/mfem.dir/fem/bilininteg.cpp.o
+[ 32%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_br2.cpp.o
+[ 32%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_convection_mf.cpp.o
+[ 32%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_convection_pa.cpp.o
+[ 32%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_convection_ea.cpp.o
+[ 32%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_curlcurl_pa.cpp.o
+[ 35%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_dgdiffusion_pa.cpp.o
+[ 35%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_dgtrace_pa.cpp.o
+[ 35%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_dgtrace_ea.cpp.o
+[ 35%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_diffusion_mf.cpp.o
+[ 35%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_diffusion_pa.cpp.o
+[ 35%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_diffusion_ea.cpp.o
+[ 37%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_diffusion_patch.cpp.o
+[ 37%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_divdiv_pa.cpp.o
+[ 37%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_elasticity_ea.cpp.o
+[ 37%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_elasticity_pa.cpp.o
+[ 37%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_gradient_pa.cpp.o
+[ 37%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_interp_pa.cpp.o
+[ 40%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_mass_mf.cpp.o
+[ 40%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_mass_pa.cpp.o
+[ 40%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_mass_ea.cpp.o
+[ 40%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_mixedcurl_pa.cpp.o
+[ 40%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_mixedvecgrad_pa.cpp.o
+[ 40%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_trace_jump_ea.cpp.o
+[ 40%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_transpose_ea.cpp.o
+[ 42%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_vecdiffusion_mf.cpp.o
+[ 42%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_vecdiffusion_pa.cpp.o
+[ 42%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_vecdiv_pa.cpp.o
+[ 42%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_vecmass_mf.cpp.o
+[ 42%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_vecmass_pa.cpp.o
+[ 42%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_vectorfediv_pa.cpp.o
+[ 45%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_vectorfemass_pa.cpp.o
+[ 45%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_diffusion_kernels.cpp.o
+[ 45%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_elasticity_kernels.cpp.o
+[ 45%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_hcurl_kernels.cpp.o
+[ 45%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_hdiv_ea.cpp.o
+[ 45%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_hdiv_kernels.cpp.o
+[ 47%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_hcurlhdiv_kernels.cpp.o
+[ 47%] Building CXX object CMakeFiles/mfem.dir/fem/integ/bilininteg_mass_kernels.cpp.o
+[ 47%] Building CXX object CMakeFiles/mfem.dir/fem/integ/lininteg_boundary.cpp.o
+[ 47%] Building CXX object CMakeFiles/mfem.dir/fem/integ/lininteg_boundary_flux.cpp.o
+[ 47%] Building CXX object CMakeFiles/mfem.dir/fem/integ/lininteg_domain.cpp.o
+[ 47%] Building CXX object CMakeFiles/mfem.dir/fem/integ/lininteg_domain_grad.cpp.o
+[ 47%] Building CXX object CMakeFiles/mfem.dir/fem/integ/lininteg_domain_vectorfe.cpp.o
+[ 50%] Building CXX object CMakeFiles/mfem.dir/fem/integ/nonlininteg_vecconvection_pa.cpp.o
+[ 50%] Building CXX object CMakeFiles/mfem.dir/fem/integ/nonlininteg_vecconvection_pa_diag.cpp.o
+[ 50%] Building CXX object CMakeFiles/mfem.dir/fem/integ/nonlininteg_vecconvection_pa_grad.cpp.o
+[ 50%] Building CXX object CMakeFiles/mfem.dir/fem/integ/nonlininteg_vecconvection_mf.cpp.o
+[ 50%] Building CXX object CMakeFiles/mfem.dir/fem/coefficient.cpp.o
+[ 50%] Building CXX object CMakeFiles/mfem.dir/fem/complex_fem.cpp.o
+[ 52%] Building CXX object CMakeFiles/mfem.dir/fem/convergence.cpp.o
+[ 52%] Building CXX object CMakeFiles/mfem.dir/fem/datacollection.cpp.o
+[ 52%] Building CXX object CMakeFiles/mfem.dir/fem/dgmassinv.cpp.o
+[ 52%] Building CXX object CMakeFiles/mfem.dir/fem/doftrans.cpp.o
+[ 52%] Building CXX object CMakeFiles/mfem.dir/fem/dfem/doperator.cpp.o
+[ 52%] Building CXX object CMakeFiles/mfem.dir/fem/eltrans.cpp.o
+[ 55%] Building CXX object CMakeFiles/mfem.dir/fem/batchitrans.cpp.o
+[ 55%] Building CXX object CMakeFiles/mfem.dir/fem/estimators.cpp.o
+[ 55%] Building CXX object CMakeFiles/mfem.dir/fem/fe.cpp.o
+[ 55%] Building CXX object CMakeFiles/mfem.dir/fem/fe/face_map_utils.cpp.o
+[ 55%] Building CXX object CMakeFiles/mfem.dir/fem/fe/fe_base.cpp.o
+[ 55%] Building CXX object CMakeFiles/mfem.dir/fem/fe/fe_fixed_order.cpp.o
+[ 55%] Building CXX object CMakeFiles/mfem.dir/fem/fe/fe_h1.cpp.o
+[ 57%] Building CXX object CMakeFiles/mfem.dir/fem/fe/fe_l2.cpp.o
+[ 57%] Building CXX object CMakeFiles/mfem.dir/fem/fe/fe_nd.cpp.o
+[ 57%] Building CXX object CMakeFiles/mfem.dir/fem/fe/fe_nurbs.cpp.o
+[ 57%] Building CXX object CMakeFiles/mfem.dir/fem/fe/fe_pos.cpp.o
+[ 57%] Building CXX object CMakeFiles/mfem.dir/fem/fe/fe_pyramid.cpp.o
+[ 57%] Building CXX object CMakeFiles/mfem.dir/fem/fe/fe_rt.cpp.o
+[ 60%] Building CXX object CMakeFiles/mfem.dir/fem/fe/fe_ser.cpp.o
+[ 60%] Building CXX object CMakeFiles/mfem.dir/fem/fe_coll.cpp.o
+[ 60%] Building CXX object CMakeFiles/mfem.dir/fem/fespace.cpp.o
+[ 60%] Building CXX object CMakeFiles/mfem.dir/fem/derefmat_op.cpp.o
+[ 60%] Building CXX object CMakeFiles/mfem.dir/fem/pderefmat_op.cpp.o
+[ 60%] Building CXX object CMakeFiles/mfem.dir/fem/geom.cpp.o
+[ 62%] Building CXX object CMakeFiles/mfem.dir/fem/gridfunc.cpp.o
+[ 62%] Building CXX object CMakeFiles/mfem.dir/fem/hybridization.cpp.o
+[ 62%] Building CXX object CMakeFiles/mfem.dir/fem/hybridization_ext.cpp.o
+[ 62%] Building CXX object CMakeFiles/mfem.dir/fem/intrules.cpp.o
+[ 62%] Building CXX object CMakeFiles/mfem.dir/fem/intrules_cut.cpp.o
+[ 62%] Building CXX object CMakeFiles/mfem.dir/fem/ceed/interface/basis.cpp.o
+[ 62%] Building CXX object CMakeFiles/mfem.dir/fem/ceed/interface/restriction.cpp.o
+[ 65%] Building CXX object CMakeFiles/mfem.dir/fem/ceed/interface/operator.cpp.o
+[ 65%] Building CXX object CMakeFiles/mfem.dir/fem/ceed/interface/util.cpp.o
+[ 65%] Building CXX object CMakeFiles/mfem.dir/fem/ceed/integrators/convection/convection.cpp.o
+[ 65%] Building CXX object CMakeFiles/mfem.dir/fem/ceed/integrators/diffusion/diffusion.cpp.o
+[ 65%] Building CXX object CMakeFiles/mfem.dir/fem/ceed/integrators/nlconvection/nlconvection.cpp.o
+[ 65%] Building CXX object CMakeFiles/mfem.dir/fem/ceed/integrators/mass/mass.cpp.o
+[ 67%] Building CXX object CMakeFiles/mfem.dir/fem/ceed/solvers/algebraic.cpp.o
+[ 67%] Building CXX object CMakeFiles/mfem.dir/fem/ceed/solvers/full-assembly.cpp.o
+[ 67%] Building CXX object CMakeFiles/mfem.dir/fem/ceed/solvers/solvers-atpmg.cpp.o
+[ 67%] Building CXX object CMakeFiles/mfem.dir/fem/kdtree.cpp.o
+[ 67%] Building CXX object CMakeFiles/mfem.dir/fem/linearform.cpp.o
+[ 67%] Building CXX object CMakeFiles/mfem.dir/fem/linearform_ext.cpp.o
+[ 70%] Building CXX object CMakeFiles/mfem.dir/fem/lininteg.cpp.o
+[ 70%] Building CXX object CMakeFiles/mfem.dir/fem/lor/lor.cpp.o
+[ 70%] Building CXX object CMakeFiles/mfem.dir/fem/lor/lor_ads.cpp.o
+[ 70%] Building CXX object CMakeFiles/mfem.dir/fem/lor/lor_ams.cpp.o
+[ 70%] Building CXX object CMakeFiles/mfem.dir/fem/lor/lor_batched.cpp.o
+[ 70%] Building CXX object CMakeFiles/mfem.dir/fem/multigrid.cpp.o
+[ 70%] Building CXX object CMakeFiles/mfem.dir/fem/nonlinearform.cpp.o
+[ 72%] Building CXX object CMakeFiles/mfem.dir/fem/nonlinearform_ext.cpp.o
+[ 72%] Building CXX object CMakeFiles/mfem.dir/fem/nonlininteg.cpp.o
+[ 72%] Building CXX object CMakeFiles/mfem.dir/fem/fespacehierarchy.cpp.o
+[ 72%] Building CXX object CMakeFiles/mfem.dir/fem/qfunction.cpp.o
+[ 72%] Building CXX object CMakeFiles/mfem.dir/fem/qinterp/det.cpp.o
+[ 72%] Building CXX object CMakeFiles/mfem.dir/fem/qinterp/eval_by_nodes.cpp.o
+[ 75%] Building CXX object CMakeFiles/mfem.dir/fem/qinterp/eval_by_vdim.cpp.o
+[ 75%] Building CXX object CMakeFiles/mfem.dir/fem/qinterp/eval_hdiv.cpp.o
+[ 75%] Building CXX object CMakeFiles/mfem.dir/fem/qinterp/grad_by_nodes.cpp.o
+[ 75%] Building CXX object CMakeFiles/mfem.dir/fem/qinterp/grad_by_vdim.cpp.o
+[ 75%] Building CXX object CMakeFiles/mfem.dir/fem/qspace.cpp.o
+[ 75%] Building CXX object CMakeFiles/mfem.dir/fem/quadinterpolator.cpp.o
+[ 75%] Building CXX object CMakeFiles/mfem.dir/fem/quadinterpolator_face.cpp.o
+[ 77%] Building CXX object CMakeFiles/mfem.dir/fem/restriction.cpp.o
+[ 77%] Building CXX object CMakeFiles/mfem.dir/fem/normal_deriv_restriction.cpp.o
+[ 77%] Building CXX object CMakeFiles/mfem.dir/fem/staticcond.cpp.o
+[ 77%] Building CXX object CMakeFiles/mfem.dir/fem/tmop.cpp.o
+[ 77%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/pa.cpp.o
+[ 77%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/assemble/diag2_limit.cpp.o
+[ 80%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/assemble/diag2.cpp.o
+[ 80%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/assemble/grad2_limit.cpp.o
+[ 80%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/assemble/grad2.cpp.o
+[ 80%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/assemble/diag3_limit.cpp.o
+[ 80%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/assemble/diag3.cpp.o
+[ 80%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/assemble/grad3_limit.cpp.o
+[ 82%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/assemble/grad3.cpp.o
+[ 82%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/metrics/001.cpp.o
+[ 82%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/metrics/002.cpp.o
+[ 82%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/metrics/007.cpp.o
+[ 82%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/metrics/056.cpp.o
+[ 82%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/metrics/077.cpp.o
+[ 82%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/metrics/080.cpp.o
+[ 85%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/metrics/094.cpp.o
+[ 85%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/metrics/302.cpp.o
+[ 85%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/metrics/303.cpp.o
+[ 85%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/metrics/315.cpp.o
+[ 85%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/metrics/318.cpp.o
+[ 85%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/metrics/321.cpp.o
+[ 87%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/metrics/332.cpp.o
+[ 87%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/metrics/338.cpp.o
+[ 87%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/mult/grad2_limit.cpp.o
+[ 87%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/mult/grad2.cpp.o
+[ 87%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/mult/mult2_limit.cpp.o
+[ 87%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/mult/mult2.cpp.o
+[ 90%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/mult/grad3_limit.cpp.o
+[ 90%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/mult/grad3.cpp.o
+[ 90%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/mult/mult3_limit.cpp.o
+[ 90%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/mult/mult3.cpp.o
+[ 90%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/tools/det2_jpr.cpp.o
+[ 90%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/tools/det3_jpr.cpp.o
+[ 90%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/tools/discrete.cpp.o
+[ 92%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/tools/energy2_limit.cpp.o
+[ 92%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/tools/energy2.cpp.o
+[ 92%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/tools/energy3_limit.cpp.o
+[ 92%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/tools/energy3.cpp.o
+[ 92%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/tools/target2.cpp.o
+[ 92%] Building CXX object CMakeFiles/mfem.dir/fem/tmop/tools/target3.cpp.o
+[ 95%] Building CXX object CMakeFiles/mfem.dir/fem/tmop_tools.cpp.o
+[ 95%] Building CXX object CMakeFiles/mfem.dir/fem/tmop_amr.cpp.o
+[ 95%] Building CXX object CMakeFiles/mfem.dir/fem/gslib.cpp.o
+[ 95%] Building CXX object CMakeFiles/mfem.dir/fem/gslib/findptsedge_local_2.cpp.o
+[ 95%] Building CXX object CMakeFiles/mfem.dir/fem/gslib/findptsedge_local_3.cpp.o
+[ 95%] Building CXX object CMakeFiles/mfem.dir/fem/gslib/findptssurf_local_3.cpp.o
+[ 97%] Building CXX object CMakeFiles/mfem.dir/fem/gslib/findpts_local_2.cpp.o
+[ 97%] Building CXX object CMakeFiles/mfem.dir/fem/gslib/findpts_local_3.cpp.o
+[ 97%] Building CXX object CMakeFiles/mfem.dir/fem/gslib/interpolate_local_1.cpp.o
+[ 97%] Building CXX object CMakeFiles/mfem.dir/fem/gslib/interpolate_local_2.cpp.o
+[ 97%] Building CXX object CMakeFiles/mfem.dir/fem/gslib/interpolate_local_3.cpp.o
+[ 97%] Building CXX object CMakeFiles/mfem.dir/fem/transfer.cpp.o
+[ 97%] Building CXX object CMakeFiles/mfem.dir/fem/hyperbolic.cpp.o
+[100%] Building CXX object CMakeFiles/mfem.dir/fem/integrator.cpp.o
+[100%] Building CXX object CMakeFiles/mfem.dir/fem/bounds.cpp.o
+[100%] Building CXX object CMakeFiles/mfem.dir/fem/particleset.cpp.o
+[100%] Linking CXX static library libmfem.a
+[100%] Built target mfem
+-- Install configuration: "Release"
+-- Installing: /home/fy/project1-stage/mfem-install/lib/libmfem.a
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem-performance.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mfem.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mfem-performance.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/isockstream.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/backends.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/mem_alloc.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/adios2stream.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/version.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/hash_util.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/stable3d.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/osockstream.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/hash.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/device.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/tassign.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/sets.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/table.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/arrays_by_name.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/binaryio.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/scan.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/globals.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/cuda.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/socketstream.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/gecko.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/reducers.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/array.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/tic_toc.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/hip.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/zstr.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/mem_manager.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/sort_pairs.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/kdtree.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/error.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/annotation.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/forall.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/optparser.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/text.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/communication.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/enzyme.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/general/occa.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/multivector.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/tensor.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/mumps.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/cudss.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/sundials.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/handle.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/sparsemat.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/complex_densemat.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/hiop.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/linalg.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/petsc.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/symmat.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/amgxsolver.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/matrix.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/cpardiso.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/ginkgo.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/operator.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/dual.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/mma.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/constraints.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/pardiso.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/slepc.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/sparsesmoothers.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/auxiliary.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/dinvariants.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/vector.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/strumpack.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/simd
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/simd/auto.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/simd/sve.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/simd/x86.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/simd/m512.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/simd/vsx.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/simd/qpx256.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/simd/m128.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/simd/m256.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/simd/qpx.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/simd/vsx128.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/tlayout.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/particlevector.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/lapack.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/hypre.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/ttensor.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/blockoperator.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/ordering.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/solvers.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/simd.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/blockvector.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/tmatrix.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/blockmatrix.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/filteredsolver.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/superlu.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/densemat.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/dtensor.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/hypre_parcsr.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/invariants.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/petscinternals.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/complex_operator.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/batched
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/batched/magma.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/batched/batched.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/batched/native.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/batched/gpu_blas.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/batched/solver.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/linalg/ode.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/hexahedron.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/bb_grid_map.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/point.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/quadrilateral.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/vtk.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/pmesh.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/ncmesh_tables.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/segment.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/triangle.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/mesh_operators.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/tetrahedron.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/face_nbr_geom.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/pyramid.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/element.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/submesh
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/submesh/psubmesh.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/submesh/transfermap.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/submesh/submesh_utils.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/submesh/transfer_category.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/submesh/ptransfermap.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/submesh/submesh.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/submesh/ncsubmesh.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/submesh/pncsubmesh.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/vertex.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/wedge.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/ncnurbs.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/pncmesh.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/vtkhdf.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/attribute_sets.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/nurbs.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/mesh_headers.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/pumi.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/tmesh.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/ncmesh.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/mesh.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/mesh/spacing.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/restriction.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/adios2datacollection.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fe
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fe/face_map_utils.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fe/fe_h1.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fe/fe_pyramid.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fe/fe_rt.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fe/fe_base.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fe/fe_l2.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fe/fe_nurbs.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fe/fe_ser.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fe/fe_fixed_order.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fe/fe_pos.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fe/fe_nd.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tfespace.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/dgmassinv.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/pbilinearform.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/geom.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/conduitdatacollection.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop_amr.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop/mult
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop/mult/mult3.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop/mult/mult2.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop/pa.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop/tools
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop/tools/energy2.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop/tools/energy3.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop/metrics
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop/assemble
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop/assemble/grad2.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop/assemble/grad3.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/moonolith
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/moonolith/mortarassembler.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/moonolith/pmortarassembler.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/moonolith/cut.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/moonolith/transfer.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/moonolith/transferutils.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/moonolith/mortarintegrator.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/particleset.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tbilinearform.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fespacehierarchy.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/complex_fem.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/qfunction.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tbilininteg.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/plinearform.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/pfespace.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/datacollection.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/intrules_cut.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fespace.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/teltrans.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/transfer.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fmsconvert.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/gridfunc.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integrator.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/pnonlinearform.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/intrules.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/solvers
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/solvers/algebraic.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/solvers/full-assembly.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/solvers/solvers-atpmg.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/integrators
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/integrators/diffusion
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/integrators/diffusion/diffusion.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/integrators/convection
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/integrators/convection/convection.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/integrators/nlconvection
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/integrators/nlconvection/nlconvection.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/integrators/mass
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/integrators/mass/mass.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/interface
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/interface/restriction.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/interface/ceed.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/interface/operator.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/interface/util.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/interface/integrator.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/interface/mixed_integrator.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/interface/basis.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/interface/coefficient.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/ceed/interface/interface.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/normal_deriv_restriction.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/sidredatacollection.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/bilinearform_ext.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/linearform.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fe.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/doftrans.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fes_kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/nonlinearform_ext.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fe_coll.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tintrules.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/gslib
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/gslib/gslib_kernel_helpers.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/gslib.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/bilininteg.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fem.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/prestriction.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/pgridfunc.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/multigrid.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/coefficient.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tmop_tools.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tevaluator.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/qinterp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/qinterp/det.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/qinterp/eval_hdiv.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/qinterp/eval.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/qinterp/grad.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/bilinearform.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/hyperbolic.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tfe.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/linearform_ext.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/kernel_reporter.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/eltrans
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/eltrans/eltrans_basis.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/kernel_dispatch.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/quadinterpolator.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/qspace.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/hybridization.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/eltrans.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/staticcond.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/quadinterpolator_face.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/kdtree.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/estimators.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/fmsdatacollection.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/dfem
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/dfem/qfunction_apply.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/dfem/fieldoperator.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/dfem/util.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/dfem/tuple.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/dfem/doperator.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/dfem/interpolate.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/dfem/parameterspace.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/dfem/assemble.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/dfem/qfunction_transform.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/dfem/integrate.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lor
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lor/lor_ads.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lor/lor_ams.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lor/lor_util.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lor/lor_dg.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lor/lor_h1_impl.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lor/lor_dg_impl.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lor/lor_batched.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lor/lor_rt.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lor/lor.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lor/lor_nd.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lor/lor_rt_impl.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lor/lor_nd_impl.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lor/lor_h1.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/pderefmat_op.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/bounds.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/dgmassinv_kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/nonlininteg.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/hybridization_ext.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/derefmat_op.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/nonlinearform.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/lininteg.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/tcoefficient.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_vectorfemass_kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/nonlininteg_vecconvection_pa_grad.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_convection_kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_diffusion_kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/nonlininteg_vecconvection_pa_diag.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_vecmass_pa.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_vecdiv_pa.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_diffusion_pa_simplices.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_dgtrace_kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_elasticity_kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_hcurl_kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_hcurlhdiv_kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_mass_kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/lininteg_domain_kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_hdiv_kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_mass_pa_simplices.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_vecdiffusion_kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/nonlininteg_vecconvection_pa.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_dgdiffusion_kernels.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/integ/bilininteg_vecdiffusion_pa.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/fem/convergence.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/config/_config.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/config/config.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/include/mfem/config/tconfig.hpp
+-- Installing: /home/fy/project1-stage/mfem-install/lib/cmake/mfem/MFEMConfig.cmake
+-- Installing: /home/fy/project1-stage/mfem-install/lib/cmake/mfem/MFEMConfigVersion.cmake
+-- Installing: /home/fy/project1-stage/mfem-install/lib/cmake/mfem/MFEMTargets.cmake
+-- Installing: /home/fy/project1-stage/mfem-install/lib/cmake/mfem/MFEMTargets-release.cmake
+-- Installing: /home/fy/project1-stage/mfem-install/share/mfem/test.mk
+-- Installing: /home/fy/project1-stage/mfem-install/share/mfem/config.mk

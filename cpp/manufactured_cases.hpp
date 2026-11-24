@@ -3,7 +3,7 @@
 // Registry of manufactured solutions compiled into the MFEM solver.
 //
 // Design note: the solver does NOT parse arbitrary expressions. Each case is a
-// reviewed, hard-coded C++ implementation of u, grad(u) and f = -lap(u). The
+// reviewed, hard-coded C++ implementation of u, grad(u) and f. The
 // canonical expression strings below are emitted by `poisson_mms --list-cases`
 // so that the Python layer can bind a ProblemSpec (which stores expression
 // strings) to a compiled case and refuse to run on any textual mismatch.
@@ -26,10 +26,12 @@ struct ManufacturedCase
 {
    std::string id;
    std::string exact_solution;   // canonical expression string for u(x,y)
-   std::string source;           // canonical expression string for f = -lap(u)
+   std::string source;           // canonical expression string for f
    mfem::real_t (*u)(const mfem::Vector &);
    void (*grad_u)(const mfem::Vector &, mfem::Vector &);
    mfem::real_t (*f)(const mfem::Vector &);
+   std::string equation = "-laplacian(u) = f";
+   double diffusion_x = 1.0;
 };
 
 // ---------------------------------------------------------------------------
@@ -48,6 +50,10 @@ inline void sin_sin_grad(const mfem::Vector &p, mfem::Vector &g)
 inline mfem::real_t sin_sin_f(const mfem::Vector &p)
 {
    return 2.0 * M_PI * M_PI * std::sin(M_PI * p(0)) * std::sin(M_PI * p(1));
+}
+inline mfem::real_t anisotropic_f(const mfem::Vector &p)
+{
+   return 1001.0 * M_PI * M_PI * sin_sin_u(p);
 }
 
 // ---------------------------------------------------------------------------
@@ -86,6 +92,13 @@ inline const std::vector<ManufacturedCase> &Registry()
          "cos(pi*x)*exp(y)",
          "(pi**2 - 1)*cos(pi*x)*exp(y)",
          cos_exp_u, cos_exp_grad, cos_exp_f
+      },
+      {
+         "anisotropic_1000_sin_sin",
+         "sin(pi*x)*sin(pi*y)",
+         "1001*pi**2*sin(pi*x)*sin(pi*y)",
+         sin_sin_u, sin_sin_grad, anisotropic_f,
+         "-div(diag(1000,1)*grad(u)) = f", 1000.0
       }
    };
    return cases;

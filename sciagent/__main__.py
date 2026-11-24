@@ -21,6 +21,10 @@ def main(argv: list[str] | None = None) -> int:
     r = sub.add_parser("run", help="run a study spec end to end")
     r.add_argument("spec")
     r.add_argument("--runs-dir", default="runs")
+    s = sub.add_parser("search", help="compare verified serial CPU Poisson strategies")
+    s.add_argument("spec")
+    s.add_argument("--output", required=True, help="new directory for candidate specs, runs and search.json")
+    s.add_argument("--repeats", type=int, default=3)
     q = sub.add_parser("quickstart", help="probe tools, run the P1 triangle benchmark and replay its evidence")
     q.add_argument("--runs-dir", default="runs")
     v = sub.add_parser("verify", help="re-verify a stored attempt directory from artifacts only")
@@ -43,6 +47,16 @@ def main(argv: list[str] | None = None) -> int:
         m = controller.run_study(a.spec, a.runs_dir)
         print(controller.summarize(m))
         return 0 if m["final_state"] == "ACCEPTED" else 1
+    elif a.cmd == "search":
+        from .spec import load_study
+        from .strategy import search
+
+        try:
+            report = search(load_study(a.spec), Path(a.output), a.repeats)
+        except (OSError, ValueError) as exc:
+            s.error(str(exc))
+        print(json.dumps({"winner": report["winner"], "report": str(Path(a.output) / "search.json")}))
+        return 0 if report["winner"] else 1
     elif a.cmd == "quickstart":
         spec = environment.PROJECT_ROOT / "specs" / "poisson_sin_sin_p1_tri.json"
         manifest = controller.run_study(spec, a.runs_dir)

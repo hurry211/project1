@@ -1,0 +1,265 @@
+{
+  "winner": "q2-partial-cg-jacobi",
+  "criterion": "minimum median end-to-end seconds among all-repetition accepted candidates",
+  "l2_target": 0.0001,
+  "repeats": 3,
+  "search_wall_seconds": 7.120329746999914,
+  "environment": {
+    "os": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "cpu_count": 16,
+    "mem_total_mb": 7531,
+    "python": "3.12.3",
+    "python_packages": {
+      "numpy": "2.5.5",
+      "scipy": "1.18.1",
+      "pydantic": "2.14.4",
+      "pytest": "9.2.0"
+    },
+    "cxx": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "cmake": "cmake version 3.28.3",
+    "make": "GNU Make 4.3",
+    "mpirun_path": null,
+    "nvidia_smi_path": "/usr/lib/wsl/lib/nvidia-smi",
+    "mfem": {
+      "install_dir": "/home/fy/project1-stage/mfem-install",
+      "found": true,
+      "config": {
+        "MFEM_USE_MPI": false,
+        "MFEM_USE_METIS": false,
+        "MFEM_USE_METIS_5": false,
+        "MFEM_USE_SUITESPARSE": false,
+        "MFEM_USE_LAPACK": false,
+        "MFEM_USE_OPENMP": false,
+        "MFEM_USE_CUDA": false,
+        "MFEM_USE_HIP": false,
+        "MFEM_USE_RAJA": false,
+        "MFEM_USE_OCCA": false,
+        "MFEM_USE_PETSC": false,
+        "MFEM_USE_ZLIB": false,
+        "MFEM_USE_DOUBLE": true,
+        "MFEM_USE_SINGLE": false
+      },
+      "notes": [],
+      "version": "4.10.0",
+      "git": "(unknown)",
+      "library": "/home/fy/project1-stage/mfem-install/lib/libmfem.a",
+      "library_sha256": "3e1974baaf993e7df5b659a8b9474d444b3bdd52d24d3750dc9e85239a6ae239"
+    },
+    "solver_binary": "/home/fy/project1-stage/final/build/cpp/poisson_mms",
+    "solver_binary_sha256": "d46193e73b4e37de2b4663f881b7452092c39e5877d7cedd62a8cb35b0a0d6c3",
+    "notes": [
+      "no mpirun on PATH; MPI path unavailable"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "q1-full-cg-jacobi",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "combination ('quad', 1, 'full', 'cg_jacobi') is covered by integration tests"
+      },
+      "initial_finest_dofs": 1089,
+      "trials": [
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "seconds": 0.5011117600001853,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0004751661479413795,
+            "h1_semi": 0.06295197000127464,
+            "reference_rel_diff": 1.4975978408702866e-14
+          },
+          "run_dir": "runs/20261124T140021906556Z_q1-full-cg-jacobi",
+          "manifest_sha256": "ed3a88f3bc6945a779e070240666f72e6633d6dc38ca7f69faebdaee605cce5e"
+        },
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "seconds": 0.5587501170000451,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0004751661479413795,
+            "h1_semi": 0.06295197000127464,
+            "reference_rel_diff": 1.4975978408702866e-14
+          },
+          "run_dir": "runs/20261124T140025981405Z_q1-full-cg-jacobi",
+          "manifest_sha256": "8b4c4890380f393dfef06600c4018070d5a1d79ff3bd5adc9ba2cf7045c04d78"
+        },
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "seconds": 0.5062065070001154,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0004751661479413795,
+            "h1_semi": 0.06295197000127464,
+            "reference_rel_diff": 1.4975978408702866e-14
+          },
+          "run_dir": "runs/20261124T140026540340Z_q1-full-cg-jacobi",
+          "manifest_sha256": "8463f2ec2fed770238c5cb20593dc33cc855f472fc0e175c950b383b274f008a"
+        }
+      ],
+      "feasible": false,
+      "median_seconds": 0.5062065070001154
+    },
+    {
+      "id": "q1-partial-cg-jacobi",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "combination ('quad', 1, 'partial', 'cg_jacobi') is covered by integration tests"
+      },
+      "initial_finest_dofs": 1089,
+      "trials": [
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "seconds": 0.513764693999974,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0004751661479393499,
+            "h1_semi": 0.06295197000127464,
+            "reference_rel_diff": 1.009491877919971e-14
+          },
+          "run_dir": "runs/20261124T140022407720Z_q1-partial-cg-jacobi",
+          "manifest_sha256": "9a9f5bd043ef1d7c9b97987386049f48cd0b021db95853f9ddcd7d39cc59bf78"
+        },
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "seconds": 0.5563453610000124,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0004751661479393499,
+            "h1_semi": 0.06295197000127464,
+            "reference_rel_diff": 1.009491877919971e-14
+          },
+          "run_dir": "runs/20261124T140025424963Z_q1-partial-cg-jacobi",
+          "manifest_sha256": "9d514b018598b38da39aa6213f87c9ff732c714af77e855ff46fee8b30995d87"
+        },
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "seconds": 0.5194313230001626,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0004751661479393499,
+            "h1_semi": 0.06295197000127464,
+            "reference_rel_diff": 1.009491877919971e-14
+          },
+          "run_dir": "runs/20261124T140027046569Z_q1-partial-cg-jacobi",
+          "manifest_sha256": "08f70803b74372b38ec5ad580db847ee3c79b3886ac8b10fb49f84140e4e2776"
+        }
+      ],
+      "feasible": false,
+      "median_seconds": 0.5194313230001626
+    },
+    {
+      "id": "q2-full-cg-jacobi",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "combination ('quad', 2, 'full', 'cg_jacobi') is covered by integration tests"
+      },
+      "initial_finest_dofs": 4225,
+      "trials": [
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "seconds": 0.6316239799998584,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.846536264831742e-06,
+            "h1_semi": 0.0007979182794859874,
+            "reference_rel_diff": 4.9626962791560245e-14
+          },
+          "run_dir": "runs/20261124T140022921566Z_q2-full-cg-jacobi",
+          "manifest_sha256": "82d052620393a507327d5100a50a68227523ee240fe6a98bb339a5a5865e552d"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "seconds": 0.6263132280000718,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.846536264831742e-06,
+            "h1_semi": 0.0007979182794859874,
+            "reference_rel_diff": 4.9626962791560245e-14
+          },
+          "run_dir": "runs/20261124T140024798592Z_q2-full-cg-jacobi",
+          "manifest_sha256": "efccfc047666610be873f6441c3fa6361a35152505ee2747c4d7cf02c5b1d2cf"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "seconds": 0.6235787299999629,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.846536264831742e-06,
+            "h1_semi": 0.0007979182794859874,
+            "reference_rel_diff": 4.9626962791560245e-14
+          },
+          "run_dir": "runs/20261124T140027566067Z_q2-full-cg-jacobi",
+          "manifest_sha256": "ba8d18c989aebd1fe9f134893f3929b717f7d62080cd615e68d351e25e70f625"
+        }
+      ],
+      "feasible": true,
+      "median_seconds": 0.6263132280000718
+    },
+    {
+      "id": "q2-partial-cg-jacobi",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "combination ('quad', 2, 'partial', 'cg_jacobi') is covered by integration tests"
+      },
+      "initial_finest_dofs": 4225,
+      "trials": [
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "seconds": 0.609764092999967,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.846536264455506e-06,
+            "h1_semi": 0.000797918279485977,
+            "reference_rel_diff": 9.359178888878141e-14
+          },
+          "run_dir": "runs/20261124T140023553256Z_q2-partial-cg-jacobi",
+          "manifest_sha256": "8daa38b9b31a49def123afed2a3676489f7b09869fff5078af473e837b541331"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "seconds": 0.6353935549998369,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.846536264455506e-06,
+            "h1_semi": 0.000797918279485977,
+            "reference_rel_diff": 9.359178888878141e-14
+          },
+          "run_dir": "runs/20261124T140024163112Z_q2-partial-cg-jacobi",
+          "manifest_sha256": "b77135fe8f5d27b3342e72c51b4e33c7d053bcb1f1e3dff9c76335821bdf8032"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "seconds": 0.6142192919999161,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.846536264455506e-06,
+            "h1_semi": 0.000797918279485977,
+            "reference_rel_diff": 9.359178888878141e-14
+          },
+          "run_dir": "runs/20261124T140028189716Z_q2-partial-cg-jacobi",
+          "manifest_sha256": "2748b0cb8bd5e39faf97deacbc61e0af8686f21ae5a034827d0df5207893d0ee"
+        }
+      ],
+      "feasible": true,
+      "median_seconds": 0.6142192919999161
+    }
+  ]
+}

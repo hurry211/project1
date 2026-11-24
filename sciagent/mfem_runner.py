@@ -17,7 +17,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from .environment import DEFAULT_SOLVER_BIN, PROJECT_ROOT, mfem_install_dir
-from .spec import ExecutionSpec, ProblemSpec, compact_expression
+from .spec import POISSON, ExecutionSpec, ProblemSpec, compact_expression
 
 EXIT_CODES = {
     0: "OK", 2: "INVALID_ARGUMENTS", 3: "BOUNDARY_COVERAGE", 4: "UNSUPPORTED_COMBINATION",
@@ -86,7 +86,8 @@ def list_cases(binary: Path | None = None) -> dict:
 def bind_case(problem: ProblemSpec, cases: dict) -> str | None:
     """Return the compiled case id implementing exactly this problem, if any."""
     for c in cases["cases"]:
-        if (compact_expression(c["exact_solution"]) == compact_expression(problem.exact_solution)
+        if (c.get("equation", POISSON) == problem.equation
+                and compact_expression(c["exact_solution"]) == compact_expression(problem.exact_solution)
                 and compact_expression(c["source"]) == compact_expression(problem.source)):
             return c["id"]
     return None

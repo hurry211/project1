@@ -1,0 +1,3 @@
+{"passed": true, "report": "runs/performance/performance.json"}
+{"passed": true, "report": "runs/performance-mixed/performance.json"}
+{"winner": "q2-partial-cg-jacobi", "report": "runs/strategy/search.json"}

@@ -19,7 +19,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
-from .spec import ExecutionSpec
+from .spec import ANISOTROPIC, POISSON, ExecutionSpec
 
 Status = Literal["tested", "unsupported", "not_verified"]
 
@@ -37,13 +37,16 @@ TESTED: frozenset[tuple[str, int, str, str]] = frozenset({
     ("tri", 2, "full", "cg_gs"),
     ("quad", 1, "full", "cg_gs"),
     ("quad", 2, "full", "cg_gs"),
+    ("quad", 1, "full", "cg_jacobi"),
+    ("quad", 2, "full", "cg_jacobi"),
     ("tri", 1, "full", "cg_jacobi"),
     ("quad", 1, "partial", "cg_jacobi"),
     ("quad", 2, "partial", "cg_jacobi"),
 })
 
 
-def evaluate(execution: ExecutionSpec, env: dict | None = None) -> CapabilityDecision:
+def evaluate(execution: ExecutionSpec, env: dict | None = None,
+             equation: str = POISSON) -> CapabilityDecision:
     """Decide whether an execution configuration may run.
 
     ``env`` is the environment probe (sciagent.environment.probe()); it is
@@ -81,6 +84,9 @@ def evaluate(execution: ExecutionSpec, env: dict | None = None) -> CapabilityDec
         )
 
     key = (execution.mesh_type, execution.polynomial_order, execution.assembly, execution.solver)
+    if equation == ANISOTROPIC and key != ("quad", 1, "full", "cg_jacobi"):
+        return CapabilityDecision("not_verified", "NOT_VERIFIED_COMBINATION",
+                                  "the anisotropic benchmark is tested only with full Q1 CG+Jacobi")
     if key in TESTED:
         return CapabilityDecision("tested", "OK", f"combination {key} is covered by integration tests")
     return CapabilityDecision(
@@ -97,6 +103,8 @@ def matrix_as_rows() -> list[dict]:
                 for sol in ("cg_gs", "cg_jacobi", "cg_none", "umfpack", "hypre_amg"):
                     ex = ExecutionSpec(mesh_type=mt, polynomial_order=p, assembly=asm, solver=sol)
                     d = evaluate(ex, {})
-                    rows.append({"mesh_type": mt, "order": p, "assembly": asm, "solver": sol,
+                    rows.append({"equation": POISSON, "mesh_type": mt, "order": p, "assembly": asm, "solver": sol,
                                  "status": d.status, "code": d.code})
+    rows.append({"equation": ANISOTROPIC, "mesh_type": "quad", "order": 1,
+                 "assembly": "full", "solver": "cg_jacobi", "status": "tested", "code": "OK"})
     return rows

@@ -1,0 +1,19 @@
+{
+  "schema_version": "0.2",
+  "problem": {
+    "id": "poisson_strategy_target",
+    "equation": "-laplacian(u) = f",
+    "domain": "unit_square_2d",
+    "exact_solution": "sin(pi*x)*sin(pi*y)",
+    "source": "2*pi**2*sin(pi*x)*sin(pi*y)",
+    "boundaries": [
+      {"attribute": 1, "label": "bottom", "kind": "dirichlet", "value": "from_exact_solution"},
+      {"attribute": 2, "label": "right", "kind": "dirichlet", "value": "from_exact_solution"},
+      {"attribute": 3, "label": "top", "kind": "dirichlet", "value": "from_exact_solution"},
+      {"attribute": 4, "label": "left", "kind": "dirichlet", "value": "from_exact_solution"}
+    ]
+  },
+  "execution": {"mesh_type": "quad", "mesh_levels": [8, 16, 32], "solver": "cg_jacobi"},
+  "validation": {"max_l2_error_finest": 0.0001},
+  "policy": {"max_attempts": 1}
+}

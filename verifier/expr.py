@@ -101,9 +101,9 @@ def gradient(f, x, y, h: float = 1e-3):
     return gx, gy
 
 
-def neg_laplacian(f, x, y, h: float = 1e-3):
+def neg_laplacian(f, x, y, h: float = 1e-3, *, diffusion_x: float = 1.0):
     x = np.asarray(x, float)
     y = np.asarray(y, float)
     dxx = sum(w * f(x + o * h, y) for w, o in zip(_D2, _OFF)) / h**2
     dyy = sum(w * f(x, y + o * h) for w, o in zip(_D2, _OFF)) / h**2
-    return -(dxx + dyy)
+    return -(diffusion_x * dxx + dyy)

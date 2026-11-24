@@ -45,6 +45,11 @@ SIDE_NORMAL: dict[str, tuple[float, float]] = {
     "left": (-1.0, 0.0),
 }
 
+POISSON = "-laplacian(u) = f"
+ANISOTROPIC = "-div(diag(1000,1)*grad(u)) = f"
+VERIFIER_TIMEOUT_SECONDS = 300.0
+VERIFIER_MEMORY_MB = 3072
+
 
 class _Frozen(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid", allow_inf_nan=False)
@@ -62,7 +67,7 @@ class BoundaryCondition(_Frozen):
 
 class ProblemSpec(_Frozen):
     id: str = Field(min_length=1, max_length=80, pattern=r"^[A-Za-z0-9_\-]+$")
-    equation: Literal["-laplacian(u) = f"]
+    equation: Literal["-laplacian(u) = f", "-div(diag(1000,1)*grad(u)) = f"]
     domain: Literal["unit_square_2d"]
     exact_solution: str = Field(min_length=1, max_length=400)
     source: str = Field(min_length=1, max_length=400)
@@ -81,6 +86,8 @@ class ProblemSpec(_Frozen):
             raise ValueError(f"boundary labels do not cover the unit square; missing {missing}")
         if not any(b.kind == "dirichlet" for b in self.boundaries):
             raise ValueError("pure Neumann problem (constant nullspace) is not supported")
+        if self.equation == ANISOTROPIC and any(b.kind != "dirichlet" for b in self.boundaries):
+            raise ValueError("the anisotropic benchmark requires all-Dirichlet boundaries")
         return self
 
     def dirichlet_attributes(self) -> list[int]:
@@ -121,6 +128,8 @@ class RetryPolicy(_Frozen):
     max_total_wall_seconds: float = Field(default=900.0, gt=0.0)
     per_level_timeout_seconds: float = Field(default=300.0, gt=0.0)
     per_level_memory_mb: int = Field(default=3072, ge=256)
+    verifier_timeout_seconds: float | None = Field(default=None, gt=0.0)
+    verifier_memory_mb: int | None = Field(default=None, ge=256)
 
 
 class ExecutionSpec(_Frozen):
@@ -165,7 +174,13 @@ class StudySpec(_Frozen):
 
 
 def canonical_json(model: BaseModel) -> str:
-    return json.dumps(model.model_dump(mode="json"), sort_keys=True, separators=(",", ":"))
+    data = model.model_dump(mode="json")
+    if isinstance(model, RetryPolicy):
+        # Preserve the hashes of policies and archives written before verifier budgets.
+        for name in ("verifier_timeout_seconds", "verifier_memory_mb"):
+            if data[name] is None:
+                del data[name]
+    return json.dumps(data, sort_keys=True, separators=(",", ":"))
 
 
 def compact_expression(value: object) -> str | None:

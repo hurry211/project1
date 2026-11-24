@@ -20,15 +20,15 @@ import numpy as np
 import scipy.sparse as sp
 import scipy.sparse.linalg as spla
 
-from sciagent.spec import (SIDE_GEOMETRY, SIDE_NORMAL, ExecutionSpec, ProblemSpec,
+from sciagent.spec import (ANISOTROPIC, POISSON, SIDE_GEOMETRY, SIDE_NORMAL, ExecutionSpec, ProblemSpec,
                            ValidationSpec, compact_expression)
-from sciagent.evidence import sha256_file
+from sciagent.evidence import artifact_hashes, sha256_file
 
 from . import expr
 from .fem import (ArtifactError, MeshData, build_local_basis, cartesian_partition,
                   element_quadrature, gauss_01, inverse_map, lattice_indices, load_mesh_data)
 
-VERIFIER_VERSION = "0.3.0"
+VERIFIER_VERSION = "0.4.0"
 GEOM_TOL = 1e-12
 
 ACCEPTED = "ACCEPTED"
@@ -89,7 +89,7 @@ def _finite(v) -> bool:
 
 
 def check_mms_consistency(problem: ProblemSpec, rel_tol: float) -> Check:
-    """Gate A: declared source must equal -lap(exact_solution)."""
+    """Gate A: check the declared source against the frozen differential operator."""
     try:
         u = expr.compile_expr(problem.exact_solution)
         f = expr.compile_expr(problem.source)
@@ -97,13 +97,14 @@ def check_mms_consistency(problem: ProblemSpec, rel_tol: float) -> Check:
         return Check("mms_expressions_parse", False, "INVALID_EXPRESSION", str(exc))
     rng = np.random.default_rng(12345)
     pts = rng.uniform(0.05, 0.95, size=(256, 2))
-    lap = expr.neg_laplacian(u, pts[:, 0], pts[:, 1])
+    diffusion_x = 1000.0 if problem.equation == ANISOTROPIC else 1.0
+    lap = expr.neg_laplacian(u, pts[:, 0], pts[:, 1], diffusion_x=diffusion_x)
     fv = f(pts[:, 0], pts[:, 1])
     if not (np.all(np.isfinite(lap)) and np.all(np.isfinite(fv))):
         return Check("mms_consistency", False, "MMS_INCONSISTENT", "non-finite expression values")
     err = float(np.max(np.abs(lap - fv) / (1.0 + np.abs(fv))))
     return Check("mms_consistency", err <= rel_tol, "MMS_INCONSISTENT",
-                 "max |(-lap u_exact) - f| / (1+|f|) at 256 fixed random interior points "
+                 "max |(-div(A grad u_exact)) - f| / (1+|f|) at 256 fixed random interior points "
                  "(4th-order finite differences, h=1e-3)", err, rel_tol)
 
 
@@ -183,6 +184,7 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
         "neumann_attributes": (_attributes(res.get("neumann_attributes")), problem.neumann_attributes()),
         "exact_solution": (compact_expression(res.get("case_exact_solution")), compact_expression(problem.exact_solution)),
         "source": (compact_expression(res.get("case_source")), compact_expression(problem.source)),
+        "equation": (res.get("case_equation", POISSON), problem.equation),
     }
     bad = [k for k, (got, want) in claimed.items() if got != want or isinstance(got, bool)]
     rep.add(Check("solver_claims_match_spec", not bad, "CLAIM_SPEC_MISMATCH",
@@ -349,7 +351,10 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
 def reference_solve(mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m) -> np.ndarray:
     N = coords.shape[0]
     E, nloc = mesh.elem_dofs.shape
-    Ke = np.einsum("eq,eqid,eqjd->eij", q.wdet, q.gphi, q.gphi)
+    if problem.equation == ANISOTROPIC:
+        Ke = np.einsum("eq,eqid,d,eqjd->eij", q.wdet, q.gphi, [1000.0, 1.0], q.gphi)
+    else:
+        Ke = np.einsum("eq,eqid,eqjd->eij", q.wdet, q.gphi, q.gphi)
     fq = f_fn(q.X[..., 0], q.X[..., 1])
     Fe = np.einsum("eq,eq,eqi->ei", q.wdet, fq, q.phi)
     rows = np.repeat(mesh.elem_dofs, nloc, axis=1).ravel()
@@ -408,7 +413,8 @@ def observed_orders(levels: list[LevelReport]) -> list[dict]:
     return pairs
 
 
-def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False) -> dict:
+def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False,
+                   reused_levels: dict | None = None) -> dict:
     """Verify one attempt directory from its files alone."""
     attempt_dir = Path(attempt_dir)
     run_dir = attempt_dir.parent.parent
@@ -427,9 +433,25 @@ def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False) -> d
                 "study_checks": [asdict(mms)], "accuracy_check": None, "levels": [],
                 "convergence": {"pairs": []}, "shared_assumptions": SHARED_ASSUMPTIONS, "input_sha256": {}}
     study_checks = [mms]
-    levels = [verify_level(attempt_dir / "levels" / f"n{n:04d}", problem, execution, validation, n,
-                           require_run_record=require_run_records)
-              for n in execution.mesh_levels]
+    levels = []
+    for n in execution.mesh_levels:
+        level_dir = attempt_dir / "levels" / f"n{n:04d}"
+        reused = (reused_levels or {}).get(n)
+        if reused is None:
+            levels.append(verify_level(level_dir, problem, execution, validation, n,
+                                       require_run_record=require_run_records))
+            continue
+        rep = LevelReport(n=n, level_dir=str(level_dir))
+        try:
+            if artifact_hashes(level_dir) != reused["sha256"]:
+                raise ValueError("copied artifacts differ from the previously verified level")
+            values = dict(reused["report"])
+            checks = [Check(**c) for c in values.pop("checks")]
+            values.pop("ok")
+            rep = LevelReport(**{**values, "level_dir": str(level_dir)}, checks=checks)
+        except (OSError, TypeError, KeyError, ValueError) as exc:
+            rep.add(Check("retry_level_integrity", False, "EVIDENCE_INTEGRITY", str(exc)))
+        levels.append(rep)
 
     study_checks.append(Check("min_levels", len(levels) >= validation.min_levels, "INSUFFICIENT_LEVELS",
                               f"{len(levels)} levels, need {validation.min_levels}",

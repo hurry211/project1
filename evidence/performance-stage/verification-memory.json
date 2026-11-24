@@ -1,0 +1,44 @@
+[
+  {
+    "state": "FAILED",
+    "code": "VERIFIER_MEMORY_LIMIT",
+    "archive": "runs/20261124T140226862070Z_memory-256",
+    "manifest_sha256": "a3dd344ea10c1927c04dc86b1e1b57b5a5eb89e879295603f31d0e634ae03d7c",
+    "native_exits": [
+      "OK",
+      "OK",
+      "OK"
+    ],
+    "failure_codes": [
+      "VERIFIER_MEMORY_LIMIT"
+    ],
+    "verification": {
+      "timeout_seconds": 60.0,
+      "memory_mb": 256,
+      "peak_rss_kib": null,
+      "exit_code": 2,
+      "stderr": "",
+      "wall_seconds": 0.3376388980000229
+    }
+  },
+  {
+    "state": "ACCEPTED",
+    "code": "OK",
+    "archive": "runs/20261124T140228584587Z_memory-1024",
+    "manifest_sha256": "52bbf0750bfa7b5b6b9271ff53b8ee829254f97c9c8c3d8aba2fcc8fb1258361",
+    "native_exits": [
+      "OK",
+      "OK",
+      "OK"
+    ],
+    "failure_codes": [],
+    "verification": {
+      "timeout_seconds": 60.0,
+      "memory_mb": 1024,
+      "peak_rss_kib": 541204,
+      "exit_code": 0,
+      "stderr": "",
+      "wall_seconds": 4.3110253239999565
+    }
+  }
+]

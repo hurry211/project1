@@ -106,6 +106,24 @@ bool FinishExport(std::ofstream &stream, const char *name)
    return !stream.fail();
 }
 
+std::string PeakRssKiB()
+{
+   // Linux VmHWM belongs to the current executable's address space. A fork
+   // before exec can inflate getrusage(RUSAGE_SELF).ru_maxrss.
+   std::ifstream status("/proc/self/status");
+   for (std::string line; std::getline(status, line); )
+   {
+      if (line.rfind("VmHWM:", 0) == 0)
+      {
+         long kib;
+         std::istringstream value(line.substr(6));
+         if (value >> kib) { return std::to_string(kib); }
+         break;
+      }
+   }
+   return "null";
+}
+
 void ListCases()
 {
    std::cout << "{\n  \"mfem_version\": \"" << GetVersionStr() << "\",\n"
@@ -115,7 +133,8 @@ void ListCases()
    {
       std::cout << "    {\"id\": \"" << reg[i].id << "\", \"exact_solution\": \""
                 << reg[i].exact_solution << "\", \"source\": \""
-                << reg[i].source << "\"}" << (i + 1 < reg.size() ? "," : "")
+                << reg[i].source << "\", \"equation\": \"" << reg[i].equation
+                << "\"}" << (i + 1 < reg.size() ? "," : "")
                 << "\n";
    }
    std::cout << "  ]\n}\n";
@@ -253,6 +272,13 @@ int main(int argc, char *argv[])
                    "constant nullspace; not supported by this solver\n";
       return 3;
    }
+   if (mc->diffusion_x != 1.0 &&
+       (mt != "quad" || order != 1 || asm_s != "full" || sol_s != "cg_jacobi" ||
+        !nset.empty()))
+   {
+      std::cerr << "ERROR: anisotropic case requires full Q1 CG+Jacobi and all Dirichlet\n";
+      return 4;
+   }
 
    // 3. Finite element space.
    H1_FECollection fec(order, dim);
@@ -286,6 +312,7 @@ int main(int argc, char *argv[])
    const IntegrationRule &ir_dom = IntRules.Get(geom, rhs_q);
    const IntegrationRule &ir_bdr = IntRules.Get(Geometry::SEGMENT, rhs_q);
 
+   const auto rhs_start = std::chrono::steady_clock::now();
    LinearForm b(&fespace);
    b.AddDomainIntegrator(new DomainLFIntegrator(f_coef, &ir_dom));
    if (!nset.empty())
@@ -295,14 +322,21 @@ int main(int argc, char *argv[])
       b.AddBoundaryIntegrator(bn, neu_bdr);
    }
    b.Assemble();
+   const auto rhs_end = std::chrono::steady_clock::now();
 
    GridFunction x(&fespace);
    x = 0.0;
    x.ProjectBdrCoefficient(u_coef, ess_bdr);
 
+   const auto assembly_start = std::chrono::steady_clock::now();
+   DenseMatrix diffusion_tensor(dim);
+   diffusion_tensor.Diag(1.0, dim);
+   diffusion_tensor(0, 0) = mc->diffusion_x;
+   MatrixConstantCoefficient diffusion(diffusion_tensor);
    BilinearForm a(&fespace);
    if (asm_s == "partial") { a.SetAssemblyLevel(AssemblyLevel::PARTIAL); }
-   a.AddDomainIntegrator(new DiffusionIntegrator);
+   if (mc->diffusion_x == 1.0) { a.AddDomainIntegrator(new DiffusionIntegrator); }
+   else { a.AddDomainIntegrator(new DiffusionIntegrator(diffusion)); }
    a.Assemble();
 
    OperatorPtr A;
@@ -329,6 +363,7 @@ int main(int argc, char *argv[])
    }
    cg.SetOperator(*A);
    if (prec) { cg.SetPreconditioner(*prec); }
+   const auto solve_start = std::chrono::steady_clock::now();
    cg.Mult(B, X);
    auto t2 = std::chrono::steady_clock::now();
 
@@ -432,6 +467,7 @@ int main(int argc, char *argv[])
    {
       return std::chrono::duration<double, std::milli>(b_ - a_).count();
    };
+   const auto export_end = std::chrono::steady_clock::now();
    {
       std::ofstream f(od + "/result.json");
       f << "{\n"
@@ -441,6 +477,7 @@ int main(int argc, char *argv[])
         << "  \"case\": \"" << mc->id << "\",\n"
         << "  \"case_exact_solution\": \"" << JsonEscape(mc->exact_solution) << "\",\n"
         << "  \"case_source\": \"" << JsonEscape(mc->source) << "\",\n"
+        << "  \"case_equation\": \"" << JsonEscape(mc->equation) << "\",\n"
         << "  \"mesh_type\": \"" << mt << "\",\n"
         << "  \"n\": " << n << ",\n"
         << "  \"h\": " << JsonNum(1.0 / n) << ",\n"
@@ -469,8 +506,13 @@ int main(int argc, char *argv[])
         << "  \"self_reported_h1_semi_error\": " << JsonNum(h1s_err) << ",\n"
         << "  \"injected_fault\": \"" << fault_s << "\",\n"
         << "  \"time_setup_ms\": " << JsonNum(ms(t0, t1)) << ",\n"
-        << "  \"time_solve_ms\": " << JsonNum(ms(t1, t2)) << ",\n"
-        << "  \"time_error_ms\": " << JsonNum(ms(t2, t3)) << "\n"
+        << "  \"time_rhs_ms\": " << JsonNum(ms(rhs_start, rhs_end)) << ",\n"
+        << "  \"time_assembly_ms\": " << JsonNum(ms(assembly_start, t1)) << ",\n"
+        << "  \"time_preconditioner_ms\": " << JsonNum(ms(t1, solve_start)) << ",\n"
+        << "  \"time_solve_ms\": " << JsonNum(ms(solve_start, t2)) << ",\n"
+        << "  \"time_error_ms\": " << JsonNum(ms(t2, t3)) << ",\n"
+        << "  \"time_export_ms\": " << JsonNum(ms(t3, export_end)) << ",\n"
+        << "  \"peak_rss_kib\": " << PeakRssKiB() << "\n"
         << "}\n";
       if (!FinishExport(f, "result.json")) { return 7; }
    }

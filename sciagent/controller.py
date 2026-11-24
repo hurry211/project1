@@ -16,16 +16,18 @@ from __future__ import annotations
 import datetime as _dt
 import hashlib
 import json
+import shutil
 import time
 from pathlib import Path
 
 from pydantic import ValidationError
 
-from verifier.verifier import ACCEPTED, RETRY_ELIGIBLE, check_mms_consistency, verify_attempt
+from verifier.verifier import ACCEPTED, RETRY_ELIGIBLE, check_mms_consistency
 
 from . import capability, environment, mfem_runner
-from .evidence import EvidenceStore, check_archive, sha256_file, utc_now
-from .spec import ExecutionSpec, StudySpec, canonical_json, sha256_of
+from .evidence import EvidenceStore, artifact_hashes, check_archive, sha256_file, utc_now
+from .spec import ExecutionSpec, RetryPolicy, StudySpec, canonical_json, sha256_of
+from .verification_process import verify_bounded
 
 TERMINAL = {"ACCEPTED", "FAILED", "BLOCKED", "BUDGET_EXHAUSTED", "INVALID_SPEC"}
 STRUCTURAL_EXITS = {"INVALID_ARGUMENTS", "BOUNDARY_COVERAGE", "UNSUPPORTED_COMBINATION", "ARTIFACT_WRITE_ERROR", "TIMEOUT"}
@@ -36,7 +38,7 @@ def _new_run_dir(runs_dir: Path, label: str) -> Path:
     return Path(runs_dir) / f"{stamp}_{label}"
 
 
-def run_study(spec_path: str | Path, runs_dir: str | Path = "runs") -> dict:
+def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *, reuse_levels: bool = True) -> dict:
     spec_path = Path(spec_path)
     raw = spec_path.read_text()
     label = spec_path.stem[:60]
@@ -86,7 +88,7 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs") -> dict:
         return finish("BLOCKED", "BUILD_MISSING", f"solver binary not found at {env['solver_binary']}")
 
     # ---- READY: capability + case binding -------------------------------------
-    decision = capability.evaluate(study.execution, env)
+    decision = capability.evaluate(study.execution, env, study.problem.equation)
     manifest["capability"] = decision.__dict__
     if decision.status != "tested":
         state = "BLOCKED" if decision.code == "UNSUPPORTED_BACKEND" else "FAILED"
@@ -105,6 +107,8 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs") -> dict:
     # ---- attempt loop ---------------------------------------------------------
     pol = study.policy
     execution = study.execution
+    reusable = {}
+    source_attempt = None
     for attempt in range(1, pol.max_attempts + 1):
         if execution.estimated_dofs(execution.mesh_levels[-1]) > pol.max_dofs_per_level:
             return finish("BUDGET_EXHAUSTED", "RESOURCE_LIMIT", "requested mesh exceeds max_dofs_per_level")
@@ -117,14 +121,29 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs") -> dict:
         store.event("RUNNING", attempt=attempt, mesh_levels=list(execution.mesh_levels),
                     execution_sha256=sha256_of(execution))
         level_runs = []
+        carried = {}
         for n in execution.mesh_levels:
             elapsed = time.monotonic() - started
             remaining = pol.max_total_wall_seconds - elapsed
             if remaining <= 0:
                 manifest["attempts"].append({"attempt": attempt, "levels": level_runs, "verdict": None})
                 return finish("BUDGET_EXHAUSTED", "RESOURCE_LIMIT", f"wall budget exceeded ({elapsed:.1f}s)")
-            lr = mfem_runner.run_level(study.problem, execution, case_id, n,
-                                       store.path(adir, "levels", f"n{n:04d}"),
+            level_dir = store.path(adir, "levels", f"n{n:04d}")
+            if n in reusable:
+                origin = source_attempt / "levels" / level_dir.name
+                copied = time.monotonic()
+                try:
+                    shutil.copytree(origin, level_dir, symlinks=True)
+                except OSError as exc:
+                    return finish("FAILED", "EVIDENCE_INTEGRITY", f"could not copy level {n}: {exc}")
+                carried[n] = reusable[n]
+                relative_origin = origin.relative_to(store.run_dir).as_posix()
+                level_runs.append({"n": n, "exit_code": 0, "exit_meaning": "OK",
+                                   "wall_seconds": time.monotonic() - copied,
+                                   "reused_from": relative_origin})
+                store.event("LEVEL_REUSED", attempt=attempt, n=n, origin=relative_origin)
+                continue
+            lr = mfem_runner.run_level(study.problem, execution, case_id, n, level_dir,
                                        timeout_s=min(pol.per_level_timeout_seconds, remaining),
                                        mem_mb=pol.per_level_memory_mb)
             level_runs.append({"n": n, "exit_code": lr.exit_code, "exit_meaning": lr.exit_meaning,
@@ -135,11 +154,33 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs") -> dict:
         store.event("VERIFYING", attempt=attempt)
         if any(sha256_file(p) != h for p, h in pinned.items()):
             return finish("FAILED", "SPEC_TAMPERED", "frozen inputs changed during solver execution")
-        verdict = verify_attempt(store.path(adir), require_run_records=True)
+        attempt_path = store.path(adir)
+        # Snapshot complete level directories before verification when they may be reused.
+        snapshot = {}
+        if (reuse_levels and attempt < pol.max_attempts
+                and study.validation.max_l2_error_finest is not None
+                and len(level_runs) == len(execution.mesh_levels)
+                and all(lr["exit_meaning"] == "OK" for lr in level_runs)):
+            snapshot = {n: artifact_hashes(attempt_path / "levels" / f"n{n:04d}")
+                        for n in execution.mesh_levels}
+        remaining = pol.max_total_wall_seconds - (time.monotonic() - started)
+        if remaining <= 0:
+            manifest["attempts"].append({"attempt": attempt, "levels": level_runs, "verdict": None})
+            return finish("BUDGET_EXHAUSTED", "RESOURCE_LIMIT", "wall budget exceeded before verification")
+        verdict, verification = verify_bounded(attempt_path, pol, remaining=remaining, reused=carried)
+        if any(sha256_file(p) != h for p, h in pinned.items()):
+            return finish("FAILED", "SPEC_TAMPERED", "frozen inputs changed during verification")
+        if verdict["verdict"] == RETRY_ELIGIBLE and snapshot:
+            if any(artifact_hashes(attempt_path / "levels" / f"n{n:04d}") != h
+                   for n, h in snapshot.items()):
+                return finish("FAILED", "EVIDENCE_INTEGRITY", "level artifacts changed during verification")
+            reusable = {lv["n"]: {"sha256": snapshot[lv["n"]], "report": lv} for lv in verdict["levels"]}
+            source_attempt = attempt_path
         store.write_json_once(f"{adir}/verdict.json", verdict)
         summary = {
             "attempt": attempt, "mesh_levels": list(execution.mesh_levels), "levels": level_runs,
             "verdict": verdict["verdict"], "failure_codes": verdict["failure_codes"],
+            "verification": verification,
             "errors": [{"n": lv["n"], "l2": lv["l2_error"], "h1_semi": lv["h1_semi_error"],
                         "reference_rel_diff": lv["reference_rel_diff"]} for lv in verdict["levels"]],
             "orders": verdict["convergence"]["pairs"],
@@ -150,6 +191,9 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs") -> dict:
         if verdict["verdict"] == ACCEPTED:
             return finish("ACCEPTED", "OK", verdict["statement"])
         if verdict["verdict"] != RETRY_ELIGIBLE:
+            for code in ("EVIDENCE_INTEGRITY", "VERIFIER_TIMEOUT", "VERIFIER_MEMORY_LIMIT", "VERIFIER_PROCESS_FAILED"):
+                if code in verdict["failure_codes"]:
+                    return finish("FAILED", code, verdict["statement"])
             exits = {lr["exit_meaning"] for lr in level_runs} - {"OK"}
             code = "SOLVER_DIVERGED" if "SOLVER_NOT_CONVERGED" in exits else "VALIDATION_FAILED"
             return finish("FAILED", code, f"verifier codes {verdict['failure_codes']}; solver exits {sorted(exits)}")
@@ -181,9 +225,13 @@ def reverify(attempt_dir: str | Path, expected_digest: str | None = None) -> dic
         level_prefix = f"attempts/{attempt.name}/levels/"
         if any(not p.startswith(level_prefix) for p in changed):
             raise ValueError(f"changed archive files: {', '.join(changed)}")
-        out = verify_attempt(attempt, require_run_records=True)
+        policy = RetryPolicy.model_validate_json((attempt.parent.parent / "frozen/policy.json").read_text())
+        out, _ = verify_bounded(attempt, policy)
         if changed:
             raise ValueError(f"changed level files: {', '.join(changed)}")
+        if any(code.startswith("VERIFIER_") for code in out["failure_codes"]):
+            out["integrity"] = {"mode": mode, "passed": True}
+            return out
         if saved["input_sha256"] != out["input_sha256"]:
             raise ValueError("stored verifier input hashes differ from the replay")
         if saved["verdict"] != out["verdict"]:
