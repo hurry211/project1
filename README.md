@@ -34,11 +34,11 @@ source .venv/bin/activate
 python -m pip install --require-hashes --only-binary=:all: -r requirements-linux-py312.lock
 python -m pip check
 export CC=gcc-13 CXX=g++-13 OPENBLAS_NUM_THREADS=1 JOBS=2
-python -m pytest -q -m 'not mfem'
+python -m pytest -q -m 'not mfem and not mpi'
 
 ./scripts/build_mfem.sh
 ./scripts/build_solver.sh
-python -m pytest -q --require-mfem
+python -m pytest -q -m 'not mpi' --require-mfem
 python -m sciagent quickstart
 ```
 
@@ -72,6 +72,10 @@ python scripts/compare_baseline.py runs/demo
 The demo includes expected rejections and one exhausted retry budget. Use an empty demo directory for the historical comparison. It checks the 31 studies, frozen inputs, attempt decisions and original failure codes, and reports the relative difference in accepted error norms. `python -m sciagent env`, `cases` and `matrix` expose environment details, compiled manufactured cases and the capability matrix.
 
 `python -m sciagent cases` shows the formulation, boundary traces and manufactured expressions compiled into the binary. Runs that reach case binding save this catalog in `case_registry.json`. Each new native level's `result.json` includes the true algebraic residual of the constrained system and integrated outward flux on all four sides. The generated Markdown report shows their totals for accepted studies. Use these measurements to investigate solver accuracy and flux convergence. The independent reference solve and frozen convergence criteria still determine acceptance. [Field definitions](docs/MVP_SPEC.md#native-diagnostics)
+
+## Verified MPI Poisson benchmark
+
+The separate Stage 3 MPI workflow verifies the original P1 triangle Poisson benchmark using 1, 2 and 4 processes. Its timing campaign begins after all ranks pass the matched serial comparison and independent SciPy solve at four resolutions. See the parallel guide for the second MFEM build, the `mpi-study` command and digest-checked offline replay. [MPI setup and experiment](docs/MPI.md) · [Measured single-host scaling](docs/RESULTS.md#stage-3-mpi-poisson-2026-11-24)
 
 ## Variable diffusion and named mesh examples
 

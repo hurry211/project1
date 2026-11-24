@@ -1,6 +1,6 @@
 # Codex development handoff — MFEM Scientific Computing Agent
 
-Stages 0 and 1 were completed on 2026-11-20. Stage 2 was completed locally on 2026-11-23. The reviewed registry covers three manufactured fields, including positive variable diffusion with a nonzero Neumann trace. The matrix covers 42 studies with independent scikit-fem checks on generated and imported meshes. The 31 historical studies retain their original decisions. The next numerical milestone is a matched serial/MPI Poisson comparison on a separately pinned parallel build. [Implementation status](docs/IMPLEMENTATION_STATUS.md) · [Matrix evidence](evidence/stage2/coverage.json) · [Archive parity](evidence/stage2/parity.json)
+Stages 0 and 1 were completed on 2026-11-20, Stage 2 on 2026-11-23, and Stage 3 locally on 2026-11-24. The scalar matrix covers 42 verified serial studies. The paired MPI workflow adds one P1 Poisson case on 1, 2 and 4 ranks with numerical gates before performance measurement. The 31 historical studies retain their original decisions. The next planned milestone is a candidate-only planner bounded to reviewed configurations. [Implementation status](docs/IMPLEMENTATION_STATUS.md) · [Serial matrix](evidence/stage2/coverage.json) · [Parallel results](evidence/stage3/results.json)
 
 ## Project goal
 

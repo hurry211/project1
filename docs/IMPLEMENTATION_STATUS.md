@@ -1,5 +1,13 @@
 # Implementation Status
 
+## Completed Stage 3, 2026-11-24
+
+The `mpi-study` entry point runs a matched serial control and a separate P1 triangle MPI executable against the pinned MFEM 4.10.0 revision. The MPI installation uses Open MPI 4.1.6, hypre 2.28.0 and the METIS 5.1.0 partitioner interface. Toolchain checks cover the installed header, MFEM archive, launcher, linked runtime libraries and package versions. The WSL2 build used private development headers and a separate install prefix. [Build profile](MPI_BUILD.md) · [Numerical and archive contract](MPI.md)
+
+All three rank counts passed at 8, 16, 32 and 64 cells per side. Independent checks cover triangle ownership and orientation, shared nodes, boundary edges, the constrained residual, the SciPy field and error norms. Every timed sample passed the same level checks. The single-host timings and transfer/replay evidence accompany the numerical results. A separate manual Actions workflow defines the clean CI reproduction. Hosted CI remains unmeasured for this local revision. [Measurements](RESULTS.md#stage-3-mpi-poisson-2026-11-24) · [Manual CI workflow](../.github/workflows/parallel.yml)
+
+The measured domain is generated triangles, full assembly, one linear scalar equation and up to four ranks on one host. Data for other parallel problems, GPUs and multi-node performance require additional experiments. Stage 4 can begin with a candidate generator that selects these reviewed configurations and passes its requests to the existing deterministic validators.
+
 ## Completed Stage 2, 2026-11-23
 
 Study schema `0.3` and registry version 2 cover positive scalar diffusion with a mixed-boundary manufactured field and the two original Poisson cases. The controller binds a reviewed native case to a frozen problem. The SciPy verifier independently assembles the diffusion matrix, checks the strong-form product rule and recovers the weighted Neumann term. Separate scikit-fem runs use the exact gradient to form the load. [Mathematical contract](MVP_SPEC.md#10-stage-2-scalar-diffusion-and-named-meshes) · [Verification code](../benchmarks/stage2.py)
@@ -8,7 +16,7 @@ Named Gmsh import covers straight-sided Cartesian unit-square meshes, one surfac
 
 The native catalog records the linked MFEM version, revision and selected build flags. The capability gate compares them with the installation probe and the reviewed profile. Historical catalogs can still bind the original generated Poisson requests. Their compiler flags are evidenced only by the installation probe. The current matrix records h-refinement results for three cases, seven solver configurations and two mesh sources. [Coverage](../evidence/stage2/coverage.json) · [Regression and challenge results](RESULTS.md#stage-2-scalar-diffusion-and-gmsh-2026-11-23)
 
-The next milestone is one MPI implementation for the existing P1 Poisson benchmark. Pin a separate MPI/hypre/METIS toolchain and compare the field, norms and verdict on one and two ranks against the serial run at the same resolution. Geometry beyond the Cartesian square, multiple materials, and performance claims each need separate verification.
+This milestone established the serial control used for the matched MPI comparison above. Geometry beyond the Cartesian square and multiple materials each need separate verification.
 
 ## Stage 2, first increment, 2026-11-23
 

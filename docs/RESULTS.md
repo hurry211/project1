@@ -1,5 +1,23 @@
 # Numerical results
 
+## Stage 3 MPI Poisson, 2026-11-24
+
+Code commit `16f6b29` passed **256 tests with zero failures and zero skips** on Ubuntu 24.04 WSL2. The MPI driver used the pinned MFEM 4.10.0 source, Open MPI 4.1.6, hypre 2.28.0 and METIS 5.1.0. A second driver build in a clean Linux directory produced the same binary digest. This campaign ran on one Intel Core Ultra 7 155H host with 22 visible logical CPUs, one numerical thread per process and MPI binding disabled. [Toolchain, test logs and digests](../evidence/stage3/validation.json)
+
+The P1 sine Poisson study passed all 12 screening solves at 8, 16, 32 and 64 cells per side on 1, 2 and 4 MPI ranks. The maximum relative nodal difference across screening solves was `1.875e-13` against serial MFEM and `6.207e-11` against the SciPy direct solve. At 64 cells per side all rank counts gave L2 error `3.379923e-4` and H1 seminorm error `5.451370e-2`. The finest-pair orders were `1.99836` and `0.99931`. On four ranks the finest mesh partition had 2,032, 2,051, 2,053 and 2,056 triangles. [Per-rank numerical results and timing samples](../evidence/stage3/results.json)
+
+**Strong scaling at 8,192 triangles.** Each row gives medians over eight independently verified samples. The speedup denominator is the corresponding median at the current rank count, and the numerator is the one-rank MPI median. Launcher time includes MPI startup, assembly, partitioning, solving and export. Verified workflow time also includes independent numerical checks.
+
+| MPI ranks | CG solve (ms) | Launcher (ms) | Verified workflow (ms) | Solve speedup | Workflow speedup |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 4.592 | 452.5 | 513.9 | 1.00× | 1.00× |
+| 2 | 3.511 | 488.2 | 556.2 | 1.31× | 0.92× |
+| 4 | 2.793 | 634.7 | 696.9 | 1.64× | 0.74× |
+
+**Weak scaling at 2,048 triangles per rank on average.** From one rank at `n=32` to four at `n=64`, median verified workflow time increased from 424.8 ms to 696.9 ms, for **61.0% weak efficiency**. The complete campaign, including serial reproduction, screening, 32 timed solves and final inventory hashing, took **25.48 s**. These measurements establish single-host behavior for the tested resolutions. The solver starts from a replicated serial mesh and the Python verifier runs on one process. [Protocol and measurement boundaries](MPI.md)
+
+The portable archive passed digest-pinned replay after relocation with both native executables unavailable. Process tests detected nonconvergence when CG was limited to one iteration, preserved existing outputs and confirmed that the timeout path terminates both ranks even when the launcher stalls. All 31 original serial decisions, 158 archived error values and 83 sets of native field exports reproduced. The Stage 2 coverage report was byte-identical on replay. The 284 historical challenge decisions and 14 checker calibrations also reproduced. [Archive receipt and regression evidence](../evidence/stage3/validation.json)
+
 ## Stage 2 scalar diffusion and Gmsh, 2026-11-23
 
 On WSL2 Ubuntu 24.04, code commit `40873c2` passed **217 tests with zero failures and zero skips**. The two CI selectors ran locally with 141 Python tests and 76 MFEM tests. The pinned serial double MFEM 4.10.0 installation used GCC 13.3.0. A clean out-of-tree driver build on the Linux filesystem and the tested executable had identical SHA-256 digests. The CI workflow now runs the scalar coverage benchmark. This local-only revision has no hosted CI run. [Build, test commands, digests and local archive locations](../evidence/stage2/validation.json)
