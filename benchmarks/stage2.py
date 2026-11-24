@@ -122,7 +122,7 @@ def measure(directory, previous):
     check(set(CASES) == set(capability.CASE_IDS), "each reviewed case requires independent oracle coverage")
     for case in CASES:
         for source in capability.MESH_SOURCES:
-            for key in sorted(capability.TESTED):
+            for key in sorted(capability.STAGE2_CONFIGURATIONS):
                 label = "_".join(map(str, (case, source, *key)))
                 parent = directory / label
                 if previous is None:

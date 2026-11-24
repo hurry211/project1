@@ -1,0 +1,1583 @@
+{
+  "kind": "mpi_phase_diagnostic_v1",
+  "capture": {
+    "state": "ACCEPTED",
+    "manifest_sha256": "b98547704bcbd5fccf7b7fab3b0151fd637172ea70d7ce7393cfcb1298ef65ed",
+    "raw_directory": "/root/mfem-e1-9OmzkU/mpi-phase-final",
+    "hash_of_results_json": "7a2f4c1293c139302e88b2b6747b8ba7c5646e0e437f63de5bf7d7127a856a8d",
+    "serial_manifest_sha256": "2cca8c6b5ee5ec459d5dc13d169fc1d4a62d4a27b0dcd1a75767ad764371d228"
+  },
+  "independent_offline_replay": {
+    "state": "ACCEPTED",
+    "manifest_sha256": "b98547704bcbd5fccf7b7fab3b0151fd637172ea70d7ce7393cfcb1298ef65ed",
+    "native_and_mpi_executables_available_to_replay": false
+  },
+  "protocol": {
+    "repetitions": 8,
+    "seed": 20261124,
+    "kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "machine": "x86_64",
+    "cpu_model": "Intel(R) Core(TM) Ultra 7 155H",
+    "source_sha256": {
+      "benchmarks/mpi_phases.py": "a3ac8b6e33ef1eef2b0e8fc42705dd4f8d3fb0594ad5e1153965d50a0b3cda13",
+      "cpp/mpi/poisson_mpi.cpp": "594ee921f39965b1f153e19876c73caffa113a2e9ae5e6fff946f72517b2e9ac",
+      "sciagent/mpi_study.py": "9aad8b021a4cef3f7b415bf506c9eb7bf4b9ab644ab92104ec7a56b79000b4d1",
+      "verifier/mpi.py": "5e6f005dcb5f10e5eda30edeb2a6ad5d9faa17b688f39a6bff617698a9e40dc0"
+    }
+  },
+  "environment": {
+    "binary_sha256": "e3524f80ac230556fd7c761921bf166082b6598e96b0eb86efba9cf180bbc2df",
+    "launcher_sha256": "e3a009cd4ab8b41ef23019df3a1388944294b330b7c51ad17be18a0120b36daa",
+    "launcher_version": "mpiexec (OpenRTE) 4.1.6",
+    "cpu_affinity": [
+      12,
+      16,
+      18,
+      20
+    ],
+    "binding": "none",
+    "runtime_packages": {
+      "libhypre-2.28.0": "2.28.0-8build2",
+      "libmetis5": "5.1.0.dfsg-7build3",
+      "libopenmpi3t64": "4.1.6-7ubuntu2",
+      "openmpi-bin": "4.1.6-7ubuntu2"
+    },
+    "native": {
+      "schema_version": 1,
+      "mfem_version": "4.10.0",
+      "mfem_git": "tags/v4.10-0-gd964264cdb9a13e94a201b6c236c7721e0c8765f",
+      "mfem_use_mpi": true,
+      "mfem_use_metis": true,
+      "mfem_use_metis_5": true,
+      "mfem_use_double": true,
+      "hypre_version": 22800,
+      "case": "sin_sin",
+      "solver": "cg_boomeramg"
+    },
+    "native_threads": {
+      "OMP_NUM_THREADS": 1,
+      "OPENBLAS_NUM_THREADS": 1
+    },
+    "verifier_thread_environment": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    }
+  },
+  "measurements": {
+    "rank_clock_summary": "maximum per phase over ranks, maxima can occur on different ranks",
+    "sizes": [
+      32,
+      64
+    ],
+    "ranks": [
+      1,
+      2,
+      4
+    ],
+    "timed_blocks": 8,
+    "warmup_blocks": 1,
+    "screen_orders": {
+      "1": {
+        "finest_l2_order": 1.9983631008429072,
+        "finest_h1_order": 0.9993119419622079
+      },
+      "2": {
+        "finest_l2_order": 1.998363100838263,
+        "finest_h1_order": 0.9993119419622079
+      },
+      "4": {
+        "finest_l2_order": 1.9983631008294502,
+        "finest_h1_order": 0.9993119419622079
+      }
+    },
+    "samples": [
+      {
+        "block": -1,
+        "ranks": 4,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.7066399300000512,
+          "mesh_partition_seconds": 0.007136063,
+          "assembly_solver_setup_seconds": 0.007203225999999999,
+          "pre_solve_barrier_seconds": 6.435999999998554e-06,
+          "cg_including_lazy_amg_seconds": 0.0037039689999999997,
+          "postprocess_collectives_seconds": 0.014125877000000002,
+          "partition_export_seconds": 0.005244141000000001,
+          "measured_window_seconds": 0.037331503,
+          "verified_workflow_seconds": 0.7817866299999991,
+          "independent_verification_seconds": 0.07437625200003595
+        },
+        "l2_error": 0.00033799233483709816,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 4.739268536189663e-12,
+        "serial_relative_field_difference": 1.8744328018611387e-13,
+        "reference_relative_field_difference": 1.865549234079811e-13
+      },
+      {
+        "block": -1,
+        "ranks": 4,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.6332420579999507
+        }
+      },
+      {
+        "block": -1,
+        "ranks": 2,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.5072299340000086,
+          "mesh_partition_seconds": 0.002004082,
+          "assembly_solver_setup_seconds": 0.002217963,
+          "pre_solve_barrier_seconds": 1.33700000000056e-06,
+          "cg_including_lazy_amg_seconds": 0.001345158,
+          "postprocess_collectives_seconds": 0.004666294999999999,
+          "partition_export_seconds": 0.0017917899999999997,
+          "measured_window_seconds": 0.012003975,
+          "verified_workflow_seconds": 0.5288370549999968,
+          "independent_verification_seconds": 0.020999064999955408
+        },
+        "l2_error": 0.0013504362485538511,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 4.2229005019991994e-12,
+        "serial_relative_field_difference": 1.8422287224618588e-13,
+        "reference_relative_field_difference": 2.0111182072714362e-13
+      },
+      {
+        "block": -1,
+        "ranks": 2,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.48517101599998114
+        }
+      },
+      {
+        "block": -1,
+        "ranks": 1,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.4345343089999574,
+          "mesh_partition_seconds": 0.001028915,
+          "assembly_solver_setup_seconds": 0.003048409,
+          "pre_solve_barrier_seconds": 4.0399999999985586e-07,
+          "cg_including_lazy_amg_seconds": 0.0011394209999999998,
+          "postprocess_collectives_seconds": 0.006655791,
+          "partition_export_seconds": 0.004208704999999998,
+          "measured_window_seconds": 0.016081645,
+          "verified_workflow_seconds": 0.4515906710000195,
+          "independent_verification_seconds": 0.016506084000013743
+        },
+        "l2_error": 0.0013504362485508175,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 2.1432201697792313e-12,
+        "serial_relative_field_difference": 1.350004763444607e-13,
+        "reference_relative_field_difference": 1.279726737693302e-13
+      },
+      {
+        "block": -1,
+        "ranks": 2,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.4980846909999741,
+          "mesh_partition_seconds": 0.005050254,
+          "assembly_solver_setup_seconds": 0.006836206,
+          "pre_solve_barrier_seconds": 1.4890000000003512e-06,
+          "cg_including_lazy_amg_seconds": 0.003469178,
+          "postprocess_collectives_seconds": 0.021345456,
+          "partition_export_seconds": 0.006237297000000003,
+          "measured_window_seconds": 0.042923517,
+          "verified_workflow_seconds": 0.5673125520000326,
+          "independent_verification_seconds": 0.06867775400002074
+        },
+        "l2_error": 0.0003379923348365712,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 2.6071941011393535e-12,
+        "serial_relative_field_difference": 5.441185266066102e-14,
+        "reference_relative_field_difference": 5.807632437046078e-14
+      },
+      {
+        "block": -1,
+        "ranks": 4,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.6633479119999492,
+          "mesh_partition_seconds": 0.002487135,
+          "assembly_solver_setup_seconds": 0.0015237739999999999,
+          "pre_solve_barrier_seconds": 3.4090000000002244e-06,
+          "cg_including_lazy_amg_seconds": 0.0017645730000000002,
+          "postprocess_collectives_seconds": 0.0033003500000000005,
+          "partition_export_seconds": 0.0020488020000000006,
+          "measured_window_seconds": 0.011096147,
+          "verified_workflow_seconds": 0.6821345430000179,
+          "independent_verification_seconds": 0.018255089000035696
+        },
+        "l2_error": 0.0013504362485477076,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 1.874116541976547e-12,
+        "serial_relative_field_difference": 1.2433377204070084e-13,
+        "reference_relative_field_difference": 1.1305595446954067e-13
+      },
+      {
+        "block": -1,
+        "ranks": 1,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.3889170429999922
+        }
+      },
+      {
+        "block": -1,
+        "ranks": 1,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.48006316900000456,
+          "mesh_partition_seconds": 0.003767755,
+          "assembly_solver_setup_seconds": 0.014662901,
+          "pre_solve_barrier_seconds": 6.199999999997874e-07,
+          "cg_including_lazy_amg_seconds": 0.006201893,
+          "postprocess_collectives_seconds": 0.029111002,
+          "partition_export_seconds": 0.012734340000000004,
+          "measured_window_seconds": 0.066478511,
+          "verified_workflow_seconds": 0.5672518220000029,
+          "independent_verification_seconds": 0.08640391000000136
+        },
+        "l2_error": 0.00033799233483472387,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 1.844851600379474e-12,
+        "serial_relative_field_difference": 5.685483380052743e-14,
+        "reference_relative_field_difference": 5.141364853446146e-14
+      },
+      {
+        "block": 0,
+        "ranks": 2,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.5001160019999702,
+          "mesh_partition_seconds": 0.005157808,
+          "assembly_solver_setup_seconds": 0.0061491670000000005,
+          "pre_solve_barrier_seconds": 2.7599999999992214e-06,
+          "cg_including_lazy_amg_seconds": 0.003720389000000001,
+          "postprocess_collectives_seconds": 0.013913079999999998,
+          "partition_export_seconds": 0.010535412000000001,
+          "measured_window_seconds": 0.039259849,
+          "verified_workflow_seconds": 0.5706690999999751,
+          "independent_verification_seconds": 0.06885481199998367
+        },
+        "l2_error": 0.0003379923348365712,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 2.6071941011393535e-12,
+        "serial_relative_field_difference": 5.441185266066102e-14,
+        "reference_relative_field_difference": 5.807632437046078e-14
+      },
+      {
+        "block": 0,
+        "ranks": 2,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.4783709839999801
+        }
+      },
+      {
+        "block": 0,
+        "ranks": 1,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.4908063910000351,
+          "mesh_partition_seconds": 0.004927631,
+          "assembly_solver_setup_seconds": 0.012621236999999999,
+          "pre_solve_barrier_seconds": 3.8500000000205037e-07,
+          "cg_including_lazy_amg_seconds": 0.004789037999999999,
+          "postprocess_collectives_seconds": 0.030789042,
+          "partition_export_seconds": 0.014925893999999995,
+          "measured_window_seconds": 0.068053227,
+          "verified_workflow_seconds": 0.5737311839999961,
+          "independent_verification_seconds": 0.08236424899996564
+        },
+        "l2_error": 0.00033799233483472387,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 1.844851600379474e-12,
+        "serial_relative_field_difference": 5.685483380052743e-14,
+        "reference_relative_field_difference": 5.141364853446146e-14
+      },
+      {
+        "block": 0,
+        "ranks": 1,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.3938868039999761
+        }
+      },
+      {
+        "block": 0,
+        "ranks": 1,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.4349612410000532,
+          "mesh_partition_seconds": 0.001043375,
+          "assembly_solver_setup_seconds": 0.0034552569999999998,
+          "pre_solve_barrier_seconds": 3.440000000002122e-07,
+          "cg_including_lazy_amg_seconds": 0.0013463809999999998,
+          "postprocess_collectives_seconds": 0.007341210999999999,
+          "partition_export_seconds": 0.003506903000000002,
+          "measured_window_seconds": 0.016693471,
+          "verified_workflow_seconds": 0.46038965499997175,
+          "independent_verification_seconds": 0.02483594299997094
+        },
+        "l2_error": 0.0013504362485508175,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 2.1432201697792313e-12,
+        "serial_relative_field_difference": 1.350004763444607e-13,
+        "reference_relative_field_difference": 1.279726737693302e-13
+      },
+      {
+        "block": 0,
+        "ranks": 2,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.5260208519999878,
+          "mesh_partition_seconds": 0.002625608,
+          "assembly_solver_setup_seconds": 0.0023863669999999995,
+          "pre_solve_barrier_seconds": 1.2000000000006797e-06,
+          "cg_including_lazy_amg_seconds": 0.0023590389999999994,
+          "postprocess_collectives_seconds": 0.00557521,
+          "partition_export_seconds": 0.003322598999999999,
+          "measured_window_seconds": 0.016266145,
+          "verified_workflow_seconds": 0.5568900150000218,
+          "independent_verification_seconds": 0.029866319000007024
+        },
+        "l2_error": 0.0013504362485538511,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 4.2229005019991994e-12,
+        "serial_relative_field_difference": 1.8422287224618588e-13,
+        "reference_relative_field_difference": 2.0111182072714362e-13
+      },
+      {
+        "block": 0,
+        "ranks": 4,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.6927766169999927,
+          "mesh_partition_seconds": 0.008527718,
+          "assembly_solver_setup_seconds": 0.005375859,
+          "pre_solve_barrier_seconds": 6.144000000001329e-06,
+          "cg_including_lazy_amg_seconds": 0.004400167,
+          "postprocess_collectives_seconds": 0.014055276000000002,
+          "partition_export_seconds": 0.005308638000000004,
+          "measured_window_seconds": 0.037270321,
+          "verified_workflow_seconds": 0.7722586319999891,
+          "independent_verification_seconds": 0.07889494500000183
+        },
+        "l2_error": 0.00033799233483709816,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 4.739268536189663e-12,
+        "serial_relative_field_difference": 1.8744328018611387e-13,
+        "reference_relative_field_difference": 1.865549234079811e-13
+      },
+      {
+        "block": 0,
+        "ranks": 4,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.6531323699999803
+        }
+      },
+      {
+        "block": 0,
+        "ranks": 4,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.6530679239999699,
+          "mesh_partition_seconds": 0.003588758,
+          "assembly_solver_setup_seconds": 0.002876368,
+          "pre_solve_barrier_seconds": 5.956000000000537e-06,
+          "cg_including_lazy_amg_seconds": 0.002375643999999999,
+          "postprocess_collectives_seconds": 0.004540870000000001,
+          "partition_export_seconds": 0.0016195500000000009,
+          "measured_window_seconds": 0.014539621,
+          "verified_workflow_seconds": 0.6785708540000428,
+          "independent_verification_seconds": 0.024884490000033566
+        },
+        "l2_error": 0.0013504362485477076,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 1.874116541976547e-12,
+        "serial_relative_field_difference": 1.2433377204070084e-13,
+        "reference_relative_field_difference": 1.1305595446954067e-13
+      },
+      {
+        "block": 1,
+        "ranks": 2,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.49273410800003603,
+          "mesh_partition_seconds": 0.002169634,
+          "assembly_solver_setup_seconds": 0.0022079179999999997,
+          "pre_solve_barrier_seconds": 1.6649999999996529e-06,
+          "cg_including_lazy_amg_seconds": 0.0013632590000000003,
+          "postprocess_collectives_seconds": 0.004001119,
+          "partition_export_seconds": 0.002761909,
+          "measured_window_seconds": 0.012414731,
+          "verified_workflow_seconds": 0.5169486770000162,
+          "independent_verification_seconds": 0.023476542000025802
+        },
+        "l2_error": 0.0013504362485538511,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 4.2229005019991994e-12,
+        "serial_relative_field_difference": 1.8422287224618588e-13,
+        "reference_relative_field_difference": 2.0111182072714362e-13
+      },
+      {
+        "block": 1,
+        "ranks": 4,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.6500621030000389
+        }
+      },
+      {
+        "block": 1,
+        "ranks": 4,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.6360169929999984,
+          "mesh_partition_seconds": 0.003924694,
+          "assembly_solver_setup_seconds": 0.003176502,
+          "pre_solve_barrier_seconds": 1.8559999999997329e-06,
+          "cg_including_lazy_amg_seconds": 0.0023420460000000004,
+          "postprocess_collectives_seconds": 0.004307503,
+          "partition_export_seconds": 0.0019489869999999992,
+          "measured_window_seconds": 0.013718862,
+          "verified_workflow_seconds": 0.6548669320000045,
+          "independent_verification_seconds": 0.018236645000001772
+        },
+        "l2_error": 0.0013504362485477076,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 1.874116541976547e-12,
+        "serial_relative_field_difference": 1.2433377204070084e-13,
+        "reference_relative_field_difference": 1.1305595446954067e-13
+      },
+      {
+        "block": 1,
+        "ranks": 1,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.5364690219999488,
+          "mesh_partition_seconds": 0.0339225,
+          "assembly_solver_setup_seconds": 0.012657396000000001,
+          "pre_solve_barrier_seconds": 8.40999999994485e-07,
+          "cg_including_lazy_amg_seconds": 0.004913429000000004,
+          "postprocess_collectives_seconds": 0.032805031000000005,
+          "partition_export_seconds": 0.013027589999999992,
+          "measured_window_seconds": 0.097326787,
+          "verified_workflow_seconds": 0.6199394490000145,
+          "independent_verification_seconds": 0.08265329199997495
+        },
+        "l2_error": 0.00033799233483472387,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 1.844851600379474e-12,
+        "serial_relative_field_difference": 5.685483380052743e-14,
+        "reference_relative_field_difference": 5.141364853446146e-14
+      },
+      {
+        "block": 1,
+        "ranks": 2,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.4791617319999659
+        }
+      },
+      {
+        "block": 1,
+        "ranks": 2,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.5156609670000307,
+          "mesh_partition_seconds": 0.0051571,
+          "assembly_solver_setup_seconds": 0.007180495,
+          "pre_solve_barrier_seconds": 1.532999999999743e-06,
+          "cg_including_lazy_amg_seconds": 0.007021085999999999,
+          "postprocess_collectives_seconds": 0.017869706000000003,
+          "partition_export_seconds": 0.0071243009999999996,
+          "measured_window_seconds": 0.044349939,
+          "verified_workflow_seconds": 0.5949154399999657,
+          "independent_verification_seconds": 0.07863826499999504
+        },
+        "l2_error": 0.0003379923348365712,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 2.6071941011393535e-12,
+        "serial_relative_field_difference": 5.441185266066102e-14,
+        "reference_relative_field_difference": 5.807632437046078e-14
+      },
+      {
+        "block": 1,
+        "ranks": 1,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.4156292119999989,
+          "mesh_partition_seconds": 0.001063348,
+          "assembly_solver_setup_seconds": 0.003171494,
+          "pre_solve_barrier_seconds": 3.0900000000042005e-07,
+          "cg_including_lazy_amg_seconds": 0.0011986039999999998,
+          "postprocess_collectives_seconds": 0.007123693,
+          "partition_export_seconds": 0.003174304000000001,
+          "measured_window_seconds": 0.015731752,
+          "verified_workflow_seconds": 0.437145929000053,
+          "independent_verification_seconds": 0.020960153000032733
+        },
+        "l2_error": 0.0013504362485508175,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 2.1432201697792313e-12,
+        "serial_relative_field_difference": 1.350004763444607e-13,
+        "reference_relative_field_difference": 1.279726737693302e-13
+      },
+      {
+        "block": 1,
+        "ranks": 1,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.4222113820000004
+        }
+      },
+      {
+        "block": 1,
+        "ranks": 4,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.7131274160000203,
+          "mesh_partition_seconds": 0.012934982,
+          "assembly_solver_setup_seconds": 0.009097122000000001,
+          "pre_solve_barrier_seconds": 5.464999999999984e-05,
+          "cg_including_lazy_amg_seconds": 0.005108449999999997,
+          "postprocess_collectives_seconds": 0.012400382000000001,
+          "partition_export_seconds": 0.0060615769999999985,
+          "measured_window_seconds": 0.044794503,
+          "verified_workflow_seconds": 0.8271369440000171,
+          "independent_verification_seconds": 0.11341744400004927
+        },
+        "l2_error": 0.00033799233483709816,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 4.739268536189663e-12,
+        "serial_relative_field_difference": 1.8744328018611387e-13,
+        "reference_relative_field_difference": 1.865549234079811e-13
+      },
+      {
+        "block": 2,
+        "ranks": 4,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.705040911000026
+        }
+      },
+      {
+        "block": 2,
+        "ranks": 2,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.5143539290000376,
+          "mesh_partition_seconds": 0.006228866,
+          "assembly_solver_setup_seconds": 0.008746884,
+          "pre_solve_barrier_seconds": 1.6799999999986964e-06,
+          "cg_including_lazy_amg_seconds": 0.004637129000000002,
+          "postprocess_collectives_seconds": 0.017476979,
+          "partition_export_seconds": 0.006225483999999996,
+          "measured_window_seconds": 0.04328152,
+          "verified_workflow_seconds": 0.594120294999982,
+          "independent_verification_seconds": 0.07868548699997291
+        },
+        "l2_error": 0.0003379923348365712,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 2.6071941011393535e-12,
+        "serial_relative_field_difference": 5.441185266066102e-14,
+        "reference_relative_field_difference": 5.807632437046078e-14
+      },
+      {
+        "block": 2,
+        "ranks": 2,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.46059977900000604
+        }
+      },
+      {
+        "block": 2,
+        "ranks": 4,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.6782133330000306,
+          "mesh_partition_seconds": 0.003387576,
+          "assembly_solver_setup_seconds": 0.0033365509999999997,
+          "pre_solve_barrier_seconds": 3.2100000000000184e-06,
+          "cg_including_lazy_amg_seconds": 0.001375597,
+          "postprocess_collectives_seconds": 0.0017979209999999992,
+          "partition_export_seconds": 0.000939212,
+          "measured_window_seconds": 0.009419256,
+          "verified_workflow_seconds": 0.6974767649999762,
+          "independent_verification_seconds": 0.01847504500000241
+        },
+        "l2_error": 0.0013504362485477076,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 1.874116541976547e-12,
+        "serial_relative_field_difference": 1.2433377204070084e-13,
+        "reference_relative_field_difference": 1.1305595446954067e-13
+      },
+      {
+        "block": 2,
+        "ranks": 1,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.46993855900001336,
+          "mesh_partition_seconds": 0.004037095,
+          "assembly_solver_setup_seconds": 0.011237006,
+          "pre_solve_barrier_seconds": 2.2899999999916043e-07,
+          "cg_including_lazy_amg_seconds": 0.004574291000000001,
+          "postprocess_collectives_seconds": 0.029778234999999997,
+          "partition_export_seconds": 0.01475311800000001,
+          "measured_window_seconds": 0.064379974,
+          "verified_workflow_seconds": 0.5466762780000067,
+          "independent_verification_seconds": 0.07345602200001622
+        },
+        "l2_error": 0.00033799233483472387,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 1.844851600379474e-12,
+        "serial_relative_field_difference": 5.685483380052743e-14,
+        "reference_relative_field_difference": 5.141364853446146e-14
+      },
+      {
+        "block": 2,
+        "ranks": 4,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.7069937910000021,
+          "mesh_partition_seconds": 0.011836301,
+          "assembly_solver_setup_seconds": 0.006025146,
+          "pre_solve_barrier_seconds": 4.163000000001471e-06,
+          "cg_including_lazy_amg_seconds": 0.004283952000000001,
+          "postprocess_collectives_seconds": 0.012968281000000002,
+          "partition_export_seconds": 0.005319267999999995,
+          "measured_window_seconds": 0.039511568,
+          "verified_workflow_seconds": 0.7909779189999995,
+          "independent_verification_seconds": 0.08310042100004011
+        },
+        "l2_error": 0.00033799233483709816,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 4.739268536189663e-12,
+        "serial_relative_field_difference": 1.8744328018611387e-13,
+        "reference_relative_field_difference": 1.865549234079811e-13
+      },
+      {
+        "block": 2,
+        "ranks": 1,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.38976096799996185
+        }
+      },
+      {
+        "block": 2,
+        "ranks": 1,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.431016182999997,
+          "mesh_partition_seconds": 0.00160554,
+          "assembly_solver_setup_seconds": 0.003957535,
+          "pre_solve_barrier_seconds": 5.610000000004847e-07,
+          "cg_including_lazy_amg_seconds": 0.001229936,
+          "postprocess_collectives_seconds": 0.007126036999999999,
+          "partition_export_seconds": 0.0031586540000000003,
+          "measured_window_seconds": 0.017078263,
+          "verified_workflow_seconds": 0.4561985220000224,
+          "independent_verification_seconds": 0.024542388000043047
+        },
+        "l2_error": 0.0013504362485508175,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 2.1432201697792313e-12,
+        "serial_relative_field_difference": 1.350004763444607e-13,
+        "reference_relative_field_difference": 1.279726737693302e-13
+      },
+      {
+        "block": 2,
+        "ranks": 2,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.4862146609999627,
+          "mesh_partition_seconds": 0.00158225,
+          "assembly_solver_setup_seconds": 0.001990029,
+          "pre_solve_barrier_seconds": 8.689999999996964e-07,
+          "cg_including_lazy_amg_seconds": 0.0012273420000000002,
+          "postprocess_collectives_seconds": 0.004348408000000001,
+          "partition_export_seconds": 0.002720864,
+          "measured_window_seconds": 0.011827333,
+          "verified_workflow_seconds": 0.5038404499999842,
+          "independent_verification_seconds": 0.016875051999988955
+        },
+        "l2_error": 0.0013504362485538511,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 4.2229005019991994e-12,
+        "serial_relative_field_difference": 1.8422287224618588e-13,
+        "reference_relative_field_difference": 2.0111182072714362e-13
+      },
+      {
+        "block": 3,
+        "ranks": 4,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.7074942969999825,
+          "mesh_partition_seconds": 0.010070825,
+          "assembly_solver_setup_seconds": 0.010073325999999999,
+          "pre_solve_barrier_seconds": 2.556800000000012e-05,
+          "cg_including_lazy_amg_seconds": 0.005912502,
+          "postprocess_collectives_seconds": 0.013897449999999999,
+          "partition_export_seconds": 0.006700444,
+          "measured_window_seconds": 0.042933928,
+          "verified_workflow_seconds": 0.7836805919999961,
+          "independent_verification_seconds": 0.07557773700000325
+        },
+        "l2_error": 0.00033799233483709816,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 4.739268536189663e-12,
+        "serial_relative_field_difference": 1.8744328018611387e-13,
+        "reference_relative_field_difference": 1.865549234079811e-13
+      },
+      {
+        "block": 3,
+        "ranks": 1,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.39892056600001524
+        }
+      },
+      {
+        "block": 3,
+        "ranks": 1,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.4423767059999477,
+          "mesh_partition_seconds": 0.001045265,
+          "assembly_solver_setup_seconds": 0.0031544319999999995,
+          "pre_solve_barrier_seconds": 2.999999999999531e-07,
+          "cg_including_lazy_amg_seconds": 0.0012927630000000006,
+          "postprocess_collectives_seconds": 0.008326167999999998,
+          "partition_export_seconds": 0.0032157869999999995,
+          "measured_window_seconds": 0.017034715,
+          "verified_workflow_seconds": 0.4630658180000182,
+          "independent_verification_seconds": 0.019488602000024002
+        },
+        "l2_error": 0.0013504362485508175,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 2.1432201697792313e-12,
+        "serial_relative_field_difference": 1.350004763444607e-13,
+        "reference_relative_field_difference": 1.279726737693302e-13
+      },
+      {
+        "block": 3,
+        "ranks": 4,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.6523078530000248
+        }
+      },
+      {
+        "block": 3,
+        "ranks": 1,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.4833190909999985,
+          "mesh_partition_seconds": 0.004262517,
+          "assembly_solver_setup_seconds": 0.012456616,
+          "pre_solve_barrier_seconds": 8.179999999996523e-07,
+          "cg_including_lazy_amg_seconds": 0.004670589999999999,
+          "postprocess_collectives_seconds": 0.029617710999999998,
+          "partition_export_seconds": 0.017439381999999996,
+          "measured_window_seconds": 0.068447634,
+          "verified_workflow_seconds": 0.5964461570000026,
+          "independent_verification_seconds": 0.11230674600000157
+        },
+        "l2_error": 0.00033799233483472387,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 1.844851600379474e-12,
+        "serial_relative_field_difference": 5.685483380052743e-14,
+        "reference_relative_field_difference": 5.141364853446146e-14
+      },
+      {
+        "block": 3,
+        "ranks": 2,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.5376150380000126,
+          "mesh_partition_seconds": 0.0057319,
+          "assembly_solver_setup_seconds": 0.006221062,
+          "pre_solve_barrier_seconds": 1.923999999998635e-06,
+          "cg_including_lazy_amg_seconds": 0.00447233,
+          "postprocess_collectives_seconds": 0.015763469000000002,
+          "partition_export_seconds": 0.006621452999999999,
+          "measured_window_seconds": 0.038775165,
+          "verified_workflow_seconds": 0.615824234999991,
+          "independent_verification_seconds": 0.0776705819999961
+        },
+        "l2_error": 0.0003379923348365712,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 2.6071941011393535e-12,
+        "serial_relative_field_difference": 5.441185266066102e-14,
+        "reference_relative_field_difference": 5.807632437046078e-14
+      },
+      {
+        "block": 3,
+        "ranks": 4,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.6477873369999543,
+          "mesh_partition_seconds": 0.002503202,
+          "assembly_solver_setup_seconds": 0.002500796,
+          "pre_solve_barrier_seconds": 2.3999000000000242e-05,
+          "cg_including_lazy_amg_seconds": 0.002274722,
+          "postprocess_collectives_seconds": 0.004486047,
+          "partition_export_seconds": 0.0016436850000000006,
+          "measured_window_seconds": 0.012758909,
+          "verified_workflow_seconds": 0.6713168460000247,
+          "independent_verification_seconds": 0.022729878999996345
+        },
+        "l2_error": 0.0013504362485477076,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 1.874116541976547e-12,
+        "serial_relative_field_difference": 1.2433377204070084e-13,
+        "reference_relative_field_difference": 1.1305595446954067e-13
+      },
+      {
+        "block": 3,
+        "ranks": 2,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.4573849980000091,
+          "mesh_partition_seconds": 0.001551803,
+          "assembly_solver_setup_seconds": 0.001775736,
+          "pre_solve_barrier_seconds": 1.5990000000001316e-06,
+          "cg_including_lazy_amg_seconds": 0.0015962530000000002,
+          "postprocess_collectives_seconds": 0.0035779140000000006,
+          "partition_export_seconds": 0.0016570739999999997,
+          "measured_window_seconds": 0.010142567,
+          "verified_workflow_seconds": 0.4758111529999951,
+          "independent_verification_seconds": 0.017846764000012172
+        },
+        "l2_error": 0.0013504362485538511,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 4.2229005019991994e-12,
+        "serial_relative_field_difference": 1.8422287224618588e-13,
+        "reference_relative_field_difference": 2.0111182072714362e-13
+      },
+      {
+        "block": 3,
+        "ranks": 2,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.44969164799999817
+        }
+      },
+      {
+        "block": 4,
+        "ranks": 4,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.6450324099999989,
+          "mesh_partition_seconds": 0.002483265,
+          "assembly_solver_setup_seconds": 0.0024668040000000004,
+          "pre_solve_barrier_seconds": 2.4149999999995356e-06,
+          "cg_including_lazy_amg_seconds": 0.0016796760000000006,
+          "postprocess_collectives_seconds": 0.003188947,
+          "partition_export_seconds": 0.001381087999999999,
+          "measured_window_seconds": 0.010596686,
+          "verified_workflow_seconds": 0.6637073420000092,
+          "independent_verification_seconds": 0.01807023499998195
+        },
+        "l2_error": 0.0013504362485477076,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 1.874116541976547e-12,
+        "serial_relative_field_difference": 1.2433377204070084e-13,
+        "reference_relative_field_difference": 1.1305595446954067e-13
+      },
+      {
+        "block": 4,
+        "ranks": 2,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.4676118699999847
+        }
+      },
+      {
+        "block": 4,
+        "ranks": 2,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.45218478900000036,
+          "mesh_partition_seconds": 0.001889512,
+          "assembly_solver_setup_seconds": 0.0021391990000000005,
+          "pre_solve_barrier_seconds": 1.2779999999995226e-06,
+          "cg_including_lazy_amg_seconds": 0.0012224749999999998,
+          "postprocess_collectives_seconds": 0.003626277,
+          "partition_export_seconds": 0.0018713490000000013,
+          "measured_window_seconds": 0.010746698,
+          "verified_workflow_seconds": 0.4712867150000193,
+          "independent_verification_seconds": 0.01848798200001056
+        },
+        "l2_error": 0.0013504362485538511,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 4.2229005019991994e-12,
+        "serial_relative_field_difference": 1.8422287224618588e-13,
+        "reference_relative_field_difference": 2.0111182072714362e-13
+      },
+      {
+        "block": 4,
+        "ranks": 1,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.42511933000002955,
+          "mesh_partition_seconds": 0.001067093,
+          "assembly_solver_setup_seconds": 0.003160787,
+          "pre_solve_barrier_seconds": 3.970000000000709e-07,
+          "cg_including_lazy_amg_seconds": 0.0012928150000000001,
+          "postprocess_collectives_seconds": 0.007490418,
+          "partition_export_seconds": 0.0033250750000000003,
+          "measured_window_seconds": 0.016336585,
+          "verified_workflow_seconds": 0.44398269800001344,
+          "independent_verification_seconds": 0.018281118000004426
+        },
+        "l2_error": 0.0013504362485508175,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 2.1432201697792313e-12,
+        "serial_relative_field_difference": 1.350004763444607e-13,
+        "reference_relative_field_difference": 1.279726737693302e-13
+      },
+      {
+        "block": 4,
+        "ranks": 4,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.6682254480000438
+        }
+      },
+      {
+        "block": 4,
+        "ranks": 1,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.467483035999976,
+          "mesh_partition_seconds": 0.004411064,
+          "assembly_solver_setup_seconds": 0.013561821000000002,
+          "pre_solve_barrier_seconds": 9.490000000000887e-07,
+          "cg_including_lazy_amg_seconds": 0.004719595,
+          "postprocess_collectives_seconds": 0.030879871999999996,
+          "partition_export_seconds": 0.013534075,
+          "measured_window_seconds": 0.067107376,
+          "verified_workflow_seconds": 0.5396406280000292,
+          "independent_verification_seconds": 0.0713325300000065
+        },
+        "l2_error": 0.00033799233483472387,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 1.844851600379474e-12,
+        "serial_relative_field_difference": 5.685483380052743e-14,
+        "reference_relative_field_difference": 5.141364853446146e-14
+      },
+      {
+        "block": 4,
+        "ranks": 1,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.4055906550000259
+        }
+      },
+      {
+        "block": 4,
+        "ranks": 2,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.5313684579999745,
+          "mesh_partition_seconds": 0.006309063,
+          "assembly_solver_setup_seconds": 0.007128979999999999,
+          "pre_solve_barrier_seconds": 8.456999999999909e-06,
+          "cg_including_lazy_amg_seconds": 0.004717724000000001,
+          "postprocess_collectives_seconds": 0.018548801999999996,
+          "partition_export_seconds": 0.006565002,
+          "measured_window_seconds": 0.043180673,
+          "verified_workflow_seconds": 0.6062018060000014,
+          "independent_verification_seconds": 0.07406232199997476
+        },
+        "l2_error": 0.0003379923348365712,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 2.6071941011393535e-12,
+        "serial_relative_field_difference": 5.441185266066102e-14,
+        "reference_relative_field_difference": 5.807632437046078e-14
+      },
+      {
+        "block": 4,
+        "ranks": 4,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.7092602859999602,
+          "mesh_partition_seconds": 0.008987086,
+          "assembly_solver_setup_seconds": 0.010794519,
+          "pre_solve_barrier_seconds": 1.7339999999997635e-05,
+          "cg_including_lazy_amg_seconds": 0.005028615,
+          "postprocess_collectives_seconds": 0.017617883000000004,
+          "partition_export_seconds": 0.007108275999999997,
+          "measured_window_seconds": 0.046507633,
+          "verified_workflow_seconds": 0.7943758119999984,
+          "independent_verification_seconds": 0.0844617149999749
+        },
+        "l2_error": 0.00033799233483709816,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 4.739268536189663e-12,
+        "serial_relative_field_difference": 1.8744328018611387e-13,
+        "reference_relative_field_difference": 1.865549234079811e-13
+      },
+      {
+        "block": 5,
+        "ranks": 1,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.39783546600000363
+        }
+      },
+      {
+        "block": 5,
+        "ranks": 1,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.4146969859999672,
+          "mesh_partition_seconds": 0.001016339,
+          "assembly_solver_setup_seconds": 0.003047808,
+          "pre_solve_barrier_seconds": 2.1200000000030222e-07,
+          "cg_including_lazy_amg_seconds": 0.0011480090000000002,
+          "postprocess_collectives_seconds": 0.007348194000000001,
+          "partition_export_seconds": 0.0030906040000000003,
+          "measured_window_seconds": 0.015651166,
+          "verified_workflow_seconds": 0.43299583200001734,
+          "independent_verification_seconds": 0.01768646800002216
+        },
+        "l2_error": 0.0013504362485508175,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 2.1432201697792313e-12,
+        "serial_relative_field_difference": 1.350004763444607e-13,
+        "reference_relative_field_difference": 1.279726737693302e-13
+      },
+      {
+        "block": 5,
+        "ranks": 1,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.462342547999981,
+          "mesh_partition_seconds": 0.004163638,
+          "assembly_solver_setup_seconds": 0.015929902,
+          "pre_solve_barrier_seconds": 6.949999999984746e-07,
+          "cg_including_lazy_amg_seconds": 0.005604359000000003,
+          "postprocess_collectives_seconds": 0.028008800999999996,
+          "partition_export_seconds": 0.012525039000000009,
+          "measured_window_seconds": 0.066232434,
+          "verified_workflow_seconds": 0.5539517419999811,
+          "independent_verification_seconds": 0.09090692099999842
+        },
+        "l2_error": 0.00033799233483472387,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 1.844851600379474e-12,
+        "serial_relative_field_difference": 5.685483380052743e-14,
+        "reference_relative_field_difference": 5.141364853446146e-14
+      },
+      {
+        "block": 5,
+        "ranks": 2,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.4877976000000217,
+          "mesh_partition_seconds": 0.00159663,
+          "assembly_solver_setup_seconds": 0.0018564760000000001,
+          "pre_solve_barrier_seconds": 1.3949999999999553e-06,
+          "cg_including_lazy_amg_seconds": 0.0012537939999999995,
+          "postprocess_collectives_seconds": 0.0036651369999999997,
+          "partition_export_seconds": 0.0017840679999999998,
+          "measured_window_seconds": 0.010155629,
+          "verified_workflow_seconds": 0.5102569819999871,
+          "independent_verification_seconds": 0.021746438000036505
+        },
+        "l2_error": 0.0013504362485538511,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 4.2229005019991994e-12,
+        "serial_relative_field_difference": 1.8422287224618588e-13,
+        "reference_relative_field_difference": 2.0111182072714362e-13
+      },
+      {
+        "block": 5,
+        "ranks": 2,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.5188577480000163,
+          "mesh_partition_seconds": 0.005616383,
+          "assembly_solver_setup_seconds": 0.007597334,
+          "pre_solve_barrier_seconds": 1.8540000000007856e-06,
+          "cg_including_lazy_amg_seconds": 0.003775047999999998,
+          "postprocess_collectives_seconds": 0.015536105000000005,
+          "partition_export_seconds": 0.007061832000000004,
+          "measured_window_seconds": 0.03929723,
+          "verified_workflow_seconds": 0.608419868999988,
+          "independent_verification_seconds": 0.08894946899999923
+        },
+        "l2_error": 0.0003379923348365712,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 2.6071941011393535e-12,
+        "serial_relative_field_difference": 5.441185266066102e-14,
+        "reference_relative_field_difference": 5.807632437046078e-14
+      },
+      {
+        "block": 5,
+        "ranks": 2,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.44440704400000186
+        }
+      },
+      {
+        "block": 5,
+        "ranks": 4,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.6276415629999974
+        }
+      },
+      {
+        "block": 5,
+        "ranks": 4,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.6798551499999803,
+          "mesh_partition_seconds": 0.00437766,
+          "assembly_solver_setup_seconds": 0.004012713,
+          "pre_solve_barrier_seconds": 8.817000000000373e-06,
+          "cg_including_lazy_amg_seconds": 0.003350299,
+          "postprocess_collectives_seconds": 0.0038054909999999994,
+          "partition_export_seconds": 0.0017012260000000001,
+          "measured_window_seconds": 0.015506114,
+          "verified_workflow_seconds": 0.7033617799999661,
+          "independent_verification_seconds": 0.022857456999986425
+        },
+        "l2_error": 0.0013504362485477076,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 1.874116541976547e-12,
+        "serial_relative_field_difference": 1.2433377204070084e-13,
+        "reference_relative_field_difference": 1.1305595446954067e-13
+      },
+      {
+        "block": 5,
+        "ranks": 4,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.7022355870000183,
+          "mesh_partition_seconds": 0.009354062,
+          "assembly_solver_setup_seconds": 0.007041642000000001,
+          "pre_solve_barrier_seconds": 5.245999999998682e-06,
+          "cg_including_lazy_amg_seconds": 0.0033826329999999995,
+          "postprocess_collectives_seconds": 0.012878920999999998,
+          "partition_export_seconds": 0.005934404000000001,
+          "measured_window_seconds": 0.036663422,
+          "verified_workflow_seconds": 0.7930437109999957,
+          "independent_verification_seconds": 0.0901625419999732
+        },
+        "l2_error": 0.00033799233483709816,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 4.739268536189663e-12,
+        "serial_relative_field_difference": 1.8744328018611387e-13,
+        "reference_relative_field_difference": 1.865549234079811e-13
+      },
+      {
+        "block": 6,
+        "ranks": 1,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.551383401999999,
+          "mesh_partition_seconds": 0.004480417,
+          "assembly_solver_setup_seconds": 0.015916383,
+          "pre_solve_barrier_seconds": 4.5300000000095264e-07,
+          "cg_including_lazy_amg_seconds": 0.007611792999999999,
+          "postprocess_collectives_seconds": 0.040067383,
+          "partition_export_seconds": 0.01586237800000001,
+          "measured_window_seconds": 0.083938807,
+          "verified_workflow_seconds": 0.633532740000021,
+          "independent_verification_seconds": 0.08105022799998096
+        },
+        "l2_error": 0.00033799233483472387,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 1.844851600379474e-12,
+        "serial_relative_field_difference": 5.685483380052743e-14,
+        "reference_relative_field_difference": 5.141364853446146e-14
+      },
+      {
+        "block": 6,
+        "ranks": 2,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.494515339999964,
+          "mesh_partition_seconds": 0.002033522,
+          "assembly_solver_setup_seconds": 0.002068666,
+          "pre_solve_barrier_seconds": 1.4830000000000398e-06,
+          "cg_including_lazy_amg_seconds": 0.001725763,
+          "postprocess_collectives_seconds": 0.0054642070000000004,
+          "partition_export_seconds": 0.0028745809999999993,
+          "measured_window_seconds": 0.014163259,
+          "verified_workflow_seconds": 0.5257902289999947,
+          "independent_verification_seconds": 0.030646503000014036
+        },
+        "l2_error": 0.0013504362485538511,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 4.2229005019991994e-12,
+        "serial_relative_field_difference": 1.8422287224618588e-13,
+        "reference_relative_field_difference": 2.0111182072714362e-13
+      },
+      {
+        "block": 6,
+        "ranks": 4,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.764137073000029,
+          "mesh_partition_seconds": 0.020118157,
+          "assembly_solver_setup_seconds": 0.011920402,
+          "pre_solve_barrier_seconds": 1.386399999999885e-05,
+          "cg_including_lazy_amg_seconds": 0.007210434000000002,
+          "postprocess_collectives_seconds": 0.018490430000000002,
+          "partition_export_seconds": 0.008197211000000003,
+          "measured_window_seconds": 0.061901497,
+          "verified_workflow_seconds": 0.8695536260000267,
+          "independent_verification_seconds": 0.10461362700004884
+        },
+        "l2_error": 0.00033799233483709816,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 4.739268536189663e-12,
+        "serial_relative_field_difference": 1.8744328018611387e-13,
+        "reference_relative_field_difference": 1.865549234079811e-13
+      },
+      {
+        "block": 6,
+        "ranks": 1,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.43300003499996365
+        }
+      },
+      {
+        "block": 6,
+        "ranks": 4,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.7022772600000167,
+          "mesh_partition_seconds": 0.0025122,
+          "assembly_solver_setup_seconds": 0.0016289790000000005,
+          "pre_solve_barrier_seconds": 2.610700000000004e-05,
+          "cg_including_lazy_amg_seconds": 0.0021720050000000003,
+          "postprocess_collectives_seconds": 0.003460704,
+          "partition_export_seconds": 0.001941257,
+          "measured_window_seconds": 0.011649329,
+          "verified_workflow_seconds": 0.7858210510000276,
+          "independent_verification_seconds": 0.08291623700000628
+        },
+        "l2_error": 0.0013504362485477076,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 1.874116541976547e-12,
+        "serial_relative_field_difference": 1.2433377204070084e-13,
+        "reference_relative_field_difference": 1.1305595446954067e-13
+      },
+      {
+        "block": 6,
+        "ranks": 1,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.44837979900000846,
+          "mesh_partition_seconds": 0.0010532,
+          "assembly_solver_setup_seconds": 0.0032917710000000006,
+          "pre_solve_barrier_seconds": 5.889999999996245e-07,
+          "cg_including_lazy_amg_seconds": 0.0012664820000000002,
+          "postprocess_collectives_seconds": 0.0072811099999999995,
+          "partition_export_seconds": 0.003512329,
+          "measured_window_seconds": 0.016405481,
+          "verified_workflow_seconds": 0.4708432190000167,
+          "independent_verification_seconds": 0.02049737599998025
+        },
+        "l2_error": 0.0013504362485508175,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 2.1432201697792313e-12,
+        "serial_relative_field_difference": 1.350004763444607e-13,
+        "reference_relative_field_difference": 1.279726737693302e-13
+      },
+      {
+        "block": 6,
+        "ranks": 4,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.6427994910000052
+        }
+      },
+      {
+        "block": 6,
+        "ranks": 2,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.530816566999988,
+          "mesh_partition_seconds": 0.006038865,
+          "assembly_solver_setup_seconds": 0.007951719,
+          "pre_solve_barrier_seconds": 1.3576999999998993e-05,
+          "cg_including_lazy_amg_seconds": 0.004921017,
+          "postprocess_collectives_seconds": 0.016139126000000004,
+          "partition_export_seconds": 0.008264960000000002,
+          "measured_window_seconds": 0.0425745,
+          "verified_workflow_seconds": 0.6067086740000036,
+          "independent_verification_seconds": 0.07513740100000632
+        },
+        "l2_error": 0.0003379923348365712,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 2.6071941011393535e-12,
+        "serial_relative_field_difference": 5.441185266066102e-14,
+        "reference_relative_field_difference": 5.807632437046078e-14
+      },
+      {
+        "block": 6,
+        "ranks": 2,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.4473269140000298
+        }
+      },
+      {
+        "block": 7,
+        "ranks": 4,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.7006612609999365,
+          "mesh_partition_seconds": 0.008720047,
+          "assembly_solver_setup_seconds": 0.008241334,
+          "pre_solve_barrier_seconds": 9.189000000003195e-06,
+          "cg_including_lazy_amg_seconds": 0.005250002,
+          "postprocess_collectives_seconds": 0.010458041000000001,
+          "partition_export_seconds": 0.006635169000000003,
+          "measured_window_seconds": 0.038225476,
+          "verified_workflow_seconds": 0.7993263399999933,
+          "independent_verification_seconds": 0.09798763000003419
+        },
+        "l2_error": 0.00033799233483709816,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 4.739268536189663e-12,
+        "serial_relative_field_difference": 1.8744328018611387e-13,
+        "reference_relative_field_difference": 1.865549234079811e-13
+      },
+      {
+        "block": 7,
+        "ranks": 2,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.49918653599991103,
+          "mesh_partition_seconds": 0.001657337,
+          "assembly_solver_setup_seconds": 0.00183512,
+          "pre_solve_barrier_seconds": 8.239999999999637e-07,
+          "cg_including_lazy_amg_seconds": 0.0016617580000000002,
+          "postprocess_collectives_seconds": 0.0058181019999999995,
+          "partition_export_seconds": 0.002470995,
+          "measured_window_seconds": 0.013442643,
+          "verified_workflow_seconds": 0.5283297639999773,
+          "independent_verification_seconds": 0.027820393999945736
+        },
+        "l2_error": 0.0013504362485538511,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 4.2229005019991994e-12,
+        "serial_relative_field_difference": 1.8422287224618588e-13,
+        "reference_relative_field_difference": 2.0111182072714362e-13
+      },
+      {
+        "block": 7,
+        "ranks": 1,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.5821903449999581,
+          "mesh_partition_seconds": 0.005441467,
+          "assembly_solver_setup_seconds": 0.016137667,
+          "pre_solve_barrier_seconds": 4.870000000004038e-07,
+          "cg_including_lazy_amg_seconds": 0.00609208,
+          "postprocess_collectives_seconds": 0.045615473999999996,
+          "partition_export_seconds": 0.023242352000000008,
+          "measured_window_seconds": 0.096529527,
+          "verified_workflow_seconds": 0.694882817000007,
+          "independent_verification_seconds": 0.11185444299997016
+        },
+        "l2_error": 0.00033799233483472387,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 1.844851600379474e-12,
+        "serial_relative_field_difference": 5.685483380052743e-14,
+        "reference_relative_field_difference": 5.141364853446146e-14
+      },
+      {
+        "block": 7,
+        "ranks": 1,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.4511976470000718,
+          "mesh_partition_seconds": 0.001086591,
+          "assembly_solver_setup_seconds": 0.003058859,
+          "pre_solve_barrier_seconds": 1.2099999999962835e-07,
+          "cg_including_lazy_amg_seconds": 0.0011018900000000003,
+          "postprocess_collectives_seconds": 0.007236184,
+          "partition_export_seconds": 0.003178084999999999,
+          "measured_window_seconds": 0.01566173,
+          "verified_workflow_seconds": 0.4703057390000822,
+          "independent_verification_seconds": 0.018296850000069753
+        },
+        "l2_error": 0.0013504362485508175,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 2.1432201697792313e-12,
+        "serial_relative_field_difference": 1.350004763444607e-13,
+        "reference_relative_field_difference": 1.279726737693302e-13
+      },
+      {
+        "block": 7,
+        "ranks": 4,
+        "n": 32,
+        "time": {
+          "launch_seconds": 0.6369498399999429,
+          "mesh_partition_seconds": 0.001895862,
+          "assembly_solver_setup_seconds": 0.001350342,
+          "pre_solve_barrier_seconds": 3.879000000000035e-06,
+          "cg_including_lazy_amg_seconds": 0.0013169210000000004,
+          "postprocess_collectives_seconds": 0.002042617,
+          "partition_export_seconds": 0.0010702889999999994,
+          "measured_window_seconds": 0.00765948,
+          "verified_workflow_seconds": 0.6563866699999608,
+          "independent_verification_seconds": 0.018714382999974077
+        },
+        "l2_error": 0.0013504362485477076,
+        "h1_semi_error": 0.10897542351921938,
+        "relative_residual": 1.874116541976547e-12,
+        "serial_relative_field_difference": 1.2433377204070084e-13,
+        "reference_relative_field_difference": 1.1305595446954067e-13
+      },
+      {
+        "block": 7,
+        "ranks": 1,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.40964882000002945
+        }
+      },
+      {
+        "block": 7,
+        "ranks": 2,
+        "n": 64,
+        "time": {
+          "launch_seconds": 0.568855929999927,
+          "mesh_partition_seconds": 0.009343023,
+          "assembly_solver_setup_seconds": 0.010586809,
+          "pre_solve_barrier_seconds": 1.9459999999991984e-06,
+          "cg_including_lazy_amg_seconds": 0.006821738000000001,
+          "postprocess_collectives_seconds": 0.033058852,
+          "partition_export_seconds": 0.014855764,
+          "measured_window_seconds": 0.074533238,
+          "verified_workflow_seconds": 0.7037004989999787,
+          "independent_verification_seconds": 0.13414586399994732
+        },
+        "l2_error": 0.0003379923348365712,
+        "h1_semi_error": 0.05451370453599891,
+        "relative_residual": 2.6071941011393535e-12,
+        "serial_relative_field_difference": 5.441185266066102e-14,
+        "reference_relative_field_difference": 5.807632437046078e-14
+      },
+      {
+        "block": 7,
+        "ranks": 2,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.6040527999999767
+        }
+      },
+      {
+        "block": 7,
+        "ranks": 4,
+        "n": 0,
+        "time": {
+          "launch_seconds": 0.8362778109999454
+        }
+      }
+    ],
+    "median_seconds": {
+      "r2_n64": {
+        "launch_seconds": 0.5248371575000021,
+        "mesh_partition_seconds": 0.0058853824999999995,
+        "assembly_solver_setup_seconds": 0.0073889145,
+        "pre_solve_barrier_seconds": 1.9349999999989168e-06,
+        "cg_including_lazy_amg_seconds": 0.004677426500000002,
+        "postprocess_collectives_seconds": 0.016808052500000004,
+        "partition_export_seconds": 0.007093066500000002,
+        "measured_window_seconds": 0.0428775865,
+        "verified_workflow_seconds": 0.6064552400000025,
+        "independent_verification_seconds": 0.07815442349999557
+      },
+      "r2_n0": {
+        "launch_seconds": 0.4641058244999954
+      },
+      "r1_n64": {
+        "launch_seconds": 0.4870627410000168,
+        "mesh_partition_seconds": 0.0044457405,
+        "assembly_solver_setup_seconds": 0.013109608500000001,
+        "pre_solve_barrier_seconds": 5.909999999994392e-07,
+        "cg_including_lazy_amg_seconds": 0.004851233500000001,
+        "postprocess_collectives_seconds": 0.030834456999999996,
+        "partition_export_seconds": 0.014839506000000002,
+        "measured_window_seconds": 0.06825043049999999,
+        "verified_workflow_seconds": 0.5850886704999994,
+        "independent_verification_seconds": 0.0825087704999703
+      },
+      "r1_n0": {
+        "launch_seconds": 0.40225561050002057
+      },
+      "r1_n32": {
+        "launch_seconds": 0.4329887120000251,
+        "mesh_partition_seconds": 0.001058274,
+        "assembly_solver_setup_seconds": 0.0031661405,
+        "pre_solve_barrier_seconds": 3.265000000003161e-07,
+        "cg_including_lazy_amg_seconds": 0.0012482090000000001,
+        "postprocess_collectives_seconds": 0.0073111604999999994,
+        "partition_export_seconds": 0.003196935999999999,
+        "measured_window_seconds": 0.016371033,
+        "verified_workflow_seconds": 0.4582940884999971,
+        "independent_verification_seconds": 0.019992989000002126
+      },
+      "r2_n32": {
+        "launch_seconds": 0.49026585400002887,
+        "mesh_partition_seconds": 0.0017734245000000002,
+        "assembly_solver_setup_seconds": 0.0020293474999999997,
+        "pre_solve_barrier_seconds": 1.336499999999739e-06,
+        "cg_including_lazy_amg_seconds": 0.0014797560000000003,
+        "postprocess_collectives_seconds": 0.0041747635,
+        "partition_export_seconds": 0.0025959295,
+        "measured_window_seconds": 0.012121032,
+        "verified_workflow_seconds": 0.5136028295000017,
+        "independent_verification_seconds": 0.022611490000031154
+      },
+      "r4_n64": {
+        "launch_seconds": 0.7072440439999923,
+        "mesh_partition_seconds": 0.009712443500000001,
+        "assembly_solver_setup_seconds": 0.008669228000000001,
+        "pre_solve_barrier_seconds": 1.1526500000001022e-05,
+        "cg_including_lazy_amg_seconds": 0.005068532499999999,
+        "postprocess_collectives_seconds": 0.0134328655,
+        "partition_export_seconds": 0.006348373000000001,
+        "measured_window_seconds": 0.041222748000000003,
+        "verified_workflow_seconds": 0.7937097614999971,
+        "independent_verification_seconds": 0.08731212849997405
+      },
+      "r4_n0": {
+        "launch_seconds": 0.6527201115000025
+      },
+      "r4_n32": {
+        "launch_seconds": 0.6504276304999621,
+        "mesh_partition_seconds": 0.0029498880000000003,
+        "assembly_solver_setup_seconds": 0.002688582,
+        "pre_solve_barrier_seconds": 4.917500000000286e-06,
+        "cg_including_lazy_amg_seconds": 0.0022233635,
+        "postprocess_collectives_seconds": 0.0036330975,
+        "partition_export_seconds": 0.0016316175000000007,
+        "measured_window_seconds": 0.012204119,
+        "verified_workflow_seconds": 0.6749438500000338,
+        "independent_verification_seconds": 0.02072213099998521
+      }
+    }
+  }
+}

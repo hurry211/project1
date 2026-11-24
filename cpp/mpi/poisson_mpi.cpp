@@ -74,6 +74,7 @@ int Solve(int argc, char **argv)
    const MPI_Comm comm = MPI_COMM_WORLD;
    const int rank = Mpi::WorldRank(), ranks = Mpi::WorldSize();
    const char *output = "";
+   bool phase_timing = false;
    int n = 8, max_iter = 20000;
    double tol = 1e-12;
    OptionsParser args(argc, argv);
@@ -81,6 +82,8 @@ int Solve(int argc, char **argv)
    args.AddOption(&tol, "-rtol", "--rel-tol", "Relative PCG tolerance.");
    args.AddOption(&max_iter, "-mi", "--max-iter", "Maximum PCG iterations.");
    args.AddOption(&output, "-o", "--out", "Existing, empty output directory.", true);
+   args.AddOption(&phase_timing, "-pt", "--phase-timing", "-no-pt", "--no-phase-timing",
+                  "Write optional per-rank performance measurements.");
    args.Parse();
    if (!args.Good() || n < 2 || n > 4096 || ranks > 2*n*n ||
        !std::isfinite(tol) || tol <= 0 || tol >= 1 || max_iter < 1)
@@ -105,6 +108,7 @@ int Solve(int argc, char **argv)
    // The small serial input mesh is replicated before METIS partitions it.
    Mesh serial = Mesh::MakeCartesian2D(n, n, Element::TRIANGLE, true, 1., 1.);
    ParMesh mesh(comm, serial);
+   const double partition_end = phase_timing ? MPI_Wtime() : 0.;
    H1_FECollection fec(1, 2);
    ParFiniteElementSpace space(&mesh, &fec);
    Array<int> essential_boundary(mesh.bdr_attributes.Max()), essential_dofs;
@@ -161,10 +165,37 @@ int Solve(int argc, char **argv)
    int global_elements = 0;
    MPI_Reduce(&local_elements, &global_elements, 1, MPI_INT, MPI_SUM, 0, comm);
 
+   const double export_start = phase_timing ? MPI_Wtime() : 0.;
    int success = std::isfinite(residual_norm) && std::isfinite(rhs_norm) &&
                  std::isfinite(l2) && std::isfinite(h1) &&
                  std::isfinite(cg.GetInitialNorm()) && std::isfinite(cg.GetFinalNorm()) &&
                  ExportPartition(directory, rank, mesh, space, field);
+   if (phase_timing)
+   {
+      const double export_end = MPI_Wtime();
+      std::ifstream status("/proc/self/status");
+      std::string line, mask;
+      while (std::getline(status, line))
+      {
+         if (line.rfind("Cpus_allowed_list:", 0) == 0)
+         {
+            mask = line.substr(line.find_last_of(" \t") + 1);
+            break;
+         }
+      }
+      std::ofstream timing(directory / ("phases." + std::to_string(rank) + ".json"));
+      timing << std::setprecision(17) << "{\"rank\":" << rank
+             << ",\"cpus_allowed_list\":\"" << mask << "\""
+             << ",\"mesh_partition_seconds\":" << partition_end - start
+             << ",\"assembly_solver_setup_seconds\":" << start + setup_seconds - partition_end
+             << ",\"pre_solve_barrier_seconds\":" << solve_start - (start + setup_seconds)
+             << ",\"cg_including_lazy_amg_seconds\":" << local_times[1]
+             << ",\"postprocess_collectives_seconds\":" << export_start - (solve_start + local_times[1])
+             << ",\"partition_export_seconds\":" << export_end - export_start
+             << ",\"measured_window_seconds\":" << export_end - start << "}\n";
+      timing.close();
+      success = success && timing.good();
+   }
    int all_ok = 0;
    MPI_Reduce(&success, &all_ok, 1, MPI_INT, MPI_MIN, 0, comm);
    if (rank == 0 && all_ok)
@@ -207,6 +238,11 @@ int main(int argc, char **argv)
       return 0;
    }
    Mpi::Init(argc, argv);
+   if (argc == 2 && std::string(argv[1]) == "--null-launch")
+   {
+      MPI_Barrier(MPI_COMM_WORLD);
+      return 0;  // MFEM's MPI singleton finalizes on exit, as in a normal run.
+   }
    Hypre::Init();
    return Solve(argc, argv);
 }

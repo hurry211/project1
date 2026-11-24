@@ -64,7 +64,12 @@ jobs:
       - name: Verify generated and Gmsh scalar studies against scikit-fem
         run: python -m benchmarks.stage2 --directory runs/stage2 --report runs/stage2.json
       - name: Challenge the verifier on independently certified MFEM controls
-        run: python -m benchmarks.robustness --generate-controls runs/challenge-controls --report runs/challenge.json
+        run: python -m benchmarks.robustness --generate-controls runs/challenge-controls --report runs/challenge.json --check-profiling
+      - name: Run and replay a paired verified-time smoke study
+        run: |
+          python -m benchmarks.e1 --directory runs/e1 --scale compact --workloads C1 H2 --warmups 0 --repetitions 1
+          digest="$(sha256sum runs/e1/campaign.json | cut -d' ' -f1)"
+          python -m benchmarks.e1_audit --directory runs/e1 --campaign-sha256 "$digest" --all --output runs/e1-audit.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always() && hashFiles('runs/challenge.json', 'runs/stage2.json') != ''
         with:
@@ -72,3 +77,4 @@ jobs:
           path: |
             runs/challenge.json
             runs/stage2.json
+            runs/e1-audit.json

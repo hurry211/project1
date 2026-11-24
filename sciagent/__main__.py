@@ -18,6 +18,9 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("build", help="build cpp/poisson_mms against the pinned MFEM install")
     sub.add_parser("cases", help="list manufactured cases compiled into the solver")
     sub.add_parser("plan-catalog", help="list reviewed planner templates and their hashes")
+    from benchmarks.e1_select import selection_arguments
+    tune = sub.add_parser("select-solver", help="select and verify a solver for a calibrated serial E1 workload")
+    selection_arguments(tune)
     plan = sub.add_parser("plan", help="select an authorized template and optionally execute it")
     plan.add_argument("task", type=Path, help="JSON task with a case, hard selectors and optional preferences")
     plan.add_argument("--directory", type=Path, required=True, help="fresh planning archive")
@@ -59,6 +62,13 @@ def main(argv: list[str] | None = None) -> int:
     elif a.cmd == "plan-catalog":
         from .planner import catalog_rows
         print(json.dumps(catalog_rows(), indent=2, ensure_ascii=False))
+    elif a.cmd == "select-solver":
+        from benchmarks.e1_select import submit
+        try:
+            return submit(a)
+        except (OSError, ValueError) as exc:
+            print(json.dumps({"eligible": False, "reason": str(exc)}))
+            return 2
     elif a.cmd in ("plan", "verify-plan"):
         from . import planner, planning_run
         try:

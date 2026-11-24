@@ -56,8 +56,10 @@ def test_reviewed_coverage_is_explicit():
     assert capability.evaluate(ExecutionSpec(), mesh_source="curved").status == "not_verified"
     rows = capability.matrix_as_rows("sin_sin_variable", "gmsh22")
     tested = [r for r in rows if r["status"] == "tested"]
-    assert len(tested) == 7
+    assert len(tested) == 9
     for row in tested:
+        key = (row["mesh_type"], row["order"], row["assembly"], row["solver"])
+        assert row["verification"]["report"] == (capability.ASSEMBLY_REPORT if key in capability.ASSEMBLY_CONTROLS else capability.REPORT)
         assert row["verification"]["case_ids"] == ["sin_sin_variable"]
         assert row["verification"]["preconditioner"].endswith("Smoother") or row["solver"] == "cg_gs"
         assert row["reviewed_build"]["flags"] == capability.REVIEWED_FLAGS

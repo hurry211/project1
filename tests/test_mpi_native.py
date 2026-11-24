@@ -50,6 +50,28 @@ def test_nonempty_directory_is_preserved(tmp_path):
     assert list(tmp_path.iterdir()) == [sentinel] and sentinel.read_bytes() == b"previous study"
 
 
+def test_opt_in_rank_clocks_preserve_the_verified_field(tmp_path):
+    from benchmarks.mpi_phases import PHASES, cpu_set
+    from sciagent import mpi_study
+    base, timed = tmp_path / "ordinary", tmp_path / "profiled"
+    base.mkdir()
+    timed.mkdir()
+    assert run_level(base, 2).returncode == 0
+    assert run_level(timed, 2, "--phase-timing").returncode == 0
+    assert list(base.glob("phases.*")) == []
+    for rank in (0, 1):
+        phase = json.loads((timed / f"phases.{rank}.json").read_text())
+        assert phase["rank"] == rank and cpu_set(phase["cpus_allowed_list"])
+        assert all(phase[k] >= 0 for k in PHASES)
+        assert sum(phase[k] for k in PHASES) == pytest.approx(phase["measured_window_seconds"])
+        for stream in ("cells", "boundary"):
+            assert (timed / f"{stream}.{rank}.tsv").read_bytes() == (base / f"{stream}.{rank}.tsv").read_bytes()
+    build = {"launcher": os.environ.get("MPIEXEC", "mpiexec"), "binary": driver()}
+    null = mpi_study._launch(tmp_path / "null", build, 2, 0, 30, diagnostic="null")
+    assert null["exit_code"] == 0 and null["argv"][-1] == "--null-launch"
+    assert not (tmp_path / "null/result.json").exists()
+
+
 def test_iteration_limit_fails_collectively(tmp_path):
     process = run_level(tmp_path, 2, "--max-iter", "1")
     assert process.returncode == 5, process.stderr

@@ -2,7 +2,7 @@
 
 A combination is runnable only if its status is ``tested``. The statuses mean:
 
-* ``tested``        -- exercised by benchmarks.stage2 with real MFEM and
+* ``tested``        -- exercised by the serial or assembly comparison matrix with real MFEM and
                        an independent scikit-fem solution on each mesh.
 * ``unsupported``   -- known not to work, or the required dependency is absent
                        from the probed MFEM build; rejected with a reason.
@@ -30,6 +30,7 @@ REVIEWED_FLAGS = {flag: flag == "MFEM_USE_DOUBLE" for flag in MFEM_FLAGS}
 CASE_IDS = ("sin_sin", "cos_exp", "sin_sin_variable")
 MESH_SOURCES = ("cartesian", "gmsh22")
 REPORT = "evidence/stage2/coverage.json"
+ASSEMBLY_REPORT = "evidence/e1/assembly.json"
 
 
 @dataclass(frozen=True)
@@ -40,7 +41,7 @@ class CapabilityDecision:
 
 
 # (mesh_type, order, assembly, solver) entries exercised by integration tests.
-TESTED: frozenset[tuple[str, int, str, str]] = frozenset({
+STAGE2_CONFIGURATIONS: frozenset[tuple[str, int, str, str]] = frozenset({
     ("tri", 1, "full", "cg_gs"),
     ("tri", 2, "full", "cg_gs"),
     ("quad", 1, "full", "cg_gs"),
@@ -49,6 +50,8 @@ TESTED: frozenset[tuple[str, int, str, str]] = frozenset({
     ("quad", 1, "partial", "cg_jacobi"),
     ("quad", 2, "partial", "cg_jacobi"),
 })
+ASSEMBLY_CONTROLS = frozenset(("quad", p, "full", "cg_jacobi") for p in (1, 2))
+TESTED = STAGE2_CONFIGURATIONS | ASSEMBLY_CONTROLS
 
 
 def _build_mismatch(mfem: dict, catalog: dict | None) -> str | None:
@@ -122,7 +125,8 @@ def evaluate(execution: ExecutionSpec, env: dict | None = None, *,
             or mesh_source not in catalog["mesh_sources"]):
         return CapabilityDecision("not_verified", "NOT_VERIFIED_COMBINATION",
                                   "this solver catalog does not advertise the reviewed Gmsh input path")
-    return CapabilityDecision("tested", "OK", f"{case_id or 'compiled cases'} on {mesh_source} {key} covered by {REPORT}")
+    report = ASSEMBLY_REPORT if key in ASSEMBLY_CONTROLS else REPORT
+    return CapabilityDecision("tested", "OK", f"{case_id or 'compiled cases'} on {mesh_source} {key} covered by {report}")
 
 
 def matrix_as_rows(case_id: str | None = None, mesh_source: str = "cartesian") -> list[dict]:
@@ -144,5 +148,5 @@ def matrix_as_rows(case_id: str | None = None, mesh_source: str = "cartesian") -
                                      "preconditioner": ("GSSmoother(SparseMatrix)" if sol == "cg_gs"
                                                         else "OperatorJacobiSmoother"),
                                      "space": "scalar H1, positive diffusion, essential Dirichlet DOFs",
-                                     "report": REPORT}})
+                                     "report": ASSEMBLY_REPORT if (mt, p, asm, sol) in ASSEMBLY_CONTROLS else REPORT}})
     return rows

@@ -1,0 +1,127 @@
+{
+  "eligible": true,
+  "state": "ACCEPTED",
+  "code": "OK",
+  "verifier_verdict": "ACCEPTED",
+  "failure_codes": [],
+  "frozen_sha256": {
+    "problem": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+    "validation": "107bba315abb6a9937b5618bb437d3a325b52eb4c12d1ef7831fa1bbde648da0",
+    "policy": "fcaf2ea890eabe54c896af39274457af3d5e26af8de033cb664ffba92927f65a"
+  },
+  "binary_sha256": "e2a75e0eff6dcbd40ae13515498f7d3a4fe3756b8bdef41aca126397bd8b6438",
+  "manifest_sha256": "d138c21179c47f8bf13d47a0729e8bab5d8ca698ce1c24b9b1a19287dc966780",
+  "archive": "studies/20261124T153235328487Z_request",
+  "levels": [
+    {
+      "n": 4,
+      "iterations": 5,
+      "final_norm": 6.282164970587557e-19,
+      "relative_residual": 2.2293624780784327e-16,
+      "solve_seconds": 0.000487271,
+      "native_wall_seconds": 0.043309447999945405,
+      "l2_error": 0.07907545169460282,
+      "h1_semi_error": 0.8385483442149747
+    },
+    {
+      "n": 8,
+      "iterations": 13,
+      "final_norm": 3.459604041915625e-13,
+      "relative_residual": 6.393027002637961e-13,
+      "solve_seconds": 0.000318903,
+      "native_wall_seconds": 0.04629452999995465,
+      "l2_error": 0.021132773446722816,
+      "h1_semi_error": 0.43179828300506834
+    },
+    {
+      "n": 16,
+      "iterations": 22,
+      "final_norm": 3.114295030809066e-13,
+      "relative_residual": 9.470723500447884e-13,
+      "solve_seconds": 0.000379205,
+      "native_wall_seconds": 0.04899643500004913,
+      "l2_error": 0.005377435009899606,
+      "h1_semi_error": 0.21753633635882105
+    }
+  ],
+  "profile": {
+    "elapsed_seconds": 0.853383507999979,
+    "phase_seconds": {
+      "controller.other": 6.56969999681678e-05,
+      "controller.inputs": 0.003840972000034526,
+      "controller.environment": 0.6704033280000203,
+      "controller.attempt": 0.005366000999856624,
+      "native.process": 0.1384100700000772,
+      "verify.study": 0.0020448999998734507,
+      "verify.solver_claims": 0.0010284850000061851,
+      "verify.field_load": 0.0067614520000915945,
+      "verify.geometry_boundary": 0.004239734000066164,
+      "verify.integration": 0.010445446999824526,
+      "verify.reference": 0.0062800600001082785,
+      "verify.input_hashes": 0.001247866000085196,
+      "archive.finalize": 0.0032494959999667117
+    },
+    "worker_peak_rss_kib": 76484,
+    "native_levels": [
+      {
+        "n": 4,
+        "process_seconds": 0.043309447999945405,
+        "peak_rss_kib": 47440,
+        "setup_seconds": 0.016887357999999998,
+        "solve_seconds": 0.000487271,
+        "error_seconds": 0.000956342,
+        "export_seconds": 0.001304302
+      },
+      {
+        "n": 8,
+        "process_seconds": 0.04629452999995465,
+        "peak_rss_kib": 47452,
+        "setup_seconds": 0.017743402,
+        "solve_seconds": 0.000318903,
+        "error_seconds": 0.0012058050000000001,
+        "export_seconds": 0.001229534
+      },
+      {
+        "n": 16,
+        "process_seconds": 0.04899643500004913,
+        "peak_rss_kib": 47452,
+        "setup_seconds": 0.017737221,
+        "solve_seconds": 0.000379205,
+        "error_seconds": 0.002537354,
+        "export_seconds": 0.002405081
+      }
+    ]
+  },
+  "arm": "gs",
+  "elapsed_seconds": 1.6839738879999686,
+  "request_sha256": "15bba4ad1d00a2a784da96bb9133bf8a87be56e8942cf6d0404837910ee9b868",
+  "external_phases": {
+    "status": "MEASURED",
+    "monotonic_boundaries_seconds": {
+      "submitted": 961.588669581,
+      "before_spawn": 961.594878572,
+      "completed": 963.272643469,
+      "worker_entry": 961.8908901,
+      "before_capture": 962.307522668,
+      "after_capture": 963.160963977,
+      "before_receipt_write": 963.161322995,
+      "after_receipt_write": 963.161503195
+    },
+    "phase_seconds": {
+      "request_preparation": 0.006208990999994057,
+      "spawn_and_module_startup": 0.2960115280000082,
+      "worker_imports_and_preparation": 0.4166325680000682,
+      "study_capture": 0.853383507999979,
+      "qualification_and_readback": 0.00035901799992643646,
+      "receipt_write": 0.00018020000004526082,
+      "clock_file_shutdown_and_parent_wake": 0.1111402739999221
+    },
+    "capture_window_seconds": 0.8534413090000044,
+    "accounting_gap_seconds": 5.780100002539257e-05,
+    "accounting_gap_fraction": 3.4324166447760054e-05
+  },
+  "post_endpoint_replay": {
+    "integrity": true,
+    "verdict": "ACCEPTED"
+  }
+}

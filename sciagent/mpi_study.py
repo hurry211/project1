@@ -145,9 +145,16 @@ def _kill_launch_session(session_id: int):
             continue
 
 
-def _launch(directory: Path, build: dict, ranks: int, n: int, timeout: float) -> dict:
+def _launch(directory: Path, build: dict, ranks: int, n: int, timeout: float, *,
+            diagnostic: str | None = None) -> dict:
     directory.mkdir(parents=True, exist_ok=False)
     argv = _mpi_argv(build, ranks, n, str(directory.resolve()))
+    if diagnostic == "null":
+        argv = argv[:argv.index(build["binary"]) + 1] + ["--null-launch"]
+    elif diagnostic == "phases":
+        argv.append("--phase-timing")
+    elif diagnostic is not None:
+        raise ValueError("unknown MPI diagnostic")
     env = {**os.environ, "OMP_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1"}
     if os.geteuid() == 0:
         env.update(OMPI_ALLOW_RUN_AS_ROOT="1", OMPI_ALLOW_RUN_AS_ROOT_CONFIRM="1")

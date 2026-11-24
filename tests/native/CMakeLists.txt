@@ -6,3 +6,8 @@ add_executable(residual_contract residual_contract.cpp)
 target_compile_features(residual_contract PRIVATE cxx_std_17)
 target_include_directories(residual_contract PRIVATE ../../cpp ${MFEM_INCLUDE_DIRS})
 target_link_libraries(residual_contract PRIVATE ${MFEM_LIBRARIES})
+
+add_executable(assembly_diagonal assembly_diagonal.cpp)
+target_compile_features(assembly_diagonal PRIVATE cxx_std_17)
+target_include_directories(assembly_diagonal PRIVATE ${MFEM_INCLUDE_DIRS})
+target_link_libraries(assembly_diagonal PRIVATE ${MFEM_LIBRARIES})
