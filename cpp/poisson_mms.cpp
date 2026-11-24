@@ -31,6 +31,7 @@
 #include "manufactured_cases.hpp"
 
 #include <chrono>
+#include <sys/resource.h>
 #include <cmath>
 #include <fstream>
 #include <iomanip>
@@ -300,6 +301,7 @@ int main(int argc, char *argv[])
    x = 0.0;
    x.ProjectBdrCoefficient(u_coef, ess_bdr);
 
+   auto assembly_start = std::chrono::steady_clock::now();
    BilinearForm a(&fespace);
    if (asm_s == "partial") { a.SetAssemblyLevel(AssemblyLevel::PARTIAL); }
    a.AddDomainIntegrator(new DiffusionIntegrator);
@@ -329,6 +331,7 @@ int main(int argc, char *argv[])
    }
    cg.SetOperator(*A);
    if (prec) { cg.SetPreconditioner(*prec); }
+   auto cg_start = std::chrono::steady_clock::now();
    cg.Mult(B, X);
    auto t2 = std::chrono::steady_clock::now();
 
@@ -433,6 +436,8 @@ int main(int argc, char *argv[])
       return std::chrono::duration<double, std::milli>(b_ - a_).count();
    };
    {
+      struct rusage usage{};
+      const bool rss_ok = getrusage(RUSAGE_SELF, &usage) == 0;
       std::ofstream f(od + "/result.json");
       f << "{\n"
         << "  \"producer\": \"poisson_mms\",\n"
@@ -470,6 +475,10 @@ int main(int argc, char *argv[])
         << "  \"injected_fault\": \"" << fault_s << "\",\n"
         << "  \"time_setup_ms\": " << JsonNum(ms(t0, t1)) << ",\n"
         << "  \"time_solve_ms\": " << JsonNum(ms(t1, t2)) << ",\n"
+        << "  \"time_assembly_system_ms\": " << JsonNum(ms(assembly_start, t1)) << ",\n"
+        << "  \"time_preconditioner_setup_ms\": " << JsonNum(ms(t1, cg_start)) << ",\n"
+        << "  \"time_cg_iterate_ms\": " << JsonNum(ms(cg_start, t2)) << ",\n"
+        << "  \"peak_rss_kib\": " << (rss_ok ? std::to_string(usage.ru_maxrss) : "null") << ",\n"
         << "  \"time_error_ms\": " << JsonNum(ms(t2, t3)) << "\n"
         << "}\n";
       if (!FinishExport(f, "result.json")) { return 7; }
