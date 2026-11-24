@@ -29,6 +29,16 @@ class BuildError(RuntimeError):
     pass
 
 
+# This adapter runs scalar H1 diffusion with boundary data from the exact
+# solution. ProblemSpec supplies the equation, domain, and assignment of sides.
+_POISSON_FORM = {
+    "space": "scalar_H1",
+    "bilinear_integrator": "DiffusionIntegrator",
+    "dirichlet_trace": "u_exact",
+    "neumann_trace": "grad(u_exact).n",
+}
+
+
 def solver_binary() -> Path:
     return Path(os.environ.get("POISSON_MMS_BIN", DEFAULT_SOLVER_BIN))
 
@@ -61,6 +71,32 @@ def build_solver(log_dir: Path | None = None) -> dict:
     return record
 
 
+def _require_text_fields(record, keys, name: str):
+    if not isinstance(record, dict) or not all(
+        isinstance(record.get(k), str) and record[k].strip() for k in keys
+    ):
+        raise ValueError(f"invalid {name}")
+
+
+def _validate_registry(catalog):
+    if not isinstance(catalog, dict) or not isinstance(catalog.get("cases"), list):
+        raise ValueError("expected a cases array")
+    if "registry_version" in catalog or "formulation" in catalog:
+        version = catalog.get("registry_version")
+        if type(version) is not int or version != 1:
+            raise ValueError("unsupported case registry version")
+        _require_text_fields(catalog.get("formulation"), ("equation", "domain", *_POISSON_FORM), "formulation")
+
+    ids, signatures = set(), set()
+    for case in catalog["cases"]:
+        _require_text_fields(case, ("id", "exact_solution", "source"), "manufactured case entry")
+        signature = (compact_expression(case["exact_solution"]), compact_expression(case["source"]))
+        if case["id"] in ids or signature in signatures:
+            raise ValueError("duplicate case identifier or formula signature")
+        ids.add(case["id"])
+        signatures.add(signature)
+
+
 def list_cases(binary: Path | None = None) -> dict:
     binary = binary or solver_binary()
     if not binary.is_file():
@@ -73,18 +109,22 @@ def list_cases(binary: Path | None = None) -> dict:
         raise BuildError(f"--list-cases failed: {p.stderr}")
     try:
         cases = json.loads(p.stdout)
-        if not isinstance(cases, dict) or not isinstance(cases.get("cases"), list):
-            raise ValueError("expected a cases array")
-        if not all(isinstance(c, dict) and all(isinstance(c.get(k), str) for k in ("id", "exact_solution", "source"))
-                   for c in cases["cases"]):
-            raise ValueError("invalid manufactured case entry")
+        _validate_registry(cases)
         return cases
     except ValueError as exc:
         raise BuildError(f"invalid --list-cases output: {exc}") from exc
 
 
 def bind_case(problem: ProblemSpec, cases: dict) -> str | None:
-    """Return the compiled case id implementing exactly this problem, if any."""
+    """Return a unique compatible case from a current or historical catalog."""
+    try:
+        _validate_registry(cases)
+    except ValueError:
+        return None
+    if "registry_version" in cases:
+        expected = {"equation": problem.equation, "domain": problem.domain, **_POISSON_FORM}
+        if any(cases["formulation"].get(key) != value for key, value in expected.items()):
+            return None
     for c in cases["cases"]:
         if (compact_expression(c["exact_solution"]) == compact_expression(problem.exact_solution)
                 and compact_expression(c["source"]) == compact_expression(problem.source)):

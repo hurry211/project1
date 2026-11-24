@@ -29,6 +29,7 @@
 
 #include "mfem.hpp"
 #include "manufactured_cases.hpp"
+#include "poisson_diagnostics.hpp"
 
 #include <chrono>
 #include <cmath>
@@ -108,14 +109,23 @@ bool FinishExport(std::ofstream &stream, const char *name)
 
 void ListCases()
 {
+   const auto &form = mms::UnitSquarePoisson;
    std::cout << "{\n  \"mfem_version\": \"" << GetVersionStr() << "\",\n"
+             << "  \"registry_version\": 1,\n"
+             << "  \"formulation\": {\n"
+             << "    \"equation\": \"" << JsonEscape(form.equation) << "\",\n"
+             << "    \"domain\": \"" << JsonEscape(form.domain) << "\",\n"
+             << "    \"space\": \"" << JsonEscape(form.space) << "\",\n"
+             << "    \"bilinear_integrator\": \"" << JsonEscape(form.bilinear_integrator) << "\",\n"
+             << "    \"dirichlet_trace\": \"" << JsonEscape(form.dirichlet_trace) << "\",\n"
+             << "    \"neumann_trace\": \"" << JsonEscape(form.neumann_trace) << "\"\n  },\n"
              << "  \"cases\": [\n";
    const auto &reg = mms::Registry();
    for (size_t i = 0; i < reg.size(); i++)
    {
-      std::cout << "    {\"id\": \"" << reg[i].id << "\", \"exact_solution\": \""
-                << reg[i].exact_solution << "\", \"source\": \""
-                << reg[i].source << "\"}" << (i + 1 < reg.size() ? "," : "")
+      std::cout << "    {\"id\": \"" << JsonEscape(reg[i].id) << "\", \"exact_solution\": \""
+                << JsonEscape(reg[i].exact_solution) << "\", \"source\": \""
+                << JsonEscape(reg[i].source) << "\"}" << (i + 1 < reg.size() ? "," : "")
                 << "\n";
    }
    std::cout << "  ]\n}\n";
@@ -331,6 +341,8 @@ int main(int argc, char *argv[])
    if (prec) { cg.SetPreconditioner(*prec); }
    cg.Mult(B, X);
    auto t2 = std::chrono::steady_clock::now();
+   const auto algebraic_residual = poisson_diagnostics::MeasureResidual(*A, X, B);
+   auto error_start = std::chrono::steady_clock::now();
 
    bool converged = cg.GetConverged();
    const int iters = cg.GetNumIterations();
@@ -352,6 +364,8 @@ int main(int argc, char *argv[])
    double h1s_err = finite ? x.ComputeGradError(&grad_coef, irs) : NAN;
    if (fault_s == "self_report_lie") { l2_err = 0.0; h1s_err = 0.0; }
    auto t3 = std::chrono::steady_clock::now();
+   const auto flux = poisson_diagnostics::MeasureBoundaryFlux(mesh, x, finite, f_coef, ir_dom, ir_bdr);
+   const double outward_total = flux.OutwardTotal();
 
    // 7. Export raw data for the independent verifier.
    const std::string od(out_dir);
@@ -467,10 +481,24 @@ int main(int argc, char *argv[])
         << "  \"solution_finite\": " << (finite ? "true" : "false") << ",\n"
         << "  \"self_reported_l2_error\": " << JsonNum(l2_err) << ",\n"
         << "  \"self_reported_h1_semi_error\": " << JsonNum(h1s_err) << ",\n"
+        << "  \"diagnostics\": {\n"
+        << "    \"schema_version\": 1,\n"
+        << "    \"algebraic_residual\": {\"absolute_l2\": " << JsonNum(algebraic_residual.absolute_l2)
+        << ", \"rhs_l2\": " << JsonNum(algebraic_residual.rhs_l2)
+        << ", \"relative_l2\": " << JsonNum(algebraic_residual.relative_l2) << "},\n"
+        << "    \"boundary_flux\": {\"outward_by_side\": {"
+        << "\"bottom\": " << JsonNum(flux.outward_by_side[0])
+        << ", \"right\": " << JsonNum(flux.outward_by_side[1])
+        << ", \"top\": " << JsonNum(flux.outward_by_side[2])
+        << ", \"left\": " << JsonNum(flux.outward_by_side[3]) << "},\n"
+        << "      \"outward_total\": " << JsonNum(outward_total)
+        << ", \"source_integral\": " << JsonNum(flux.source_integral)
+        << ", \"signed_imbalance\": " << JsonNum(outward_total - flux.source_integral) << "}\n"
+        << "  },\n"
         << "  \"injected_fault\": \"" << fault_s << "\",\n"
         << "  \"time_setup_ms\": " << JsonNum(ms(t0, t1)) << ",\n"
         << "  \"time_solve_ms\": " << JsonNum(ms(t1, t2)) << ",\n"
-        << "  \"time_error_ms\": " << JsonNum(ms(t2, t3)) << "\n"
+        << "  \"time_error_ms\": " << JsonNum(ms(error_start, t3)) << "\n"
         << "}\n";
       if (!FinishExport(f, "result.json")) { return 7; }
    }

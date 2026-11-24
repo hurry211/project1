@@ -22,6 +22,25 @@
 namespace mms
 {
 
+// Both cases use the same weak form and trace rules. The study request assigns
+// individual sides to those rules. A Neumann datum is the outward normal
+// derivative in the load integral; the outward diffusive flux has opposite sign.
+struct Formulation
+{
+   const char *equation;
+   const char *domain;
+   const char *space;
+   const char *bilinear_integrator;
+   const char *dirichlet_trace;
+   const char *neumann_trace;
+};
+
+inline constexpr Formulation UnitSquarePoisson =
+{
+   "-laplacian(u) = f", "unit_square_2d", "scalar_H1", "DiffusionIntegrator",
+   "u_exact", "grad(u_exact).n"
+};
+
 struct ManufacturedCase
 {
    std::string id;

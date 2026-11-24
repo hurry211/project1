@@ -95,10 +95,11 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs") -> dict:
         cases = mfem_runner.list_cases()
     except mfem_runner.BuildError as exc:
         return finish("BLOCKED", "BUILD_FAILURE", str(exc))
+    store.write_json_once("case_registry.json", cases)
     case_id = mfem_runner.bind_case(study.problem, cases)
     if case_id is None:
         return finish("FAILED", "UNSUPPORTED_PROBLEM",
-                      "no compiled manufactured case matches the ProblemSpec expressions exactly")
+                      "the compiled catalog has no matching formulation and manufactured expression pair")
     manifest["bound_case"] = case_id
     store.event("READY", case=case_id, capability=decision.code)
 
