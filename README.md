@@ -1,4 +1,4 @@
-# mfem-scientific-agent: a verified MFEM Poisson vertical slice
+# MFEM scientific agent for verified Poisson and scalar diffusion studies
 
 A deterministic workflow that turns a frozen, machine-checked problem specification into **real MFEM computations** and lets an **independent verifier** decide whether the result is accepted. No LLM is used anywhere in the numerical path.
 
@@ -72,6 +72,23 @@ python scripts/compare_baseline.py runs/demo
 The demo includes expected rejections and one exhausted retry budget. Use an empty demo directory for the historical comparison. It checks the 31 studies, frozen inputs, attempt decisions and original failure codes, and reports the relative difference in accepted error norms. `python -m sciagent env`, `cases` and `matrix` expose environment details, compiled manufactured cases and the capability matrix.
 
 `python -m sciagent cases` shows the formulation, boundary traces and manufactured expressions compiled into the binary. Runs that reach case binding save this catalog in `case_registry.json`. Each new native level's `result.json` includes the true algebraic residual of the constrained system and integrated outward flux on all four sides. The generated Markdown report shows their totals for accepted studies. Use these measurements to investigate solver accuracy and flux convergence. The independent reference solve and frozen convergence criteria still determine acceptance. [Field definitions](docs/MVP_SPEC.md#native-diagnostics)
+
+## Variable diffusion and named mesh examples
+
+Schema `0.3` adds a reviewed scalar diffusion case with `kappa = 1+x` and an optional, digest-pinned Gmsh 2.2 input. The first command solves the mixed-boundary case on generated triangles. The second imports a named quadrilateral mesh and uses P2 partial assembly. Both run at 8, 16 and 32 cells per side. The matrix command lists the reviewed MFEM revision, build flags, preconditioner and verification coverage for each configuration. [Equation and mesh contract](docs/MVP_SPEC.md#10-stage-2-scalar-diffusion-and-named-meshes)
+
+```bash
+python -m sciagent run specs/stage2/diffusion_mixed_p1_tri.json
+python -m sciagent run specs/stage2/diffusion_gmsh_p2_quad.json
+python -m sciagent matrix --case sin_sin_variable --mesh-source gmsh22
+```
+
+The optional scikit-fem benchmark exercises all three cases on both mesh sources and all seven reviewed solver configurations. Use a fresh capture directory and the locked dependencies from `requirements-challenge.lock`. Replay takes the original manifest digests from the saved report and works with the retained raw archives.
+
+```bash
+python -m benchmarks.stage2 --directory runs/scalar-coverage --report runs/scalar-coverage.json
+python -m benchmarks.stage2 --directory runs/scalar-coverage --replay runs/scalar-coverage.json --report runs/scalar-replay.json
+```
 
 ## Layout
 

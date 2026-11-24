@@ -1,5 +1,22 @@
 # Numerical results
 
+## Stage 2 scalar diffusion and Gmsh, 2026-11-23
+
+On WSL2 Ubuntu 24.04, code commit `40873c2` passed **217 tests with zero failures and zero skips**. The two CI selectors ran locally with 141 Python tests and 76 MFEM tests. The pinned serial double MFEM 4.10.0 installation used GCC 13.3.0. A clean out-of-tree driver build on the Linux filesystem and the tested executable had identical SHA-256 digests. The CI workflow now runs the scalar coverage benchmark. This local-only revision has no hosted CI run. [Build, test commands, digests and local archive locations](../evidence/stage2/validation.json)
+
+All **42 studies** in the reviewed matrix passed on their first attempt, spanning three manufactured cases, seven solver configurations and two mesh sources. Each ran at 8, 16 and 32 cells per side. For all 126 fields a separately regenerated scikit-fem mesh agreed on element connectivity, boundary tags and DOF coordinates. The largest relative nodal difference from the scikit-fem solution was `2.273e-9`. The largest relative difference in the independently integrated L2 and H1 errors was `1.436e-10`. A second pass using the saved manifest digests and raw archives reproduced the coverage report byte for byte. [Per-configuration results](../evidence/stage2/coverage.json) · [Generation and replay commands](../README.md#variable-diffusion-and-named-mesh-examples)
+
+| Mixed variable diffusion at 32 cells per side | L2 error | H1 seminorm error | Finest L2 / H1 orders |
+|---|---:|---:|---:|
+| Generated P1 triangles, full assembly | 2.897880e-3 | 2.553787e-1 | 1.986 / 0.994 |
+| Imported P2 quadrilaterals, partial assembly | 2.191353e-5 | 4.547010e-3 | 2.996 / 1.998 |
+
+The full matrix exposed a quadrature defect on P2 triangles. MFEM's default stiffness rule underintegrated the variable coefficient. The first implementation differed from both independent solvers by approximately `2.33e-5` at eight cells per side. Using an explicit rule of order `2p+1` reduced the largest SciPy field difference across all three P2 triangle levels to `1.33e-10`. Separate regressions check the actual solution and reject a missing or inconsistent native quadrature claim. [Before and after measurements](../evidence/stage2/validation.json) · [Native regression](../tests/test_integration_mfem.py)
+
+Both deliberate diffusion faults exited successfully at every level. At 32 cells per side, omitting the coefficient-gradient source term changed the discrete field by **3.57%**, and omitting the top Neumann coefficient changed it by **66.89%**, relative to the SciPy reference. The verifier rejected both by its original `1e-7` threshold. Replaying a Gmsh archive succeeded after removing the input file. Altering the archived mesh failed digest verification, and substituting a geometrically valid mesh with the opposite triangle diagonal also failed the numerical topology check. [Fault measurements](../evidence/stage2/validation.json) · [Gmsh regressions](../tests/test_gmsh.py)
+
+All 31 historical study states and codes matched Stage 1. The comparison replayed 22 historical and 22 fresh attempts, reproduced 158 error values exactly, and found byte-identical mesh and field exports at all 83 levels with native results. The Stage 1 challenge repeated 215 rejected faults and 69 accepted controls with the same per-trial decisions and gates. All 14 separate checker calibrations matched. These challenge denominators cover the original Poisson corpus. The Stage 2 fault cases and scikit-fem comparisons are reported separately. [Paired manifests](../evidence/stage2/parity.json) · [Challenge counts and digests](../evidence/stage2/validation.json)
+
 ## Stage 2 registry and native diagnostics, 2026-11-23
 
 The WSL2 Ubuntu 24.04 configuration rebuilt the C++ driver against the pinned double-precision serial MFEM 4.10 installation. **167 tests passed with zero skips** on code commit `eca008f`. The P1 quickstart and its digest-checked replay both returned `ACCEPTED`. The fresh 284-trial verifier challenge matched the previous per-trial decisions and gate results, and all 14 deliberate reference-checker mutations were detected. [Local validation record](../evidence/stage2-registry/validation.json)

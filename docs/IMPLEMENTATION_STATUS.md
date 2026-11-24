@@ -1,12 +1,22 @@
 # Implementation Status
 
+## Completed Stage 2, 2026-11-23
+
+Study schema `0.3` and registry version 2 cover positive scalar diffusion with a mixed-boundary manufactured field and the two original Poisson cases. The controller binds a reviewed native case to a frozen problem. The SciPy verifier independently assembles the diffusion matrix, checks the strong-form product rule and recovers the weighted Neumann term. Separate scikit-fem runs use the exact gradient to form the load. [Mathematical contract](MVP_SPEC.md#10-stage-2-scalar-diffusion-and-named-meshes) · [Verification code](../benchmarks/stage2.py)
+
+Named Gmsh import covers straight-sided Cartesian unit-square meshes, one surface and four physical side groups. The input is copied into the run archive and checked against the request digest. Numerical replay checks the refined grid and its per-cell triangle diagonals. Tests cover a moved archive, changed bytes, an alternate diagonal and a mesh with mixed diagonal orientations. Preflight and replay share the Gmsh parser. Independently regenerated grids in the matrix supply a separate topology check for the two example meshes. [Import contract](../sciagent/gmsh.py) · [Replay tests](../tests/test_gmsh.py)
+
+The native catalog records the linked MFEM version, revision and selected build flags. The capability gate compares them with the installation probe and the reviewed profile. Historical catalogs can still bind the original generated Poisson requests. Their compiler flags are evidenced only by the installation probe. The current matrix records h-refinement results for three cases, seven solver configurations and two mesh sources. [Coverage](../evidence/stage2/coverage.json) · [Regression and challenge results](RESULTS.md#stage-2-scalar-diffusion-and-gmsh-2026-11-23)
+
+The next milestone is one MPI implementation for the existing P1 Poisson benchmark. Pin a separate MPI/hypre/METIS toolchain and compare the field, norms and verdict on one and two ranks against the serial run at the same resolution. Geometry beyond the Cartesian square, multiple materials, and performance claims each need separate verification.
+
 ## Stage 2, first increment, 2026-11-23
 
 The existing C++ function registry now publishes a version-1 formulation descriptor. Python checks that its equation, domain, space, integrator and trace semantics match the supported adapter before binding an expression pair. Case IDs and normalized formula pairs must be unique. Historical binaries can still advertise their original formula-only catalogs. A run saves the catalog used for binding alongside the frozen inputs and inventories its hash. [Native definitions](../cpp/manufactured_cases.hpp) · [Adapter](../sciagent/mfem_runner.py) · [Observed catalog](../evidence/stage2-registry/validation.json)
 
 The real solver records unpreconditioned residual and outward boundary-flux measurements for full and partial assembly. The archived raw record includes per-side fluxes and the generated study report includes totals for accepted studies. The reporting layer also processed the 31 original Stage 1 archives. Both boundary-flux imbalance and the residual are diagnostics. New tolerances would require separate calibration. [Contract and zero-RHS convention](MVP_SPEC.md#native-diagnostics) · [Direct and independent-integral tests](../tests/test_native_diagnostics.py)
 
-The next increment can introduce one positive scalar coefficient on the unit square, preserving the existing v0.2 requests. It needs an explicit coefficient in the new formulation, an independently derived manufactured load and boundary term, plus a fault that drops the coefficient-gradient contribution. [Numerical regression results](RESULTS.md)
+This increment established the registry and diagnostics used by the variable-coefficient extension above. [Numerical regression results](RESULTS.md)
 
 ## Stage 1 handoff, 2026-11-20
 

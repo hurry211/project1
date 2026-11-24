@@ -1,0 +1,311 @@
+{
+  "code_commit": "40873c279f8710846f0a7c0bfae7fe61d09a9263",
+  "local_date": "2026-11-23",
+  "raw_archives_wsl_ubuntu": "/root/mfem-stage2-completion-zKOpFh/verified",
+  "environment": {
+    "os": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "cpu_count": 22,
+    "mem_total_mb": 15794,
+    "python": "3.12.3",
+    "python_packages": {
+      "numpy": "2.5.5",
+      "scipy": "1.18.1",
+      "pydantic": "2.14.4",
+      "pytest": "9.2.0"
+    },
+    "cxx": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "cmake": "cmake version 3.28.3",
+    "make": "GNU Make 4.3",
+    "mpirun_path": "/usr/bin/mpirun",
+    "nvidia_smi_path": null,
+    "mfem": {
+      "install_dir": "/root/mfem-stage0/clean/third_party/mfem-install",
+      "found": true,
+      "config": {
+        "MFEM_USE_MPI": false,
+        "MFEM_USE_METIS": false,
+        "MFEM_USE_METIS_5": false,
+        "MFEM_USE_SUITESPARSE": false,
+        "MFEM_USE_LAPACK": false,
+        "MFEM_USE_OPENMP": false,
+        "MFEM_USE_CUDA": false,
+        "MFEM_USE_HIP": false,
+        "MFEM_USE_RAJA": false,
+        "MFEM_USE_OCCA": false,
+        "MFEM_USE_PETSC": false,
+        "MFEM_USE_ZLIB": false,
+        "MFEM_USE_DOUBLE": true,
+        "MFEM_USE_SINGLE": false
+      },
+      "notes": [],
+      "version": "4.10.0",
+      "git": "tags/v4.10-0-gd964264cdb9a13e94a201b6c236c7721e0c8765f",
+      "library": "/root/mfem-stage0/clean/third_party/mfem-install/lib/libmfem.a",
+      "library_sha256": "a4b8138ccb7eaf2c1f38c4d0434ebbee7bbd0b20318d6f0864779a5f4efd0234"
+    },
+    "solver_binary": "/root/mfem-stage2-completion-zKOpFh/verified/poisson_mms",
+    "solver_binary_sha256": "87e9c74c99b5b2499756d7e26750c373bd6524e378bf3b21bb0903f21bf38eef",
+    "notes": [
+      "mpirun exists but MFEM was built without MPI; MPI path unavailable",
+      "no nvidia-smi on PATH; no CUDA device detected"
+    ]
+  },
+  "clean_build_binary_sha256": "87e9c74c99b5b2499756d7e26750c373bd6524e378bf3b21bb0903f21bf38eef",
+  "commands": {
+    "build": "bash scripts/build_solver.sh",
+    "suite": "python -m pytest -q --require-mfem",
+    "coverage": "python -m benchmarks.stage2 --directory \"$PROOF/matrix\" --report \"$PROOF/coverage.json\"",
+    "coverage_replay": "python -m benchmarks.stage2 --directory \"$PROOF/matrix\" --replay \"$PROOF/coverage.json\" --report \"$PROOF/replay.json\"",
+    "originals": "RUNS_DIR=\"$PROOF/demo\" bash scripts/run_demo.sh",
+    "archive_parity": "python evidence/stage2-registry/compare_archives.py /root/mfem-stage1/canonical \"$PROOF/demo\"",
+    "challenge": "python -m benchmarks.robustness --generate-controls \"$PROOF/controls\" --report \"$PROOF/challenge.json\""
+  },
+  "tests": {
+    "tests": 217,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "local_ci_commands": [
+    {
+      "command": "python -m pytest -q -m 'not mfem'",
+      "result": "141 passed, 76 deselected in 8.20s"
+    },
+    {
+      "command": "python -m pytest -q -m mfem --require-mfem",
+      "result": "76 passed, 141 deselected in 43.79s"
+    }
+  ],
+  "coverage": {
+    "studies": 42,
+    "levels": 126,
+    "digest_pinned_study_replays": 42,
+    "second_pass_identical": true,
+    "max_skfem_relative_field_difference": 2.2726151911451412e-09,
+    "max_skfem_relative_norm_difference": 1.435433993890456e-10,
+    "packages": {
+      "numpy": "2.5.5",
+      "scipy": "1.18.1",
+      "scikit-fem": "12.0.2"
+    }
+  },
+  "variable_examples": {
+    "diffusion_gmsh_p2_quad": {
+      "case_id": "sin_sin_variable",
+      "manifest_sha256": "92ec104d63dc34b6940c9683eb5588ca4eaa45a135e5f7de1e1d499bd3d7ff60",
+      "orders": {
+        "n_coarse": 16,
+        "n_fine": 32,
+        "l2_order": 2.9957749457968097,
+        "h1_semi_order": 1.9981622021455019
+      },
+      "finest": {
+        "n": 32,
+        "l2": 2.1913530751761234e-05,
+        "h1_semi": 0.004547009552986319,
+        "reference_rel_diff": 1.0435658419678072e-10
+      },
+      "state": "ACCEPTED",
+      "pinned_replay": "ACCEPTED"
+    },
+    "diffusion_mixed_p1_tri": {
+      "case_id": "sin_sin_variable",
+      "manifest_sha256": "cb82ddd2f84f670cb7f4b9f4e206168de1e62b24da97619d91170eecfb85ab29",
+      "orders": {
+        "n_coarse": 16,
+        "n_fine": 32,
+        "l2_order": 1.985598808167834,
+        "h1_semi_order": 0.9940252676406156
+      },
+      "finest": {
+        "n": 32,
+        "l2": 0.0028978804044704786,
+        "h1_semi": 0.2553787359279636,
+        "reference_rel_diff": 1.0409208861915002e-10
+      },
+      "state": "ACCEPTED",
+      "pinned_replay": "ACCEPTED"
+    }
+  },
+  "variable_faults": {
+    "omit_neumann_coefficient": {
+      "manifest_sha256": "b94959cbcc2bd5455ff2b738d17de127153921b10becdf0782dc8846ab10a304",
+      "exit_codes": [
+        0,
+        0,
+        0
+      ],
+      "reference_rel_difference": [
+        0.6483613114537492,
+        0.6659979221296641,
+        0.6688661740381809
+      ],
+      "failure_codes": [
+        "CONVERGENCE_ORDER_OUT_OF_BAND",
+        "NON_MONOTONE_CONVERGENCE",
+        "REFERENCE_MISMATCH"
+      ],
+      "pinned_replay": "REJECTED"
+    },
+    "omit_coefficient_gradient": {
+      "manifest_sha256": "4b0ff1eabbede71caa143794239c973e7e9027d67419933a9ddad233009c7901",
+      "exit_codes": [
+        0,
+        0,
+        0
+      ],
+      "reference_rel_difference": [
+        0.032903983086030465,
+        0.03555911108684232,
+        0.035743020358361494
+      ],
+      "failure_codes": [
+        "CONVERGENCE_ORDER_OUT_OF_BAND",
+        "REFERENCE_MISMATCH"
+      ],
+      "pinned_replay": "REJECTED"
+    }
+  },
+  "triangle_p2_stiffness": {
+    "mesh_levels": [
+      8,
+      16,
+      32
+    ],
+    "before": {
+      "manifest_sha256": "2cc3f7280f99ccedd9d1917f58555d33597347744ed5e0c6490fe9081453f1d3",
+      "native_binary_sha256": "158bbde45629ada2fa76740055939ee927a4abb4787a67c47c957dfd372e5c3a",
+      "state": "FAILED",
+      "codes": [
+        "REFERENCE_MISMATCH"
+      ],
+      "reference_rel_difference": [
+        2.3288817773266115e-05,
+        2.9907728816536795e-06,
+        3.771844254973135e-07
+      ],
+      "skfem_rel_difference": [
+        2.3288795308143972e-05,
+        2.9907614256608843e-06,
+        3.77178649517075e-07
+      ]
+    },
+    "after": {
+      "manifest_sha256": "1efea5569a7b1b4fa75cc98e8ec933d92a4ee26ac67ab7b5213be44ddb0b0cc5",
+      "native_binary_sha256": "87e9c74c99b5b2499756d7e26750c373bd6524e378bf3b21bb0903f21bf38eef",
+      "state": "ACCEPTED",
+      "codes": [],
+      "reference_rel_difference": [
+        1.3267371953282723e-10,
+        1.0428492090485345e-10,
+        1.0438383749782855e-10
+      ],
+      "skfem_rel_difference": [
+        3.74394071535835e-11,
+        1.673303842634541e-13,
+        1.1468546813917442e-13
+      ]
+    }
+  },
+  "original_studies": {
+    "counts": {
+      "paired_attempt_replays": 22,
+      "matched_error_values": 158,
+      "matched_native_results": 83,
+      "byte_identical_field_exports": 83
+    },
+    "states": {
+      "ACCEPTED": 8,
+      "BLOCKED": 2,
+      "BUDGET_EXHAUSTED": 1,
+      "FAILED": 13,
+      "INVALID_SPEC": 7
+    },
+    "compared_imported_norms": 68,
+    "max_relative_difference_from_imported_norms": 1.1793946007066676e-13
+  },
+  "challenge": {
+    "verifier_version": "0.4.0",
+    "counts_by_trial_kind": {
+      "numerical_fault": 162,
+      "numerical_clean": 46,
+      "archive_fault": 53,
+      "archive_clean": 23
+    },
+    "trials": 284,
+    "matched_stage1_fields": [
+      "cohort",
+      "kind",
+      "case",
+      "family",
+      "n",
+      "draw_seed",
+      "verdict",
+      "codes",
+      "evaluated",
+      "failed"
+    ],
+    "metrics_equal_to_stage1": true,
+    "reference_calibrations_equal_to_stage1": 14,
+    "false_accepts": 0,
+    "false_rejects": 0
+  },
+  "quickstart": {
+    "tools": {
+      "python": "3.12.3",
+      "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "cmake": "cmake version 3.28.3",
+      "mfem": "4.10.0",
+      "solver_available": true
+    },
+    "run_dir": "/root/mfem-stage2-completion-zKOpFh/verified/quick/20261124T060415539176Z_poisson_sin_sin_p1_tri",
+    "state": "ACCEPTED",
+    "code": "OK",
+    "reason": "numerical (code) verification passed for this manufactured-solution benchmark",
+    "manifest_sha256": "16075e9ace1b60afb016b3503cc1f69121ab149205723dc3d61f9c3de681b164",
+    "attempt_dir": "/root/mfem-stage2-completion-zKOpFh/verified/quick/20261124T060415539176Z_poisson_sin_sin_p1_tri/attempts/attempt_01",
+    "replay": "ACCEPTED",
+    "integrity": {
+      "mode": "sha256-inventory",
+      "passed": true
+    },
+    "finest_orders": {
+      "n_coarse": 32,
+      "n_fine": 64,
+      "l2_order": 1.9983631008284015,
+      "h1_semi_order": 0.999311941962252
+    }
+  },
+  "report_digests": [
+    {
+      "file": "coverage.json",
+      "sha256": "9705089715ca93c64fc973144766ad1c73dcc14bf0b1582393191e79a723c167"
+    },
+    {
+      "file": "replay.json",
+      "sha256": "9705089715ca93c64fc973144766ad1c73dcc14bf0b1582393191e79a723c167"
+    },
+    {
+      "file": "parity.json",
+      "sha256": "6c0f3063b4e411864580ad0c4d8ef92a31bbec1eedc404a44bbb8388566bbe0b"
+    },
+    {
+      "file": "imported.json",
+      "sha256": "4e16d6dab98b0c7ee8bd6fa0bacde80f24e8383b04581f89af69a2890c904456"
+    },
+    {
+      "file": "challenge.json",
+      "sha256": "e36cb49dde6f179739229bdd1fbf192991a504a5862c5cf48fe4e14a3e6561fd"
+    },
+    {
+      "file": "junit.xml",
+      "sha256": "31336ec1359c6b0f4298f11efa65870fc714ce49c57631d7b97877a5255753e6"
+    },
+    {
+      "file": "native-catalog.json",
+      "sha256": "5532c4df40c544249c264d04915b7e8f58ac942cd99d8c39e6b86c85d87d9f5d"
+    }
+  ],
+  "underintegration_capture_root": "/root/mfem-stage2-completion-zKOpFh"
+}

@@ -1,6 +1,6 @@
 # Codex development handoff — MFEM Scientific Computing Agent
 
-Stage 0 and Stage 1 were completed on 2026-11-20. The first Stage 2 increment binds the two existing cases through a versioned formulation catalog and reports native residual and boundary-flux diagnostics. All 31 study decisions and all 83 sets of finite-element exports reproduced on the reference WSL2 environment. The next increment is one manufactured variable-coefficient diffusion problem with independently derived source and boundary data. [Implementation status](docs/IMPLEMENTATION_STATUS.md) · [Stage 2 parity evidence](evidence/stage2-registry/parity.json)
+Stages 0 and 1 were completed on 2026-11-20. Stage 2 was completed locally on 2026-11-23. The reviewed registry covers three manufactured fields, including positive variable diffusion with a nonzero Neumann trace. The matrix covers 42 studies with independent scikit-fem checks on generated and imported meshes. The 31 historical studies retain their original decisions. The next numerical milestone is a matched serial/MPI Poisson comparison on a separately pinned parallel build. [Implementation status](docs/IMPLEMENTATION_STATUS.md) · [Matrix evidence](evidence/stage2/coverage.json) · [Archive parity](evidence/stage2/parity.json)
 
 ## Project goal
 
