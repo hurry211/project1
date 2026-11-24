@@ -219,6 +219,12 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
     rep.add(Check("solver_claims_match_spec", not bad, "CLAIM_SPEC_MISMATCH",
                   f"mismatched fields: {bad}" if bad else "run parameters match frozen spec"))
 
+    if problem.kappa != "1":
+        order = res.get("stiffness_quadrature_order")
+        expected = 2 * execution.polynomial_order + 1
+        rep.add(Check("variable_stiffness_quadrature_order", type(order) is int and order == expected,
+                      "QUADRATURE_CLAIM_MISMATCH", f"reported weighted stiffness order {order}, expected {expected}"))
+
     conv = res.get("solver_converged")
     rep.add(Check("solver_reported_convergence",
                   type(conv) is bool and (conv or not validation.require_solver_converged), "SOLVER_NOT_CONVERGED",

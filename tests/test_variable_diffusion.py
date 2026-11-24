@@ -102,6 +102,29 @@ def test_variable_claims_bind_equation_and_coefficient(specs_dir, tmp_path):
         assert not check.passed and check.code == "CLAIM_SPEC_MISMATCH"
 
 
+def test_weighted_stiffness_claim_is_bound_to_order(specs_dir, tmp_path):
+    raw = variable_input(specs_dir)
+    raw["execution"].update(polynomial_order=2, mesh_levels=[4])
+    study = StudySpec.model_validate(raw)
+    level = make_attempt(tmp_path, study) / "levels" / "n0004"
+    path = level / "result.json"
+    result = json.loads(path.read_text())
+
+    def stiffness_check():
+        report = verify_level(level, study.problem, study.execution, study.validation, 4)
+        return next(c for c in report.checks if c.name == "variable_stiffness_quadrature_order")
+
+    assert stiffness_check().passed
+    for order in (2, 5.0, None):
+        if order is None:
+            del result["stiffness_quadrature_order"]
+        else:
+            result["stiffness_quadrature_order"] = order
+        path.write_text(json.dumps(result))
+        check = stiffness_check()
+        assert not check.passed and check.code == "QUADRATURE_CLAIM_MISMATCH"
+
+
 @pytest.mark.mfem
 @requires_mfem
 @pytest.mark.parametrize("fault", ["omit_coefficient_gradient", "omit_neumann_coefficient"])
