@@ -34,6 +34,7 @@
 
 #include <chrono>
 #include <cmath>
+#include <cstdlib>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -41,6 +42,9 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#ifdef __linux__
+#include <sys/resource.h>
+#endif
 
 using namespace mfem;
 
@@ -456,6 +460,7 @@ int main(int argc, char *argv[])
    const double outward_total = flux.OutwardTotal();
 
    // 7. Export raw data for the independent verifier.
+   const auto export_start = std::chrono::steady_clock::now();
    const std::string od(out_dir);
    {
       std::ofstream f(od + "/elements.txt");
@@ -595,6 +600,21 @@ int main(int argc, char *argv[])
         << "  \"time_error_ms\": " << JsonNum(ms(error_start, t3)) << "\n"
         << "}\n";
       if (!FinishExport(f, "result.json")) { return 7; }
+   }
+   if (std::getenv("MFEM_STUDY_PROFILE"))
+   {
+      const auto export_end = std::chrono::steady_clock::now();
+      std::string peak_rss = "null";
+#ifdef __linux__
+      struct rusage usage;
+      if (getrusage(RUSAGE_SELF, &usage) == 0) { peak_rss = std::to_string(usage.ru_maxrss); }
+#endif
+      std::cerr << "MFEM_PROFILE_V1 {\"peak_rss_kib\":" << peak_rss
+                << ",\"setup_seconds\":" << JsonNum(ms(t0, t1) / 1000)
+                << ",\"solve_seconds\":" << JsonNum(ms(t1, t2) / 1000)
+                << ",\"error_seconds\":" << JsonNum(ms(error_start, t3) / 1000)
+                << ",\"export_seconds\":" << JsonNum(ms(export_start, export_end) / 1000)
+                << "}\n";
    }
 
    std::cout << std::setprecision(6)

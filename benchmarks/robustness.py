@@ -14,6 +14,7 @@ from unittest.mock import patch
 import numpy as np
 
 from sciagent.controller import reverify
+from sciagent.profiling import capture
 from verifier import verifier
 
 from .scoring import metrics
@@ -48,7 +49,18 @@ def result_checks(report, n):
     return {c["name"]: bool(c["passed"]) for c in checks}
 
 
-def trial(row, controls, workspace):
+def _verdict(check_profiling, verify, *args, **kwargs):
+    baseline = verify(*args, **kwargs)
+    if check_profiling:
+        with capture():
+            timed = verify(*args, **kwargs)
+        # Each pair reads exactly the same directory, including corrupted inputs.
+        require(json.dumps(timed) == json.dumps(baseline),
+                "enabling the phase timers changed the full numerical or archive verdict")
+    return baseline
+
+
+def trial(row, controls, workspace, *, check_profiling=False):
     cohort, kind, case, family, n, seed = row
     control = controls[case]
     level_path = ATTEMPT / "levels" / f"n{n:04d}"
@@ -92,10 +104,10 @@ def trial(row, controls, workspace):
            "n": n, "draw_seed": seed, "witness": witness}
     try:
         if kind.startswith("archive"):
-            report = reverify(run / ATTEMPT, expected_digest=control.digest)
+            report = _verdict(check_profiling, reverify, run / ATTEMPT, expected_digest=control.digest)
             checks = {"archive_integrity": report["integrity"]["passed"]}
         else:
-            report = verifier.verify_attempt(run / ATTEMPT, require_run_records=True)
+            report = _verdict(check_profiling, verifier.verify_attempt, run / ATTEMPT, require_run_records=True)
             checks = result_checks(report, n)
         out.update(verdict=report["verdict"], codes=report["failure_codes"],
                    evaluated=sorted(checks), failed=sorted(k for k, passed in checks.items() if not passed))
@@ -104,7 +116,7 @@ def trial(row, controls, workspace):
     return out
 
 
-def checker_controls(controls):
+def checker_controls(controls, *, check_profiling=False):
     """Deliberately damage the production reference assembly on certified good inputs."""
     original = verifier.reference_solve
     records = []
@@ -119,7 +131,8 @@ def checker_controls(controls):
             return original(mesh, basis, q, problem, coords, on_dir, u, load, m)
         with patch.object(verifier, "reference_solve", altered):
             for case, control in controls.items():
-                report = verifier.verify_attempt(control.run / ATTEMPT, require_run_records=True)
+                report = _verdict(check_profiling, verifier.verify_attempt, control.run / ATTEMPT,
+                                  require_run_records=True)
                 records.append({"case": case, "mutation": mutation, "verdict": report["verdict"],
                                 "codes": report["failure_codes"],
                                 "min_relative_reference_difference":
@@ -127,14 +140,14 @@ def checker_controls(controls):
     return records
 
 
-def run_campaign(directory, output, seed):
+def run_campaign(directory, output, seed, *, check_profiling=False):
     controls = load_controls(directory)
     rows = []
     with TemporaryDirectory(prefix="poisson-challenge-") as base:
         for row in design(controls, seed):
             with TemporaryDirectory(dir=base) as scratch:
-                rows.append(trial(row, controls, Path(scratch)))
-    checker = checker_controls(controls)
+                rows.append(trial(row, controls, Path(scratch), check_profiling=check_profiling))
+    checker = checker_controls(controls, check_profiling=check_profiling)
     scores = metrics(rows)
     report = {"schema_version": 1, "seed": seed, "verifier_version": verifier.VERIFIER_VERSION,
               "python": platform.python_version(), "packages": {p: version(p) for p in ("numpy", "scipy", "scikit-fem")},
@@ -142,6 +155,11 @@ def run_campaign(directory, output, seed):
                                 for p in sorted((ROOT / package).glob("*.py"))},
               "controls": {k: v.certificate for k, v in controls.items()}, "metrics": scores,
               "reference_checker_mutations": checker}
+    if check_profiling:
+        report["profiling_equivalence"] = {
+            "scored_full_verdicts_equal": sum(row["verdict"] != "ERROR" for row in rows),
+            "calibration_full_verdicts_equal": len(checker),
+        }
     # Keep each individual trial on one line for diffing and streaming inspection.
     output.parent.mkdir(parents=True, exist_ok=True)
     header = json.dumps(report, indent=2, allow_nan=False)[:-2]
@@ -166,11 +184,15 @@ def main():
     args.add_argument("--controls", type=Path, help="reuse the archives bound by an existing index")
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--seed", type=int, default=20261120)
+    parser.add_argument("--check-profiling", action="store_true",
+                        help="compare full verdicts with and without phase timing on the same archive")
     options = parser.parse_args()
     directory = options.generate_controls or options.controls
     if options.generate_controls:
         generate_controls(directory.resolve())
-    return 0 if run_campaign(directory.resolve(), options.report, options.seed) else 1
+    ok = run_campaign(directory.resolve(), options.report, options.seed,
+                      check_profiling=options.check_profiling)
+    return 0 if ok else 1
 
 
 if __name__ == "__main__":

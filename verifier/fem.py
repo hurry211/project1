@@ -34,6 +34,29 @@ class MeshData:
     bdr_xy: np.ndarray        # (B, 2, 2) segment endpoints
 
 
+def boundary_edge_owners(mesh: MeshData, attributes):
+    """Locate the requested exported segments using the verifier's edge keys."""
+    verts = np.round(mesh.verts, 12)
+    candidates = np.zeros(len(verts), dtype=bool)
+    keys = set()
+    for attr in attributes:
+        segments = np.round(mesh.bdr_xy[mesh.bdr_attr == attr], 12)
+        if len(segments) == 0:
+            continue
+        keys.update(frozenset(map(tuple, segment)) for segment in segments)
+        # A matching edge must have an endpoint inside this group's bounds.
+        # Use the actual segments, including displaced or mixed-label inputs.
+        lo, hi = segments.min(axis=(0, 1)), segments.max(axis=(0, 1))
+        candidates |= np.any(np.all((verts >= lo) & (verts <= hi), axis=2), axis=1)
+    owners = {}
+    for e in np.flatnonzero(candidates):
+        for k, a in enumerate(verts[e]):
+            key = frozenset((tuple(a), tuple(verts[e, (k + 1) % verts.shape[1]])))
+            if key in keys:
+                owners[key] = e
+    return owners
+
+
 def lattice_indices(xy, subdivisions, tol):
     """Return integer coordinates on the closed unit-square grid."""
     if np.any(xy < -tol) or np.any(xy > 1 + tol):
@@ -250,12 +273,18 @@ def build_local_basis(mesh: MeshData, p: int) -> LocalBasis:
     if np.any(node_ref < -1e-9) or np.any(node_ref > 1 + 1e-9) or (
             mesh.geom == "tri" and np.any(node_ref.sum(-1) > 1 + 1e-9)):
         raise ArtifactError("exported dof node lies outside its element")
-    V, _, _ = eval_monomials(exps, node_ref[..., 0], node_ref[..., 1])  # (E, nloc_nodes, nmono)
+    # Share a basis only when all exported nodes have exactly the same
+    # reference coordinates in the same local order, including signed zero.
+    shared = np.all(node_ref.view(np.uint64) == node_ref[:1].view(np.uint64))
+    nodes = node_ref[:1] if shared else node_ref
+    V, _, _ = eval_monomials(exps, nodes[..., 0], nodes[..., 1])
     cond = np.linalg.cond(V)
     max_cond = float(np.max(cond))
     if not np.isfinite(max_cond) or max_cond > 1e10:
         raise ArtifactError(f"local node set is not unisolvent (max cond {max_cond:.3e})")
     coeffs = np.linalg.inv(V)  # V[e,i,m] C[e,m,k] = delta_ik
+    if shared:
+        coeffs = np.broadcast_to(coeffs, (len(node_ref), nloc, nloc))
     return LocalBasis(exps=exps, coeffs=coeffs, max_cond=max_cond, node_ref=node_ref)
 
 
@@ -271,11 +300,21 @@ class QuadData:
 def element_quadrature(mesh: MeshData, basis: LocalBasis, m: int) -> QuadData:
     xi, eta, w = reference_quadrature(mesh.geom, m)
     X, J = geometry_map(mesh.geom, mesh.verts, xi, eta)
-    detJ = J[..., 0, 0] * J[..., 1, 1] - J[..., 0, 1] * J[..., 1, 0]
+    # Each straight triangle has one affine Jacobian. Quadrilateral maps
+    # can vary across quadrature points even when the basis is shared.
+    affine = mesh.geom == "tri"
+    jac = J[:, :1] if affine else J
+    det = jac[..., 0, 0] * jac[..., 1, 1] - jac[..., 0, 1] * jac[..., 1, 0]
+    E, Q = X.shape[:2]
+    detJ = np.broadcast_to(det, (E, Q))
     M, dMx, dMy = eval_monomials(basis.exps, xi, eta)  # (Q, nmono)
-    phi = np.einsum("qm,emk->eqk", M, basis.coeffs)
-    dphi_ref = np.stack([np.einsum("qm,emk->eqk", dMx, basis.coeffs),
-                         np.einsum("qm,emk->eqk", dMy, basis.coeffs)], axis=-1)
-    Jinv = np.linalg.inv(J)  # (E,Q,2,2): d xi_j / d x_i = Jinv[j, i]
-    gphi = np.einsum("eqkj,eqji->eqki", dphi_ref, Jinv)
+    coeffs = basis.coeffs[:1] if basis.coeffs.strides[0] == 0 else basis.coeffs
+    nloc = coeffs.shape[-1]
+    phi = np.broadcast_to(np.einsum("qm,emk->eqk", M, coeffs), (E, Q, nloc))
+    if affine and nloc == 3:  # Gradients of linear triangle shapes are constant.
+        dMx, dMy = dMx[:1], dMy[:1]
+    dphi_ref = np.stack([np.einsum("qm,emk->eqk", dMx, coeffs),
+                         np.einsum("qm,emk->eqk", dMy, coeffs)], axis=-1)
+    gphi = np.einsum("eqkj,eqji->eqki", dphi_ref, np.linalg.inv(jac))
+    gphi = np.broadcast_to(gphi, (E, Q, nloc, 2))
     return QuadData(X=X, wdet=w[None, :] * np.abs(detJ), detJ=detJ, phi=phi, gphi=gphi)

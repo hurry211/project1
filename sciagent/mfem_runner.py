@@ -16,6 +16,7 @@ import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+from . import profiling
 from .environment import DEFAULT_SOLVER_BIN, PROJECT_ROOT, mfem_install_dir
 from .spec import ExecutionSpec, ProblemSpec, compact_expression
 
@@ -182,18 +183,21 @@ def run_level(problem: ProblemSpec, execution: ExecutionSpec, case_id: str, n: i
     if mesh_path is not None:
         cmd.extend(["--mesh", str(mesh_path), "--mesh-refinements", str(refinements)])
     (level_dir / "command.json").write_text(json.dumps({"argv": cmd, "shell": shlex.join(cmd)}, indent=2))
-    t0 = time.time()
+    t0 = time.monotonic()
     timed_out = False
     try:
-        p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout_s,
-                           preexec_fn=_limits(mem_mb))
+        env = {**os.environ, "MFEM_STUDY_PROFILE": "1"} if profiling.enabled() else None
+        with profiling.phase("native.process"):
+            p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout_s,
+                               preexec_fn=_limits(mem_mb), env=env)
         code, out, err = p.returncode, p.stdout, p.stderr
     except subprocess.TimeoutExpired as exc:
         timed_out = True
         code = None
         out = exc.stdout.decode() if isinstance(exc.stdout, bytes) else (exc.stdout or "")
         err = exc.stderr.decode() if isinstance(exc.stderr, bytes) else (exc.stderr or "")
-    wall = time.time() - t0
+    wall = time.monotonic() - t0
+    profiling.record_native(n, wall, err)
     (level_dir / "stdout.txt").write_text(out)
     (level_dir / "stderr.txt").write_text(err)
     meaning = "TIMEOUT" if timed_out else EXIT_CODES.get(code, f"UNKNOWN_EXIT_{code}")

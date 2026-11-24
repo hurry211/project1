@@ -23,7 +23,7 @@ from pydantic import ValidationError
 
 from verifier.verifier import ACCEPTED, RETRY_ELIGIBLE, check_mms_consistency, verify_attempt
 
-from . import capability, environment, mfem_runner
+from . import capability, environment, mfem_runner, profiling
 from .evidence import EvidenceStore, check_archive, sha256_file, utc_now
 from .gmsh import ARCHIVED_MESH, inspect_gmsh, read_mesh
 from .spec import ExecutionSpec, StudySpec, canonical_json, sha256_of
@@ -37,6 +37,7 @@ def _new_run_dir(runs_dir: Path, label: str) -> Path:
     return Path(runs_dir) / f"{stamp}_{label}"
 
 
+@profiling.phase("controller.inputs")
 def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
               expected_spec_sha256: str | None = None) -> dict:
     spec_path = Path(spec_path)
@@ -58,7 +59,8 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
         store.event(state, code=code, reason=reason)
         manifest.update({"final_state": state, "final_code": code, "final_reason": reason,
                          "finished_utc": utc_now(), "total_wall_seconds": round(time.monotonic() - started, 3)})
-        store.finish_manifest(manifest)
+        with profiling.phase("archive.finalize"):
+            store.finish_manifest(manifest)
         return manifest
 
     if expected_spec_sha256 is not None and input_digest != expected_spec_sha256:
@@ -94,6 +96,7 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
     store.event("SPEC_VALIDATED", frozen_sha256=hashes)
 
     # ---- ENVIRONMENT_CHECKED --------------------------------------------------
+    profiling.mark("controller.environment")
     env = environment.probe()
     store.write_json_once("environment.json", env)
     manifest["environment"] = {"mfem_version": env["mfem"].get("version"), "mfem_git": env["mfem"].get("git"),
@@ -125,6 +128,7 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
     store.event("READY", case=case_id, capability=decision.code)
 
     # ---- attempt loop ---------------------------------------------------------
+    profiling.mark("controller.attempt")
     pol = study.policy
     execution = study.execution
     for attempt in range(1, pol.max_attempts + 1):

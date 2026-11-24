@@ -23,6 +23,7 @@ import scipy.sparse.linalg as spla
 from sciagent.spec import (SIDE_GEOMETRY, SIDE_NORMAL, ExecutionSpec, ProblemSpec,
                            ValidationSpec, compact_expression)
 from sciagent.evidence import sha256_file
+from sciagent.profiling import mark, phase
 from sciagent.gmsh import ARCHIVED_MESH, CartesianGmsh, inspect_gmsh, read_mesh
 from sciagent.spec import StudySpec
 
@@ -174,6 +175,7 @@ def _refined_diagonals(mesh: MeshData, n: int, source: CartesianGmsh) -> bool:
     return bool(np.array_equal(np.isin(missing, [1, 2]), np.asarray(source.rising_diagonal)[indices]))
 
 
+@phase("verify.solver_claims")
 def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec,
                  validation: ValidationSpec, n: int, *, require_run_record: bool = False,
                  external_grid: CartesianGmsh | None = None) -> LevelReport:
@@ -243,6 +245,7 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
         except (OSError, ValueError) as exc:
             rep.add(Check("process_completed", False, "MALFORMED_ARTIFACT", str(exc)))
 
+    mark("verify.field_load")
     try:
         mesh = load_mesh_data(level_dir)
     except (ArtifactError, OSError, UnicodeError) as exc:
@@ -255,6 +258,7 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
     if not finite:
         return rep
 
+    mark("verify.geometry_boundary")
     try:
         coords, spread = _unique_dof_coords(mesh, N)
     except ArtifactError as exc:
@@ -332,6 +336,7 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
                   dmax, validation.dirichlet_nodal_abs_tol))
 
     # ---- Gate C: independent error integration ---------------------------
+    mark("verify.integration")
     try:
         basis = build_local_basis(mesh, p)
         m = p + 1 + validation.verifier_quadrature_extra_points
@@ -368,6 +373,7 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
                       rel, validation.self_report_rel_tol))
 
     # ---- Gate D: independent reference solve -----------------------------
+    mark("verify.reference")
     if validation.require_reference_solve:
         if N > validation.reference_solve_max_dofs:
             rep.add(Check("reference_solve", False, "REFERENCE_SKIPPED_TOO_LARGE",
@@ -403,13 +409,8 @@ def reference_solve(mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m) -> n
     # Prescribed outward flux is kappa * grad(u_exact) . n.
     neu = {b.attribute: b.label for b in problem.boundaries if b.kind == "neumann"}
     if neu:
-        nv = mesh.verts.shape[1]
-        edge_owner = {}
-        for e in range(E):
-            for k in range(nv):
-                a = tuple(np.round(mesh.verts[e, k], 12))
-                b = tuple(np.round(mesh.verts[e, (k + 1) % nv], 12))
-                edge_owner[frozenset((a, b))] = e
+        from .fem import boundary_edge_owners
+        edge_owner = boundary_edge_owners(mesh, neu)
         g1, w1 = gauss_01(m)
         for attr, seg in zip(mesh.bdr_attr, mesh.bdr_xy):
             lbl = neu.get(int(attr))
@@ -451,6 +452,7 @@ def observed_orders(levels: list[LevelReport]) -> list[dict]:
     return pairs
 
 
+@phase("verify.study")
 def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False) -> dict:
     """Verify one attempt directory from its files alone."""
     attempt_dir = Path(attempt_dir)
@@ -531,6 +533,7 @@ def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False) -> d
     else:
         verdict = ACCEPTED
 
+    mark("verify.input_hashes")
     inputs = {"frozen/problem.json": sha256_file(frozen / "problem.json"),
               "frozen/validation.json": sha256_file(frozen / "validation.json"),
               "execution.json": sha256_file(attempt_dir / "execution.json")}
@@ -541,6 +544,7 @@ def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False) -> d
             pth = Path(lv.level_dir) / fn
             inputs[pth.relative_to(attempt_dir).as_posix()] = sha256_file(pth)
 
+    mark("verify.study")
     return {
         "verifier": "verifier.verifier", "verifier_version": VERIFIER_VERSION,
         "verdict": verdict,
