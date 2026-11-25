@@ -1,0 +1,5 @@
+Command: python -m pytest -q --require-mfem --require-mpi
+Kernel watchdog excerpts during the Linux-export rerun
+[  861.024264] watchdog: BUG: soft lockup - CPU#16 stuck for 57s! [mpiexec:7068]
+[  861.024266] watchdog: BUG: soft lockup - CPU#8 stuck for 57s! [mini_init:295]
+[  921.041256] watchdog: BUG: soft lockup - CPU#11 stuck for 27s! [mini_init:295]
