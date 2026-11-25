@@ -1,0 +1,4181 @@
+{
+  "cases": {
+    "budget": {
+      "paired": {
+        "cfac/cfac_rt0": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac/classical": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac/no_coarse": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac/no_floor": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac/no_witness": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "classical/fixed": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        }
+      },
+      "policies": {
+        "cfac": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "setup": 7
+          },
+          "action_total_ns": {
+            "setup": 5025318
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 0.808706,
+            "median": 0.693101,
+            "min": 0.65491
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 61.7421875
+          },
+          "statuses": {
+            "BUDGET_EXHAUSTED": 7
+          },
+          "submitted_ms": {
+            "max": 70.084625,
+            "median": 57.268695,
+            "min": 55.779808
+          },
+          "submitted_total_ns": 422738991,
+          "unsuccessful_total_ns": 422738991
+        },
+        "cfac_rt0": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "setup": 7
+          },
+          "action_total_ns": {
+            "setup": 5157170
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 0.82369,
+            "median": 0.75086,
+            "min": 0.649492
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 61.7421875
+          },
+          "statuses": {
+            "BUDGET_EXHAUSTED": 7
+          },
+          "submitted_ms": {
+            "max": 89.756352,
+            "median": 63.335639,
+            "min": 56.000926
+          },
+          "submitted_total_ns": 460533954,
+          "unsuccessful_total_ns": 460533954
+        },
+        "classical": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "setup": 7
+          },
+          "action_total_ns": {
+            "setup": 5068035
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 0.807306,
+            "median": 0.69334,
+            "min": 0.652588
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 61.7421875
+          },
+          "statuses": {
+            "BUDGET_EXHAUSTED": 7
+          },
+          "submitted_ms": {
+            "max": 72.362187,
+            "median": 63.43282,
+            "min": 52.611002
+          },
+          "submitted_total_ns": 433910374,
+          "unsuccessful_total_ns": 433910374
+        },
+        "fixed": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "setup": 7
+          },
+          "action_total_ns": {
+            "setup": 5060009
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 0.814757,
+            "median": 0.722523,
+            "min": 0.635668
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 61.7421875
+          },
+          "statuses": {
+            "BUDGET_EXHAUSTED": 7
+          },
+          "submitted_ms": {
+            "max": 66.067592,
+            "median": 62.925984,
+            "min": 55.687708
+          },
+          "submitted_total_ns": 430489102,
+          "unsuccessful_total_ns": 430489102
+        },
+        "no_coarse": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "setup": 7
+          },
+          "action_total_ns": {
+            "setup": 5293423
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 0.989162,
+            "median": 0.732299,
+            "min": 0.633091
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 61.7421875
+          },
+          "statuses": {
+            "BUDGET_EXHAUSTED": 7
+          },
+          "submitted_ms": {
+            "max": 76.328653,
+            "median": 61.396928,
+            "min": 53.067481
+          },
+          "submitted_total_ns": 446840692,
+          "unsuccessful_total_ns": 446840692
+        },
+        "no_floor": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "setup": 7
+          },
+          "action_total_ns": {
+            "setup": 4946839
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 0.825246,
+            "median": 0.666601,
+            "min": 0.62796
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 61.7421875
+          },
+          "statuses": {
+            "BUDGET_EXHAUSTED": 7
+          },
+          "submitted_ms": {
+            "max": 72.4206,
+            "median": 57.975149,
+            "min": 52.302606
+          },
+          "submitted_total_ns": 422557171,
+          "unsuccessful_total_ns": 422557171
+        },
+        "no_witness": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "setup": 7
+          },
+          "action_total_ns": {
+            "setup": 5135209
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 0.91527,
+            "median": 0.693746,
+            "min": 0.625457
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 61.7421875
+          },
+          "statuses": {
+            "BUDGET_EXHAUSTED": 7
+          },
+          "submitted_ms": {
+            "max": 87.167931,
+            "median": 60.583299,
+            "min": 52.254034
+          },
+          "submitted_total_ns": 456927586,
+          "unsuccessful_total_ns": 456927586
+        }
+      }
+    },
+    "hot_loose": {
+      "paired": {
+        "cfac/cfac_rt0": {
+          "distribution": {
+            "max": 1.0773613192251317,
+            "median": 0.9814034495695211,
+            "min": 0.8534320466982321
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.9814034495695211
+            },
+            {
+              "block": 1,
+              "ratio": 0.9781745407708808
+            },
+            {
+              "block": 2,
+              "ratio": 1.0773613192251317
+            },
+            {
+              "block": 3,
+              "ratio": 0.9933092122635067
+            },
+            {
+              "block": 4,
+              "ratio": 0.9393708462661379
+            },
+            {
+              "block": 5,
+              "ratio": 1.0509415031690947
+            },
+            {
+              "block": 6,
+              "ratio": 0.8534320466982321
+            }
+          ]
+        },
+        "cfac/classical": {
+          "distribution": {
+            "max": 1.2207143983324662,
+            "median": 1.17017195016606,
+            "min": 1.0672809818016202
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.2207143983324662
+            },
+            {
+              "block": 1,
+              "ratio": 1.1372208540768955
+            },
+            {
+              "block": 2,
+              "ratio": 1.1936597721245366
+            },
+            {
+              "block": 3,
+              "ratio": 1.17017195016606
+            },
+            {
+              "block": 4,
+              "ratio": 1.1118648406690195
+            },
+            {
+              "block": 5,
+              "ratio": 1.2158416015656495
+            },
+            {
+              "block": 6,
+              "ratio": 1.0672809818016202
+            }
+          ]
+        },
+        "cfac/no_coarse": {
+          "distribution": {
+            "max": 1.099107255779919,
+            "median": 1.0056176036943059,
+            "min": 0.9888860657255951
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.099107255779919
+            },
+            {
+              "block": 1,
+              "ratio": 0.9971083592170971
+            },
+            {
+              "block": 2,
+              "ratio": 1.0682907421192553
+            },
+            {
+              "block": 3,
+              "ratio": 1.0056176036943059
+            },
+            {
+              "block": 4,
+              "ratio": 0.9982199003535965
+            },
+            {
+              "block": 5,
+              "ratio": 1.055626692544084
+            },
+            {
+              "block": 6,
+              "ratio": 0.9888860657255951
+            }
+          ]
+        },
+        "cfac/no_floor": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac/no_witness": {
+          "distribution": {
+            "max": 1.2618188205890097,
+            "median": 1.175132641061016,
+            "min": 1.053093752879012
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.2618188205890097
+            },
+            {
+              "block": 1,
+              "ratio": 1.1023670582402505
+            },
+            {
+              "block": 2,
+              "ratio": 1.224346755276238
+            },
+            {
+              "block": 3,
+              "ratio": 1.1373493923427564
+            },
+            {
+              "block": 4,
+              "ratio": 1.175132641061016
+            },
+            {
+              "block": 5,
+              "ratio": 1.2305085277342482
+            },
+            {
+              "block": 6,
+              "ratio": 1.053093752879012
+            }
+          ]
+        },
+        "classical/fixed": {
+          "distribution": {
+            "max": 1.0501750761012336,
+            "median": 1.0335633372971211,
+            "min": 0.9271426858193899
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0354072759147515
+            },
+            {
+              "block": 1,
+              "ratio": 1.0023906386625279
+            },
+            {
+              "block": 2,
+              "ratio": 1.0335633372971211
+            },
+            {
+              "block": 3,
+              "ratio": 0.9271426858193899
+            },
+            {
+              "block": 4,
+              "ratio": 1.0501750761012336
+            },
+            {
+              "block": 5,
+              "ratio": 1.027197797702813
+            },
+            {
+              "block": 6,
+              "ratio": 1.0403363695550927
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 132.372398,
+            "median": 112.878355,
+            "min": 110.657605
+          },
+          "action_counts": {
+            "dual_coarse": 7,
+            "dual_local": 14,
+            "inspect": 49,
+            "primal_sweep": 21,
+            "setup": 7,
+            "witness_probe": 28
+          },
+          "action_total_ns": {
+            "dual_coarse": 9916694,
+            "dual_local": 12017937,
+            "inspect": 150114991,
+            "primal_sweep": 2110797,
+            "setup": 11968855,
+            "witness_probe": 209269348
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 62.460185,
+            "median": 55.737472,
+            "min": 52.80537
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.96875,
+            "median": 20.96875,
+            "min": 20.96875
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 55.8984375
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 132.372398,
+            "median": 112.878355,
+            "min": 110.657605
+          },
+          "submitted_total_ns": 819045589,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_rt0": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 134.880714,
+            "median": 113.126646,
+            "min": 104.11627
+          },
+          "action_counts": {
+            "dual_coarse": 7,
+            "dual_local": 14,
+            "inspect": 49,
+            "primal_sweep": 21,
+            "setup": 7,
+            "witness_probe": 28
+          },
+          "action_total_ns": {
+            "dual_coarse": 10051989,
+            "dual_local": 12312504,
+            "inspect": 152809205,
+            "primal_sweep": 2102578,
+            "setup": 10858774,
+            "witness_probe": 210627749
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 67.237165,
+            "median": 54.009926,
+            "min": 50.488323
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 56.0703125
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 134.880714,
+            "median": 113.126646,
+            "min": 104.11627
+          },
+          "submitted_total_ns": 838213314,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 108.806931,
+            "median": 97.30529,
+            "min": 93.972206
+          },
+          "action_counts": {
+            "inspect": 7,
+            "primal_sweep": 21,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7,
+            "stopping_check": 28
+          },
+          "action_total_ns": {
+            "inspect": 10747029,
+            "primal_sweep": 1684563,
+            "rt1_inspect": 24856368,
+            "rt1_reconstruct": 207462454,
+            "setup": 12520720,
+            "stopping_check": 28283917
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 44.726828,
+            "median": 40.827764,
+            "min": 35.750952
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.96875,
+            "median": 20.96875,
+            "min": 20.96875
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 55.8984375
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 108.806931,
+            "median": 97.30529,
+            "min": 93.972206
+          },
+          "submitted_total_ns": 707049102,
+          "unsuccessful_total_ns": 0
+        },
+        "fixed": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 104.730254,
+            "median": 101.661876,
+            "min": 90.920607
+          },
+          "action_counts": {
+            "inspect": 7,
+            "primal_sweep": 77,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7,
+            "stopping_check": 84
+          },
+          "action_total_ns": {
+            "inspect": 10299423,
+            "primal_sweep": 6177153,
+            "rt1_inspect": 25825688,
+            "rt1_reconstruct": 213048798,
+            "setup": 10137967,
+            "stopping_check": 29775211
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 46.144233,
+            "median": 42.70952,
+            "min": 36.649376
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.96875,
+            "median": 20.96875,
+            "min": 20.96875
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 55.5546875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 104.730254,
+            "median": 101.661876,
+            "min": 90.920607
+          },
+          "submitted_total_ns": 695735259,
+          "unsuccessful_total_ns": 0
+        },
+        "no_coarse": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 121.194339,
+            "median": 111.658108,
+            "min": 105.000294
+          },
+          "action_counts": {
+            "dual_local": 28,
+            "inspect": 49,
+            "primal_sweep": 14,
+            "setup": 7,
+            "witness_probe": 28
+          },
+          "action_total_ns": {
+            "dual_local": 23845182,
+            "inspect": 147574776,
+            "primal_sweep": 1399166,
+            "setup": 10137309,
+            "witness_probe": 207615544
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 59.19769,
+            "median": 56.268616,
+            "min": 49.28471
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 55.0390625
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 121.194339,
+            "median": 111.658108,
+            "min": 105.000294
+          },
+          "submitted_total_ns": 794914571,
+          "unsuccessful_total_ns": 0
+        },
+        "no_floor": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "dual_coarse": 14,
+            "dual_local": 14,
+            "inspect": 56,
+            "primal_sweep": 14,
+            "refine": 7,
+            "rt1_inspect": 14,
+            "rt1_reconstruct": 14,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "dual_coarse": 62132395,
+            "dual_local": 33980789,
+            "inspect": 211822602,
+            "primal_sweep": 6925188,
+            "refine": 46372066,
+            "rt1_inspect": 132207317,
+            "rt1_reconstruct": 1071305446,
+            "setup": 10924156
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 240.581579,
+            "median": 225.691616,
+            "min": 205.592631
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.65625,
+            "median": 21.65625,
+            "min": 21.65625
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 55.2109375
+          },
+          "statuses": {
+            "NO_ELIGIBLE_ACTION": 7
+          },
+          "submitted_ms": {
+            "max": 314.9929,
+            "median": 286.727941,
+            "min": 262.862735
+          },
+          "submitted_total_ns": 2000461528,
+          "unsuccessful_total_ns": 2000461528
+        },
+        "no_witness": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 107.187375,
+            "median": 100.381814,
+            "min": 91.61689
+          },
+          "action_counts": {
+            "algebraic_probe": 28,
+            "dual_coarse": 7,
+            "dual_local": 14,
+            "inspect": 49,
+            "primal_sweep": 21,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "algebraic_probe": 91773251,
+            "dual_coarse": 9717753,
+            "dual_local": 11762720,
+            "inspect": 150913649,
+            "primal_sweep": 1904026,
+            "setup": 10289595
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 45.000015,
+            "median": 38.532808,
+            "min": 36.34768
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 55.0390625
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 107.187375,
+            "median": 100.381814,
+            "min": 91.61689
+          },
+          "submitted_total_ns": 701419955,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "hot_tight": {
+      "paired": {
+        "cfac/cfac_rt0": {
+          "distribution": {
+            "max": 0.8801804692262812,
+            "median": 0.8606486370128658,
+            "min": 0.7507003165348324
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.8579722008551076
+            },
+            {
+              "block": 1,
+              "ratio": 0.8507857193474407
+            },
+            {
+              "block": 2,
+              "ratio": 0.8801804692262812
+            },
+            {
+              "block": 3,
+              "ratio": 0.8666483948720771
+            },
+            {
+              "block": 4,
+              "ratio": 0.8754259883437521
+            },
+            {
+              "block": 5,
+              "ratio": 0.7507003165348324
+            },
+            {
+              "block": 6,
+              "ratio": 0.8606486370128658
+            }
+          ]
+        },
+        "cfac/classical": {
+          "distribution": {
+            "max": 1.4092165208863427,
+            "median": 1.3678863181582108,
+            "min": 1.3211176816258539
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.381534215448619
+            },
+            {
+              "block": 1,
+              "ratio": 1.361366649347718
+            },
+            {
+              "block": 2,
+              "ratio": 1.3678863181582108
+            },
+            {
+              "block": 3,
+              "ratio": 1.3997731219994192
+            },
+            {
+              "block": 4,
+              "ratio": 1.3348906203094177
+            },
+            {
+              "block": 5,
+              "ratio": 1.3211176816258539
+            },
+            {
+              "block": 6,
+              "ratio": 1.4092165208863427
+            }
+          ]
+        },
+        "cfac/no_coarse": {
+          "distribution": {
+            "max": 0.8996698733967045,
+            "median": 0.8703352731695715,
+            "min": 0.834284851843871
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.834284851843871
+            },
+            {
+              "block": 1,
+              "ratio": 0.8818123812991666
+            },
+            {
+              "block": 2,
+              "ratio": 0.8644879094222487
+            },
+            {
+              "block": 3,
+              "ratio": 0.8737800677670619
+            },
+            {
+              "block": 4,
+              "ratio": 0.8703352731695715
+            },
+            {
+              "block": 5,
+              "ratio": 0.8402805952389435
+            },
+            {
+              "block": 6,
+              "ratio": 0.8996698733967045
+            }
+          ]
+        },
+        "cfac/no_floor": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac/no_witness": {
+          "distribution": {
+            "max": 1.363041989390793,
+            "median": 1.2700840384217988,
+            "min": 1.0621788843487137
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0621788843487137
+            },
+            {
+              "block": 1,
+              "ratio": 1.3344731151852096
+            },
+            {
+              "block": 2,
+              "ratio": 1.250959290144658
+            },
+            {
+              "block": 3,
+              "ratio": 1.3215066027413078
+            },
+            {
+              "block": 4,
+              "ratio": 1.2700840384217988
+            },
+            {
+              "block": 5,
+              "ratio": 1.2397295720101031
+            },
+            {
+              "block": 6,
+              "ratio": 1.363041989390793
+            }
+          ]
+        },
+        "classical/fixed": {
+          "distribution": {
+            "max": 0.7480320262384472,
+            "median": 0.7075024404686454,
+            "min": 0.6668820891048092
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.6668820891048092
+            },
+            {
+              "block": 1,
+              "ratio": 0.7137090360210829
+            },
+            {
+              "block": 2,
+              "ratio": 0.7075024404686454
+            },
+            {
+              "block": 3,
+              "ratio": 0.701901991717593
+            },
+            {
+              "block": 4,
+              "ratio": 0.7253433682394049
+            },
+            {
+              "block": 5,
+              "ratio": 0.6835702107113159
+            },
+            {
+              "block": 6,
+              "ratio": 0.7480320262384472
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 491.49221,
+            "median": 472.661243,
+            "min": 415.691992
+          },
+          "action_counts": {
+            "dual_coarse": 7,
+            "dual_local": 21,
+            "inspect": 70,
+            "primal_sweep": 28,
+            "refine": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7,
+            "witness_probe": 56
+          },
+          "action_total_ns": {
+            "dual_coarse": 57347022,
+            "dual_local": 95699062,
+            "inspect": 751502486,
+            "primal_sweep": 22714906,
+            "refine": 50716305,
+            "rt1_inspect": 24638848,
+            "rt1_reconstruct": 210915761,
+            "setup": 10639084,
+            "witness_probe": 1576754273
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 427.620316,
+            "median": 404.999204,
+            "min": 360.044575
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.65625,
+            "median": 21.65625,
+            "min": 21.65625
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 60.0234375
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 491.49221,
+            "median": 472.661243,
+            "min": 415.691992
+          },
+          "submitted_total_ns": 3226829130,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_rt0": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 629.627073,
+            "median": 545.038681,
+            "min": 472.280409
+          },
+          "action_counts": {
+            "dual_coarse": 7,
+            "dual_local": 21,
+            "inspect": 84,
+            "primal_sweep": 42,
+            "refine": 7,
+            "setup": 7,
+            "witness_probe": 63
+          },
+          "action_total_ns": {
+            "dual_coarse": 55863242,
+            "dual_local": 96916977,
+            "inspect": 1028381625,
+            "primal_sweep": 45310776,
+            "refine": 54536461,
+            "setup": 10830565,
+            "witness_probe": 2076420452
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 553.756024,
+            "median": 481.069538,
+            "min": 416.475977
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.65625,
+            "median": 21.65625,
+            "min": 21.65625
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 60.3671875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 629.627073,
+            "median": 545.038681,
+            "min": 472.280409
+          },
+          "submitted_total_ns": 3813628192,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 357.773762,
+            "median": 337.875044,
+            "min": 303.893669
+          },
+          "action_counts": {
+            "inspect": 14,
+            "primal_sweep": 91,
+            "refine": 7,
+            "rt1_inspect": 14,
+            "rt1_reconstruct": 14,
+            "setup": 7,
+            "stopping_check": 105
+          },
+          "action_total_ns": {
+            "inspect": 55565462,
+            "primal_sweep": 74754423,
+            "refine": 47720724,
+            "rt1_inspect": 158391597,
+            "rt1_reconstruct": 1180526773,
+            "setup": 11183432,
+            "stopping_check": 414848416
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 297.955926,
+            "median": 275.886831,
+            "min": 248.645185
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.828125,
+            "median": 21.828125,
+            "min": 21.828125
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 59.3359375
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 357.773762,
+            "median": 337.875044,
+            "min": 303.893669
+          },
+          "submitted_total_ns": 2359987464,
+          "unsuccessful_total_ns": 0
+        },
+        "fixed": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 533.465011,
+            "median": 465.959232,
+            "min": 429.530206
+          },
+          "action_counts": {
+            "inspect": 14,
+            "primal_sweep": 392,
+            "refine": 7,
+            "rt1_inspect": 14,
+            "rt1_reconstruct": 14,
+            "setup": 7,
+            "stopping_check": 406
+          },
+          "action_total_ns": {
+            "inspect": 77830772,
+            "primal_sweep": 395704315,
+            "refine": 46198033,
+            "rt1_inspect": 258900175,
+            "rt1_reconstruct": 1385286454,
+            "setup": 11240205,
+            "stopping_check": 740446095
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 468.009199,
+            "median": 410.328948,
+            "min": 368.005406
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.515625,
+            "median": 22.515625,
+            "min": 22.515625
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 56.9296875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 533.465011,
+            "median": 465.959232,
+            "min": 429.530206
+          },
+          "submitted_total_ns": 3345443798,
+          "unsuccessful_total_ns": 0
+        },
+        "no_coarse": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 589.117984,
+            "median": 529.237566,
+            "min": 480.853448
+          },
+          "action_counts": {
+            "dual_local": 35,
+            "inspect": 84,
+            "primal_sweep": 35,
+            "refine": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7,
+            "witness_probe": 63
+          },
+          "action_total_ns": {
+            "dual_local": 159894783,
+            "inspect": 967217122,
+            "primal_sweep": 30542507,
+            "refine": 50080112,
+            "rt1_inspect": 24991049,
+            "rt1_reconstruct": 210752102,
+            "setup": 12055407,
+            "witness_probe": 1861025799
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 530.072554,
+            "median": 475.067156,
+            "min": 427.576768
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.65625,
+            "median": 21.65625,
+            "min": 21.65625
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 61.0546875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 589.117984,
+            "median": 529.237566,
+            "min": 480.853448
+          },
+          "submitted_total_ns": 3728197163,
+          "unsuccessful_total_ns": 0
+        },
+        "no_floor": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "dual_coarse": 14,
+            "dual_local": 14,
+            "inspect": 56,
+            "primal_sweep": 14,
+            "refine": 7,
+            "rt1_inspect": 14,
+            "rt1_reconstruct": 14,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "dual_coarse": 65002005,
+            "dual_local": 38065405,
+            "inspect": 211057170,
+            "primal_sweep": 7114911,
+            "refine": 47479473,
+            "rt1_inspect": 133150123,
+            "rt1_reconstruct": 1075899992,
+            "setup": 10714565
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 256.426222,
+            "median": 227.570513,
+            "min": 205.885668
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.65625,
+            "median": 21.65625,
+            "min": 21.65625
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 56.5859375
+          },
+          "statuses": {
+            "NO_ELIGIBLE_ACTION": 7
+          },
+          "submitted_ms": {
+            "max": 323.346262,
+            "median": 290.214927,
+            "min": 262.26966
+          },
+          "submitted_total_ns": 2021188813,
+          "unsuccessful_total_ns": 2021188813
+        },
+        "no_witness": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 462.72075,
+            "median": 349.320929,
+            "min": 326.6435
+          },
+          "action_counts": {
+            "algebraic_probe": 56,
+            "dual_coarse": 7,
+            "dual_local": 21,
+            "inspect": 70,
+            "primal_sweep": 28,
+            "refine": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "algebraic_probe": 845997012,
+            "dual_coarse": 55760210,
+            "dual_local": 95568803,
+            "inspect": 785192924,
+            "primal_sweep": 22952822,
+            "refine": 49612869,
+            "rt1_inspect": 26115999,
+            "rt1_reconstruct": 226702133,
+            "setup": 12572771
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 371.283638,
+            "median": 290.146689,
+            "min": 268.416476
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.65625,
+            "median": 21.65625,
+            "min": 21.484375
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 56.2421875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 462.72075,
+            "median": 349.320929,
+            "min": 326.6435
+          },
+          "submitted_total_ns": 2574349840,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "null": {
+      "paired": {
+        "cfac/cfac_rt0": {
+          "distribution": {
+            "max": 1.1134043121959134,
+            "median": 1.035332396054795,
+            "min": 0.7094051543256406
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0354621474789085
+            },
+            {
+              "block": 1,
+              "ratio": 0.8688687705399556
+            },
+            {
+              "block": 2,
+              "ratio": 1.0573294044534662
+            },
+            {
+              "block": 3,
+              "ratio": 0.9693017464400409
+            },
+            {
+              "block": 4,
+              "ratio": 1.1134043121959134
+            },
+            {
+              "block": 5,
+              "ratio": 0.7094051543256406
+            },
+            {
+              "block": 6,
+              "ratio": 1.035332396054795
+            }
+          ]
+        },
+        "cfac/classical": {
+          "distribution": {
+            "max": 1.0981466727573164,
+            "median": 0.9844735843420213,
+            "min": 0.910674525500884
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.9165414176182326
+            },
+            {
+              "block": 1,
+              "ratio": 0.9865180456557151
+            },
+            {
+              "block": 2,
+              "ratio": 0.910674525500884
+            },
+            {
+              "block": 3,
+              "ratio": 0.9844735843420213
+            },
+            {
+              "block": 4,
+              "ratio": 1.0019224246195308
+            },
+            {
+              "block": 5,
+              "ratio": 0.9256730082066117
+            },
+            {
+              "block": 6,
+              "ratio": 1.0981466727573164
+            }
+          ]
+        },
+        "cfac/no_coarse": {
+          "distribution": {
+            "max": 1.0897206179282983,
+            "median": 0.9721613923140123,
+            "min": 0.8332567033639025
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.9389127275288068
+            },
+            {
+              "block": 1,
+              "ratio": 0.9721613923140123
+            },
+            {
+              "block": 2,
+              "ratio": 0.8332567033639025
+            },
+            {
+              "block": 3,
+              "ratio": 0.9900504279166205
+            },
+            {
+              "block": 4,
+              "ratio": 1.0897206179282983
+            },
+            {
+              "block": 5,
+              "ratio": 1.042967080056978
+            },
+            {
+              "block": 6,
+              "ratio": 0.9028540859771
+            }
+          ]
+        },
+        "cfac/no_floor": {
+          "distribution": {
+            "max": 1.0643367968918553,
+            "median": 0.9827940762757356,
+            "min": 0.8516434711137031
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.8516434711137031
+            },
+            {
+              "block": 1,
+              "ratio": 0.9583525617802141
+            },
+            {
+              "block": 2,
+              "ratio": 0.9686507636944954
+            },
+            {
+              "block": 3,
+              "ratio": 1.0483522790833366
+            },
+            {
+              "block": 4,
+              "ratio": 1.0643367968918553
+            },
+            {
+              "block": 5,
+              "ratio": 0.9827940762757356
+            },
+            {
+              "block": 6,
+              "ratio": 0.9913719717917621
+            }
+          ]
+        },
+        "cfac/no_witness": {
+          "distribution": {
+            "max": 1.1172078955612008,
+            "median": 1.041869090248048,
+            "min": 0.930822988901101
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.930822988901101
+            },
+            {
+              "block": 1,
+              "ratio": 1.0551025531412743
+            },
+            {
+              "block": 2,
+              "ratio": 1.041869090248048
+            },
+            {
+              "block": 3,
+              "ratio": 1.021087498352713
+            },
+            {
+              "block": 4,
+              "ratio": 1.1104543522057517
+            },
+            {
+              "block": 5,
+              "ratio": 0.9952653433235377
+            },
+            {
+              "block": 6,
+              "ratio": 1.1172078955612008
+            }
+          ]
+        },
+        "classical/fixed": {
+          "distribution": {
+            "max": 1.1571950280734757,
+            "median": 1.0618238891034322,
+            "min": 0.9186599213518567
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0928763007814144
+            },
+            {
+              "block": 1,
+              "ratio": 1.008319652433423
+            },
+            {
+              "block": 2,
+              "ratio": 1.1571950280734757
+            },
+            {
+              "block": 3,
+              "ratio": 1.0618238891034322
+            },
+            {
+              "block": 4,
+              "ratio": 1.0858276278410237
+            },
+            {
+              "block": 5,
+              "ratio": 1.0349802569397153
+            },
+            {
+              "block": 6,
+              "ratio": 0.9186599213518567
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 78.127997,
+            "median": 59.628133,
+            "min": 56.865765
+          },
+          "action_counts": {
+            "inspect": 7,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "inspect": 9729680,
+            "setup": 5514524
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 3.278312,
+            "median": 2.062148,
+            "min": 1.789483
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 61.7421875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 78.127997,
+            "median": 59.628133,
+            "min": 56.865765
+          },
+          "submitted_total_ns": 439255842,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_rt0": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 89.975068,
+            "median": 64.380796,
+            "min": 56.395039
+          },
+          "action_counts": {
+            "inspect": 7,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "inspect": 9700008,
+            "setup": 5266132
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 2.711893,
+            "median": 2.027394,
+            "min": 1.880051
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 61.7421875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 89.975068,
+            "median": 64.380796,
+            "min": 56.395039
+          },
+          "submitted_total_ns": 460722327,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 77.97809,
+            "median": 64.296563,
+            "min": 54.155142
+          },
+          "action_counts": {
+            "inspect": 7,
+            "setup": 7,
+            "stopping_check": 7
+          },
+          "action_total_ns": {
+            "inspect": 5410889,
+            "setup": 5537909,
+            "stopping_check": 2320812
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 2.592481,
+            "median": 1.717066,
+            "min": 1.500272
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 61.7421875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 77.97809,
+            "median": 64.296563,
+            "min": 54.155142
+          },
+          "submitted_total_ns": 451892116,
+          "unsuccessful_total_ns": 0
+        },
+        "fixed": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 71.814428,
+            "median": 58.950152,
+            "min": 56.582413
+          },
+          "action_counts": {
+            "inspect": 7,
+            "setup": 7,
+            "stopping_check": 7
+          },
+          "action_total_ns": {
+            "inspect": 4907656,
+            "setup": 5218773,
+            "stopping_check": 1154995
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 1.772414,
+            "median": 1.632398,
+            "min": 1.466632
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 61.7421875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 71.814428,
+            "median": 58.950152,
+            "min": 56.582413
+          },
+          "submitted_total_ns": 429667982,
+          "unsuccessful_total_ns": 0
+        },
+        "no_coarse": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 71.695438,
+            "median": 63.031555,
+            "min": 58.494161
+          },
+          "action_counts": {
+            "inspect": 7,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "inspect": 9266098,
+            "setup": 4965011
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 2.292757,
+            "median": 1.975509,
+            "min": 1.829042
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 61.7421875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 71.695438,
+            "median": 63.031555,
+            "min": 58.494161
+          },
+          "submitted_total_ns": 454614513,
+          "unsuccessful_total_ns": 0
+        },
+        "no_floor": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 73.405333,
+            "median": 61.557927,
+            "min": 59.336999
+          },
+          "action_counts": {
+            "inspect": 7,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "inspect": 6283582,
+            "setup": 5053629
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 2.820505,
+            "median": 1.446317,
+            "min": 1.307513
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 61.7421875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 73.405333,
+            "median": 61.557927,
+            "min": 59.336999
+          },
+          "submitted_total_ns": 447956719,
+          "unsuccessful_total_ns": 0
+        },
+        "no_witness": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 70.356784,
+            "median": 61.115642,
+            "min": 53.231175
+          },
+          "action_counts": {
+            "inspect": 7,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "inspect": 9135503,
+            "setup": 4955338
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 2.350605,
+            "median": 1.905251,
+            "min": 1.812186
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 61.7421875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 70.356784,
+            "median": 61.115642,
+            "min": 53.231175
+          },
+          "submitted_total_ns": 423273933,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "signed_loose": {
+      "paired": {
+        "cfac/cfac_rt0": {
+          "distribution": {
+            "max": 1.1819246629694218,
+            "median": 1.1615493085385573,
+            "min": 0.9090804643221545
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0466181846231397
+            },
+            {
+              "block": 1,
+              "ratio": 0.9090804643221545
+            },
+            {
+              "block": 2,
+              "ratio": 1.0687065831299876
+            },
+            {
+              "block": 3,
+              "ratio": 1.1615493085385573
+            },
+            {
+              "block": 4,
+              "ratio": 1.1627626496316728
+            },
+            {
+              "block": 5,
+              "ratio": 1.1819246629694218
+            },
+            {
+              "block": 6,
+              "ratio": 1.176140196684644
+            }
+          ]
+        },
+        "cfac/classical": {
+          "distribution": {
+            "max": 0.6929863030694938,
+            "median": 0.670272324958983,
+            "min": 0.5941855653908219
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.5941855653908219
+            },
+            {
+              "block": 1,
+              "ratio": 0.670272324958983
+            },
+            {
+              "block": 2,
+              "ratio": 0.6838597432385874
+            },
+            {
+              "block": 3,
+              "ratio": 0.6929863030694938
+            },
+            {
+              "block": 4,
+              "ratio": 0.6902493460539101
+            },
+            {
+              "block": 5,
+              "ratio": 0.5958650742189876
+            },
+            {
+              "block": 6,
+              "ratio": 0.6199219191751314
+            }
+          ]
+        },
+        "cfac/no_coarse": {
+          "distribution": {
+            "max": 0.8837374168339113,
+            "median": 0.7895478860971319,
+            "min": 0.638071239014695
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.6852737755225878
+            },
+            {
+              "block": 1,
+              "ratio": 0.638071239014695
+            },
+            {
+              "block": 2,
+              "ratio": 0.7895478860971319
+            },
+            {
+              "block": 3,
+              "ratio": 0.829612303622365
+            },
+            {
+              "block": 4,
+              "ratio": 0.7841497609992926
+            },
+            {
+              "block": 5,
+              "ratio": 0.8244210450870922
+            },
+            {
+              "block": 6,
+              "ratio": 0.8837374168339113
+            }
+          ]
+        },
+        "cfac/no_floor": {
+          "distribution": {
+            "max": 1.5700373002848103,
+            "median": 1.4670544086558654,
+            "min": 1.0727304822931174
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.2425481421492532
+            },
+            {
+              "block": 1,
+              "ratio": 1.0727304822931174
+            },
+            {
+              "block": 2,
+              "ratio": 1.4670544086558654
+            },
+            {
+              "block": 3,
+              "ratio": 1.5700373002848103
+            },
+            {
+              "block": 4,
+              "ratio": 1.4253549748685475
+            },
+            {
+              "block": 5,
+              "ratio": 1.495114470218667
+            },
+            {
+              "block": 6,
+              "ratio": 1.5030567997147735
+            }
+          ]
+        },
+        "cfac/no_witness": {
+          "distribution": {
+            "max": 1.1891809925430348,
+            "median": 1.1210794522104899,
+            "min": 0.8227570855214124
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.972704940324528
+            },
+            {
+              "block": 1,
+              "ratio": 0.8227570855214124
+            },
+            {
+              "block": 2,
+              "ratio": 1.1210794522104899
+            },
+            {
+              "block": 3,
+              "ratio": 1.1534213361880192
+            },
+            {
+              "block": 4,
+              "ratio": 1.0487017209819811
+            },
+            {
+              "block": 5,
+              "ratio": 1.1571975320331525
+            },
+            {
+              "block": 6,
+              "ratio": 1.1891809925430348
+            }
+          ]
+        },
+        "classical/fixed": {
+          "distribution": {
+            "max": 0.7818943209741094,
+            "median": 0.6989993954901802,
+            "min": 0.5728711408963779
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.6989993954901802
+            },
+            {
+              "block": 1,
+              "ratio": 0.5728711408963779
+            },
+            {
+              "block": 2,
+              "ratio": 0.6812843581472494
+            },
+            {
+              "block": 3,
+              "ratio": 0.7049132404756376
+            },
+            {
+              "block": 4,
+              "ratio": 0.696034519994786
+            },
+            {
+              "block": 5,
+              "ratio": 0.7562307676626752
+            },
+            {
+              "block": 6,
+              "ratio": 0.7818943209741094
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 226.1286,
+            "median": 217.445026,
+            "min": 202.559974
+          },
+          "action_counts": {
+            "dual_coarse": 7,
+            "dual_local": 7,
+            "inspect": 42,
+            "primal_sweep": 14,
+            "refine": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7,
+            "witness_probe": 21
+          },
+          "action_total_ns": {
+            "dual_coarse": 52955832,
+            "dual_local": 28716414,
+            "inspect": 374361965,
+            "primal_sweep": 7455154,
+            "refine": 47444914,
+            "rt1_inspect": 24993185,
+            "rt1_reconstruct": 215253615,
+            "setup": 10389088,
+            "witness_probe": 336504689
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 165.875981,
+            "median": 157.16624,
+            "min": 146.781929
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.484375,
+            "min": 21.484375
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 22.6875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 226.1286,
+            "median": 217.445026,
+            "min": 202.559974
+          },
+          "submitted_total_ns": 1517907689,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_rt0": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 235.968495,
+            "median": 190.761715,
+            "min": 183.975369
+          },
+          "action_counts": {
+            "dual_coarse": 7,
+            "dual_local": 7,
+            "inspect": 42,
+            "primal_sweep": 14,
+            "refine": 7,
+            "setup": 7,
+            "witness_probe": 14
+          },
+          "action_total_ns": {
+            "dual_coarse": 58246753,
+            "dual_local": 32215715,
+            "inspect": 473351663,
+            "primal_sweep": 15038838,
+            "refine": 52884453,
+            "setup": 10563853,
+            "witness_probe": 300278179
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 151.00554,
+            "median": 132.100228,
+            "min": 123.045489
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.484375,
+            "min": 21.484375
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 22.6875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 235.968495,
+            "median": 190.761715,
+            "min": 183.975369
+          },
+          "submitted_total_ns": 1388103694,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 368.425091,
+            "median": 327.604222,
+            "min": 296.20105
+          },
+          "action_counts": {
+            "inspect": 14,
+            "primal_sweep": 70,
+            "refine": 7,
+            "rt1_inspect": 14,
+            "rt1_reconstruct": 14,
+            "setup": 7,
+            "stopping_check": 84
+          },
+          "action_total_ns": {
+            "inspect": 54550465,
+            "primal_sweep": 63082121,
+            "refine": 48333771,
+            "rt1_inspect": 163153731,
+            "rt1_reconstruct": 1221117114,
+            "setup": 10737063,
+            "stopping_check": 356280032
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 300.634074,
+            "median": 272.973841,
+            "min": 240.129908
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.828125,
+            "median": 21.828125,
+            "min": 21.828125
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 27.9921875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 368.425091,
+            "median": 327.604222,
+            "min": 296.20105
+          },
+          "submitted_total_ns": 2347900651,
+          "unsuccessful_total_ns": 0
+        },
+        "fixed": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 558.660692,
+            "median": 470.672377,
+            "min": 434.768605
+          },
+          "action_counts": {
+            "inspect": 14,
+            "primal_sweep": 371,
+            "refine": 7,
+            "rt1_inspect": 14,
+            "rt1_reconstruct": 14,
+            "setup": 7,
+            "stopping_check": 385
+          },
+          "action_total_ns": {
+            "inspect": 74205466,
+            "primal_sweep": 378351256,
+            "refine": 53988142,
+            "rt1_inspect": 252458701,
+            "rt1_reconstruct": 1434765159,
+            "setup": 11371625,
+            "stopping_check": 717248215
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 462.308247,
+            "median": 411.380816,
+            "min": 379.530449
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.515625,
+            "median": 22.515625,
+            "min": 22.515625
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 23.890625
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 558.660692,
+            "median": 470.672377,
+            "min": 434.768605
+          },
+          "submitted_total_ns": 3374656702,
+          "unsuccessful_total_ns": 0
+        },
+        "no_coarse": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 336.191848,
+            "median": 263.754822,
+            "min": 253.879169
+          },
+          "action_counts": {
+            "dual_local": 14,
+            "inspect": 49,
+            "primal_sweep": 21,
+            "refine": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7,
+            "witness_probe": 28
+          },
+          "action_total_ns": {
+            "dual_local": 63881557,
+            "inspect": 519536741,
+            "primal_sweep": 16047114,
+            "refine": 50709820,
+            "rt1_inspect": 25854063,
+            "rt1_reconstruct": 226376675,
+            "setup": 10759564,
+            "witness_probe": 633693887
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 264.77549,
+            "median": 206.756258,
+            "min": 195.684383
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.484375,
+            "min": 21.484375
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 23.03125
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 336.191848,
+            "median": 263.754822,
+            "min": 253.879169
+          },
+          "submitted_total_ns": 1976138050,
+          "unsuccessful_total_ns": 0
+        },
+        "no_floor": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 199.970405,
+            "median": 149.27082,
+            "min": 136.292525
+          },
+          "action_counts": {
+            "dual_coarse": 14,
+            "dual_local": 14,
+            "inspect": 56,
+            "primal_sweep": 14,
+            "refine": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "dual_coarse": 70151631,
+            "dual_local": 39255049,
+            "inspect": 230447594,
+            "primal_sweep": 7704559,
+            "refine": 57234547,
+            "rt1_inspect": 26834312,
+            "rt1_reconstruct": 224120200,
+            "setup": 12498802
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 124.102468,
+            "median": 90.448586,
+            "min": 82.895869
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.3125,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 23.546875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 199.970405,
+            "median": 149.27082,
+            "min": 136.292525
+          },
+          "submitted_total_ns": 1103871175,
+          "unsuccessful_total_ns": 0
+        },
+        "no_witness": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 260.726225,
+            "median": 188.669784,
+            "min": 180.682978
+          },
+          "action_counts": {
+            "algebraic_probe": 21,
+            "dual_coarse": 7,
+            "dual_local": 7,
+            "inspect": 42,
+            "primal_sweep": 14,
+            "refine": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "algebraic_probe": 179999546,
+            "dual_coarse": 59673450,
+            "dual_local": 31651711,
+            "inspect": 408832802,
+            "primal_sweep": 8242785,
+            "refine": 50416985,
+            "rt1_inspect": 28144970,
+            "rt1_reconstruct": 224798618,
+            "setup": 11156440
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 177.611094,
+            "median": 134.329807,
+            "min": 125.025876
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.3125,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 23.375
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 260.726225,
+            "median": 188.669784,
+            "min": 180.682978
+          },
+          "submitted_total_ns": 1444189936,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "signed_tight": {
+      "paired": {
+        "cfac/cfac_rt0": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac/classical": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac/no_coarse": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac/no_floor": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac/no_witness": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "classical/fixed": {
+          "distribution": {
+            "max": 0.7583419363501658,
+            "median": 0.6774074838830516,
+            "min": 0.6112868090710228
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.7580611270972757
+            },
+            {
+              "block": 1,
+              "ratio": 0.6586232023147757
+            },
+            {
+              "block": 2,
+              "ratio": 0.6112868090710228
+            },
+            {
+              "block": 3,
+              "ratio": 0.7583419363501658
+            },
+            {
+              "block": 4,
+              "ratio": 0.644611611986522
+            },
+            {
+              "block": 5,
+              "ratio": 0.6774074838830516
+            },
+            {
+              "block": 6,
+              "ratio": 0.7085159632791457
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "dual_coarse": 7,
+            "dual_local": 238,
+            "inspect": 294,
+            "primal_sweep": 35,
+            "refine": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7,
+            "witness_probe": 294
+          },
+          "action_total_ns": {
+            "dual_coarse": 54103157,
+            "dual_local": 1295143002,
+            "inspect": 4499217568,
+            "primal_sweep": 32630354,
+            "refine": 48639506,
+            "rt1_inspect": 25040721,
+            "rt1_reconstruct": 217412592,
+            "setup": 10689028,
+            "witness_probe": 10907746681
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 2628.672215,
+            "median": 2468.285223,
+            "min": 2174.683362
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.515625,
+            "median": 22.515625,
+            "min": 22.515625
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.3515625,
+            "min": 50.5703125
+          },
+          "statuses": {
+            "BUDGET_EXHAUSTED": 7
+          },
+          "submitted_ms": {
+            "max": 2697.138741,
+            "median": 2533.219877,
+            "min": 2233.812596
+          },
+          "submitted_total_ns": 17524995291,
+          "unsuccessful_total_ns": 17524995291
+        },
+        "cfac_rt0": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "dual_coarse": 7,
+            "dual_local": 238,
+            "inspect": 301,
+            "primal_sweep": 42,
+            "refine": 7,
+            "setup": 7,
+            "witness_probe": 294
+          },
+          "action_total_ns": {
+            "dual_coarse": 56143108,
+            "dual_local": 1338619517,
+            "inspect": 4750130547,
+            "primal_sweep": 46272406,
+            "refine": 51453054,
+            "setup": 10359992,
+            "witness_probe": 11248003338
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 2890.862889,
+            "median": 2423.110833,
+            "min": 2325.28279
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.6875,
+            "median": 22.515625,
+            "min": 22.515625
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.3515625,
+            "min": 27.9921875
+          },
+          "statuses": {
+            "BUDGET_EXHAUSTED": 7
+          },
+          "submitted_ms": {
+            "max": 2962.485663,
+            "median": 2492.829623,
+            "min": 2380.234886
+          },
+          "submitted_total_ns": 17939183444,
+          "unsuccessful_total_ns": 17939183444
+        },
+        "classical": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 361.334587,
+            "median": 322.251264,
+            "min": 301.90572
+          },
+          "action_counts": {
+            "inspect": 14,
+            "primal_sweep": 70,
+            "refine": 7,
+            "rt1_inspect": 14,
+            "rt1_reconstruct": 14,
+            "setup": 7,
+            "stopping_check": 84
+          },
+          "action_total_ns": {
+            "inspect": 58495407,
+            "primal_sweep": 62546621,
+            "refine": 49300572,
+            "rt1_inspect": 154219415,
+            "rt1_reconstruct": 1169920872,
+            "setup": 11482355,
+            "stopping_check": 348947688
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 298.419433,
+            "median": 261.512615,
+            "min": 242.551546
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.828125,
+            "median": 21.828125,
+            "min": 21.828125
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.3515625,
+            "min": 49.8828125
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 361.334587,
+            "median": 322.251264,
+            "min": 301.90572
+          },
+          "submitted_total_ns": 2276546553,
+          "unsuccessful_total_ns": 0
+        },
+        "fixed": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 513.238522,
+            "median": 461.764057,
+            "min": 453.738118
+          },
+          "action_counts": {
+            "inspect": 14,
+            "primal_sweep": 371,
+            "refine": 7,
+            "rt1_inspect": 14,
+            "rt1_reconstruct": 14,
+            "setup": 7,
+            "stopping_check": 385
+          },
+          "action_total_ns": {
+            "inspect": 75648463,
+            "primal_sweep": 372948491,
+            "refine": 49670788,
+            "rt1_inspect": 245063514,
+            "rt1_reconstruct": 1408937488,
+            "setup": 10633481,
+            "stopping_check": 708922588
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 448.569221,
+            "median": 402.545582,
+            "min": 396.881259
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.515625,
+            "median": 22.515625,
+            "min": 22.515625
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.3515625,
+            "min": 47.6484375
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 513.238522,
+            "median": 461.764057,
+            "min": 453.738118
+          },
+          "submitted_total_ns": 3314818148,
+          "unsuccessful_total_ns": 0
+        },
+        "no_coarse": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "dual_local": 259,
+            "inspect": 294,
+            "primal_sweep": 21,
+            "refine": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7,
+            "witness_probe": 294
+          },
+          "action_total_ns": {
+            "dual_local": 1435273888,
+            "inspect": 4646868188,
+            "primal_sweep": 15910631,
+            "refine": 52186940,
+            "rt1_inspect": 24821652,
+            "rt1_reconstruct": 218799428,
+            "setup": 10790398,
+            "witness_probe": 11030487929
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 2669.550467,
+            "median": 2475.060759,
+            "min": 2364.54812
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.6875,
+            "median": 22.6875,
+            "min": 22.6875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.3515625,
+            "min": 36.54296875
+          },
+          "statuses": {
+            "BUDGET_EXHAUSTED": 7
+          },
+          "submitted_ms": {
+            "max": 2732.499551,
+            "median": 2532.551831,
+            "min": 2420.474917
+          },
+          "submitted_total_ns": 17867244635,
+          "unsuccessful_total_ns": 17867244635
+        },
+        "no_floor": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "dual_coarse": 14,
+            "dual_local": 14,
+            "inspect": 56,
+            "primal_sweep": 14,
+            "refine": 7,
+            "rt1_inspect": 14,
+            "rt1_reconstruct": 14,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "dual_coarse": 63841750,
+            "dual_local": 36861771,
+            "inspect": 211695794,
+            "primal_sweep": 7664091,
+            "refine": 52270202,
+            "rt1_inspect": 139286959,
+            "rt1_reconstruct": 1140374788,
+            "setup": 10692125
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 283.894014,
+            "median": 233.247684,
+            "min": 214.717143
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.65625,
+            "median": 21.65625,
+            "min": 21.65625
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.3515625,
+            "min": 47.3046875
+          },
+          "statuses": {
+            "NO_ELIGIBLE_ACTION": 7
+          },
+          "submitted_ms": {
+            "max": 370.723415,
+            "median": 292.739898,
+            "min": 266.989918
+          },
+          "submitted_total_ns": 2099007941,
+          "unsuccessful_total_ns": 2099007941
+        },
+        "no_witness": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "algebraic_probe": 294,
+            "dual_coarse": 7,
+            "dual_local": 238,
+            "inspect": 294,
+            "primal_sweep": 35,
+            "refine": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "algebraic_probe": 6232711349,
+            "dual_coarse": 54514095,
+            "dual_local": 1308660427,
+            "inspect": 4584404662,
+            "primal_sweep": 37425596,
+            "refine": 46305481,
+            "rt1_inspect": 24877076,
+            "rt1_reconstruct": 213381998,
+            "setup": 10721563
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 1934.881742,
+            "median": 1761.734456,
+            "min": 1701.898452
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.6875,
+            "median": 22.515625,
+            "min": 22.515625
+          },
+          "peak_rss_mib": {
+            "max": 69.703125,
+            "median": 69.359375,
+            "min": 43.14453125
+          },
+          "statuses": {
+            "BUDGET_EXHAUSTED": 7
+          },
+          "submitted_ms": {
+            "max": 1997.210144,
+            "median": 1819.485205,
+            "min": 1765.10298
+          },
+          "submitted_total_ns": 12958560184,
+          "unsuccessful_total_ns": 12958560184
+        }
+      }
+    },
+    "unit_separating": {
+      "paired": {
+        "cfac/cfac_rt0": {
+          "distribution": {
+            "max": 0.9005621329040429,
+            "median": 0.8265642909346781,
+            "min": 0.7796404415856938
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.8434516358414228
+            },
+            {
+              "block": 1,
+              "ratio": 0.8240140601662075
+            },
+            {
+              "block": 2,
+              "ratio": 0.8131995935351083
+            },
+            {
+              "block": 3,
+              "ratio": 0.8644953322810829
+            },
+            {
+              "block": 4,
+              "ratio": 0.8265642909346781
+            },
+            {
+              "block": 5,
+              "ratio": 0.9005621329040429
+            },
+            {
+              "block": 6,
+              "ratio": 0.7796404415856938
+            }
+          ]
+        },
+        "cfac/classical": {
+          "distribution": {
+            "max": 1.150318725220952,
+            "median": 1.0946015552802668,
+            "min": 0.9967654850844746
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0769611995793007
+            },
+            {
+              "block": 1,
+              "ratio": 1.1249262471250845
+            },
+            {
+              "block": 2,
+              "ratio": 1.0946015552802668
+            },
+            {
+              "block": 3,
+              "ratio": 1.1253366532224411
+            },
+            {
+              "block": 4,
+              "ratio": 1.150318725220952
+            },
+            {
+              "block": 5,
+              "ratio": 0.9967654850844746
+            },
+            {
+              "block": 6,
+              "ratio": 1.0450416635111708
+            }
+          ]
+        },
+        "cfac/no_coarse": {
+          "distribution": {
+            "max": 1.1570272847726144,
+            "median": 0.9757994427022193,
+            "min": 0.8623406893293437
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.9718782360342298
+            },
+            {
+              "block": 1,
+              "ratio": 0.9992097511289456
+            },
+            {
+              "block": 2,
+              "ratio": 0.8623406893293437
+            },
+            {
+              "block": 3,
+              "ratio": 1.0124204519786086
+            },
+            {
+              "block": 4,
+              "ratio": 0.9757994427022193
+            },
+            {
+              "block": 5,
+              "ratio": 1.1570272847726144
+            },
+            {
+              "block": 6,
+              "ratio": 0.8990141984234292
+            }
+          ]
+        },
+        "cfac/no_floor": {
+          "distribution": {
+            "max": 1.1391492742724258,
+            "median": 1.054237100357888,
+            "min": 0.9514523800605182
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.9529583190423546
+            },
+            {
+              "block": 1,
+              "ratio": 1.054237100357888
+            },
+            {
+              "block": 2,
+              "ratio": 0.9514523800605182
+            },
+            {
+              "block": 3,
+              "ratio": 1.0532400826193613
+            },
+            {
+              "block": 4,
+              "ratio": 1.0544649411520794
+            },
+            {
+              "block": 5,
+              "ratio": 1.120138487405964
+            },
+            {
+              "block": 6,
+              "ratio": 1.1391492742724258
+            }
+          ]
+        },
+        "cfac/no_witness": {
+          "distribution": {
+            "max": 1.2409344309777972,
+            "median": 1.0386405119378088,
+            "min": 0.8564331113787559
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0386405119378088
+            },
+            {
+              "block": 1,
+              "ratio": 1.1339775496185887
+            },
+            {
+              "block": 2,
+              "ratio": 0.8564331113787559
+            },
+            {
+              "block": 3,
+              "ratio": 1.0454436573895785
+            },
+            {
+              "block": 4,
+              "ratio": 1.0294932921934015
+            },
+            {
+              "block": 5,
+              "ratio": 1.2409344309777972
+            },
+            {
+              "block": 6,
+              "ratio": 1.022234039650691
+            }
+          ]
+        },
+        "classical/fixed": {
+          "distribution": {
+            "max": 1.197478175652518,
+            "median": 0.9885909861950573,
+            "min": 0.9807574340223875
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.980876522330614
+            },
+            {
+              "block": 1,
+              "ratio": 0.9807574340223875
+            },
+            {
+              "block": 2,
+              "ratio": 0.9885909861950573
+            },
+            {
+              "block": 3,
+              "ratio": 0.9934370654467732
+            },
+            {
+              "block": 4,
+              "ratio": 0.9819843451581907
+            },
+            {
+              "block": 5,
+              "ratio": 1.197478175652518
+            },
+            {
+              "block": 6,
+              "ratio": 1.0759756568198888
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 119.32687,
+            "median": 81.154126,
+            "min": 78.532547
+          },
+          "action_counts": {
+            "inspect": 14,
+            "primal_sweep": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7,
+            "witness_probe": 14
+          },
+          "action_total_ns": {
+            "inspect": 19177632,
+            "primal_sweep": 249948,
+            "rt1_inspect": 11303743,
+            "rt1_reconstruct": 94700360,
+            "setup": 6393640,
+            "witness_probe": 45846295
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 32.284205,
+            "median": 24.404847,
+            "min": 22.595676
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 20.96875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 119.32687,
+            "median": 81.154126,
+            "min": 78.532547
+          },
+          "submitted_total_ns": 604252938,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_rt0": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 132.502651,
+            "median": 100.028974,
+            "min": 92.711131
+          },
+          "action_counts": {
+            "dual_coarse": 7,
+            "dual_local": 7,
+            "inspect": 42,
+            "primal_sweep": 14,
+            "refine": 7,
+            "setup": 7,
+            "witness_probe": 7
+          },
+          "action_total_ns": {
+            "dual_coarse": 19323876,
+            "dual_local": 11751388,
+            "inspect": 210023027,
+            "primal_sweep": 3314589,
+            "refine": 19160242,
+            "setup": 5010685,
+            "witness_probe": 22423227
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 54.223346,
+            "median": 40.59582,
+            "min": 36.825103
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.96875,
+            "median": 20.96875,
+            "min": 20.96875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 21.140625
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 132.502651,
+            "median": 100.028974,
+            "min": 92.711131
+          },
+          "submitted_total_ns": 720739502,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 119.714087,
+            "median": 73.27172,
+            "min": 71.221656
+          },
+          "action_counts": {
+            "inspect": 7,
+            "primal_sweep": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7,
+            "stopping_check": 14
+          },
+          "action_total_ns": {
+            "inspect": 5022577,
+            "primal_sweep": 239286,
+            "rt1_inspect": 12798679,
+            "rt1_reconstruct": 101309102,
+            "setup": 5248552,
+            "stopping_check": 5360784
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 33.607994,
+            "median": 16.276038,
+            "min": 15.459572
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 20.96875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 119.714087,
+            "median": 73.27172,
+            "min": 71.221656
+          },
+          "submitted_total_ns": 559646863,
+          "unsuccessful_total_ns": 0
+        },
+        "fixed": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 99.971832,
+            "median": 74.342179,
+            "min": 70.773169
+          },
+          "action_counts": {
+            "inspect": 7,
+            "primal_sweep": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7,
+            "stopping_check": 14
+          },
+          "action_total_ns": {
+            "inspect": 5041151,
+            "primal_sweep": 217092,
+            "rt1_inspect": 12359468,
+            "rt1_reconstruct": 92903780,
+            "setup": 5125164,
+            "stopping_check": 2300638
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 20.808979,
+            "median": 16.090942,
+            "min": 15.080034
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 20.96875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 99.971832,
+            "median": 74.342179,
+            "min": 70.773169
+          },
+          "submitted_total_ns": 540038105,
+          "unsuccessful_total_ns": 0
+        },
+        "no_coarse": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 103.132287,
+            "median": 85.146221,
+            "min": 79.165074
+          },
+          "action_counts": {
+            "inspect": 14,
+            "primal_sweep": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7,
+            "witness_probe": 14
+          },
+          "action_total_ns": {
+            "inspect": 19469309,
+            "primal_sweep": 284553,
+            "rt1_inspect": 12224332,
+            "rt1_reconstruct": 97285689,
+            "setup": 6005058,
+            "witness_probe": 46231675
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 33.370632,
+            "median": 23.994639,
+            "min": 23.256252
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 20.96875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 103.132287,
+            "median": 85.146221,
+            "min": 79.165074
+          },
+          "submitted_total_ns": 613367433,
+          "unsuccessful_total_ns": 0
+        },
+        "no_floor": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 106.528676,
+            "median": 78.794118,
+            "min": 69.859272
+          },
+          "action_counts": {
+            "dual_coarse": 7,
+            "dual_local": 7,
+            "inspect": 28,
+            "primal_sweep": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "dual_coarse": 4858404,
+            "dual_local": 2448840,
+            "inspect": 19559553,
+            "primal_sweep": 224949,
+            "rt1_inspect": 11530476,
+            "rt1_reconstruct": 99744021,
+            "setup": 5012244
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 26.881062,
+            "median": 19.574922,
+            "min": 17.69859
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 20.96875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 106.528676,
+            "median": 78.794118,
+            "min": 69.859272
+          },
+          "submitted_total_ns": 577167975,
+          "unsuccessful_total_ns": 0
+        },
+        "no_witness": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 96.158884,
+            "median": 77.849236,
+            "min": 72.686872
+          },
+          "action_counts": {
+            "algebraic_probe": 14,
+            "inspect": 14,
+            "primal_sweep": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "algebraic_probe": 20275438,
+            "inspect": 19677487,
+            "primal_sweep": 282055,
+            "rt1_inspect": 11505436,
+            "rt1_reconstruct": 95868432,
+            "setup": 5500580
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 27.708992,
+            "median": 20.710537,
+            "min": 18.517399
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.796875,
+            "median": 20.796875,
+            "min": 20.796875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 20.96875
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 96.158884,
+            "median": 77.849236,
+            "min": 72.686872
+          },
+          "submitted_total_ns": 574433968,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "unit_tighter": {
+      "paired": {
+        "cfac/cfac_rt0": {
+          "distribution": {
+            "max": 1.0963541342655736,
+            "median": 1.0023544286693293,
+            "min": 0.8866435480482823
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0222841587933287
+            },
+            {
+              "block": 1,
+              "ratio": 1.0869104444359243
+            },
+            {
+              "block": 2,
+              "ratio": 0.9828700647714681
+            },
+            {
+              "block": 3,
+              "ratio": 1.0021374127340903
+            },
+            {
+              "block": 4,
+              "ratio": 1.0023544286693293
+            },
+            {
+              "block": 5,
+              "ratio": 0.8866435480482823
+            },
+            {
+              "block": 6,
+              "ratio": 1.0963541342655736
+            }
+          ]
+        },
+        "cfac/classical": {
+          "distribution": {
+            "max": 0.9122296650827506,
+            "median": 0.8640691706124237,
+            "min": 0.7967975157228411
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.8640691706124237
+            },
+            {
+              "block": 1,
+              "ratio": 0.8258114414750427
+            },
+            {
+              "block": 2,
+              "ratio": 0.825272517726941
+            },
+            {
+              "block": 3,
+              "ratio": 0.8830086286433002
+            },
+            {
+              "block": 4,
+              "ratio": 0.9084500545400204
+            },
+            {
+              "block": 5,
+              "ratio": 0.7967975157228411
+            },
+            {
+              "block": 6,
+              "ratio": 0.9122296650827506
+            }
+          ]
+        },
+        "cfac/no_coarse": {
+          "distribution": {
+            "max": 1.1480010567920071,
+            "median": 1.0994797020933196,
+            "min": 0.9590572563551439
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0542040125215828
+            },
+            {
+              "block": 1,
+              "ratio": 1.1002268571214844
+            },
+            {
+              "block": 2,
+              "ratio": 1.0994797020933196
+            },
+            {
+              "block": 3,
+              "ratio": 1.1480010567920071
+            },
+            {
+              "block": 4,
+              "ratio": 1.058040170259381
+            },
+            {
+              "block": 5,
+              "ratio": 0.9590572563551439
+            },
+            {
+              "block": 6,
+              "ratio": 1.1394861050305567
+            }
+          ]
+        },
+        "cfac/no_floor": {
+          "distribution": {
+            "max": 0.9361027294312487,
+            "median": 0.8946410883837678,
+            "min": 0.5990157514498297
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.862773654770743
+            },
+            {
+              "block": 1,
+              "ratio": 0.908104624749657
+            },
+            {
+              "block": 2,
+              "ratio": 0.8640319761594552
+            },
+            {
+              "block": 3,
+              "ratio": 0.9029198882282052
+            },
+            {
+              "block": 4,
+              "ratio": 0.9361027294312487
+            },
+            {
+              "block": 5,
+              "ratio": 0.5990157514498297
+            },
+            {
+              "block": 6,
+              "ratio": 0.8946410883837678
+            }
+          ]
+        },
+        "cfac/no_witness": {
+          "distribution": {
+            "max": 1.2020947330842704,
+            "median": 1.0900255543508157,
+            "min": 1.0467391592813922
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0802506225420863
+            },
+            {
+              "block": 1,
+              "ratio": 1.1968484161043516
+            },
+            {
+              "block": 2,
+              "ratio": 1.0467391592813922
+            },
+            {
+              "block": 3,
+              "ratio": 1.2020947330842704
+            },
+            {
+              "block": 4,
+              "ratio": 1.1580267240961841
+            },
+            {
+              "block": 5,
+              "ratio": 1.0900255543508157
+            },
+            {
+              "block": 6,
+              "ratio": 1.0633093427461755
+            }
+          ]
+        },
+        "classical/fixed": {
+          "distribution": {
+            "max": 0.9314777418770207,
+            "median": 0.880580577498562,
+            "min": 0.8601426065192784
+          },
+          "paired_accepted": 7,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.8757389477556725
+            },
+            {
+              "block": 1,
+              "ratio": 0.9146948619739809
+            },
+            {
+              "block": 2,
+              "ratio": 0.880580577498562
+            },
+            {
+              "block": 3,
+              "ratio": 0.8601426065192784
+            },
+            {
+              "block": 4,
+              "ratio": 0.8778485903209623
+            },
+            {
+              "block": 5,
+              "ratio": 0.9084633081888724
+            },
+            {
+              "block": 6,
+              "ratio": 0.9314777418770207
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 154.670017,
+            "median": 139.977236,
+            "min": 128.046599
+          },
+          "action_counts": {
+            "dual_coarse": 7,
+            "dual_local": 14,
+            "inspect": 49,
+            "primal_sweep": 14,
+            "refine": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7,
+            "witness_probe": 21
+          },
+          "action_total_ns": {
+            "dual_coarse": 18887887,
+            "dual_local": 23258956,
+            "inspect": 209081225,
+            "primal_sweep": 1902303,
+            "refine": 23951319,
+            "rt1_inspect": 11190942,
+            "rt1_reconstruct": 93115458,
+            "setup": 5145489,
+            "witness_probe": 144391779
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 81.881785,
+            "median": 75.914893,
+            "min": 69.636746
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.96875,
+            "median": 20.96875,
+            "min": 20.96875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 21.3125
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 154.670017,
+            "median": 139.977236,
+            "min": 128.046599
+          },
+          "submitted_total_ns": 970484238,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_rt0": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 144.668218,
+            "median": 139.678685,
+            "min": 127.933032
+          },
+          "action_counts": {
+            "dual_coarse": 7,
+            "dual_local": 14,
+            "inspect": 49,
+            "primal_sweep": 14,
+            "refine": 7,
+            "setup": 7,
+            "witness_probe": 21
+          },
+          "action_total_ns": {
+            "dual_coarse": 19481912,
+            "dual_local": 23329774,
+            "inspect": 244814501,
+            "primal_sweep": 3531350,
+            "refine": 20371231,
+            "setup": 5118707,
+            "witness_probe": 214865973
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 82.638224,
+            "median": 72.331606,
+            "min": 69.837554
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.96875,
+            "median": 20.96875,
+            "min": 20.96875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 21.140625
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 144.668218,
+            "median": 139.678685,
+            "min": 127.933032
+          },
+          "submitted_total_ns": 960667040,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 187.294592,
+            "median": 158.523067,
+            "min": 151.358151
+          },
+          "action_counts": {
+            "inspect": 14,
+            "primal_sweep": 35,
+            "refine": 7,
+            "rt1_inspect": 14,
+            "rt1_reconstruct": 14,
+            "setup": 7,
+            "stopping_check": 49
+          },
+          "action_total_ns": {
+            "inspect": 23236822,
+            "primal_sweep": 6931427,
+            "refine": 24487086,
+            "rt1_inspect": 61026623,
+            "rt1_reconstruct": 492291618,
+            "setup": 4938851,
+            "stopping_check": 75476890
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 112.046503,
+            "median": 96.895764,
+            "min": 93.682446
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.140625,
+            "median": 21.140625,
+            "min": 21.140625
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 21.3125
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 187.294592,
+            "median": 158.523067,
+            "min": 151.358151
+          },
+          "submitted_total_ns": 1130555726,
+          "unsuccessful_total_ns": 0
+        },
+        "fixed": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 204.761828,
+            "median": 177.366433,
+            "min": 168.410562
+          },
+          "action_counts": {
+            "inspect": 14,
+            "primal_sweep": 154,
+            "refine": 7,
+            "rt1_inspect": 14,
+            "rt1_reconstruct": 14,
+            "setup": 7,
+            "stopping_check": 168
+          },
+          "action_total_ns": {
+            "inspect": 29373499,
+            "primal_sweep": 37165417,
+            "refine": 26013579,
+            "rt1_inspect": 78233379,
+            "rt1_reconstruct": 540066793,
+            "setup": 5262610,
+            "stopping_check": 123935971
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 136.373416,
+            "median": 118.461481,
+            "min": 110.745724
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.3125,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 21.828125
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 204.761828,
+            "median": 177.366433,
+            "min": 168.410562
+          },
+          "submitted_total_ns": 1266399471,
+          "unsuccessful_total_ns": 0
+        },
+        "no_coarse": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 140.580114,
+            "median": 125.584767,
+            "min": 117.233222
+          },
+          "action_counts": {
+            "dual_local": 14,
+            "inspect": 42,
+            "primal_sweep": 14,
+            "refine": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7,
+            "witness_probe": 21
+          },
+          "action_total_ns": {
+            "dual_local": 22344393,
+            "inspect": 177624751,
+            "primal_sweep": 1816216,
+            "refine": 24272241,
+            "rt1_inspect": 11878833,
+            "rt1_reconstruct": 93911007,
+            "setup": 4863409,
+            "witness_probe": 136520643
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 74.671361,
+            "median": 65.559585,
+            "min": 62.58189
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.96875,
+            "median": 20.96875,
+            "min": 20.96875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 21.3125
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 140.580114,
+            "median": 125.584767,
+            "min": 117.233222
+          },
+          "submitted_total_ns": 899955944,
+          "unsuccessful_total_ns": 0
+        },
+        "no_floor": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 213.761656,
+            "median": 155.027304,
+            "min": 149.179141
+          },
+          "action_counts": {
+            "dual_coarse": 14,
+            "dual_local": 14,
+            "inspect": 56,
+            "primal_sweep": 14,
+            "refine": 7,
+            "rt1_inspect": 14,
+            "rt1_reconstruct": 14,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "dual_coarse": 24160112,
+            "dual_local": 15347529,
+            "inspect": 95460171,
+            "primal_sweep": 1811250,
+            "refine": 24690486,
+            "rt1_inspect": 57508368,
+            "rt1_reconstruct": 483311708,
+            "setup": 5041069
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 117.828438,
+            "median": 96.369497,
+            "min": 90.800748
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.140625,
+            "median": 21.140625,
+            "min": 21.140625
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 21.65625
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 213.761656,
+            "median": 155.027304,
+            "min": 149.179141
+          },
+          "submitted_total_ns": 1154737047,
+          "unsuccessful_total_ns": 0
+        },
+        "no_witness": {
+          "accepted": 7,
+          "accepted_ms": {
+            "max": 134.581811,
+            "median": 123.140084,
+            "min": 116.44443
+          },
+          "action_counts": {
+            "algebraic_probe": 21,
+            "dual_coarse": 7,
+            "dual_local": 14,
+            "inspect": 49,
+            "primal_sweep": 14,
+            "refine": 7,
+            "rt1_inspect": 7,
+            "rt1_reconstruct": 7,
+            "setup": 7
+          },
+          "action_total_ns": {
+            "algebraic_probe": 59132204,
+            "dual_coarse": 18120002,
+            "dual_local": 23937761,
+            "inspect": 205865365,
+            "primal_sweep": 1790380,
+            "refine": 22242723,
+            "rt1_inspect": 11205612,
+            "rt1_reconstruct": 93793825,
+            "setup": 4805219
+          },
+          "attempts": 7,
+          "controller_ms": {
+            "max": 66.163212,
+            "median": 62.82269,
+            "min": 60.604578
+          },
+          "decision_peak_rss_mib": {
+            "max": 20.96875,
+            "median": 20.96875,
+            "min": 20.96875
+          },
+          "peak_rss_mib": {
+            "max": 69.453125,
+            "median": 69.359375,
+            "min": 21.484375
+          },
+          "statuses": {
+            "ACCEPTED": 7
+          },
+          "submitted_ms": {
+            "max": 134.581811,
+            "median": 123.140084,
+            "min": 116.44443
+          },
+          "submitted_total_ns": 867157342,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    }
+  },
+  "design_sha256": "4f854f649114f1bea571138dec24a5a5d4e3933ffdf552a87d4d5e7283f9aa05",
+  "receipt_sha256": "dd68dfaad28f1c4d7e437563b7fe8555318563d59bc910a41bc123bf8679bbda"
+}

@@ -1,5 +1,7 @@
 # CFAC experiments and replay
 
+The matched-accuracy stopping study archives 392 timed submissions, including 98 unsuccessful outcomes. Its report gives the digest and commands for replaying the checked fields and regenerating the case-level results. [Matched-accuracy evidence and reproduction](CFAC_STOPPING_RESULTS.md)
+
 ## Supplied sine experiment
 
 The reviewed script was inspected and copied byte for byte. Its SHA-256 is `c11345887563330d06a90e9cb28ebbfd713ad0142c50c6277266fe0d7cf11eee`. WSL2 Ubuntu ran CPython 3.12.3, NumPy 2.5.5 and SciPy 1.18.1 with one BLAS thread. The script rounds values to six significant digits when writing stdout. The first run used the four requested resolutions. A separate optional run at 128 used an address-space limit of 2 GiB and a 90 s time limit.

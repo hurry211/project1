@@ -6,6 +6,8 @@ The CFAC research branch adds a small CPU prototype that certifies energy error 
 
 An optional RT1 flux reconstruction can certify the same P1 field after a proof that the RT0 pair cannot meet tolerance. At a target of 0.15 the enriched policy accepted on the original mesh. At 0.125 the RT1 trial missed and the controller still refined. [RT1 method, controls and replay](docs/CFAC_RT1_ENRICHMENT.md)
 
+The stopping study compares fixed residual stopping, certified algebraic error balancing and CFAC at identical energy tolerances. The experiment measures delivery of the checked field from a fresh process and records failed attempts. [Matched-accuracy results and replay](docs/CFAC_STOPPING_RESULTS.md) · [Frozen comparison protocol](docs/CFAC_STOPPING_PROTOCOL.md)
+
 ```
 StudySpec (JSON) ─► schema + MMS consistency ─► freeze & hash ─► environment probe ─► capability matrix
      ─► bind to compiled C++ case ─► MFEM poisson_mms (per mesh level, time/memory limited)
