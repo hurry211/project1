@@ -27,7 +27,17 @@ def deterministic(value):
     return value
 
 
-def campaign():
+def campaign(*, allow_rt1=False):
+    if allow_rt1:
+        mesh = uniform_mesh(2)
+        # This policy demonstration follows the fixed-field threshold study.
+        # Include both a threshold that separates the two spaces and a miss.
+        cases = {name: Problem(mesh, (1,) * len(mesh.triangles), 1, eps, 24)
+                 for name, eps in [("separating", Fraction(3, 20)), ("tighter", Fraction(1, 8))]}
+        anchors = {name: problem.digest() for name, problem in cases.items()}
+        return {name: {policy: run(p, anchors[name], allow_rt1=enabled)
+                       for policy, enabled in (("RT0", False), ("RT0_then_RT1", True))}
+                for name, p in cases.items()}
     cases = problems()
     # The caller freezes these before the prover sees a problem. A replay reader
     # can re-create the originals without taking a digest from the saved trace.
@@ -37,11 +47,13 @@ def campaign():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--rt1", action="store_true",
+                        help="compare RT0 control with optional RT1 trials at two frozen tolerances")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--output", type=Path)
     group.add_argument("--replay", type=Path)
     args = parser.parse_args()
-    data = campaign()
+    data = campaign(allow_rt1=args.rt1)
     if args.replay:
         if deterministic(data) != deterministic(json.loads(args.replay.read_bytes())):
             parser.exit(1, "Mismatch in the deterministic journal\n")

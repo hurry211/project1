@@ -3,8 +3,11 @@
 from time import perf_counter_ns
 
 from .checker import edges, validate_problem
-from .floor import assess
+from .enrichment import EnrichmentRequest
+from .floor import FloorAssessment, assess
 from .prototype import ReferenceSystem
+from .rt1_checker import RT1Checker
+from .rt1_reconstruction import RT1Reconstructor
 from .spec import Mesh, Problem, digest_parts
 
 
@@ -77,11 +80,13 @@ def _choose(assessment, action, refined, can_refine, dual_steps):
     return "dual_local", "reduce dual algebraic error in curl-of-hat directions"
 
 
-def run(problem, trusted_digest):
+def run(problem, trusted_digest, *, allow_rt1=False):
     """Return a JSON-serializable decision journal, including actual elapsed times.
 
     One action buys one setup, inspection, diagnostic inspection, correction or
-    refinement. Only a completed inspection can accept its current field.
+    refinement. With allow_rt1, a certified RT0 pair floor can trigger one
+    RT1 construction and a separately budgeted inspection on the same mesh.
+    Only a completed inspection can accept its current field.
     """
     start = perf_counter_ns()
     trace, problems = [], {}
@@ -90,6 +95,7 @@ def run(problem, trusted_digest):
     status = "BUDGET_EXHAUSTED"
     state = previous_gap = None
     refined, dual_steps = False, 0
+    prepared_rt1 = False
     for index in range(problem.max_actions):
         tic = perf_counter_ns()
         before, observation, gain = state, None, None
@@ -118,6 +124,45 @@ def run(problem, trusted_digest):
                 previous_gap = gap
                 can_refine = problem.original_affine is None and len(set(problem.loads)) == 1
                 next_action, next_reason = _choose(report, action, refined, can_refine, dual_steps)
+                if allow_rt1 and report.verdict == "PAIR_FUTILE":
+                    if not prepared_rt1 and report.primal_alg.lower > 0:
+                        prepared_rt1 = True
+                        next_action = "primal_sweep"
+                        next_reason = "reduce proven primal algebraic error once before trying a richer flux"
+                    else:
+                        next_action = "rt1_reconstruct"
+                        next_reason = "try RT1 on this field after the certified P1/RT0 pair-futility test"
+        elif action == "rt1_reconstruct":
+            request = EnrichmentRequest(problem, trusted_digest, state["state_digest"], primal, flux, 1)
+            try:
+                candidate = RT1Reconstructor().reconstruct(request)
+            except (ArithmeticError, ValueError) as exc:
+                next_action = "refine" if can_refine and not refined else "NO_ELIGIBLE_ACTION"
+                next_reason = f"RT1 construction failed on the current field: {exc}"
+            else:
+                candidate_digest = candidate.digest()
+                state = {"space": "P1/RT1", "problem_digest": trusted_digest,
+                         "state_digest": candidate_digest, "parent": before, "order": candidate.order,
+                         "face_moments": [list(map(str, row)) for row in candidate.face_moments],
+                         "cell_moments": [list(map(str, row)) for row in candidate.cell_moments]}
+                next_action, next_reason = "rt1_inspect", "independently verify the retained RT1 moments"
+        elif action == "rt1_inspect":
+            cert = RT1Checker().verify(request, candidate, candidate_digest)
+            verdict = "ACCEPTED" if cert.accepted else "UNDETERMINED"
+            observation = _observation(FloorAssessment(cert, verdict))
+            observation["original_residual_sq"] = (
+                None if cert.original_residual_sq is None else str(cert.original_residual_sq)
+            )
+            if cert.status != "CERTIFIED" or cert.state_digest != candidate_digest:
+                next_action, next_reason = "INVALID_INPUT", "the RT1 checker could not bind a certified upper bound"
+            else:
+                gain = str(previous_gap - cert.gap_sq)
+                if cert.accepted:
+                    next_action, next_reason = "ACCEPTED", "the RT1 checker accepted this P1 field"
+                elif can_refine and not refined:
+                    next_action, next_reason = "refine", "try the allowed refinement after the RT1 trial missed the target"
+                else:
+                    next_action, next_reason = "NO_ELIGIBLE_ACTION", "the RT1 trial missed the target and no refinement remains"
         elif action == "refine":
             problem, primal = _refine(problem, primal)
             trusted_digest = problem.digest()
@@ -126,6 +171,7 @@ def run(problem, trusted_digest):
             system = ReferenceSystem(problem)
             flux = system.feasible_flux
             refined, dual_steps, previous_gap = True, 0, None
+            prepared_rt1 = False
             state = _state(trusted_digest, primal, flux)
         else:
             if action == "primal_sweep":

@@ -1,4 +1,4 @@
-"""High-order RT extension interfaces. The running controller uses the RT0 checker."""
+"""Higher-order RT evidence format and interfaces shared by producers and checkers."""
 
 from dataclasses import dataclass
 from typing import Protocol
@@ -99,7 +99,7 @@ class RTpChecker(Protocol):
     geometry. Establish full normal-trace continuity and all divergence modes,
     enclose the weighted gap and any original-load residual, and bind the
     verdict to the enriched state. Floor tests require a separate derivation
-    for its new dual space. No implementation is registered by this module.
+    for its new dual space. The reference implementation supports order one.
     """
 
     def verify(self, request: EnrichmentRequest, candidate: RTMoments,

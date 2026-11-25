@@ -1,0 +1,3126 @@
+{
+  "cases": {
+    "inexact": {
+      "cost_ns": {
+        "checks_at_all_tolerances": 381932500,
+        "coarse_assembly_lift": 507800,
+        "coarse_discrete_optimizers": 465700,
+        "freeze": 1754200,
+        "patch_reconstruction_and_parent_check": 14704500,
+        "refined_assembly_lift_and_discrete_optimizers": 6456400
+      },
+      "elapsed_ns": 405937700,
+      "fields": {
+        "optimal_rt0": [
+          "-1/8",
+          "1/8",
+          "0",
+          "-1/8",
+          "0",
+          "-1/8",
+          "-1/8",
+          "0",
+          "1/8",
+          "1/8",
+          "0",
+          "0",
+          "0",
+          "-1/8",
+          "1/8",
+          "1/8"
+        ],
+        "primal": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "refined_primal": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "11/256",
+          "7/128",
+          "11/256",
+          "0",
+          "0",
+          "7/128",
+          "9/128",
+          "7/128",
+          "0",
+          "0",
+          "11/256",
+          "7/128",
+          "11/256",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "refined_rt0": [
+          "-3/64",
+          "3/64",
+          "0",
+          "-5/64",
+          "1/64",
+          "-3/64",
+          "-5/64",
+          "0",
+          "-1/16",
+          "-3/64",
+          "-1/64",
+          "-1/16",
+          "-3/64",
+          "-1/64",
+          "5/64",
+          "3/64",
+          "-1/32",
+          "1/32",
+          "0",
+          "-1/32",
+          "0",
+          "-1/32",
+          "-1/64",
+          "-1/32",
+          "-1/16",
+          "-5/64",
+          "0",
+          "5/64",
+          "1/16",
+          "0",
+          "1/32",
+          "1/32",
+          "0",
+          "0",
+          "0",
+          "0",
+          "-1/32",
+          "-3/64",
+          "-5/64",
+          "1/64",
+          "3/64",
+          "1/16",
+          "1/32",
+          "1/64",
+          "1/16",
+          "1/32",
+          "0",
+          "3/64",
+          "1/64",
+          "-1/64",
+          "0",
+          "-3/64",
+          "3/64",
+          "5/64",
+          "5/64",
+          "3/64"
+        ],
+        "rt1_cell": [
+          [
+            "21899/1048320",
+            "13777/262080"
+          ],
+          [
+            "9337/262080",
+            "29243/1048320"
+          ],
+          [
+            "-17/1280",
+            "17/1280"
+          ],
+          [
+            "6269/524160",
+            "6053/262080"
+          ],
+          [
+            "3593/262080",
+            "4469/524160"
+          ],
+          [
+            "17/1280",
+            "-17/1280"
+          ],
+          [
+            "-5609/524160",
+            "3049/1048320"
+          ],
+          [
+            "409/1048320",
+            "-5129/524160"
+          ]
+        ],
+        "rt1_face": [
+          [
+            "-509/1920",
+            "-91/576"
+          ],
+          [
+            "317/1920",
+            "263/2880"
+          ],
+          [
+            "-21/520",
+            "-73/4368"
+          ],
+          [
+            "-187/1920",
+            "-91/1920"
+          ],
+          [
+            "2489/24960",
+            "6127/131040"
+          ],
+          [
+            "-67/960",
+            "-67/1920"
+          ],
+          [
+            "-187/1920",
+            "-1/20"
+          ],
+          [
+            "-2009/24960",
+            "-6067/131040"
+          ],
+          [
+            "187/1920",
+            "91/1920"
+          ],
+          [
+            "67/960",
+            "67/1920"
+          ],
+          [
+            "-1111/24960",
+            "-8989/524160"
+          ],
+          [
+            "631/24960",
+            "5389/524160"
+          ],
+          [
+            "-1/104",
+            "-11/4368"
+          ],
+          [
+            "-173/1920",
+            "-221/5760"
+          ],
+          [
+            "187/1920",
+            "1/20"
+          ],
+          [
+            "173/1920",
+            "221/5760"
+          ]
+        ],
+        "tree": [
+          "-1/4",
+          "1/4",
+          "0",
+          "-1/8",
+          "1/8",
+          "0",
+          "0",
+          "-1/8",
+          "1/8",
+          "0",
+          "0",
+          "0",
+          "0",
+          "-1/8",
+          "0",
+          "1/8"
+        ]
+      },
+      "load": 1,
+      "n": 2,
+      "primal_mode": "zero",
+      "rows": [
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "86f9c3597fe5bae8c6d7407ffd501c4e837c37931c9242c1a38a53a9733b4c44",
+          "epsilon": "1/20",
+          "refined_digest": "4ae346483353573d49e8312f28f19525b87b685511ff821a353ebcbbca169f91",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "a4378a3ff27287ac3f69d38d4d3dad392a4dd138ad311007b52b4ce61720061a"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "bcdc11c0f09d6020056e6a0a12150e9249042b7f56d14baeb58635746ca2bd8d",
+          "epsilon": "11/200",
+          "refined_digest": "39b2995bcc3b788cc677e1afff53b91312158513e96c4be0c48ead198ca31a2b",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "b87eda51a381079c27f70187117229520dd8242e3b6b8f4cbdb3711252e34eb9"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "49dc64265e9a36dafc6f9ed3a9aa7c4c624fcaef767711fe19d2cab410187d3a",
+          "epsilon": "3/50",
+          "refined_digest": "b1695532dae7e3218db39653f71b784cf8a7565a36f3e785acf9e92b5fcc48fd",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "17fd1dba88a62460bfcf5e3e8bbff79158c9504d2631b663e95cca1de226fec5"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "2f3a2e2aa5f5e11223d44c0ee83581b79d532ad8418f221b603a9597a6d67f69",
+          "epsilon": "13/200",
+          "refined_digest": "c64182991dad15779ae0dea46424a310b7a2e86b67a8de7c017e12ac4e81a4fe",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "1efc2d06094f171a0920eb86d1407356983b7c1f9f9f2c3ca73c08fd5d7c22da"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "bf30829e9fd536dc349a335f24c49f758c2c61b2ab4cf88be6fe81a4af54f397",
+          "epsilon": "7/100",
+          "refined_digest": "bcbfa9ea5e91b77a67c7278f1b34c9e22475870cac9425b05c9e43afff50d9a2",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "83298b758e44474c9963d112772dae41cd02ffb92b5e43f7574d4bb3b6b23c52"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "9b08c5faac9af8ef49c3b8657c6ee5e89dfabc83a62dd8dd7b30dc9bf03168df",
+          "epsilon": "3/40",
+          "refined_digest": "4c36252ed68edd54961643fa71bbb8a0822d3de41e8f33672daaab4e6e5d539d",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "aff7a1081c39c9f9bd3af7d194ac38013a147f0363cabc20a3eb763385cd18d9"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "0af664508f4c4cb41479c9b9cc3d9c4597bc56208f461710d2a72e08faf85916",
+          "epsilon": "2/25",
+          "refined_digest": "aad0cfa110234ef49488a4724af1bb151fdc39d4b783429ad653ca13d7af4227",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "74fd05e6d170aeddfd551d8e1704ad854cc3d353090adba848f7efcd878599c5"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "50005cc3d54290ea2bc2ea3b9c6ce1e21b7935903e1fe06f388706a8e9862976",
+          "epsilon": "17/200",
+          "refined_digest": "35410f1c8c828a18da6f302332cff63bebec3621cf1cd0b4df3e6fcb0a7ba443",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "237a20920bf4bc404c1ba611b2697e51cfe0f6e79856c286f5b643b5567d463d"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "302305c9bfaa9d2a12c62feb8965ae9aa6db78effd7ebf0fd392dc8d1abf353a",
+          "epsilon": "9/100",
+          "refined_digest": "106a05bc8441e33eaa5b3f33b1a6adeb3b229e8afb5b079afbe264a19a17e19d",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "7bdf5c707fd9da5c7729d73a3d71d2c814b9ebdf0b4acbb0f2fce0a10c532013"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "2760b53e231a42aeb29419c8d9a2222471f4b0ca47380107a7c83988c4d83943",
+          "epsilon": "19/200",
+          "refined_digest": "5153d04afb148923fa312e435c6865805593333e21058d9390c5982b5ce3292f",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "0813d4a2d11648de1a9b429a9c7f9ae83e3295fb13a4090a9476cd483526dfa0"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "a1280b151cc37129ac085b7edf735f2fb2abc9f0bd84104a63b7b6f01f6a2384",
+          "epsilon": "1/10",
+          "refined_digest": "f331bab18e9124b7281522a35bdbf1878420def362ee1a197988cf94143d8aa8",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "c4ed5cc1ea9f2b25da82bba6c16e91cf8c636173fa0bd75918c5c1ea9c4b2a1f"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "ff971385ec01e771ef276681288b5d312c1241cda6b1e51cc926efd6cc0c356f",
+          "epsilon": "21/200",
+          "refined_digest": "904c397ec412d4c8b6b4448ccb6a4946e0928d978f8809f19a12ac495e25c7b8",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "714217105a99397292aa28e4f7b8355eea1914b8c80a666db33c8241b9f433ba"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "dca734a873701dad70754904c974046ab0f22d1db7c3a089676e126168069b4b",
+          "epsilon": "11/100",
+          "refined_digest": "5c914bb1d3253b7ece2bfcb42258b66a4ec66544e14a5343431b4e0988959bd0",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "aaa197b5675c21723b0704780971f2ce4dbe630e10283d3cb7c89c5bf3891e17"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "9c726101313bc5a08cc39c6b38b12a354df673973135bfe6f17ebb0ed4f49002",
+          "epsilon": "23/200",
+          "refined_digest": "069dd7e2716f14e9cda1f98543303594f0b3feea4c3e1c5afd1a47aa85d1ee14",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "4e02b9fc28cd96eafb4bb9fe8205af0ee0072dc2ce16c4038cb4a74edf7cbf2d"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "94e5753b66119f661c0240cd50aaaf0001cbf01cec8ea863403e05792660bed1",
+          "epsilon": "3/25",
+          "refined_digest": "eeaf6a75e57d4940eea7b00ee0a737c8c26a22b801ff1d0d52af149c63eaa476",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "1e94d9c06b135f2f3ea25ac11bb4fabc8c19ca369dda9a3974d7b49cff9e7e12"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "a9de8a2dc85156732efa2dc091edb9b552dde576a5af0c8e99e1035f91bddcb0",
+          "epsilon": "1/8",
+          "refined_digest": "778141a36bff6f46755722daaf1742531af6e0c928f1238c181e39042b10b0e3",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "4db3ca56df38ee30b39f1f68eac1d73fc82d448f5ebfb4e527e00430e90af814"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "a3977cbde59c729ef9a1e3a969e8f2f3d326986f6370d5e42ef2bdc5a1e32230",
+          "epsilon": "13/100",
+          "refined_digest": "b1d92cdf9d40240d18fbaa1a6f48443d4710abef32e1619b38205019b572049b",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "08446c1767d7f43c1a36e78566a36af99270591b4564dbe5ebb1e9bc88ad8feb"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "ff7d63cde27ddf7c3a6b6db5036ddbf2c48aeb5aabdc3f25f824f17bf712780f",
+          "epsilon": "27/200",
+          "refined_digest": "243d59f12386e9fb624473de1c78fa05a661f5c21c6e4462b5f705a53b267487",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "68e5a0e97b3c6fbb587836189c0b93bf5e61643295a710ea28d81f7a910211df"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "d6cc44171b34955c3ab46c8cd9f65392d47f67afe29388ef2c3bab8e0de34bde",
+          "epsilon": "7/50",
+          "refined_digest": "625e7bf7298aac85922c05a0f35a501684db7861376cf1864e751784c406f263",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "363d1dadf301f0e97c9316f90d3915116062549ab9a901cd88a8d16b43d3d59d"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "0c6eef8be056d3ac3918ba6f036e6a3f6771c5af53cae6006aff25bc8ab130b4",
+          "epsilon": "29/200",
+          "refined_digest": "518f9e3954942b62d3688380bacdbb016e53b1526e2281944f99b717f78be375",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "8414954ef09f8415a00e40277411d49cc38e5ffa9ae66e3c52f1c0d95cb2e660"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "68b6540d2ba35588862c3e28c3f2a5d30eaf88866384ce93beb6d4c0a1316a1f",
+          "epsilon": "3/20",
+          "refined_digest": "e5aa3d695480764c4ee903101e79923991140fd5f6e17ab497aeb7d570568cca",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "c833a25ca329badafbb1fe8988aac75307524e1360e4b6f3f5baeaf7042d6440"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "2b1c0dd6db025ae72a052c013be65cd0ecee88e24793b85d27b74e7571c27e82",
+          "epsilon": "31/200",
+          "refined_digest": "1005e37d34e7682f559b4049318448386caff87adf90606c532f2d11b8ce74c0",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "c703e5c41170f7086c78e71d82e79e6e49c8c5ada14dac87064dc1e6d57343f5"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "5f2ad95662674919a39870fed2eeb9774a7ab60974ccffd14eb248758a723636",
+          "epsilon": "4/25",
+          "refined_digest": "49f7ba25e8d98ce520e9133e4a82665badb3720459bb5e32e3463ff6b76d04b1",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "090d2d2091a0fbcede66daf3b407b0f2016f36268a48ca65cac8b49e18001b8a"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "b2bf3aa4f7c926fc2ab5bf550c9cb3968c91298f0b1f30616a6d612f382b4ca3",
+          "epsilon": "33/200",
+          "refined_digest": "8fb574482857baeb585e258782794c9e387f3c8290219216b108942ff6aff2f2",
+          "rt0_floor_verdict": "PAIR_SUFFICIENT",
+          "rt1_digest": "4be2d75a0f382948f3a1476ec1e0f4434f0fc3987749eb39089e4fc2e57460fb"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "5fce18a5e29b27f0eef5ea040bde95417e334857e81a84af21109999e4e8d810",
+          "epsilon": "17/100",
+          "refined_digest": "e19f113486ad63d2084daa8a72fdecfc9078899cf680aa5aea9ae5dcbb24e3be",
+          "rt0_floor_verdict": "PAIR_SUFFICIENT",
+          "rt1_digest": "0ec0b5b34a2eeae4c615603bd7e086187e43d9aba354163a1a0c57b09997d8e3"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "046c5d27198d0c0d9378457d7422174cdcefbdf43c4da17868fe0f510f585262",
+          "epsilon": "7/40",
+          "refined_digest": "cabc973e338b49d221cb0d8b00ca95ab9108294b34b1c4036c5abc541ee53e35",
+          "rt0_floor_verdict": "PAIR_SUFFICIENT",
+          "rt1_digest": "7e250e4155f6cc5a073ea81a7311d423dabb38cd8351201c735dd0d073162be5"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "7993ae82e7d6c3db2afa38261abf25274739af2b44dee65161fe97f90c39fb12",
+          "epsilon": "9/50",
+          "refined_digest": "4877fb3d360a2c8af54a1d918dee64a55a639a8cdef9a83a044fb87641f76f5b",
+          "rt0_floor_verdict": "PAIR_SUFFICIENT",
+          "rt1_digest": "2ccc36e41638057754bf1cafc60f666ea120c1e33bc27921ca2c2fd108f85ce1"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "1ee5e7a83623ff1b06c660b4265be493e551b97eb323b0fac2e3855292a133c1",
+          "epsilon": "37/200",
+          "refined_digest": "76b1abd3a70d9ef9c59e460c7ae5a2c3d4d8a976b8a027daa2cbd8e711e39ca3",
+          "rt0_floor_verdict": "PAIR_SUFFICIENT",
+          "rt1_digest": "33f6e3541ed479f1161a597a3135de3b11cdf25ad005c3fdde3e6cbfe1d5cbcc"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "e3fe760c0a2bd8da8762c73c72becc24ac077aecafc768897b7592b0984a15f7",
+          "epsilon": "19/100",
+          "refined_digest": "06457b49ee62748f2a30b4dc14ec1b0059662a5ab6480992e3fdcebd5cea6a8a",
+          "rt0_floor_verdict": "PAIR_SUFFICIENT",
+          "rt1_digest": "e94c1be22d42c0026de0ef24306a41ea5b16ccf73e38cc402129d9448b9954fc"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "cf26a558d70d0d7879772b02dfac90e379a8b348acc8b13b7b95ab46a3ffbed2",
+          "epsilon": "39/200",
+          "refined_digest": "800d4931d33b642b00df38766466ca92d185abe12a37ec1b23bccbfff7d4709c",
+          "rt0_floor_verdict": "PAIR_SUFFICIENT",
+          "rt1_digest": "572ed42a5b24260f9571f3c69374d042acd0991fba06c0be8651885b78269f91"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "25f01ed227e115f20bb9a13b09c382cc5012af76f70e74b84df9ff25cf67cc47",
+          "epsilon": "1/5",
+          "refined_digest": "850e18bda35e291d89a21f41cc5b0d347c17303c40d6dbf67c54ec75d8593cee",
+          "rt0_floor_verdict": "PAIR_SUFFICIENT",
+          "rt1_digest": "1698836d154e074155b163a9c2998c91469d736d4a70c662854d77cc0932f549"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "2adddb2a31df44a08637d3e1418afbc5a453ad49a54c2a980e46ba163abddd25",
+          "epsilon": "41/200",
+          "refined_digest": "cba3bc4f0969dac4a1ff8c4e158b0e612ad230db35aab0c598e6122a44f4efb3",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "f3a85cd8d117ec49311d474319d72acf16a444a167d9a3881da327052897d287"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "bd4a38b19b7a243055c1eafed7cc18abde71a490a0c7031d8e34291ba8d98b9c",
+          "epsilon": "21/100",
+          "refined_digest": "54ab3441a3da19c620d8bf8afe03ae50a4cdde13973714a44d2f3b9a8a251a46",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "8005126f2a6fff7900fb9854712ea0fffe216855d43e295bc4e1446b037e5f59"
+        }
+      ],
+      "squared_energies": {
+        "optimal_rt0_upper_sq": "1/24",
+        "patch_rt1_upper_sq": "261679/3931200",
+        "primal_alg_sq": "1/64",
+        "refined_optimal_rt0_upper_sq": "55/6144",
+        "rt0_pair_floor_sq": "5/192",
+        "rt1_original_residual_sq": "0",
+        "tree_upper_sq": "5/48"
+      }
+    },
+    "null": {
+      "cost_ns": {
+        "checks_at_all_tolerances": 336956600,
+        "coarse_assembly_lift": 578700,
+        "coarse_discrete_optimizers": 488600,
+        "freeze": 1981200,
+        "patch_reconstruction_and_parent_check": 15778500,
+        "refined_assembly_lift_and_discrete_optimizers": 5684600
+      },
+      "elapsed_ns": 361550100,
+      "fields": {
+        "optimal_rt0": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "primal": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "refined_primal": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "refined_rt0": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "rt1_cell": [
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ]
+        ],
+        "rt1_face": [
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0"
+          ]
+        ],
+        "tree": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ]
+      },
+      "load": 0,
+      "n": 2,
+      "primal_mode": "zero",
+      "rows": [
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "52dab6df61a752804734f5736dcaadbfb82c5738a06d8f872ee1b4fd67b76d8d",
+          "epsilon": "1/20",
+          "refined_digest": "2043ef4d833233fe851c4ee2f64e0ae540573b1deb7bd85f6235178323cae087",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "f3df9d2b884e0ce76d072f530869d40fbb92afdf7b5254093c2a37590ba70955"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "002a8d064f393ab6c513376b50bd791ee961dae3d267d07527d8ef090556004d",
+          "epsilon": "11/200",
+          "refined_digest": "fb320fe1ea75bd75264b4316d11542d970a7badd687197b221105fbe59bf1bd1",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "0c0e292b5a55b949d28524e107e621005ecb4a9f1d5167a6c34d3fbd87f47bf9"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "9d86ce983c1bfcbc5c83dd84a040e3d2b35b6abe7b076d57acc7081557c49f35",
+          "epsilon": "3/50",
+          "refined_digest": "150a746011842817db524deea0e14ac2bc455e638d241deeb49ba5ea1090c05c",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "a3a06e6f5b3709543a1fcfdd30df1b76cd98d8b664919af23b1ac69ddebb96ee"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "a57abf4bcfcca708dc6b92e0795033bcf5c30c537699a99383d6b98ac41c306f",
+          "epsilon": "13/200",
+          "refined_digest": "1c65c70f1b2cf9c9d4f330e10f544c892e34f530956bb0b73a47ffa0881b9d14",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "4b8afa547b74ee123b52cc36a8639a71b8e28b136b5ff5e6bf0da1efedcc56bf"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "54f9ed3ec537f2e15eff3edf0b4f57ff3718d7c7d5c886283266ee0451a72bd6",
+          "epsilon": "7/100",
+          "refined_digest": "09069d26f521b00b2c5acdca36351fe9af4c87370c8943b6211eb0ead3127858",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "6ea654f2b8158e86a03dbd03629297ffc652f0397888ad55a55c7a05a68e6f93"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "ed2c3c908d354a5d753f453afa0b68b839b8a35f9c4a0afe6cd9678d3665bbd0",
+          "epsilon": "3/40",
+          "refined_digest": "448968eebcf7e7b7c5b918775d12b0fabcac2ad797a89c4b6de4961630616f7b",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "fac881d9879630129b050a91777c574e3128200ece517fa87651a54725bea757"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "efb93f3c213019f1459c601b92a0046619726185a342b673cb1dbd330d98287f",
+          "epsilon": "2/25",
+          "refined_digest": "61273f82d8a8036ad9522e1eb6a54bb1589f82494093e7506310bfd2de20e17e",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "cc02b73ecea14c9335238caca1a73a6ad99e1f9deb2dab58bde57a73bc31ab10"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "58fe8ff0c17946cb9ef89f1dd2314e8d633f91f5c765f84d085683d3e6a3be45",
+          "epsilon": "17/200",
+          "refined_digest": "6f119ce1f8dbf8dda7cd3e13b75212e06343311e71eaa1250e03c7eab2f7a8fa",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "aaf8623ea5ea73ab731300bd9d52df10dd14ff46c7f7564ca0946cc117d755c0"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "60113eeb52f4b9ebc28a22ea2b8ceeff8e38a927b357791219c4bb1525c5e95b",
+          "epsilon": "9/100",
+          "refined_digest": "73c46c7afc1e484994c56c5c6b1e66fe364f5a3bcb14570b7aa1f3d9953ee0d3",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "d57a990f66cb42d66e81708410c507d58d59cf52966545046321ecf317e7dc69"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "826790a84d0b21af66b3463766e23d0fb53cda10151b185d71d3e5b44e26fc06",
+          "epsilon": "19/200",
+          "refined_digest": "b63619c0bcff47068ddf35c1e4de1495532846c675ace6b338d2c64f63c78ad1",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "0b9e56b3c49bb9ff641911c4e4e4e9b1bd51639908199c755dcb67826ea79d0a"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "48acb816c09dc1e8b366473076788b363084b262e6e189dfd049bec5d8e0100d",
+          "epsilon": "1/10",
+          "refined_digest": "56ad31e1f4d6bea4d6b7a92a3ea8b0db9285637ccbb17815ada222736459d8e1",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "4affecb00c558c17a160675cb0968da0e2e14a0260d1bf0f1a253d4eec271ae8"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "e1ce48dc8ac499dc56eb2e06990971d7265005a0b60f28cd434dbe9c01d0d8d2",
+          "epsilon": "21/200",
+          "refined_digest": "a5156d6a9c60b0e38729b4ccd7791dc6db6656502f4aca776780c41a2db916da",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "a46c701d8eca2a53ac121b693558053ae4bafaaaa38a1e99a36112a88ae470da"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "80179ba6f4b9126dde76343907a37bd47766738b5e2aa3ae1996236ea51e62d8",
+          "epsilon": "11/100",
+          "refined_digest": "1ae8530f34a5955d2e7c976fd6d87ee9b4e18494e4a18e1802ef9461b6a81554",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "f6ab6842126d494a3f3128678632c0c63bea24083fe430b8c10e5e4f2746920b"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "b9ea393539d79bf75c76a5ce5bb564afe1e8212c03e574412df3ca5f9df44215",
+          "epsilon": "23/200",
+          "refined_digest": "128ff70324971083228113c87531325c80723075fdeb37e444e66a50ebe3615e",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "862b5f759e155f313af930821b547a82ec536e44be340c65af338c554570f1ca"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "b136d9508153a48867960125ddfac723cbae43f1e0a5c7ead24296d8ebe2cdd4",
+          "epsilon": "3/25",
+          "refined_digest": "5c24e3fc87201c22138606d91e8fd6d6d3bb00f9bf2a8e8d6e4c1456dd454d49",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "a804274e7ad837bbf835141ec0da99e89d0bd148fb5ebeb43a7c9acd470186b8"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "216b7e84f1d9f30c2393ca724b4b160ac6c7a47d7671f77a072f9df97b8f7ec4",
+          "epsilon": "1/8",
+          "refined_digest": "8d0394aafe803b13acdd403ad0b2935f4a1bbda19e7ba52fa19b5c71729e6566",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "43f515d5cd0c3d7ded70ea849670d8eef947ded94f59abf25ef1f70d88b7d3e7"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "479cb7f51509b2e1501073c439044d305848c18b04e23c091c6e53021cc57f48",
+          "epsilon": "13/100",
+          "refined_digest": "11dca54f5ca7c0611c58b11bd7e76802a690a7c0228ed26e3b124eaa6609da09",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "56b3e8d5c4f195c4aebf64b560660ad1dd3315eeff7794ac2efec1ebe58ca60f"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "5551eaa9a82f30664ac317cfa99e735212dfb925d76240de459e33130242026c",
+          "epsilon": "27/200",
+          "refined_digest": "301b03356874b508d535450f78e1101aee91d26b93f7a954add568ecc3fe6b12",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "10f7a0709636d7f81978d1ccf316df8fc6b2deffe1113a0dcc769ec94318d245"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "72d37a7c896aba4f0f3a7c380e1552e866f264ad6b2eb7053b298493235983e0",
+          "epsilon": "7/50",
+          "refined_digest": "836426cfdc7a65af53e0eea2bb5071fb75b52101a275dc2a929d22831b65ca9c",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "a219dab36869e74cacb354dcbeacf78a930458957fb16a1758fb6cb71fa407a5"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "33b90adaeffdc556d6eea1b9756ef5196847e3e6d3ed778ab708095441240aa8",
+          "epsilon": "29/200",
+          "refined_digest": "0025c21fad19c05b8d9054d9701703c818d382e158af917a720327f97cddc51b",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "60850f844a5f760bdf0a744acb744f845efaffdb215b59e899354c2cf2975302"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "b8a1bc8d829250a80500648d00f70af37f4a1979d4ac6aa90ab721610e795208",
+          "epsilon": "3/20",
+          "refined_digest": "72cd48ab630f14737720d8914d26d6782dc17fec9375bd8ee0d6d6730369be99",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "9ec01bfdd9722d663895c6e05e0587df827e56bd39842b256630367ef498d070"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "e326085394fe9e3d26b5c0a29335be9f2d95f90440a4f0cd2d9a5b9f1090febe",
+          "epsilon": "31/200",
+          "refined_digest": "5ce102e7c6bcd7d9f2fc4c9a8b6b598ea71e6920470c10a5babb2fb1f217c750",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "5c906ebc8232c1b8cb161fd4fcb7a1d16633f029adfc724356f0e86843867823"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "23bab4e8e30441156c0d7b8255c4babc2eb2e9e7ff77ab8c9f7c9b4db8805f2c",
+          "epsilon": "4/25",
+          "refined_digest": "5bd127c0158bea1bfe6f97fae7175884cdec3c2cf1e5c6b189dd61c788cc9d7d",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "e28f844d334a8d9089d7c66e5e0353040342d64c6113044bb38f873f7a143f54"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "61f1c9be0ca9cbb3513564b551f2708534b69e884bce70ce4697a810e86df61d",
+          "epsilon": "33/200",
+          "refined_digest": "d8b50b0cdc488d72d684867df9e966e09dd3dda6108720cd8f23049d062391cd",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "7d6b44181e6dc12681ff34582eb94237c4a539f46d8acdb093999c6503748ea9"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "0a6f288c41088bfd3e4cead689e16bdcfdd9db10ff17f2a84f5a2fdf84c68e6f",
+          "epsilon": "17/100",
+          "refined_digest": "51d6af8ef5ea4ab3afd1b5cd8b8e2e686e1dc9b1c432065affa6debbb01113cb",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "f0ee4970373427a3dcea4987be6905e966ba3e9ed675d1d673b56a96d9991398"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "26fff04053f0f1a542f2c6e933299e74bfdf263e0f6c04ca0cc97bbac69a1ced",
+          "epsilon": "7/40",
+          "refined_digest": "2c42a5072f509075e645458b1611a47a01f90a1f7b6cbe56be7fe04555b907cb",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "8215b0521092a1c8e84c79a5ffae9ba7faf5c76e5a72f2a1b6f39e31a3309863"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "f21aedf8d4314a57bb9478f69eb1f838138008124033e06b4a6639f15cfd2c8b",
+          "epsilon": "9/50",
+          "refined_digest": "7c5a2fbb3abb912d0c037b6d4ed604f1ec8d41966e1f64db69787699a181cef0",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "36a1a7b5076b6d825624e0dedc1bfdee42f180e06b24f74a12b5580dd3680f58"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "6a712b5de46c867fd325e8deeb2612059d8f5562c31db8d3c63c2f84239e4074",
+          "epsilon": "37/200",
+          "refined_digest": "5bb7474459acb8bb6fc8ea29e0dd2b918188be94dbfadf3d2d94e6300af33308",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "4176f3f85a83b42d978ef575b46b96ae7aa63f05634b35b360c94a53cc48d521"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "fefdfa6bcdd424bc6a08b6942983617b229283c87b69bf9e93debc267c3caaad",
+          "epsilon": "19/100",
+          "refined_digest": "6ce294c8fbc51c79ccd483acf14cde7d0dd62f5241d9cd41247ee922630f8ff5",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "4f0ab01bb5a9625f092e7c9fb4597d30bdc78f01d246b1a0aa068b115888f1a0"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "636711ef3d62936efa2019b403a22d14f6523ccff66f09b02b376ee80805e5ae",
+          "epsilon": "39/200",
+          "refined_digest": "d9d94ce7f7b2fc6599bd6b520873faac5218d9fe10086c79e886cce260850091",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "9a0d2699753af445cc88cac8c535dcd101dfb591c5e30a20f088b6cafec4fee2"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "d2b61823c5a0165c2f9a96ff8104148e85b7b6279da2adc3b38b6f3a31111b25",
+          "epsilon": "1/5",
+          "refined_digest": "5e4bcd56f3bc1cbe6ae5a7e9aa8cdbaea85b34f4666210ccb881a32637520e3f",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "ea4481ee9960ffa4feacf9346a54ede56774c9d0b45eb2b491b060d6307b377f"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "97dc0f5700acd5dcb56ed7f89d364360572ef555d00ec6447cd97723dea2f23e",
+          "epsilon": "41/200",
+          "refined_digest": "46d5fa2de05da906dba655cca366ad6e8c53ce11a4fb90fc54190382a26046da",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "7b9b7e3b6a7539b5bb42bf03856bd076a99763209e1a3e048b3cb08518f13aeb"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": true
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "0fe5652ff007464bf506ca0022d46f368dc2c712a31b679a4fe30cb4d0338636",
+          "epsilon": "21/100",
+          "refined_digest": "927398e2bfd197a50f07b6d7cb8168bdcdd2a72809ca5846ce0df6e7dd5646f2",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "8d131ac3e3f82251f30d22e4108040da7aa3f29471f4940d9308573844f4549a"
+        }
+      ],
+      "squared_energies": {
+        "optimal_rt0_upper_sq": "0",
+        "patch_rt1_upper_sq": "0",
+        "primal_alg_sq": "0",
+        "refined_optimal_rt0_upper_sq": "0",
+        "rt0_pair_floor_sq": "0",
+        "rt1_original_residual_sq": "0",
+        "tree_upper_sq": "0"
+      }
+    },
+    "primary": {
+      "cost_ns": {
+        "checks_at_all_tolerances": 361588100,
+        "coarse_assembly_lift": 3780100,
+        "coarse_discrete_optimizers": 508200,
+        "freeze": 2293800,
+        "patch_reconstruction_and_parent_check": 16186300,
+        "refined_assembly_lift_and_discrete_optimizers": 5726300
+      },
+      "elapsed_ns": 401287800,
+      "fields": {
+        "optimal_rt0": [
+          "-1/8",
+          "1/8",
+          "0",
+          "-1/8",
+          "0",
+          "-1/8",
+          "-1/8",
+          "0",
+          "1/8",
+          "1/8",
+          "0",
+          "0",
+          "0",
+          "-1/8",
+          "1/8",
+          "1/8"
+        ],
+        "primal": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "1/16",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "refined_primal": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "11/256",
+          "7/128",
+          "11/256",
+          "0",
+          "0",
+          "7/128",
+          "9/128",
+          "7/128",
+          "0",
+          "0",
+          "11/256",
+          "7/128",
+          "11/256",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "refined_rt0": [
+          "-3/64",
+          "3/64",
+          "0",
+          "-5/64",
+          "1/64",
+          "-3/64",
+          "-5/64",
+          "0",
+          "-1/16",
+          "-3/64",
+          "-1/64",
+          "-1/16",
+          "-3/64",
+          "-1/64",
+          "5/64",
+          "3/64",
+          "-1/32",
+          "1/32",
+          "0",
+          "-1/32",
+          "0",
+          "-1/32",
+          "-1/64",
+          "-1/32",
+          "-1/16",
+          "-5/64",
+          "0",
+          "5/64",
+          "1/16",
+          "0",
+          "1/32",
+          "1/32",
+          "0",
+          "0",
+          "0",
+          "0",
+          "-1/32",
+          "-3/64",
+          "-5/64",
+          "1/64",
+          "3/64",
+          "1/16",
+          "1/32",
+          "1/64",
+          "1/16",
+          "1/32",
+          "0",
+          "3/64",
+          "1/64",
+          "-1/64",
+          "0",
+          "-3/64",
+          "3/64",
+          "5/64",
+          "5/64",
+          "3/64"
+        ],
+        "rt1_cell": [
+          [
+            "443/92160",
+            "947/46080"
+          ],
+          [
+            "947/46080",
+            "443/92160"
+          ],
+          [
+            "-613/30720",
+            "613/30720"
+          ],
+          [
+            "-493/46080",
+            "493/46080"
+          ],
+          [
+            "493/46080",
+            "-493/46080"
+          ],
+          [
+            "613/30720",
+            "-613/30720"
+          ],
+          [
+            "-947/46080",
+            "-443/92160"
+          ],
+          [
+            "-443/92160",
+            "-947/46080"
+          ]
+        ],
+        "rt1_face": [
+          [
+            "-1859/15360",
+            "-1607/23040"
+          ],
+          [
+            "1859/15360",
+            "1607/23040"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "-1981/15360",
+            "-311/5120"
+          ],
+          [
+            "-61/15360",
+            "-13/23040"
+          ],
+          [
+            "-1021/7680",
+            "-1021/15360"
+          ],
+          [
+            "-1981/15360",
+            "-131/1920"
+          ],
+          [
+            "61/15360",
+            "13/23040"
+          ],
+          [
+            "1981/15360",
+            "311/5120"
+          ],
+          [
+            "1021/7680",
+            "1021/15360"
+          ],
+          [
+            "-61/15360",
+            "-157/46080"
+          ],
+          [
+            "61/15360",
+            "157/46080"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "-1859/15360",
+            "-2363/46080"
+          ],
+          [
+            "1981/15360",
+            "131/1920"
+          ],
+          [
+            "1859/15360",
+            "2363/46080"
+          ]
+        ],
+        "tree": [
+          "-1/4",
+          "1/4",
+          "0",
+          "-1/8",
+          "1/8",
+          "0",
+          "0",
+          "-1/8",
+          "1/8",
+          "0",
+          "0",
+          "0",
+          "0",
+          "-1/8",
+          "0",
+          "1/8"
+        ]
+      },
+      "load": 1,
+      "n": 2,
+      "primal_mode": "galerkin",
+      "rows": [
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "86f9c3597fe5bae8c6d7407ffd501c4e837c37931c9242c1a38a53a9733b4c44",
+          "epsilon": "1/20",
+          "refined_digest": "4ae346483353573d49e8312f28f19525b87b685511ff821a353ebcbbca169f91",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "517cbcad01983ad3804244edda02f6533bf9a6b4d9b58409db8838842f962fa5"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "bcdc11c0f09d6020056e6a0a12150e9249042b7f56d14baeb58635746ca2bd8d",
+          "epsilon": "11/200",
+          "refined_digest": "39b2995bcc3b788cc677e1afff53b91312158513e96c4be0c48ead198ca31a2b",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "046cb64cd7e10d69764af87226f321251af2f41b19529c20f14311221a8d8808"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "49dc64265e9a36dafc6f9ed3a9aa7c4c624fcaef767711fe19d2cab410187d3a",
+          "epsilon": "3/50",
+          "refined_digest": "b1695532dae7e3218db39653f71b784cf8a7565a36f3e785acf9e92b5fcc48fd",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "ce3bf5eeaba34d8e2779ddad549df56f5433830d41cc0e85565cd0f0311b39b8"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "2f3a2e2aa5f5e11223d44c0ee83581b79d532ad8418f221b603a9597a6d67f69",
+          "epsilon": "13/200",
+          "refined_digest": "c64182991dad15779ae0dea46424a310b7a2e86b67a8de7c017e12ac4e81a4fe",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "48481461eb4240ea526c4e1a76f27fee7aa172a1029c24218d60800e39d8f3c5"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "bf30829e9fd536dc349a335f24c49f758c2c61b2ab4cf88be6fe81a4af54f397",
+          "epsilon": "7/100",
+          "refined_digest": "bcbfa9ea5e91b77a67c7278f1b34c9e22475870cac9425b05c9e43afff50d9a2",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "5e88b85b56b9dffa26d5ef8a2806151be03704019b0dd7c01e489d9355f139cc"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "9b08c5faac9af8ef49c3b8657c6ee5e89dfabc83a62dd8dd7b30dc9bf03168df",
+          "epsilon": "3/40",
+          "refined_digest": "4c36252ed68edd54961643fa71bbb8a0822d3de41e8f33672daaab4e6e5d539d",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "8ea6570ec7683eba8653b814fec9bc82e7dd1af5b721ff71e8aead09159c8658"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "0af664508f4c4cb41479c9b9cc3d9c4597bc56208f461710d2a72e08faf85916",
+          "epsilon": "2/25",
+          "refined_digest": "aad0cfa110234ef49488a4724af1bb151fdc39d4b783429ad653ca13d7af4227",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "11ab26a70db49255d260062d2128d951b6e5a4bb31a8e0e2228b3a9624180817"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "50005cc3d54290ea2bc2ea3b9c6ce1e21b7935903e1fe06f388706a8e9862976",
+          "epsilon": "17/200",
+          "refined_digest": "35410f1c8c828a18da6f302332cff63bebec3621cf1cd0b4df3e6fcb0a7ba443",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "8fa10c67d1f1476ff6f38aa4683040988badfc9f26dd0e2f42d2b282a7333fb3"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "302305c9bfaa9d2a12c62feb8965ae9aa6db78effd7ebf0fd392dc8d1abf353a",
+          "epsilon": "9/100",
+          "refined_digest": "106a05bc8441e33eaa5b3f33b1a6adeb3b229e8afb5b079afbe264a19a17e19d",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "231644933195355389a86610a750a86735870cc04a6141398e720efe6b3dc341"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "2760b53e231a42aeb29419c8d9a2222471f4b0ca47380107a7c83988c4d83943",
+          "epsilon": "19/200",
+          "refined_digest": "5153d04afb148923fa312e435c6865805593333e21058d9390c5982b5ce3292f",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "19914de6b16881f3f97c84ef0f7a0f45ffef0d35c6b77eaa463456dbb0ff24af"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "a1280b151cc37129ac085b7edf735f2fb2abc9f0bd84104a63b7b6f01f6a2384",
+          "epsilon": "1/10",
+          "refined_digest": "f331bab18e9124b7281522a35bdbf1878420def362ee1a197988cf94143d8aa8",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "1e7b22e8f88c19a5808824281d983dae406767ae7a0dddad09d7f1a04a970fd6"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "ff971385ec01e771ef276681288b5d312c1241cda6b1e51cc926efd6cc0c356f",
+          "epsilon": "21/200",
+          "refined_digest": "904c397ec412d4c8b6b4448ccb6a4946e0928d978f8809f19a12ac495e25c7b8",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "40eaca9ee90c1d0ef2e979505b24d65906f36afd102b10c55136724ec0c1de54"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "dca734a873701dad70754904c974046ab0f22d1db7c3a089676e126168069b4b",
+          "epsilon": "11/100",
+          "refined_digest": "5c914bb1d3253b7ece2bfcb42258b66a4ec66544e14a5343431b4e0988959bd0",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "9e0025b250024ac6f43fdd64b408e728e0de6b56a7dc1ae8a9ed1456cb17c4bb"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "9c726101313bc5a08cc39c6b38b12a354df673973135bfe6f17ebb0ed4f49002",
+          "epsilon": "23/200",
+          "refined_digest": "069dd7e2716f14e9cda1f98543303594f0b3feea4c3e1c5afd1a47aa85d1ee14",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "73e6bdd9cf3180dedff11daeec8340fb1057cd0374c608dbe9a4dc3bf89aef11"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "94e5753b66119f661c0240cd50aaaf0001cbf01cec8ea863403e05792660bed1",
+          "epsilon": "3/25",
+          "refined_digest": "eeaf6a75e57d4940eea7b00ee0a737c8c26a22b801ff1d0d52af149c63eaa476",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "c18f6898f49e35a7cd0ccb16cc6aef3395b457bb558048ca9b63ee7a1d51e15b"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "a9de8a2dc85156732efa2dc091edb9b552dde576a5af0c8e99e1035f91bddcb0",
+          "epsilon": "1/8",
+          "refined_digest": "778141a36bff6f46755722daaf1742531af6e0c928f1238c181e39042b10b0e3",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "1debf8392cc0fc0a758d91a4efb5c815760d4ece0bca21522d1817cae9d22f73"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "a3977cbde59c729ef9a1e3a969e8f2f3d326986f6370d5e42ef2bdc5a1e32230",
+          "epsilon": "13/100",
+          "refined_digest": "b1d92cdf9d40240d18fbaa1a6f48443d4710abef32e1619b38205019b572049b",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "86a13efd5e189df7dd616c8e4f8fba95ab4512c24f7acadc15ebd87e2198de02"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "ff7d63cde27ddf7c3a6b6db5036ddbf2c48aeb5aabdc3f25f824f17bf712780f",
+          "epsilon": "27/200",
+          "refined_digest": "243d59f12386e9fb624473de1c78fa05a661f5c21c6e4462b5f705a53b267487",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "8fb69ae168cd3df4514d21603559285ae3790865a338c73d6f43cb935676e1b1"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "d6cc44171b34955c3ab46c8cd9f65392d47f67afe29388ef2c3bab8e0de34bde",
+          "epsilon": "7/50",
+          "refined_digest": "625e7bf7298aac85922c05a0f35a501684db7861376cf1864e751784c406f263",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "93801133dbd5f99b4bea3bf22782027c84e5eabec2eb03f05a965bb969d886d9"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "0c6eef8be056d3ac3918ba6f036e6a3f6771c5af53cae6006aff25bc8ab130b4",
+          "epsilon": "29/200",
+          "refined_digest": "518f9e3954942b62d3688380bacdbb016e53b1526e2281944f99b717f78be375",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "425be800c1ced709d1dbe92c90605ba2c3a758fa3eb59c1c0993d16d54656654"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": true,
+          "coarse_digest": "68b6540d2ba35588862c3e28c3f2a5d30eaf88866384ce93beb6d4c0a1316a1f",
+          "epsilon": "3/20",
+          "refined_digest": "e5aa3d695480764c4ee903101e79923991140fd5f6e17ab497aeb7d570568cca",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "0ebdb087a1a948c9aabca2307dcc4fac5fa9fe7ea77f51c5040c0084405ef805"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": true,
+          "coarse_digest": "2b1c0dd6db025ae72a052c013be65cd0ecee88e24793b85d27b74e7571c27e82",
+          "epsilon": "31/200",
+          "refined_digest": "1005e37d34e7682f559b4049318448386caff87adf90606c532f2d11b8ce74c0",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "281cf8d6a8fbf494dff3521316b4d7fefdd991c19470b0ab835ecc11a4d9af27"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": true,
+          "coarse_digest": "5f2ad95662674919a39870fed2eeb9774a7ab60974ccffd14eb248758a723636",
+          "epsilon": "4/25",
+          "refined_digest": "49f7ba25e8d98ce520e9133e4a82665badb3720459bb5e32e3463ff6b76d04b1",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "4faa0464e62c93b38842d40f43baa8331932566eb2b75656545dbf730a80624c"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "b2bf3aa4f7c926fc2ab5bf550c9cb3968c91298f0b1f30616a6d612f382b4ca3",
+          "epsilon": "33/200",
+          "refined_digest": "8fb574482857baeb585e258782794c9e387f3c8290219216b108942ff6aff2f2",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "566af53dcfaf1c5cf1fa1a23f4f61d5d08efaf9ef28e818385402d847bb22988"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "5fce18a5e29b27f0eef5ea040bde95417e334857e81a84af21109999e4e8d810",
+          "epsilon": "17/100",
+          "refined_digest": "e19f113486ad63d2084daa8a72fdecfc9078899cf680aa5aea9ae5dcbb24e3be",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "add2f81ad723d97a19af6468d3a4ddab7c9728a4194c9cff250d1a571d91b188"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "046c5d27198d0c0d9378457d7422174cdcefbdf43c4da17868fe0f510f585262",
+          "epsilon": "7/40",
+          "refined_digest": "cabc973e338b49d221cb0d8b00ca95ab9108294b34b1c4036c5abc541ee53e35",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "c2f2293c5f26a6ec397f80dfb1fe171c60c37b46e1adcf6a1f84cb74c52da7dd"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "7993ae82e7d6c3db2afa38261abf25274739af2b44dee65161fe97f90c39fb12",
+          "epsilon": "9/50",
+          "refined_digest": "4877fb3d360a2c8af54a1d918dee64a55a639a8cdef9a83a044fb87641f76f5b",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "b1b90b33504ffb4144eae6d033d40a3b78d0e80f529a74da1dab6dd21482043d"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "1ee5e7a83623ff1b06c660b4265be493e551b97eb323b0fac2e3855292a133c1",
+          "epsilon": "37/200",
+          "refined_digest": "76b1abd3a70d9ef9c59e460c7ae5a2c3d4d8a976b8a027daa2cbd8e711e39ca3",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "0e49dfe875417ec4fada92cf80862c253d46c5e7dcaef0cc23fbbd40cd773f9a"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "e3fe760c0a2bd8da8762c73c72becc24ac077aecafc768897b7592b0984a15f7",
+          "epsilon": "19/100",
+          "refined_digest": "06457b49ee62748f2a30b4dc14ec1b0059662a5ab6480992e3fdcebd5cea6a8a",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "bee0fa8a0a573704e30f4d0728fd716dd9970b1400d7db8b5a8a2f26a39482c6"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "cf26a558d70d0d7879772b02dfac90e379a8b348acc8b13b7b95ab46a3ffbed2",
+          "epsilon": "39/200",
+          "refined_digest": "800d4931d33b642b00df38766466ca92d185abe12a37ec1b23bccbfff7d4709c",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "5a9deb78b08fd6b110cee35e3ee9493f906b37bb8c1a53f57ad7052da317a787"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "25f01ed227e115f20bb9a13b09c382cc5012af76f70e74b84df9ff25cf67cc47",
+          "epsilon": "1/5",
+          "refined_digest": "850e18bda35e291d89a21f41cc5b0d347c17303c40d6dbf67c54ec75d8593cee",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "c9e820588eb3c093bd5fe3d2d1dcc422bd7972d15feb17409883c2cd7449316e"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "2adddb2a31df44a08637d3e1418afbc5a453ad49a54c2a980e46ba163abddd25",
+          "epsilon": "41/200",
+          "refined_digest": "cba3bc4f0969dac4a1ff8c4e158b0e612ad230db35aab0c598e6122a44f4efb3",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "4a4120a74d251d868c9ace928f86889019044f4edce2106619a20259e411e93d"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "bd4a38b19b7a243055c1eafed7cc18abde71a490a0c7031d8e34291ba8d98b9c",
+          "epsilon": "21/100",
+          "refined_digest": "54ab3441a3da19c620d8bf8afe03ae50a4cdde13973714a44d2f3b9a8a251a46",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "517e0759ade7e40bb82a8e69f97a3293f0dbd1fb08d894b93772a38d470253bb"
+        }
+      ],
+      "squared_energies": {
+        "optimal_rt0_upper_sq": "5/192",
+        "patch_rt1_upper_sq": "245989/11059200",
+        "primal_alg_sq": "0",
+        "refined_optimal_rt0_upper_sq": "55/6144",
+        "rt0_pair_floor_sq": "5/192",
+        "rt1_original_residual_sq": "0",
+        "tree_upper_sq": "17/192"
+      }
+    },
+    "replication": {
+      "cost_ns": {
+        "checks_at_all_tolerances": 813995400,
+        "coarse_assembly_lift": 1154400,
+        "coarse_discrete_optimizers": 1319000,
+        "freeze": 3339200,
+        "patch_reconstruction_and_parent_check": 35503300,
+        "refined_assembly_lift_and_discrete_optimizers": 21021300
+      },
+      "elapsed_ns": 876568500,
+      "fields": {
+        "optimal_rt0": [
+          "-13/180",
+          "13/180",
+          "0",
+          "-19/180",
+          "1/60",
+          "-1/15",
+          "-13/180",
+          "-1/60",
+          "-4/45",
+          "-13/180",
+          "-1/60",
+          "19/180",
+          "1/15",
+          "-1/36",
+          "1/36",
+          "0",
+          "-1/60",
+          "-1/36",
+          "-1/15",
+          "-19/180",
+          "1/60",
+          "13/180",
+          "4/45",
+          "1/36",
+          "1/60",
+          "1/15",
+          "1/60",
+          "-1/60",
+          "0",
+          "-13/180",
+          "13/180",
+          "19/180",
+          "13/180"
+        ],
+        "primal": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "1/18",
+          "1/18",
+          "0",
+          "0",
+          "1/18",
+          "1/18",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "refined_primal": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "11/416",
+          "73/1872",
+          "5/117",
+          "73/1872",
+          "11/416",
+          "0",
+          "0",
+          "73/1872",
+          "17/288",
+          "61/936",
+          "17/288",
+          "73/1872",
+          "0",
+          "0",
+          "5/117",
+          "61/936",
+          "15/208",
+          "61/936",
+          "5/117",
+          "0",
+          "0",
+          "73/1872",
+          "17/288",
+          "61/936",
+          "17/288",
+          "73/1872",
+          "0",
+          "0",
+          "11/416",
+          "73/1872",
+          "5/117",
+          "73/1872",
+          "11/416",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "refined_rt0": [
+          "-23/936",
+          "23/936",
+          "0",
+          "-43/936",
+          "5/468",
+          "-1/36",
+          "-17/312",
+          "1/234",
+          "-19/468",
+          "-17/312",
+          "0",
+          "-7/156",
+          "-43/936",
+          "-1/234",
+          "-5/117",
+          "-23/936",
+          "-5/468",
+          "-11/312",
+          "-23/936",
+          "-5/468",
+          "43/936",
+          "1/36",
+          "-23/936",
+          "23/936",
+          "0",
+          "-29/936",
+          "5/468",
+          "-2/117",
+          "-29/936",
+          "0",
+          "-1/36",
+          "-23/936",
+          "-5/468",
+          "-11/312",
+          "-5/468",
+          "-23/936",
+          "-5/117",
+          "-43/936",
+          "-1/234",
+          "17/312",
+          "19/468",
+          "-5/468",
+          "29/936",
+          "2/117",
+          "-1/72",
+          "1/72",
+          "0",
+          "-1/72",
+          "0",
+          "-1/72",
+          "-5/468",
+          "-1/72",
+          "-1/36",
+          "-1/234",
+          "-29/936",
+          "-7/156",
+          "-17/312",
+          "0",
+          "17/312",
+          "7/156",
+          "0",
+          "29/936",
+          "1/36",
+          "0",
+          "1/72",
+          "1/72",
+          "0",
+          "0",
+          "0",
+          "0",
+          "-1/72",
+          "-2/117",
+          "0",
+          "-29/936",
+          "-19/468",
+          "-17/312",
+          "1/234",
+          "43/936",
+          "5/117",
+          "5/468",
+          "23/936",
+          "11/312",
+          "1/72",
+          "5/468",
+          "1/36",
+          "1/72",
+          "0",
+          "2/117",
+          "5/468",
+          "-5/468",
+          "0",
+          "1/234",
+          "-23/936",
+          "-1/36",
+          "-43/936",
+          "5/468",
+          "23/936",
+          "11/312",
+          "23/936",
+          "5/468",
+          "5/117",
+          "29/936",
+          "1/234",
+          "7/156",
+          "29/936",
+          "0",
+          "19/468",
+          "23/936",
+          "-1/234",
+          "1/36",
+          "5/468",
+          "-5/468",
+          "0",
+          "-23/936",
+          "23/936",
+          "43/936",
+          "17/312",
+          "17/312",
+          "43/936",
+          "23/936"
+        ],
+        "rt1_cell": [
+          [
+            "131/38880",
+            "343/38880"
+          ],
+          [
+            "343/38880",
+            "131/38880"
+          ],
+          [
+            "-53/51840",
+            "23/1620"
+          ],
+          [
+            "7/25920",
+            "631/77760"
+          ],
+          [
+            "-409/51840",
+            "409/51840"
+          ],
+          [
+            "-17/2880",
+            "17/2880"
+          ],
+          [
+            "631/77760",
+            "7/25920"
+          ],
+          [
+            "23/1620",
+            "-53/51840"
+          ],
+          [
+            "-1/540",
+            "1/540"
+          ],
+          [
+            "1/540",
+            "-1/540"
+          ],
+          [
+            "-23/1620",
+            "53/51840"
+          ],
+          [
+            "-631/77760",
+            "-7/25920"
+          ],
+          [
+            "17/2880",
+            "-17/2880"
+          ],
+          [
+            "409/51840",
+            "-409/51840"
+          ],
+          [
+            "-7/25920",
+            "-631/77760"
+          ],
+          [
+            "53/51840",
+            "-23/1620"
+          ],
+          [
+            "-343/38880",
+            "-131/38880"
+          ],
+          [
+            "-131/38880",
+            "-343/38880"
+          ]
+        ],
+        "rt1_face": [
+          [
+            "-293/4320",
+            "-127/3240"
+          ],
+          [
+            "293/4320",
+            "127/3240"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "-383/3456",
+            "-491/8640"
+          ],
+          [
+            "53/4320",
+            "103/12960"
+          ],
+          [
+            "-307/4320",
+            "-281/8640"
+          ],
+          [
+            "-137/1920",
+            "-569/17280"
+          ],
+          [
+            "-91/5760",
+            "-73/8640"
+          ],
+          [
+            "-251/2880",
+            "-251/5760"
+          ],
+          [
+            "-137/1920",
+            "-83/2160"
+          ],
+          [
+            "-53/4320",
+            "-103/12960"
+          ],
+          [
+            "383/3456",
+            "491/8640"
+          ],
+          [
+            "307/4320",
+            "281/8640"
+          ],
+          [
+            "-1/36",
+            "-2/135"
+          ],
+          [
+            "1/36",
+            "2/135"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "-91/5760",
+            "-127/17280"
+          ],
+          [
+            "-1/36",
+            "-7/540"
+          ],
+          [
+            "-307/4320",
+            "-37/960"
+          ],
+          [
+            "-383/3456",
+            "-311/5760"
+          ],
+          [
+            "91/5760",
+            "73/8640"
+          ],
+          [
+            "137/1920",
+            "569/17280"
+          ],
+          [
+            "251/2880",
+            "251/5760"
+          ],
+          [
+            "1/36",
+            "7/540"
+          ],
+          [
+            "91/5760",
+            "127/17280"
+          ],
+          [
+            "307/4320",
+            "37/960"
+          ],
+          [
+            "53/4320",
+            "7/1620"
+          ],
+          [
+            "-53/4320",
+            "-7/1620"
+          ],
+          [
+            "0",
+            "0"
+          ],
+          [
+            "-293/4320",
+            "-371/12960"
+          ],
+          [
+            "137/1920",
+            "83/2160"
+          ],
+          [
+            "383/3456",
+            "311/5760"
+          ],
+          [
+            "293/4320",
+            "371/12960"
+          ]
+        ],
+        "tree": [
+          "-1/6",
+          "1/6",
+          "0",
+          "-1/9",
+          "1/9",
+          "0",
+          "-1/18",
+          "1/18",
+          "0",
+          "0",
+          "-1/9",
+          "1/9",
+          "0",
+          "-1/18",
+          "1/18",
+          "0",
+          "0",
+          "0",
+          "-1/18",
+          "-1/9",
+          "-1/18",
+          "1/18",
+          "0",
+          "0",
+          "0",
+          "1/18",
+          "0",
+          "0",
+          "0",
+          "-1/18",
+          "0",
+          "1/9",
+          "1/18"
+        ]
+      },
+      "load": 1,
+      "n": 3,
+      "primal_mode": "galerkin",
+      "rows": [
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "0c0a14736c2e83b45dc4f52de4e5569e0406af60476ed1cf4517265dc98920cc",
+          "epsilon": "1/20",
+          "refined_digest": "3cfcecc97de1830274dedbf96b18350e0e4cb75aac57be56fc86ba2cb29afe04",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "596295452229db171e1d81d556a588101be0fdcd84891cecbc8d44f541251899"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "e5f6091dafc17988fa0ddc3761e96fe86536c8bd2b00215bfb7d10f66af0c54e",
+          "epsilon": "11/200",
+          "refined_digest": "652eb15fbcbe65d82cdebef381040c29d541bd09e74e380132fa7c5229f1fabc",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "ba56982e4fda5dc651cd0ec94333d6adf05bad3eb38ed992982b23f9ac78624d"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "8fe99d415c5c0aad5d2204e3ef470ffca7101d79bab232cac783f2745a096d68",
+          "epsilon": "3/50",
+          "refined_digest": "841f6b04064ba558de2b98581f839641807c14d4b031eac00a2ada16c1a53a9d",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "3b8bb62542a053a316d470687c922c2e0e9b914bd9df704a8aa2f5bad69a8652"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": false,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "68caa2b242c273e47680d62a33c8cacc60b0a8175c190ee1a3db1f9e223f0c00",
+          "epsilon": "13/200",
+          "refined_digest": "3c7d973aa50b9a41a95eb0d40e317907cd62374965699edd3b3bd24a445a1c4a",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "a062a51ce654da9cea07d54b8e5367bdee0579d8d9ba858524e31fd8cce2e936"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "4a27702451a7b9234d7b553f0eff16fa9cb080b8e6f484e86a95fa66644a5dd6",
+          "epsilon": "7/100",
+          "refined_digest": "cedd8274ea3dc6aed9594c8549e76ba83988d9e504697f1e6a4461e4f60407e0",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "7d235ace5028f2f9cd26f7cbfd0109b44904b45371724df89fadd0d7680fb74b"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "a9580a0676e6164401900756c2b57b2353ed47969058a768fb920d55ee4de0cb",
+          "epsilon": "3/40",
+          "refined_digest": "4501e199904d7837d6ab2f4f1c31e0291232c9213199c9853943b8581a94dbfc",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "f05467934ac7424fdc5768dee215ebcac901372d0cbeeb38a0d85bca1381caa9"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "dddc5263e6974ac21f99c6a897083e67865bf4c78eba7342188a384f6c1d93a7",
+          "epsilon": "2/25",
+          "refined_digest": "f2e7a358a3798b4bf19e21f57de5510cf332544fb9f47efd81e91ca7e721ef30",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "9411a02c3e00bfdc8ae2ddcc51cb327343c81d4a6747ca2045391c5d8bb4f716"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "fe1f7f7f78a840e37dea203fa666c9879750ab6f4823c2157ab15815f19bcd29",
+          "epsilon": "17/200",
+          "refined_digest": "a0a9bb2835a01964c4bbbcccd0e3038c2b0ea6f2ecf62b8a2a25392f93653e39",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "b1951911481fa8333b7d0a600df8ce35fcd38169683393530cb09ce306b94488"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "70c6a517857710ee7229898864d310cfdcbb3aa607f624b64a2c7cdf46d6439d",
+          "epsilon": "9/100",
+          "refined_digest": "c689989d7ff17fd541ffdffc39f73505ff283100eb0afaab66943d79952881e4",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "3bd559cadbfa148b2c7af5b9b4183d66070692fff3f4f4b2c80871b333a69c5b"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "842714dfff779da53e074f9e1296bb5f226a41cbdebfe3721456e0e11ebcee9b",
+          "epsilon": "19/200",
+          "refined_digest": "d8261640b5e1bd868790a2854a393af9f7d490baf68275296913b80d08fa9512",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "c973ddfe7c0ccb2726005959c8efc626a777038e4bf53b60a8ff79169ca2592b"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "0393537af5f7de94d380aa3d5feb875bca7ce7dbc05a4c34846d7dc9a1053b72",
+          "epsilon": "1/10",
+          "refined_digest": "1198633254fd12b7810ac0e9eaf0a34d3e43b78437cf58501032eaab6cb78441",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "dbf869f564c32d5062b141d0cad879087c4690765004f1276bf0c219cfe38918"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": false,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "d71eea24d163d7a037d1c9062f8bfb402953fbb2ccd133ddd5a1943a7d1ba2a9",
+          "epsilon": "21/200",
+          "refined_digest": "acbd89e0c2a759d88b5d9d94982e0d7e5c497f804bb5d125b5192ac92c7d9112",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "36b81b2e4302310a7ac3aac9ecce47f587eff01d660eba0ecb56524c1b3ce640"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": true,
+          "coarse_digest": "315f9e7bc6276a04bce6efd8a598532ec69f70111c20fadfab35fef3698be796",
+          "epsilon": "11/100",
+          "refined_digest": "6375c1062fdac8c467e7510178933a25d310cd8eab050376d5c37934c0c84049",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "c3316c079e870541bb8a72b95c50aa7d1f89acd29aa4e842e6e815fe6fb7c42f"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": true,
+          "coarse_digest": "a2164cd57a6f0879e53fe2cccb1d184dde45b31e20ebb48838ef7a99ad05966a",
+          "epsilon": "23/200",
+          "refined_digest": "39f4ce304c16d4aee26f7b3d76a78394ecbb488c3a81a1ad2212713dfb587fc2",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "0a253d1abfc5dcf41afc45dfbb6f6ee112e8244d822c8a35f9f1400cd5c8d4f5"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": false,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": true,
+          "coarse_digest": "1ef90a6a3e634636cfc0e6a1be639d6465d91bb88afdf483c6e5719cd4806f5c",
+          "epsilon": "3/25",
+          "refined_digest": "750347737669db2e7a7c42308598c78a50367d23d2fcc884ab34089ea0130513",
+          "rt0_floor_verdict": "PAIR_FUTILE",
+          "rt1_digest": "64c3f7b0341e44bc3fd876853cb8b8662f7cc66f28f69d05ac8661cf5bd1e800"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "66f271b93d8047de116f731eb3f274d903e15552a58ba381f261922ca6129606",
+          "epsilon": "1/8",
+          "refined_digest": "3112f26d97fcd81d5476c45d28248dad77ac2a8ce19601b0869b04b02c48ffb4",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "c32d8426c463133404ac8b436d9d825d321ae5ca05292c9a1a5a134643195fb4"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "2a89dd8f6178c0082402f5ff531ab4b68ee4c7682e3cb5c9c7c644620e6fa73b",
+          "epsilon": "13/100",
+          "refined_digest": "f8add25328c6b2e41c92c24a4e63d2ec94a56b06048c880854a4b6c91ba1a972",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "635d6b92f2495ec116073cfb7c5bde4e9d8d75de84e6e095e0c80efa60247996"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "02456b2af9ac80f0ec0a8b8ed2909af1d7ff9c744f26f13b0aa829a0fba77ec8",
+          "epsilon": "27/200",
+          "refined_digest": "341fde8f817d19ef7b06a8309f51f4a6fbcca6ad6b7843ed23c42b3a524492f7",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "a60f4116ddcbc7fff7490bb7b2b06b17d94f2c12116de0c5dfd4be60994789f9"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "10340a9d8582c2fd090207a8c5f2d7fe59b437d3a5b0860f86f2db33994a5d0e",
+          "epsilon": "7/50",
+          "refined_digest": "0b66702a6132bbda86c6a97e0d20484a4aa3a67f74bcb5893a8311aa35dbc33e",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "a481645be0c024e39757ca4000e6efebcf0774d4d667b701b4e98a253604ac26"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "d4541b11c83b87219c64edfe18152dd08a3321bfe2823bdc62970add6ba4db51",
+          "epsilon": "29/200",
+          "refined_digest": "2efaebe910f8eb26c081f241778e2bb36fa87b2c75484496e1156ccc1fe7acb2",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "5058c6e7cd6e77909cd7d34f9ac0b3d375dfff0e5d3b0fc74122a24563c6def1"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "6654925d6adb331aff2cffb8316cb2c1e5c222b6b4cb19d52527635d9a019af6",
+          "epsilon": "3/20",
+          "refined_digest": "6bf30d1249383038c13050a3d22eb30df7f144bbe97ec265988bab16e967f120",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "bee5ff8516d14496e91a438b271d3d10318aa33280ae94f9541a07435ee3aa52"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "f84f6e2f990274d141bef7cce482f692ffe2865f1d00a26440d901ce045cb6d7",
+          "epsilon": "31/200",
+          "refined_digest": "a6cf471908eb822967ea99c5b961e019f573cefc47b56311547b3e3d3ed034ad",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "4b4cf19ee3dfb25006d02f19ea0f990e480fd1465dfcf2273f98685272b820c1"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "9c5549fdd58474e3927f2639f77aebcd03b0df6ba08bc2efc13aed8176bac8d3",
+          "epsilon": "4/25",
+          "refined_digest": "9274baf703065112bac6777078e693dad511ade5002c0f834bd8ccd3471cd5b5",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "61436fe84765a7783e61d7479d1b8a560a96d714d74d9a695ccb9fdb87a9fcdf"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "dfddcd16f38668fcc5597b4563917ec5b4ae6998ac1e451db902877a4ff5c5b8",
+          "epsilon": "33/200",
+          "refined_digest": "1ff7ff3f8aead09dc3bba82f6e78d37e2523b1a06d230352461d876014ae8937",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "12a897e1b73f8eeea2198ae643f2bbf6c0da981aa74307127e19f188733f96fb"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "792e14863bed90b692be405c4c6fec30971dbaa737f2364005b668160c2854e2",
+          "epsilon": "17/100",
+          "refined_digest": "6de216d4faf80dae768d770265d43168fd2f767d10745380e1b4cf5bdff8b1b7",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "f5b8e5a1f5950ac68caa6c3f96fc54ef9194925380ed80b0deec06dde884bcdd"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "f815fe8387eaaaeeb23859d8e44ef2d28fc05fee78852561b6a3c276c180e4be",
+          "epsilon": "7/40",
+          "refined_digest": "982af7e9c14a5f17061fbf0c4e94d4d4e4877839e05d7e969f28846cdacb561a",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "1d466ecc4aaa37326a51ccb7495490a5b022cdc9ea3dea130b073a0b764d781a"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "20382633bfab0468208f6d6438129398b22eda2a2a08ccbba85dd85c23f27c7a",
+          "epsilon": "9/50",
+          "refined_digest": "bbb67602a26f1c21b954598d91bc803f0d60a4501067cbebfe123c3acdf5e670",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "65d2cde9cad4e01b5ad26bd67d1b3bf3d93e2ff08a73b01c9612576038025480"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "ed65c1996fe785a0e1d2000147a6817fc5749b3456a267729a6a06aeda6def52",
+          "epsilon": "37/200",
+          "refined_digest": "d8d41d286032bfe3e9e7df1e552fad5b52aa9778e535e2dd48df3bc62c1dcf03",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "a635ceb3edbd34aef65a72c3ff447947de938289327f61888bfaa51918b148d5"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "413798b93b2a1372e285631ac590b74b943737297e20fc499cd17e379a06f650",
+          "epsilon": "19/100",
+          "refined_digest": "4d82454c1dd2f334d3bedbf8b676d7bb2a347c1f805a92c8386b3af58605d318",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "6a5f49a63a1e8a82329e5d479010a7c72605acb0d18dea33d142765f7211b8de"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "c4651598fef0f8f023f657fd09a5c20a7e521c29d3eccaabd1ce94d2daee7e6d",
+          "epsilon": "39/200",
+          "refined_digest": "ce77c075e0f9daef58d533d964dc3b6989b514761a12431380cc575c2c8ccab7",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "558e44343b01b36717349d0d52587fd8748d5a24cc77407d9d519d246f998a9b"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "539428e35e2799c13011abb914cf646050a19b45d29e32059068e7637b0d608d",
+          "epsilon": "1/5",
+          "refined_digest": "3b0646cbd33363fd8ceb867fbe24af785a750dcfc15fa6de68eaca0f22f2f34b",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "737b32f0cff87b15c8996703bb62a2bd3ef4f1e7912c4f6507f87507b67c3c64"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "583b31d718c874ec389a62b47d6ed3d7650672e76df2a68327ef1299596af6a8",
+          "epsilon": "41/200",
+          "refined_digest": "eb3704f2e8834ce90ab6f3e4df93b4b64e23b413f5535a77e960de052800d25b",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "a54c4894bf41f3095d1d132483a157c827dd2651782eedc2531a65a4a01add8f"
+        },
+        {
+          "accepted": {
+            "optimal_rt0": true,
+            "patch_rt1": true,
+            "refined_optimal_rt0": true,
+            "tree": false
+          },
+          "avoids_refinement": false,
+          "coarse_digest": "15a3eca159e1661c357e048992a685014f38fb0b10b8559b11d7460bf1eaad63",
+          "epsilon": "21/100",
+          "refined_digest": "4b8d59b306418d8450477e5a0247a2bfeed8260072fffecd037cee8528481ac8",
+          "rt0_floor_verdict": "ACCEPTED",
+          "rt1_digest": "8228b83c1e65dc0aac570874ddfe18db6664201e11e144583cd7fe0bd67f39cd"
+        }
+      ],
+      "squared_energies": {
+        "optimal_rt0_upper_sq": "47/3240",
+        "patch_rt1_upper_sq": "673/57600",
+        "primal_alg_sq": "0",
+        "refined_optimal_rt0_upper_sq": "289/67392",
+        "rt0_pair_floor_sq": "47/3240",
+        "rt1_original_residual_sq": "0",
+        "tree_upper_sq": "5/81"
+      }
+    }
+  },
+  "schema": "cfac-rt1-fixed-field-v1"
+}
