@@ -37,13 +37,12 @@ class UnstructuredGmsh:
     total_area: float
     boundary_lengths: dict[str, float]
     subdivisions_hint: int
+    coarse_cells: tuple[tuple[tuple[float, float], ...], ...]
 
     def refinements(self, n: int) -> int:
-        if n <= self.subdivisions_hint:
-            return 0
         ratio, rem = divmod(n, self.subdivisions_hint)
         if rem or ratio < 1 or ratio & (ratio - 1):
-            return max(0, round(math.log2(max(n / max(self.subdivisions_hint, 1), 1.0))))
+            raise ValueError(f"level {n} is not a uniform refinement of the base level {self.subdivisions_hint}")
         return ratio.bit_length() - 1
 
 
@@ -257,7 +256,7 @@ def inspect_gmsh_unstructured(data: bytes, problem: ProblemSpec, execution: Exec
     side_intervals: dict[str, list[tuple[float, float]]] = {s: [] for s in side_lengths}
     elem_edge_counts: dict[tuple[int, int], int] = {}
     element_ids: set[int] = set()
-    elem_count = 0
+    coarse_cells = []
     total_area = 0.0
 
     for row in sections["Elements"]:
@@ -299,7 +298,7 @@ def inspect_gmsh_unstructured(data: bytes, problem: ProblemSpec, execution: Exec
         else:
             if physical != surface:
                 raise ValueError("element is outside the named physical surface")
-            elem_count += 1
+            coarse_cells.append(tuple(pts))
             signed_double = sum(
                 pts[k - 1][0] * pts[k][1] - pts[k][0] * pts[k - 1][1] for k in range(len(pts))
             )
@@ -312,6 +311,7 @@ def inspect_gmsh_unstructured(data: bytes, problem: ProblemSpec, execution: Exec
                 ekey = (min(a, b), max(a, b))
                 elem_edge_counts[ekey] = elem_edge_counts.get(ekey, 0) + 1
 
+    elem_count = len(coarse_cells)
     if elem_count == 0:
         raise ValueError("unstructured mesh contains no 2D elements")
     if abs(total_area - 1.0) > 1e-10:
@@ -338,14 +338,18 @@ def inspect_gmsh_unstructured(data: bytes, problem: ProblemSpec, execution: Exec
             raise ValueError("orphan boundary edge not attached to any element")
 
     sub_hint = max(1, round(math.sqrt(elem_count / (2 if execution.mesh_type == "tri" else 1))))
-    return UnstructuredGmsh(
+    grid = UnstructuredGmsh(
         geom=execution.mesh_type,
         node_count=len(nodes),
         element_count=elem_count,
         total_area=total_area,
         boundary_lengths=side_lengths,
         subdivisions_hint=sub_hint,
+        coarse_cells=tuple(coarse_cells),
     )
+    for level in execution.mesh_levels:
+        grid.refinements(level)
+    return grid
 
 
 def generate_unstructured_msh(

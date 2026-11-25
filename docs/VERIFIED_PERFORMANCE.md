@@ -62,7 +62,7 @@ Both comparisons discard one warm-up pair per workload and counterbalance the or
 
 The verifier reads the element table into typed arrays. It evaluates expression and gradient temporaries in batches of up to 65,536 quadrature points and retains the quadrature densities for the original full-array summations. Ordered nodal layouts, quadrature weights and physical gradients must match bit for bit before the corresponding local computations can be reused. Variable diffusivity still receives pointwise integration. Global sparse assembly and the direct reference solve continue to scale with mesh size. [Finite-element data](../verifier/fem.py) · [Integration and reference solve](../verifier/verifier.py)
 
-With the serial solver built using the README, run these commands from the updated checkout on Linux. RUN should be on a Linux filesystem. The example selects one allowed logical CPU.
+For a new acquisition using the historical baseline and candidate, export the pinned source trees from the repository. Build the matching serial native binary first and set its absolute path below. The original E2 design records binary SHA-256 `e2a75e0eff6dcbd40ae13515498f7d3a4fe3756b8bdef41aca126397bd8b6438`. Use a Linux filesystem for RUN.
 
 ```bash
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
@@ -72,7 +72,8 @@ CPU="$(python -c 'import os; print(min(os.sched_getaffinity(0)))')"
 RUN="$(mktemp -d)"
 mkdir "$RUN/baseline" "$RUN/candidate"
 git archive 6b5761cf4765a8bc7028922348202d6b6cf12076 | tar -x -C "$RUN/baseline"
-git archive HEAD | tar -x -C "$RUN/candidate"
+git archive ceb485cb9836c73ce846f62d49ca9591fcb83bfc | tar -x -C "$RUN/candidate"
+cd "$RUN/candidate"
 taskset -c "$CPU" python -m benchmarks.verified_revision \
   --baseline "$RUN/baseline" --candidate "$RUN/candidate" --cpu "$CPU" \
   --blocks 12 --seed 20261125 --directory "$RUN/live"
@@ -90,6 +91,26 @@ taskset -c "$CPU" python -m benchmarks.verification_cost \
   --baseline "$RUN/baseline" --candidate "$RUN/candidate" --attempt "$H1" --attempt "$H2" \
   --blocks 30 --seed 20261124 --expect-verdict ACCEPTED --output "$RUN/replay.json"
 ```
+
+## Replaying historical E2 evidence on the current branch
+
+The audit compares the complete saved verdict, including its version and diagnostic text. For the original E2 capture, run the audit from commit `ceb485cb9836c73ce846f62d49ca9591fcb83bfc` using the locked numerical environment. The design and report digests are independently published in the E2 receipt. Point `E2_LIVE` to the restored directory containing the original `design.json`, `report.json` and study folders. [Original audit receipt](../evidence/e2/live-audit.json)
+
+```bash
+# From the repository root, with the project's Linux Python environment active.
+E2_CODE="$(mktemp -d)"
+git archive ceb485cb9836c73ce846f62d49ca9591fcb83bfc | tar -x -C "$E2_CODE"
+(cd "$E2_CODE" && OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 \
+  python -m benchmarks.verified_revision_audit --directory "$E2_LIVE" \
+    --design-sha256 8ade49e156696eb5ab3b8548cb04af09a7f09e4facbd1fce92fa4b5215869fa9 \
+    --report-sha256 221178e7fe3ea8e30e15a2fbd63bee84cd50f7a055b0c4b39f238f15d84dcc99 \
+    --output "$E2_CODE/replay.json")
+cmp "$E2_CODE/replay.json" evidence/e2/live-audit.json
+```
+
+On 2026-11-25 this procedure checked all 52 original inventories and replayed four representative fields. The complete audit was byte-identical to the published file. A separate replay using verifier 0.6.0 accepted the original H2 block-zero baseline with matching input hashes and numerical values. Its verdict differed from the saved one in the verifier version and four descriptions of the reference solve, one per mesh level. The historical verifier was 0.4.0. [Reproduction, source hashes and differences](../evidence/e4/e2-replay.json)
+
+A fresh current-code functional control used two identical source trees as the two arms, compact C1, one warm-up pair and two scored pairs. All six records passed, the audit replayed both block-zero fields, and all runs had the same normalized numerical digest. The median paired wall-time difference for these identical arms was +0.229 s on the measured host. The run tests acquisition, independent replay and timing noise. Use `--workloads C1 --scale compact --blocks 2` with both revision arguments pointing at the current checkout to reproduce the control. [Current A/A receipt](../evidence/e4/e2-replay.json)
 
 ## Facts resolved from the local revision
 

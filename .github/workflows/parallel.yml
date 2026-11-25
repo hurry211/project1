@@ -1,6 +1,10 @@
 name: Verify MPI Poisson study
 
 on:
+  push:
+    paths: ['cpp/mpi/**', 'verifier/mpi.py', 'sciagent/mpi_study.py', 'benchmarks/mpi_scaling.py', 'scripts/*mpi.sh', 'tests/test_mpi*.py', '.github/workflows/parallel.yml']
+  pull_request:
+    paths: ['cpp/mpi/**', 'verifier/mpi.py', 'sciagent/mpi_study.py', 'benchmarks/mpi_scaling.py', 'scripts/*mpi.sh', 'tests/test_mpi*.py', '.github/workflows/parallel.yml']
   workflow_dispatch:
 
 permissions:
@@ -26,8 +30,8 @@ jobs:
       - name: Install pinned dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends g++-13 cmake make openmpi-bin=4.1.6-7ubuntu2 libopenmpi3t64=4.1.6-7ubuntu2 libhypre-2.28.0=2.28.0-8build2 libmetis5=5.1.0.dfsg-7build3
-          python -m pip install --require-hashes --only-binary=:all: -r requirements-linux-py312.lock
+          sudo apt-get install -y --no-install-recommends g++-13 cmake make time openmpi-bin=4.1.6-7ubuntu2 libopenmpi3t64=4.1.6-7ubuntu2 libhypre-2.28.0=2.28.0-8build2 libmetis5=5.1.0.dfsg-7build3
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-challenge.lock
       - name: Build serial control and separate MPI driver
         run: |
           bash scripts/build_mfem.sh

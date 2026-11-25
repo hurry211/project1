@@ -1,0 +1,10 @@
+{
+  "asset": "adaptive-evidence.tar.gz",
+  "sha256": "731e22c4bd02086e1e24d174bf282858a6603b2e24128b69df285b6716902552",
+  "bytes": 133193213,
+  "adaptive_report_sha256": "68d585c4b44c3cb3fc57c195926ef95889b85025115ad51001f2deca4c9c0e9f",
+  "adaptive_inventory_sha256": "c4d248c4b79cc34427c0e578d221db8ce787e88c3b55a4f0e9b61eaf65634c7d",
+  "adaptive_design_sha256": "5b9e995ffb48274addaf2a1387a0bf04ce6143386e342b01b3cf69d5b247b287",
+  "verified_source_files": 61,
+  "search_report_sha256": "9d0d9ca4872f9c4abe9171deb8cc5ae99ca031bb01cab8445ca3d33b7287f5e0"
+}

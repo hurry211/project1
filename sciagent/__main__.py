@@ -24,9 +24,11 @@ def main(argv: list[str] | None = None) -> int:
     plan = sub.add_parser("plan", help="select an authorized template and optionally execute it")
     plan.add_argument("task", type=Path, help="JSON task with a case, hard selectors and optional preferences")
     plan.add_argument("--directory", type=Path, required=True, help="fresh planning archive")
-    plan.add_argument("--mode", choices=("rules", "llm"), default="rules")
+    plan.add_argument("--mode", choices=("rules", "llm", "bounded"), default="rules")
     plan.add_argument("--model", help="installed local Ollama model name")
     plan.add_argument("--model-digest", help="full SHA-256 of the local model")
+    plan.add_argument("--proposal-directory", type=Path, help="completed live planning preview for this exact task")
+    plan.add_argument("--proposal-manifest-sha256", help="externally retained digest of the planning preview")
     plan.add_argument("--execute", action="store_true", help="run the selected template and independently verify it")
     pv = sub.add_parser("verify-plan", help="reconstruct the plan and replay any numerical attempts offline")
     pv.add_argument("directory", type=Path)
@@ -35,12 +37,25 @@ def main(argv: list[str] | None = None) -> int:
     matrix.add_argument("--case", choices=capability.ALL_CASE_IDS)
     matrix.add_argument("--mesh-source", choices=capability.MESH_SOURCES, default="cartesian")
     matrix.add_argument("--backend", choices=("serial_cpu", "mpi_cpu"), default="serial_cpu")
+    mpisel = sub.add_parser("select-mpi", help="run a verified backend and rank count from a pinned MPI calibration")
+    mpisel.add_argument("--calibration", type=Path, required=True)
+    mpisel.add_argument("--report-sha256", required=True)
+    mpisel.add_argument("--directory", type=Path, required=True)
     mpi = sub.add_parser("mpi-study", help="verify MPI against serial and measure strong and weak scaling")
     mpi.add_argument("--directory", type=Path, required=True, help="new campaign directory")
     mpi.add_argument("--repetitions", type=int, default=3, help="timing samples per configuration (3 to 15)")
     mpiv = sub.add_parser("verify-mpi", help="replay an MPI campaign from archived fields and timing records")
     mpiv.add_argument("directory", type=Path)
     mpiv.add_argument("--manifest-sha256", help="externally retained campaign manifest digest")
+    family = sub.add_parser("pde-study", help="verify a manufactured tensor-grid heat, wave or elasticity study")
+    family.add_argument("--family", choices=("heat", "wave", "elasticity"), required=True)
+    family.add_argument("--dimension", type=int, choices=(2, 3), required=True)
+    family.add_argument("--order", type=int, choices=(1, 2), required=True)
+    family.add_argument("--levels", type=int, nargs=3, default=[4, 8, 16])
+    family.add_argument("--directory", type=Path, required=True)
+    fr = sub.add_parser("verify-pde", help="independently recompute a pinned manufactured field study")
+    fr.add_argument("directory", type=Path)
+    fr.add_argument("--manifest-sha256", required=True)
     r = sub.add_parser("run", help="run a study spec end to end")
     r.add_argument("spec")
     r.add_argument("--runs-dir", default="runs")
@@ -48,6 +63,7 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("spec")
     s.add_argument("--output", required=True, help="new directory for candidate specs, runs and search.json")
     s.add_argument("--repeats", type=int, default=3)
+    s.add_argument("--solvers", choices=("cg_gs", "cg_jacobi", "cg_none"), nargs="+", default=["cg_jacobi"])
     q = sub.add_parser("quickstart", help="probe tools, run the P1 triangle benchmark and replay its evidence")
     q.add_argument("--runs-dir", default="runs")
     v = sub.add_parser("verify", help="re-verify a stored attempt directory from artifacts only")
@@ -80,7 +96,9 @@ def main(argv: list[str] | None = None) -> int:
                 with a.task.open("rb") as src:
                     task = planner.parse_task(src.read(8193))
                 report = planning_run.run(task, a.directory, mode=a.mode, model=a.model,
-                                          model_digest=a.model_digest, execute=a.execute)
+                                          model_digest=a.model_digest, execute=a.execute,
+                                          proposal_directory=a.proposal_directory,
+                                          proposal_manifest_sha256=a.proposal_manifest_sha256)
             else:
                 report = planning_run.replay(a.directory, a.manifest_sha256)
         except (OSError, ValueError, TypeError, KeyError, RuntimeError) as exc:
@@ -99,6 +117,14 @@ def main(argv: list[str] | None = None) -> int:
         else:
             for row in capability.matrix_as_rows(a.case, a.mesh_source):
                 print(json.dumps(row))
+    elif a.cmd == "select-mpi":
+        from benchmarks.mpi_scaling import select
+        try:
+            report = select(a.calibration.resolve(), a.report_sha256, a.directory.resolve())
+        except (OSError, ValueError, KeyError, TypeError, RuntimeError) as exc:
+            report = {"verdict": "REJECTED", "reason": str(exc)}
+        print(json.dumps(report, indent=2, allow_nan=False))
+        return 0 if report["verdict"] == "ACCEPTED" else 1
     elif a.cmd in ("mpi-study", "verify-mpi"):
         try:
             if a.cmd == "mpi-study":
@@ -109,6 +135,19 @@ def main(argv: list[str] | None = None) -> int:
             report = {"state": "FAILED", "reason": str(exc)}
         print(json.dumps(report, indent=2, allow_nan=False))
         return 0 if report["state"] == "ACCEPTED" else 1
+    elif a.cmd in ("pde-study", "verify-pde"):
+        from . import field_study
+        import subprocess
+        try:
+            if a.cmd == "pde-study":
+                cfg = field_study.request(a.family, a.dimension, a.order, a.levels)
+                result = field_study.capture(a.directory, cfg)
+            else:
+                result = field_study.replay(a.directory, a.manifest_sha256)
+        except (OSError, ValueError, TypeError, KeyError, subprocess.SubprocessError) as exc:
+            result = {"verdict": "REJECTED", "reason": str(exc)}
+        print(json.dumps(result, indent=2, allow_nan=False))
+        return 0 if result["verdict"] == "ACCEPTED" else 1
     elif a.cmd == "run":
         m = controller.run_study(a.spec, a.runs_dir)
         print(controller.summarize(m))
@@ -118,8 +157,8 @@ def main(argv: list[str] | None = None) -> int:
         from .strategy import search
 
         try:
-            report = search(load_study(a.spec), Path(a.output), a.repeats)
-        except (OSError, ValueError) as exc:
+            report = search(load_study(a.spec), Path(a.output), a.repeats, solvers=a.solvers)
+        except (mfem_runner.BuildError, OSError, ValueError) as exc:
             s.error(str(exc))
         print(json.dumps({"winner": report["winner"], "report": str(Path(a.output) / "search.json")}))
         return 0 if report["winner"] else 1

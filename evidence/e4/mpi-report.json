@@ -1,0 +1,48 @@
+{
+  "design_sha256": "86ba907bcfead3da39f300e967c8e3cb627daaaf4446b7dd4887774d26d3f281",
+  "control_sha256": "2d3f8106946627f6a1a2e3907a610e0fa36e5715899f0dee87d32f575700a1b5",
+  "rows_sha256": "4bf05cbed29e5060ec89253f9eaeef18098b902978ab765404ca88294885e376",
+  "scores": {
+    "median_verified_seconds": {
+      "serial": 25.316926202000104,
+      "mpi1": 15.93301894199999,
+      "mpi2": 14.712268772000016,
+      "mpi4": 11.064359319999994,
+      "mpi4_tsv": 12.651241802999948
+    },
+    "paired": {
+      "mpi2_vs_mpi1": {
+        "ratio_of_medians": 1.0829749774775235,
+        "median_paired_seconds": -2.435766486000148,
+        "paired_95pct_seconds": [
+          -7.598442897000041,
+          0.23970266599985735
+        ]
+      },
+      "mpi4_vs_mpi1": {
+        "ratio_of_medians": 1.4400308667849733,
+        "median_paired_seconds": -5.526675759,
+        "paired_95pct_seconds": [
+          -10.724557541000081,
+          -1.955756516000065
+        ]
+      },
+      "mpi4_vs_mpi4_tsv": {
+        "ratio_of_medians": 1.1434228984349322,
+        "median_paired_seconds": -1.7715462100001105,
+        "paired_95pct_seconds": [
+          -7.942785688000072,
+          2.3457011190000685
+        ]
+      },
+      "mpi4_vs_serial": {
+        "ratio_of_medians": 2.288151122879487,
+        "median_paired_seconds": -13.567511635999836,
+        "paired_95pct_seconds": [
+          -16.616940688,
+          -12.36398197200026
+        ]
+      }
+    }
+  }
+}

@@ -103,12 +103,15 @@ def _validate_registry(catalog):
         signatures.add(signature)
 
 
-def list_cases(binary: Path | None = None) -> dict:
+def list_cases(binary: Path | None = None, *, include_e3: bool = False) -> dict:
     binary = binary or solver_binary()
     if not binary.is_file():
         raise BuildError(f"solver binary not found: {binary}")
     try:
-        p = subprocess.run([str(binary), "--list-cases"], capture_output=True, text=True, timeout=30)
+        arguments = [str(binary), "--list-cases"]
+        if include_e3:
+            arguments.append("--include-e3")
+        p = subprocess.run(arguments, capture_output=True, text=True, timeout=30)
     except (OSError, subprocess.TimeoutExpired) as exc:
         raise BuildError(f"cannot execute {binary}: {exc}") from exc
     if p.returncode != 0:

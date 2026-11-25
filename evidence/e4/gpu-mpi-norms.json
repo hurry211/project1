@@ -1,0 +1,70 @@
+{
+  "device": "Intel(R) Arc(TM) Graphics",
+  "driver": "32.0.101.5768",
+  "opencl": "OpenCL 3.0 NEO ",
+  "fp64_config": 63,
+  "numpy": "2.5.5",
+  "pyopencl": "2026.1.5",
+  "kernel_sha256": "34826aba95dd7d68ca067c81c59da0c086231511e0baace99a616d0cbc273638",
+  "mpi_receipt_sha256": "fc682dda1ae7d44a005e85e5132e9051498c650873d467905df6b843af4a8dfc",
+  "relative_tolerance": 1e-07,
+  "levels": [
+    {
+      "n": 128,
+      "triangles": 32768,
+      "gpu_norms": [
+        8.452209807377847e-05,
+        0.027260104093988435
+      ],
+      "cpu_receipt_norms": [
+        8.452209807383235e-05,
+        0.027260104093988453
+      ],
+      "wrong_field_control_norms": [
+        0.0025320083934779695,
+        0.029441877940768114
+      ],
+      "wrong_field_rejected": true,
+      "kernel_seconds": 0.009538436,
+      "audit_seconds_including_control": 0.026961800002027303
+    },
+    {
+      "n": 256,
+      "triangles": 131072,
+      "gpu_norms": [
+        2.113202643902421e-05,
+        0.013630458610964572
+      ],
+      "cpu_receipt_norms": [
+        2.1132026439080546e-05,
+        0.013630458610964666
+      ],
+      "wrong_field_control_norms": [
+        0.0025077747575011286,
+        0.017585353217807426
+      ],
+      "wrong_field_rejected": true,
+      "kernel_seconds": 0.014793437,
+      "audit_seconds_including_control": 0.03489619999891147
+    },
+    {
+      "n": 512,
+      "triangles": 524288,
+      "gpu_norms": [
+        5.28310049490908e-06,
+        0.00681528012866148
+      ],
+      "cpu_receipt_norms": [
+        5.283100494967152e-06,
+        0.006815280128661573
+      ],
+      "wrong_field_control_norms": [
+        0.0025019293094161463,
+        0.013032244421307449
+      ],
+      "wrong_field_rejected": true,
+      "kernel_seconds": 0.059864998,
+      "audit_seconds_including_control": 0.12485019999439828
+    }
+  ]
+}

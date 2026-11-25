@@ -1,9 +1,4 @@
-"""E3 Task 3: Problem/hardware feature extraction, surrogate cost/accuracy modeling,
-accuracy-constrained strategy search, and 5-way adaptive execution strategies.
-
-Zero fabricated metrics: every evaluation executes real MFEM C++ binaries and
-independent Python verification, charging full decision, pilot, and retry costs.
-"""
+"""Select and execute verified MFEM strategies using problem and hardware features."""
 
 from __future__ import annotations
 
@@ -12,10 +7,8 @@ import json
 import math
 import os
 import resource
-import shutil
-import tempfile
 import time
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Literal
 
@@ -23,10 +16,10 @@ import numpy as np
 
 from verifier import expr
 from verifier.amr import verify_amr_run
-from verifier.verifier import ACCEPTED, RETRY_ELIGIBLE, verify_attempt
-from . import capability, environment, local_llm, mfem_runner
+from verifier.verifier import ACCEPTED, verify_attempt
+from . import capability, environment, adaptive_advisor, mfem_runner
 from .gmsh import generate_unstructured_msh, inspect_gmsh_unstructured
-from .spec import ANISOTROPIC, LAYERED, ExecutionSpec, ProblemSpec, RetryPolicy, StudySpec, ValidationSpec
+from .spec import ANISOTROPIC, ExecutionSpec, ProblemSpec, RetryPolicy, StudySpec, ValidationSpec
 
 
 def _read_meminfo_mb() -> tuple[float, float]:
@@ -104,7 +97,7 @@ def extract_hardware_features(policy: RetryPolicy, env: dict | None = None) -> H
     cfg = env.get("mfem", {}).get("config", {})
     tot_mb, avail_mb = _read_meminfo_mb()
     return HardwareFeatures(
-        cpu_count=int(os.cpu_count() or 1),
+        cpu_count=len(os.sched_getaffinity(0)),
         mem_total_mb=tot_mb,
         mem_available_mb=avail_mb,
         mpi_enabled=bool(cfg.get("MFEM_USE_MPI", False)),
@@ -384,7 +377,12 @@ def execute_candidate(
     mms_bin = mms_bin or mfem_runner.solver_binary()
     amr_bin = amr_bin or mfem_runner.amr_binary()
     work_dir = Path(work_dir)
-    work_dir.mkdir(parents=True, exist_ok=True)
+    work_dir.mkdir(parents=True, exist_ok=False)
+    (work_dir / "task.json").write_text(json.dumps({
+        "task_id": task.task_id, "case_id": task.case_id, "split": task.split,
+        "problem": task.problem.model_dump(mode="json"), "policy": task.policy.model_dump(mode="json"),
+        "validation": task.validation.model_dump(mode="json"), "candidate": asdict(cand)
+    }, sort_keys=True))
     t0 = time.perf_counter()
 
     if cand.mesh_topology == "amr":
@@ -395,29 +393,44 @@ def execute_candidate(
             dirichlet=",".join(map(str, task.problem.dirichlet_attributes())) or "none",
             neumann=",".join(map(str, task.problem.neumann_attributes())) or "none",
             max_steps=cand.amr_max_steps, max_dofs=cand.amr_max_dofs,
-            theta=0.7, mem_mb=task.policy.per_level_memory_mb, binary=amr_bin,
+            theta=0.6, timeout_s=task.policy.per_level_timeout_seconds, mem_mb=task.policy.per_level_memory_mb, binary=amr_bin,
         )
         ver = verify_amr_run(amr_out, task.problem, task.validation)
+        (work_dir / "verdict.json").write_text(json.dumps(ver, allow_nan=False))
         wall = time.perf_counter() - t0
         last_step = ver["steps"][-1] if ver["steps"] else {}
         l2 = last_step.get("l2_error")
         accuracy_ok = (l2 is not None) and (task.validation.max_l2_error_finest is None or l2 <= task.validation.max_l2_error_finest)
-        accepted = (run_res["exit_code"] == 0) and (ver["verdict"] == ACCEPTED) and accuracy_ok
+        codes = list(ver["failure_codes"])
+        if run_res["exit_code"] != 0:
+            codes.append("SOLVER_EXIT")
+        for step, result_file in zip(ver["steps"], sorted(amr_out.glob("step_*/result.json")), strict=True):
+            native = json.loads(result_file.read_bytes())
+            if (native["case"] != task.case_id or native["order"] != cand.polynomial_order
+                    or native["assembly"] != cand.assembly or native["solver"] != cand.solver
+                    or native["mesh_type"] != cand.mesh_type or not native["solver_converged"]
+                    or native["dirichlet_attributes"] != task.problem.dirichlet_attributes()
+                    or native["neumann_attributes"] != task.problem.neumann_attributes()):
+                codes.append("CLAIM_SPEC_MISMATCH")
+            if (step.get("num_true_dofs_inferred") or 0) > min(cand.amr_max_dofs, task.policy.max_dofs_per_level):
+                codes.append("DOF_BUDGET")
+        if not accuracy_ok:
+            codes.append("ACCURACY_NOT_MET")
+        accepted = ver["verdict"] == ACCEPTED and not codes
         rss_kib = run_res.get("summary", {}).get("peak_rss_kib") or 0
         return {
             "candidate_id": cand.candidate_id,
             "ok": accepted,
-            "verdict": ACCEPTED if accepted else ("RETRY_ELIGIBLE" if ver["verdict"] == ACCEPTED and not accuracy_ok else ver["verdict"]),
-            "failure_codes": [] if accepted else (["ACCURACY_NOT_MET"] if ver["verdict"] == ACCEPTED and not accuracy_ok else ver["failure_codes"]),
+            "verdict": ACCEPTED if accepted else ("RETRY_ELIGIBLE" if codes == ["ACCURACY_NOT_MET"] else "REJECTED"),
+            "failure_codes": sorted(set(codes)),
             "l2_error": l2,
             "h1_semi_error": last_step.get("h1_semi_error"),
             "finest_dofs": last_step.get("num_true_dofs_inferred") or cand.amr_max_dofs,
             "wall_seconds": round(wall, 4),
-            "peak_rss_mb": round(float(rss_kib) / 1024.0, 2),
+            "peak_rss_mb": round(max(float(rss_kib), resource.getrusage(resource.RUSAGE_SELF).ru_maxrss) / 1024.0, 2),
         }
 
     # Standard uniform/unstructured study via frozen verifier
-    attempt_dir = work_dir / "attempt_01"
     run_root = work_dir / "run"
     (run_root / "frozen").mkdir(parents=True, exist_ok=True)
     (run_root / "request").mkdir(parents=True, exist_ok=True)
@@ -425,7 +438,6 @@ def execute_candidate(
     att.mkdir(parents=True, exist_ok=True)
 
     mesh_path = None
-    refinements_map = {}
     ext_spec = None
     if cand.mesh_topology == "unstructured":
         msh_bytes = generate_unstructured_msh(
@@ -475,6 +487,7 @@ def execute_candidate(
             break
 
     ver = verify_attempt(att, require_run_records=True)
+    (work_dir / "verdict.json").write_text(json.dumps(ver, allow_nan=False))
     wall = time.perf_counter() - t0
     last_lv = ver["levels"][-1] if ver["levels"] else {}
     return {
@@ -486,7 +499,7 @@ def execute_candidate(
         "h1_semi_error": last_lv.get("h1_semi_error"),
         "finest_dofs": last_lv.get("num_dofs") or finest_dofs,
         "wall_seconds": round(wall, 4),
-        "peak_rss_mb": round(max(max_rss_kib / 1024.0, 12.0), 2),
+        "peak_rss_mb": round(max(max_rss_kib, resource.getrusage(resource.RUSAGE_SELF).ru_maxrss) / 1024.0, 2),
     }
 
 
@@ -550,7 +563,7 @@ def choose_predictive_candidate(
 
 
 def run_strategy_on_task(
-    strategy_name: Literal["fixed_baseline", "expert_rules", "predictive_model", "pilot_autotuner", "ai_assisted"],
+    strategy_name: Literal["fixed_baseline", "expert_rules", "predictive_model", "pilot_autotuner", "advisor_rules", "ai_assisted"],
     task: AdaptiveTask,
     work_dir: Path,
     *,
@@ -573,11 +586,16 @@ def run_strategy_on_task(
     ai_meta: dict[str, Any] = {}
     ordered_queue: list[StrategyCandidate] = []
 
+    # A fixed, task-independent full-assembly ladder provides a verified comparator.
+    default_pool = [c for c in cands if c.mesh_topology == task.mesh_topology
+                    and c.mesh_type == task.base_mesh_type and c.assembly == "full" and c.solver == "cg_gs"]
+    fixed = []
+    for order, size in ((3, 32), (4, 32), (3, 64)):
+        pool = [c for c in default_pool if c.polynomial_order == order]
+        if pool:
+            fixed.append(min(pool, key=lambda c: abs(c.mesh_levels[-1] - size)))
     if strategy_name == "fixed_baseline":
-        # Conservative E2 default progression: Q1 full cg_gs increasing n until accepted
-        pool = [c for c in cands if c.mesh_topology == task.mesh_topology and c.mesh_type == task.base_mesh_type
-                and c.polynomial_order == 1 and c.assembly == "full" and c.solver == "cg_gs"]
-        ordered_queue = sorted(pool or cands, key=lambda c: c.estimated_finest_dofs)[:4]
+        ordered_queue = fixed or default_pool
 
     elif strategy_name == "expert_rules":
         first = choose_expert_candidate(pf, cands)
@@ -621,9 +639,10 @@ def run_strategy_on_task(
             res_p = execute_candidate(p_task, p_cand, work_dir / f"pilot_{idx}", mms_bin=mms_bin, amr_bin=amr_bin)
             pilot_seconds += res_p["wall_seconds"]
             pilot_details.append({"candidate": p_cand.candidate_id, "l2": res_p["l2_error"], "s": res_p["wall_seconds"]})
-            if res_p["l2_error"] and res_p["l2_error"] > 0:
+            if res_p["ok"] and res_p["l2_error"] and res_p["l2_error"] > 0:
                 matching = [c for c in cands if c.mesh_type == mt and c.polynomial_order == p
-                            and c.mesh_topology == task.mesh_topology]
+                            and c.mesh_topology == task.mesh_topology
+                            and c.assembly == asm and c.solver == sol]
                 for c in matching:
                     ratio = max(c.mesh_levels[-1] / max(pilot_sched[-1], 1), 1.0)
                     proj_l2 = res_p["l2_error"] / (ratio ** (p + 1))
@@ -640,51 +659,28 @@ def run_strategy_on_task(
                       key=lambda c: (-c.polynomial_order, c.estimated_finest_dofs))
         ordered_queue = [best_c] + rest[:2]
 
-    elif strategy_name == "ai_assisted":
-        # Probe local Ollama if model+digest configured; fail gracefully to guardrail-checked advisor.
-        used_live_llm = False
-        chosen_id = None
-        if ollama_model and ollama_digest:
-            try:
-                summary_cands = [c.candidate_id for c in cands[:18]]
-                prompt = json.dumps({"features": asdict(pf), "hardware": asdict(hw), "candidates": summary_cands})
-                resp = local_llm.generate(
-                    "Choose the fastest candidate_id meeting target_l2 within memory budget as JSON {\"candidate_id\": ...}.",
-                    prompt, model=ollama_model, model_digest=ollama_digest,
-                )
-                parsed = json.loads(resp["text"])
-                cand_name = parsed.get("candidate_id")
-                if any(c.candidate_id == cand_name for c in cands):
-                    chosen_id = cand_name
-                    used_live_llm = True
-                    ai_meta["llm_usage"] = resp["usage"]
-            except Exception as exc:
-                ai_meta["ollama_probe_note"] = str(exc)
-        else:
-            ai_meta["ollama_probe_note"] = "no pinned local GGUF model provided; using deterministic guardrail advisor"
-
-        ai_meta["used_live_llm"] = used_live_llm
-        if chosen_id is not None:
-            first = next(c for c in cands if c.candidate_id == chosen_id)
-        else:
-            # Structured AI advisor fusing mathematical feature heuristics with predictor risk guardrails
-            if predictor is not None:
-                # Prefer AMR on localized singularities & apply tighter safety margin (0.45) when Hessian variance is high
-                margin = 0.35 if pf.localization_ratio >= 5.0 else 0.50
-                first, preview = choose_predictive_candidate(pf, hw, cands, predictor, safety_margin=margin)
-                # Explicit domain bonus: if localization_ratio >= 6 and AMR feasible passes predicted L2 margin, prefer AMR
-                amr_cands = [c for c in cands if c.mesh_topology == "amr"]
-                if pf.localization_ratio >= 6.0 and amr_cands:
-                    amr_best = min(amr_cands, key=lambda c: predictor.predict(pf, c, hw)["pred_wall_seconds"])
-                    if predictor.predict(pf, amr_best, hw)["pred_l2_error"] <= pf.target_l2:
-                        first = amr_best
-                ai_meta["advisor_preview"] = preview
-            else:
-                first = choose_expert_candidate(pf, cands)
-        rest = sorted([c for c in cands if c.candidate_id != first.candidate_id],
-                      key=lambda c: (-c.polynomial_order, c.estimated_finest_dofs))
-        ordered_queue = [first] + rest[:2]
-
+    elif strategy_name in ("ai_assisted", "advisor_rules"):
+        ranked = []
+        for candidate in cands:
+            predicted = predictor.predict(pf, candidate, hw)
+            if (predicted["pred_l2_error"] <= 0.55 * pf.target_l2 and
+                    predicted["pred_peak_rss_mb"] <= 0.85 * hw.per_level_memory_mb):
+                ranked.append((predicted["pred_wall_seconds"], candidate.candidate_id, candidate, predicted))
+        ranked.sort(key=lambda row: row[:2])
+        shortlist = ranked[:5]
+        first = shortlist[0][2] if shortlist else choose_expert_candidate(pf, cands)
+        ai_meta["used_live_llm"] = False
+        if strategy_name == "ai_assisted" and ollama_model and ollama_digest and shortlist:
+            previews = [{"candidate_id": item.candidate_id, **pred} for _, _, item, pred in shortlist]
+            choice, audit = adaptive_advisor.choose(asdict(pf), asdict(hw), previews,
+                                                    model=ollama_model, digest=ollama_digest)
+            ai_meta.update(advisor=audit, used_live_llm=audit["used_live_llm"])
+            if choice:
+                first = next(item for _, _, item, _ in shortlist if item.candidate_id == choice)
+        ordered_queue = [first]
+    if ordered_queue:
+        # On failed qualification, move to a different reviewed full-assembly discretization.
+        ordered_queue = list(dict.fromkeys([ordered_queue[0], *fixed, *ordered_queue[1:]]))
     decision_seconds = (time.perf_counter() - t_dec0) - pilot_seconds
 
     attempts = []
@@ -692,7 +688,7 @@ def run_strategy_on_task(
     peak_rss_mb = 0.0
     final_l2 = None
     final_dofs = None
-    max_tries = 4 if strategy_name == "fixed_baseline" else 3
+    max_tries = task.policy.max_attempts
     for idx, cand in enumerate(ordered_queue[:max_tries], start=1):
         res = execute_candidate(task, cand, work_dir / f"try_{idx:02d}_{cand.candidate_id}", mms_bin=mms_bin, amr_bin=amr_bin)
         attempts.append(res)

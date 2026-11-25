@@ -1,0 +1,74 @@
+{
+  "decision_sha256": "ccdbf8f63f52f8136e3019e4156ee2fe50b8c4d16e2c4525fa782b2399af5ee5",
+  "verified": {
+    "verdict": "ACCEPTED",
+    "orders": {
+      "finest_l2_order": 1.9995900442447982,
+      "finest_h1_order": 0.9998278923275561
+    },
+    "levels": [
+      {
+        "n": 32,
+        "ranks": 0,
+        "l2_error": 0.0013504362485498114,
+        "h1_semi_error": 0.10897542351886627,
+        "reference_relative_field_difference": 3.1666778401787684e-14,
+        "iterations": 40
+      },
+      {
+        "n": 64,
+        "ranks": 0,
+        "l2_error": 0.00033799233483787044,
+        "h1_semi_error": 0.0545137045358206,
+        "reference_relative_field_difference": 2.3701081229101543e-14,
+        "iterations": 74
+      },
+      {
+        "n": 128,
+        "ranks": 0,
+        "l2_error": 8.45220980693411e-05,
+        "h1_semi_error": 0.027260104093899545,
+        "reference_relative_field_difference": 2.0318101276492475e-14,
+        "iterations": 138
+      }
+    ],
+    "launch_seconds": 1.083,
+    "verified_seconds": 2.2392669820001174,
+    "files": {
+      "n128/boundary.txt": "42d5a54769a95be7e5eed69569613c01652bf2f3e8fe583892f9d1b0af153031",
+      "n128/command.json": "1a11570920c9eacf118ee451bbdc10ebf08778435eb057b4f28a208885163723",
+      "n128/dof_values.txt": "5b178505499c4926a8a49d72e526ba56449a915b691c1b66507273265bb3ad13",
+      "n128/element_dofs.txt": "8000fc9951b60c0250402dc91d2abe8ee85fcb5d45dafda10e87049c5e03f6a9",
+      "n128/elements.txt": "26c964299aaf825f571b786808dc4835e94640285b5c207c18806b344772d5d0",
+      "n128/mesh.mesh": "239ea5f4df97ef96c1c24c5f8333eecda215d2c75fd104117d72a83da7953418",
+      "n128/result.json": "68e237794f8dabd19eec24176decdf3c19e68d751739432b31a04f68abc98586",
+      "n128/run_record.json": "29ff5d640670fa7a5170880d7e4f3639cf980b9d24efd9fc3f5c504ba14a0c46",
+      "n128/solution.gf": "75f666b204575b4e8b2ab4b41f3713cd25c2d973903670e3343fc4a5a7c71198",
+      "n128/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "n128/stdout.txt": "d392ae3edc1c634680ff3035cb08fc14a618389e750241d1524395f81eaddda8",
+      "n32/boundary.txt": "d75968b3acf101c60ccf5769a9b670de9e50bf948459ff2f868c168a0d03c6d2",
+      "n32/command.json": "d1c7de1fc0553df79bc6a3f7917aaf760927b24f3e726fd648fae005f7527275",
+      "n32/dof_values.txt": "481b472959352028f96b25efcaf9aafd1b0930ab9f177881f4acdd6e47c828bc",
+      "n32/element_dofs.txt": "6774e65b01e9780f48d65cfdc99a5cb2512d86bd7e220f3b06d8a81224b6d343",
+      "n32/elements.txt": "1cd9029f306dd40ffd3481499f5e91f901c7ffafc75ef9c132615778c623d19f",
+      "n32/mesh.mesh": "9209ce1e6ffa9be50e415ab7db4d5cb5bada7b2678160fe2b7414abaea831606",
+      "n32/result.json": "3721b87e34c7ac7bf4939d3223fb782357fdd1132b764f4c01f1a451ffc9a4f7",
+      "n32/run_record.json": "f7b3c1f19a75bf98db688baa55e9ea022800393b0d770fc6e4107369dc0d2ab6",
+      "n32/solution.gf": "3386ded18ca98dd6780e208b4f4e4927222f3baca7143792bd487b4c0de49cc2",
+      "n32/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "n32/stdout.txt": "663f6599e9a6025c45af01f749684fdb137dfc179779fc861b4a700853f311c5",
+      "n64/boundary.txt": "774b28f371fdffcb21feb7f31634f705357dfc925196b97a03c873ac68355386",
+      "n64/command.json": "c4e3018af71e59c8ed9e93973d4e83b779632574ec916d218b1a6a8ef2a7c67d",
+      "n64/dof_values.txt": "f9a123bb80942373a690f017a778c882cbfaf103a3938a1038ecb0dfb61dee3a",
+      "n64/element_dofs.txt": "7b9fc32eab967860a2eba7aad80cc35bc9a0ecda88272783b7b64a3061c74d42",
+      "n64/elements.txt": "7fca709d17443b7c30e47a7b2d4248afab6ee64a4f2dca791f78da72c4c761b9",
+      "n64/mesh.mesh": "8d2ac2da05ed189edec07d4a65228eb99b0c88c4bd3f9728891c792698b026a7",
+      "n64/result.json": "ced058c5c22cc294ce801c8b4b1bd8c0031d698b702d214efda69c9b88bd2895",
+      "n64/run_record.json": "d92101d62c2874060249952e3b6cb9a6098d1a233141f2dbe58cb8926c7ed91a",
+      "n64/solution.gf": "c303ecd7e99539e1ba9031c1165734e9769eff86a377dde7736e7d4fa1500508",
+      "n64/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "n64/stdout.txt": "4a95fd3ec5e3e3a52ecd94d9e54c744ac6854104f8600d260027868c1fd2515d"
+    }
+  },
+  "seconds_including_decision": 2.59464898300007
+}

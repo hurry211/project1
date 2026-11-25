@@ -55,6 +55,11 @@ jobs:
       - run: ./scripts/build_mfem.sh
       - run: ./scripts/build_solver.sh
       - run: python -m pytest -q -m mfem --require-mfem
+      - name: Replay a transient field study
+        run: |
+          python -m sciagent pde-study --family wave --dimension 3 --order 2 --levels 2 4 8 --directory runs/wave > wave-receipt.json
+          digest="$(python -c "import json; print(json.load(open('wave-receipt.json'))['manifest_sha256'])")"
+          python -m sciagent verify-pde runs/wave --manifest-sha256 "$digest"
       - run: python -m sciagent quickstart
       - name: Verify the candidate-to-solver path and replay its evidence
         run: |

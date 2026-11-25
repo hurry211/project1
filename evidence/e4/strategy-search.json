@@ -1,0 +1,696 @@
+{
+  "solvers": [
+    "cg_gs",
+    "cg_jacobi",
+    "cg_none"
+  ],
+  "schedule_seed": 20261125,
+  "winner": "q2-partial-cg-jacobi",
+  "criterion": "minimum median end-to-end seconds among all-repetition accepted candidates",
+  "l2_target": 0.0001,
+  "repeats": 3,
+  "search_wall_seconds": 40.91351930500002,
+  "environment": {
+    "os": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "cpu_count": 22,
+    "mem_total_mb": 15794,
+    "python": "3.12.3",
+    "python_packages": {
+      "numpy": "2.5.5",
+      "scipy": "1.18.1",
+      "pydantic": "2.14.4",
+      "pytest": "9.2.0"
+    },
+    "cxx": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "cmake": "cmake version 3.28.3",
+    "make": "GNU Make 4.3",
+    "mpirun_path": "/usr/bin/mpirun",
+    "nvidia_smi_path": null,
+    "mfem": {
+      "install_dir": "/root/mfem-stage0/clean/third_party/mfem-install",
+      "found": true,
+      "config": {
+        "MFEM_USE_MPI": false,
+        "MFEM_USE_METIS": false,
+        "MFEM_USE_METIS_5": false,
+        "MFEM_USE_SUITESPARSE": false,
+        "MFEM_USE_LAPACK": false,
+        "MFEM_USE_OPENMP": false,
+        "MFEM_USE_CUDA": false,
+        "MFEM_USE_HIP": false,
+        "MFEM_USE_RAJA": false,
+        "MFEM_USE_OCCA": false,
+        "MFEM_USE_PETSC": false,
+        "MFEM_USE_ZLIB": false,
+        "MFEM_USE_DOUBLE": true,
+        "MFEM_USE_SINGLE": false
+      },
+      "notes": [],
+      "version": "4.10.0",
+      "git": "tags/v4.10-0-gd964264cdb9a13e94a201b6c236c7721e0c8765f",
+      "library": "/root/mfem-stage0/clean/third_party/mfem-install/lib/libmfem.a",
+      "library_sha256": "a4b8138ccb7eaf2c1f38c4d0434ebbee7bbd0b20318d6f0864779a5f4efd0234"
+    },
+    "solver_binary": "/root/mfem-e4-qSotR5/native/poisson_mms",
+    "solver_binary_sha256": "fdbe3f731f7ad158d086b9cd4409111a29b7eb3f2a8511f0af32fd02999cf65b",
+    "notes": [
+      "mpirun exists but MFEM was built without MPI; MPI path unavailable",
+      "no nvidia-smi on PATH; no CUDA device detected"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "q1-full-cg-gs",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "sin_2x_2y on cartesian ('quad', 1, 'full', 'cg_gs') covered by docs/E3_PERFORMANCE_ADAPTIVE.md"
+      },
+      "initial_finest_dofs": 1089,
+      "trials": [
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 0,
+          "position": 9,
+          "seconds": 1.010019439999951,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911807287,
+            "h1_semi": 0.25174774545246603,
+            "reference_rel_diff": 3.6674812771332983e-13
+          },
+          "run_dir": "runs/20261125T122119440806Z_q1-full-cg-gs",
+          "manifest_sha256": "ce2e418c1a205fb99727d0087e54ff817dbbd14aa64e98dc7215b36609215a39"
+        },
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 1,
+          "position": 5,
+          "seconds": 1.0342916759999525,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911807287,
+            "h1_semi": 0.25174774545246603,
+            "reference_rel_diff": 3.6674812771332983e-13
+          },
+          "run_dir": "runs/20261125T122126817029Z_q1-full-cg-gs",
+          "manifest_sha256": "b8e4c8886d8a9da63c8085fe4180916bb7a2d8a92b184ec769c80d70ef973fa9"
+        },
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 2,
+          "position": 9,
+          "seconds": 1.2711482549999573,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911807287,
+            "h1_semi": 0.25174774545246603,
+            "reference_rel_diff": 3.6674812771332983e-13
+          },
+          "run_dir": "runs/20261125T122147173856Z_q1-full-cg-gs",
+          "manifest_sha256": "807c5217749248836c08f715d5ca41b792a26b2337d1effe2bd2eb7f83f37799"
+        }
+      ],
+      "feasible": false,
+      "median_seconds": 1.0342916759999525
+    },
+    {
+      "id": "q1-full-cg-jacobi",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "sin_2x_2y on cartesian ('quad', 1, 'full', 'cg_jacobi') covered by docs/E3_PERFORMANCE_ADAPTIVE.md"
+      },
+      "initial_finest_dofs": 1089,
+      "trials": [
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 0,
+          "position": 5,
+          "seconds": 1.2572215430000142,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911816457,
+            "h1_semi": 0.251747745452466,
+            "reference_rel_diff": 1.4054620464572386e-14
+          },
+          "run_dir": "runs/20261125T122114012902Z_q1-full-cg-jacobi",
+          "manifest_sha256": "dc433171e68116e9fb407e601cd809ef7af637d803aa3841f11ae8a2bded829d"
+        },
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 1,
+          "position": 9,
+          "seconds": 1.4568699400000469,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911816457,
+            "h1_semi": 0.251747745452466,
+            "reference_rel_diff": 1.4054620464572386e-14
+          },
+          "run_dir": "runs/20261125T122131523298Z_q1-full-cg-jacobi",
+          "manifest_sha256": "33c0a15701fcfe80d755a26ef69a3250f8c6b09a46d2374756d64ca41dc0c23f"
+        },
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 2,
+          "position": 4,
+          "seconds": 1.9391728010000406,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911816457,
+            "h1_semi": 0.251747745452466,
+            "reference_rel_diff": 1.4054620464572386e-14
+          },
+          "run_dir": "runs/20261125T122139678471Z_q1-full-cg-jacobi",
+          "manifest_sha256": "8b1a1f37134d2b45ca9184a6f052edbe8a335b42bbde377ff2dff77211d0769d"
+        }
+      ],
+      "feasible": false,
+      "median_seconds": 1.4568699400000469
+    },
+    {
+      "id": "q1-full-cg-none",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "sin_2x_2y on cartesian ('quad', 1, 'full', 'cg_none') covered by docs/E3_PERFORMANCE_ADAPTIVE.md"
+      },
+      "initial_finest_dofs": 1089,
+      "trials": [
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 0,
+          "position": 0,
+          "seconds": 1.4331045220000078,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911791467,
+            "h1_semi": 0.25174774545246603,
+            "reference_rel_diff": 1.980926821384612e-14
+          },
+          "run_dir": "runs/20261125T122106744417Z_q1-full-cg-none",
+          "manifest_sha256": "ca161d2cc10af91e5b88d7fc70e5c41d36b3aefab492922fa32ca1abdb8fbbad"
+        },
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 1,
+          "position": 3,
+          "seconds": 1.3495709979999901,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911791467,
+            "h1_semi": 0.25174774545246603,
+            "reference_rel_diff": 1.980926821384612e-14
+          },
+          "run_dir": "runs/20261125T122124286603Z_q1-full-cg-none",
+          "manifest_sha256": "026541e7505f6e0a3be51f48624eca0ad6fca750df6e14bb7a721a7d67aa9922"
+        },
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 2,
+          "position": 7,
+          "seconds": 1.1593526139999994,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911791467,
+            "h1_semi": 0.25174774545246603,
+            "reference_rel_diff": 1.980926821384612e-14
+          },
+          "run_dir": "runs/20261125T122144040287Z_q1-full-cg-none",
+          "manifest_sha256": "e85b7ef11ecf714bbfd7251b1701b9826a5b75031ed238396a24470d181a99c9"
+        }
+      ],
+      "feasible": false,
+      "median_seconds": 1.3495709979999901
+    },
+    {
+      "id": "q1-partial-cg-gs",
+      "capability": {
+        "status": "unsupported",
+        "code": "UNSUPPORTED_COMBINATION",
+        "reason": "Gauss-Seidel smoothing needs an assembled SparseMatrix; partial assembly provides only a matrix-free operator (use cg_jacobi with partial assembly)"
+      },
+      "initial_finest_dofs": 1089,
+      "trials": [],
+      "excluded": "UNSUPPORTED_COMBINATION"
+    },
+    {
+      "id": "q1-partial-cg-jacobi",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "sin_2x_2y on cartesian ('quad', 1, 'partial', 'cg_jacobi') covered by docs/E3_PERFORMANCE_ADAPTIVE.md"
+      },
+      "initial_finest_dofs": 1089,
+      "trials": [
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 0,
+          "position": 3,
+          "seconds": 1.2281639889999951,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911809195,
+            "h1_semi": 0.25174774545246603,
+            "reference_rel_diff": 1.5825281310502766e-14
+          },
+          "run_dir": "runs/20261125T122111028111Z_q1-partial-cg-jacobi",
+          "manifest_sha256": "a78598c638265ffe0a5a1b9af52516e9f09ac6624100e618e5bafea43ca2ae8c"
+        },
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 1,
+          "position": 2,
+          "seconds": 1.3357622380000294,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911809195,
+            "h1_semi": 0.25174774545246603,
+            "reference_rel_diff": 1.5825281310502766e-14
+          },
+          "run_dir": "runs/20261125T122122950693Z_q1-partial-cg-jacobi",
+          "manifest_sha256": "a091068eae1b251704ad337b217136e56caa56f863aeca6675df6201f2c701c4"
+        },
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 2,
+          "position": 1,
+          "seconds": 1.6347735909999983,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911809195,
+            "h1_semi": 0.25174774545246603,
+            "reference_rel_diff": 1.5825281310502766e-14
+          },
+          "run_dir": "runs/20261125T122135100280Z_q1-partial-cg-jacobi",
+          "manifest_sha256": "49ee6318a8d695a2a67349d5e73be3e90d2f63def301c73319dea7245a7021d8"
+        }
+      ],
+      "feasible": false,
+      "median_seconds": 1.3357622380000294
+    },
+    {
+      "id": "q1-partial-cg-none",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "sin_2x_2y on cartesian ('quad', 1, 'partial', 'cg_none') covered by docs/E3_PERFORMANCE_ADAPTIVE.md"
+      },
+      "initial_finest_dofs": 1089,
+      "trials": [
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 0,
+          "position": 6,
+          "seconds": 1.225309583000012,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911786338,
+            "h1_semi": 0.251747745452466,
+            "reference_rel_diff": 2.1026597545423255e-14
+          },
+          "run_dir": "runs/20261125T122115270177Z_q1-partial-cg-none",
+          "manifest_sha256": "64eedb9f0d535211890d0de76bead10e68228532eb142bfda1589dd0d7b9347b"
+        },
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 1,
+          "position": 8,
+          "seconds": 1.2533937240000341,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911786338,
+            "h1_semi": 0.251747745452466,
+            "reference_rel_diff": 2.1026597545423255e-14
+          },
+          "run_dir": "runs/20261125T122130269755Z_q1-partial-cg-none",
+          "manifest_sha256": "3814eeefa6f026a8a40fd32f412e3bf4f72a7327476d6db32b503634bd7a5be7"
+        },
+        {
+          "state": "BUDGET_EXHAUSTED",
+          "code": "BUDGET_EXHAUSTED",
+          "repeat": 2,
+          "position": 8,
+          "seconds": 1.2703922499999862,
+          "finest_errors": {
+            "n": 32,
+            "l2": 0.0019005741911786338,
+            "h1_semi": 0.251747745452466,
+            "reference_rel_diff": 2.1026597545423255e-14
+          },
+          "run_dir": "runs/20261125T122145903394Z_q1-partial-cg-none",
+          "manifest_sha256": "936951ca7795c2f30b94e664267fd28e45154b9e28a6bf8338ac49fc4a0dd160"
+        }
+      ],
+      "feasible": false,
+      "median_seconds": 1.2533937240000341
+    },
+    {
+      "id": "q2-full-cg-gs",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "sin_2x_2y on cartesian ('quad', 2, 'full', 'cg_gs') covered by docs/E3_PERFORMANCE_ADAPTIVE.md"
+      },
+      "initial_finest_dofs": 4225,
+      "trials": [
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 0,
+          "position": 8,
+          "seconds": 1.2491574540000556,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.074584190441556e-05,
+            "h1_semi": 0.006382899153678302,
+            "reference_rel_diff": 2.3486025526017966e-13
+          },
+          "run_dir": "runs/20261125T122118191537Z_q2-full-cg-gs",
+          "manifest_sha256": "826fe17211957bce63a831471e6463389a5b2a8e2431c7897a5b632b4fe0bfed"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 1,
+          "position": 1,
+          "seconds": 1.2682081259999904,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.074584190441556e-05,
+            "h1_semi": 0.006382899153678302,
+            "reference_rel_diff": 2.3486025526017966e-13
+          },
+          "run_dir": "runs/20261125T122121682382Z_q2-full-cg-gs",
+          "manifest_sha256": "04a3a6650dd8355708ef8aa1cb032676a037d1e3d42c3b1763efa1a1a18f601c"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 2,
+          "position": 0,
+          "seconds": 2.1194650009999805,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.074584190441556e-05,
+            "h1_semi": 0.006382899153678302,
+            "reference_rel_diff": 2.3486025526017966e-13
+          },
+          "run_dir": "runs/20261125T122132980374Z_q2-full-cg-gs",
+          "manifest_sha256": "d9385e5bd153e216e189437086bc6fdd9d905bb93707cc3e4ba743f49812f301"
+        }
+      ],
+      "feasible": true,
+      "median_seconds": 1.2682081259999904,
+      "paired_seconds_minus_winner": [
+        -0.22999931199990442,
+        0.08755784100003439,
+        0.9382151599999133
+      ],
+      "median_paired_seconds_minus_winner": 0.08755784100003439
+    },
+    {
+      "id": "q2-full-cg-jacobi",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "sin_2x_2y on cartesian ('quad', 2, 'full', 'cg_jacobi') covered by docs/E3_PERFORMANCE_ADAPTIVE.md"
+      },
+      "initial_finest_dofs": 4225,
+      "trials": [
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 0,
+          "position": 2,
+          "seconds": 1.3710896679999678,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.0745841904340105e-05,
+            "h1_semi": 0.006382899153678297,
+            "reference_rel_diff": 2.886573882123519e-14
+          },
+          "run_dir": "runs/20261125T122109656853Z_q2-full-cg-jacobi",
+          "manifest_sha256": "347ac41c69d59be553a7157828b6627828d653dd2bd8009f163d219fb0fe7565"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 1,
+          "position": 6,
+          "seconds": 1.2231173269999545,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.0745841904340105e-05,
+            "h1_semi": 0.006382899153678297,
+            "reference_rel_diff": 2.886573882123519e-14
+          },
+          "run_dir": "runs/20261125T122127851410Z_q2-full-cg-jacobi",
+          "manifest_sha256": "fa5979ca986b434abef368ef0729df50af38651c2300be5a0a903afab1d614cb"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 2,
+          "position": 2,
+          "seconds": 1.4542424329999903,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.0745841904340105e-05,
+            "h1_semi": 0.006382899153678297,
+            "reference_rel_diff": 2.886573882123519e-14
+          },
+          "run_dir": "runs/20261125T122136734941Z_q2-full-cg-jacobi",
+          "manifest_sha256": "85e077371bdef663998a836a1e62e24ad610ae8432bd114044047fed57c4e2da"
+        }
+      ],
+      "feasible": true,
+      "median_seconds": 1.3710896679999678,
+      "paired_seconds_minus_winner": [
+        -0.10806709799999226,
+        0.0424670419999984,
+        0.2729925919999232
+      ],
+      "median_paired_seconds_minus_winner": 0.0424670419999984
+    },
+    {
+      "id": "q2-full-cg-none",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "sin_2x_2y on cartesian ('quad', 2, 'full', 'cg_none') covered by docs/E3_PERFORMANCE_ADAPTIVE.md"
+      },
+      "initial_finest_dofs": 4225,
+      "trials": [
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 0,
+          "position": 7,
+          "seconds": 1.6957928430000493,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.074584190474322e-05,
+            "h1_semi": 0.00638289915367828,
+            "reference_rel_diff": 1.987295095769653e-14
+          },
+          "run_dir": "runs/20261125T122116495641Z_q2-full-cg-none",
+          "manifest_sha256": "eec92aa3b40981ea063e77738a305b52246ca5ff3fa92186ad4eda6c66f286a6"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 1,
+          "position": 7,
+          "seconds": 1.194944754000062,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.074584190474322e-05,
+            "h1_semi": 0.00638289915367828,
+            "reference_rel_diff": 1.987295095769653e-14
+          },
+          "run_dir": "runs/20261125T122129074657Z_q2-full-cg-none",
+          "manifest_sha256": "c34889f057716ce673eecb9d9edd203917d8274d35fb564f4c0f1ef2d5611d35"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 2,
+          "position": 3,
+          "seconds": 1.4884085280000363,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.074584190474322e-05,
+            "h1_semi": 0.00638289915367828,
+            "reference_rel_diff": 1.987295095769653e-14
+          },
+          "run_dir": "runs/20261125T122138189333Z_q2-full-cg-none",
+          "manifest_sha256": "c5f86a85000837fb0f506803dfa56865741d91dc3353b6c69b9c6727b881c0ab"
+        }
+      ],
+      "feasible": true,
+      "median_seconds": 1.4884085280000363,
+      "paired_seconds_minus_winner": [
+        0.21663607700008924,
+        0.014294469000105892,
+        0.3071586869999692
+      ],
+      "median_paired_seconds_minus_winner": 0.21663607700008924
+    },
+    {
+      "id": "q2-partial-cg-gs",
+      "capability": {
+        "status": "unsupported",
+        "code": "UNSUPPORTED_COMBINATION",
+        "reason": "Gauss-Seidel smoothing needs an assembled SparseMatrix; partial assembly provides only a matrix-free operator (use cg_jacobi with partial assembly)"
+      },
+      "initial_finest_dofs": 4225,
+      "trials": [],
+      "excluded": "UNSUPPORTED_COMBINATION"
+    },
+    {
+      "id": "q2-partial-cg-jacobi",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "sin_2x_2y on cartesian ('quad', 2, 'partial', 'cg_jacobi') covered by docs/E3_PERFORMANCE_ADAPTIVE.md"
+      },
+      "initial_finest_dofs": 4225,
+      "trials": [
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 0,
+          "position": 1,
+          "seconds": 1.47915676599996,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.0745841904265776e-05,
+            "h1_semi": 0.006382899153678284,
+            "reference_rel_diff": 3.3084577572031093e-14
+          },
+          "run_dir": "runs/20261125T122108177584Z_q2-partial-cg-jacobi",
+          "manifest_sha256": "e21b56aa941e516bba79e9f42fb3152b2852739b67e764aa695d887437ed9a61"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 1,
+          "position": 4,
+          "seconds": 1.180650284999956,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.0745841904265776e-05,
+            "h1_semi": 0.006382899153678284,
+            "reference_rel_diff": 3.3084577572031093e-14
+          },
+          "run_dir": "runs/20261125T122125636305Z_q2-partial-cg-jacobi",
+          "manifest_sha256": "365930d64f59842711ace6aa08c5e915196691617a6c0aaa162f11d634c29dfa"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 2,
+          "position": 6,
+          "seconds": 1.1812498410000671,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.0745841904265776e-05,
+            "h1_semi": 0.006382899153678284,
+            "reference_rel_diff": 3.3084577572031093e-14
+          },
+          "run_dir": "runs/20261125T122142858962Z_q2-partial-cg-jacobi",
+          "manifest_sha256": "32192254305d82d007335006b91355bbbb59045fd7ba091204d6ad2ea8567aa9"
+        }
+      ],
+      "feasible": true,
+      "median_seconds": 1.1812498410000671,
+      "paired_seconds_minus_winner": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "median_paired_seconds_minus_winner": 0.0
+    },
+    {
+      "id": "q2-partial-cg-none",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "sin_2x_2y on cartesian ('quad', 2, 'partial', 'cg_none') covered by docs/E3_PERFORMANCE_ADAPTIVE.md"
+      },
+      "initial_finest_dofs": 4225,
+      "trials": [
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 0,
+          "position": 4,
+          "seconds": 1.138894831000016,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.0745841904582146e-05,
+            "h1_semi": 0.006382899153678308,
+            "reference_rel_diff": 1.5876156351679353e-14
+          },
+          "run_dir": "runs/20261125T122112873828Z_q2-partial-cg-none",
+          "manifest_sha256": "f57b30bf3b8a9a96c2f2d538a8fda23b87d586453f60c70332daaf9b8fc32449"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 1,
+          "position": 0,
+          "seconds": 1.231376882999939,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.0745841904582146e-05,
+            "h1_semi": 0.006382899153678308,
+            "reference_rel_diff": 1.5876156351679353e-14
+          },
+          "run_dir": "runs/20261125T122120450932Z_q2-partial-cg-none",
+          "manifest_sha256": "1fa67d281ba94f683256b57d86095aba3b6680313a89ba0de809db77d2eff46c"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "repeat": 2,
+          "position": 5,
+          "seconds": 1.2414645110000038,
+          "finest_errors": {
+            "n": 32,
+            "l2": 3.0745841904582146e-05,
+            "h1_semi": 0.006382899153678308,
+            "reference_rel_diff": 1.5876156351679353e-14
+          },
+          "run_dir": "runs/20261125T122141617125Z_q2-partial-cg-none",
+          "manifest_sha256": "67de7d79055bea58bd187a62a145bbfd3161f1b125280e45ecd3e223394ae579"
+        }
+      ],
+      "feasible": true,
+      "median_seconds": 1.231376882999939,
+      "paired_seconds_minus_winner": [
+        -0.34026193499994406,
+        0.050726597999982914,
+        0.06021466999993663
+      ],
+      "median_paired_seconds_minus_winner": 0.050726597999982914
+    }
+  ]
+}

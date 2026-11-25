@@ -21,3 +21,16 @@ The provider checks the installed manifest digest, the GGUF metadata and the wei
 Each invocation requests JSON text at temperature 0 with seed 42, a 4,096-token context and a 128-token generation limit. The two-minute keep-alive permits repeated requests to reuse a loaded model. The raw text and stop reason are retained for the deterministic candidate checks.
 
 The inference record carries provider-reported input and output token counts and the nanosecond counters for loading, prompt evaluation, token evaluation and total model time. Client wall time includes metadata checks and transport. A missing usage counter is recorded as `null`. Local inference incurs a hosted API charge of USD 0. Measuring electricity or amortized hardware expense requires separate instrumentation. [Generation API](https://docs.ollama.com/api/generate)
+
+## Adaptive finite-element adviser
+
+In the adaptive benchmark, `ai_assisted` receives up to five candidates from the same model-based feasible shortlist as its paired `advisor_rules` control. The prompt supplies predicted L2 error, wall time and memory, the accuracy target, and the problem and hardware descriptors. Each response can nominate exactly one offered identifier. An abstention, truncated answer, unknown ID or provider error retains the deterministic fallback. Every executed candidate still runs the independent numerical checks. The receipt distinguishes a completed inference, a valid nomination and a nomination that changed the choice. It retains the raw response, model digest, sampling options, token counts and timings. [Adviser](../sciagent/adaptive_advisor.py) · [Attribution audit](../benchmarks/advisor_ablation.py)
+
+```bash
+python -m benchmarks.advisor_ablation "$RUN/adaptive_comparison.json" \
+  --sha256 "$COMPARISON_SHA" --output "$RUN/advisor-ablation.json"
+```
+
+The audit checks all paired tasks and repetitions against the retained comparison digest. It counts changes relative to the leading feasible forecast in the **same** live invocation, alongside the first choice of the separate deterministic arm. Paired timing differences use only trials where both arms met the same accuracy target.
+
+The 2026-11-25 single-host campaign ran seven held-out tasks three times each. The pinned model made 21 valid nominations and both members of all 21 pairs met their frozen accuracy targets. Each nomination matched its own leading feasible forecast. The model therefore changed zero choices. The median paired difference in total time was +2.277 seconds with the model. Ollama reported 15,495 input and 435 output tokens over these calls. This panel provides no evidence that adding live advice improved the bounded numerical decision. [Paired attribution](../evidence/e4/advisor-ablation.json) · [Six-arm numerical results](../evidence/e4/adaptive-comparison.json)

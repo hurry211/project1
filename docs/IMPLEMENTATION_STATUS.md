@@ -1,5 +1,9 @@
 # Implementation Status
 
+## E4 on the original main branch
+
+The November 2026 follow-up integrates the E3 history, validates three additional equation families, and measures streaming verification, MPI selection, a GPU field audit and live model decisions. All reported speed comparisons specify the timed endpoint and accepted workload. [Review findings, measurements and remaining experiments](ISSUE_RESOLUTION.md) · [Per-trial evidence](../evidence/e4/)
+
 ## E3 Deep Performance Optimization & Adaptive Decision Research
 
 Branch `research/e3-scaling-adaptive` adds: (1) chunked 65k-row streaming I/O/assembly ([`verifier/fem.py`](../verifier/fem.py), [`verifier/verifier.py`](../verifier/verifier.py)) paired with Oettli–Prager residual-verified SA-AMG-PCG ([`verifier/reference_solver.py`](../verifier/reference_solver.py)) scaling independent verification to **1,050,625 DOFs** under a 3 GiB cap; (2) unstructured Gmsh MSH 2.2 `P1–P4`/`Q1–Q4` support ([`sciagent/gmsh.py`](../sciagent/gmsh.py)), MFEM Example 6 `ZienkiewiczZhuEstimator` AMR ([`cpp/poisson_amr.cpp`](../cpp/poisson_amr.cpp)), and independent T-junction hanging-node $C^T K C$ verification ([`verifier/amr.py`](../verifier/amr.py)); and (3) accuracy/memory-constrained adaptive solver/mesh selection evaluated across a disjoint 4-task calibration / 5-task held-out campaign ([`sciagent/adaptive.py`](../sciagent/adaptive.py)). Full report and curves: [`E3_PERFORMANCE_ADAPTIVE.md`](E3_PERFORMANCE_ADAPTIVE.md) · [`../evidence/e3/`](../evidence/e3/).

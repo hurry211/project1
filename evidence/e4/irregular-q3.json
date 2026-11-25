@@ -1,0 +1,37 @@
+{
+  "manifest_sha256": "fa9b15971a334c2f989a3de8854aa26b9cfeb919e63ea0504ff943c0a32d7ca8",
+  "state": "ACCEPTED",
+  "replay": "ACCEPTED",
+  "native_and_controller_seconds": 6.335,
+  "verification": {
+    "timeout_seconds": 300.0,
+    "memory_mb": 3072,
+    "peak_rss_kib": 166480,
+    "exit_code": 0,
+    "stderr": "",
+    "wall_seconds": 3.5779382640000676
+  },
+  "levels": [
+    {
+      "n": 16,
+      "num_dofs": 2401,
+      "l2_error": 6.056953570748908e-06,
+      "h1_semi_error": 0.0008189239466440322,
+      "reference_rel_diff": 1.0452071970570443e-10
+    },
+    {
+      "n": 32,
+      "num_dofs": 9409,
+      "l2_error": 3.793135376818773e-07,
+      "h1_semi_error": 0.0001021338419530548,
+      "reference_rel_diff": 1.0425839981505939e-10
+    },
+    {
+      "n": 64,
+      "num_dofs": 37249,
+      "l2_error": 2.3740777700052315e-08,
+      "h1_semi_error": 1.2761125589671599e-05,
+      "reference_rel_diff": 1.0431204443477572e-10
+    }
+  ]
+}

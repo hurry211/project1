@@ -47,7 +47,7 @@ At `n=512` (263k DOFs), `e3_streaming_amg` cuts peak RSS by **4.14x** (`1,334.1 
 - Note on rational bilinear quad Jacobians: non-affine unstructured quads introduce $1/\det J$ terms in `grad u_h`, so `poisson_mms` uses elevated stiffness quadrature (`max(2*order+7, 11)`) and higher RHS/error quadrature (`max(2*order+4, 12)`) on unstructured topologies.
 - All **8/8** variable-coefficient (`sin_sin_variable`, `kappa = 1+x`, Neumann `top`) unstructured sweeps passed (`all_ok: true`):
   - **Delaunay `tri` (`P1–P4`)**: observed `L2` orders **`1.974, 2.994, 4.032, 4.972`**, `H1_semi` orders **`0.990, 1.977, 2.986, 3.963`** (`ref_rel_diff ~ 1.04e-10`).
-  - **Distorted curved `quad` (`Q1–Q4`)**: observed `L2` orders **`1.997, 2.995, 3.960, 5.010`**, `H1_semi` orders **`0.999, 2.000, 2.967, 4.015`**.
+  - **Distorted straight-sided `quad` (`Q1–Q4`)**: observed `L2` orders **`1.997, 2.995, 3.960, 5.010`**, `H1_semi` orders **`0.999, 2.000, 2.967, 4.015`**.
 
 ![Higher-Order Unstructured Convergence](../evidence/e3/fig_higher_order_convergence.svg)
 
@@ -72,7 +72,7 @@ At `n=512` (263k DOFs), `e3_streaming_amg` cuts peak RSS by **4.14x** (`1,334.1 
 | `unstructured_tri_p1_const` | 8,192 | `"1"` | **`8,192 (E)`** | `False` | 0.02963 | 0.03110 | 1.05x |
 | `unstructured_quad_q1_const` | 4,096 | `"1"` | **`4,096 (E)`** | `False` | 0.13183 | 0.12717 | 0.96x |
 
-- Cache reuse delivers 95x–1,087x speedups **only** on periodic affine constant-coefficient meshes (`basis.coeffs.strides[0] == 0` and `period <= 8`). Variable diffusivity, distorted Jacobians, and unstructured meshes immediately degrade to `period == E` (zero speedups, ~0.3–1 ms scan overhead), yet E3's streaming chunk pipeline preserves $O(1)$ temporary slice memory.
+- On regular triangles the varying coefficient prevents reuse even though the geometry has period 2. Both irregular meshes had period E. These timings cover the local matrix calculation.
 
 ![repeated_element_period Degradation](../evidence/e3/fig_period_degradation.svg)
 
@@ -83,12 +83,12 @@ At `n=512` (263k DOFs), `e3_streaming_amg` cuts peak RSS by **4.14x** (`1,334.1 
 ### 3.1 Methodology ([`sciagent/adaptive.py`](../sciagent/adaptive.py), [`benchmarks/e3_adaptive.py`](../benchmarks/e3_adaptive.py))
 - **Feature Space**: Problem descriptors (`kappa_contrast`, `neumann_fraction`, `target_l2`, `hessian_mean`, `localization_ratio`, `is_unstructured`) + hardware probes (`cpu_count`, `mem_available_mb`, MPI/SuiteSparse build flags). Unbuilt `mpi_cpu`/`hypre_amg` candidates are explicitly audited and excluded (`UNSUPPORTED_BACKEND`) with zero fabricated speedup.
 - **Disjoint Calibration vs Held-Out Split**:
-  - **Calibration** (4 tasks: `sin_sin`, `sin_2x_2y`, `cos_exp` top-Neumann, `gaussian_mid` $\alpha=40$; 30 valid samples): fits Ridge log-linear surrogates (`log10_l2_rmse=0.2044`, `log10_time_rmse=0.1505`, `log10_mem_rmse=0.0837`).
+  - **Calibration** (4 tasks: `sin_sin`, `sin_2x_2y`, `cos_exp` top-Neumann, `gaussian_mid` $\alpha=40$; 32 valid samples from 36 observations): fits Ridge log-linear surrogates (`log10_l2_rmse=0.2525`, `log10_time_rmse=0.1030`, `log10_mem_rmse=0.0887`).
   - **Held-Out Test** (5 unseen tasks across 3 randomized paired repeats = 15 trials/strategy): `heldout_sin23_highacc` ($2\pi x, 3\pi y$, `L2<=3e-6`), `heldout_gaussian_steep` ($\alpha=120$, `L2<=4e-5`), `heldout_var_diff` (`kappa=1+x`, `L2<=8e-6`), `heldout_unstruct_var` (unstructured Delaunay `tri`, `L2<=4e-5`), `heldout_tight_mixed` (mixed right+top Neumann, `L2<=1e-7`).
 - **Strategies**: (1) `fixed_baseline` (`Q1` escalation), (2) `expert_rules`, (3) `predictive_model`, (4) `pilot_autotuner` (4 real coarse probes + extrapolation), (5) `ai_assisted` (Ollama client hook when pinned local GGUF model is live, cleanly falling back to structured guardrail+predictor advisor when Ollama is offline). Every trial charges **100%** of decision, pilot, and failed-attempt retry seconds.
 
 ### 3.2 Held-Out Randomized Paired Results ([`evidence/e3/adaptive_comparison.json`](../evidence/e3/adaptive_comparison.json))
-| Strategy | Accepted | Task Median (s) [95% CI] | Campaign Median (s) [95% CI] | Decision + Pilot (s) | Failed/Retry Cost (s) | Max RSS (MiB) |
+| Strategy | Accepted | Task Median (s) [95% CI] | Campaign Median (s) [95% CI] | Decision + Pilot (s) | Failed/Retry Cost (s) | Native peak RSS (MiB) |
 |---|---:|---:|---:|---:|---:|---:|
 | `fixed_baseline` | 0/15 | 7.8635 [7.09, 8.30] | 33.9354 [33.18, 34.00] | 0.000 + 0.000 | 99.0619 | 46.23 |
 | `expert_rules` | 9/15 | 3.2348 [2.99, 4.03] | 21.6577 [21.41, 22.03] | 0.0005 + 0.000 | 41.4198 | 93.18 |
@@ -96,7 +96,7 @@ At `n=512` (263k DOFs), `e3_streaming_amg` cuts peak RSS by **4.14x** (`1,334.1 
 | `pilot_autotuner` | 12/15 | 1.4383 [1.39, 4.26] | 14.6257 [14.36, 14.80] | 0.0554 + **22.2929** | 10.3090 | 30.01 |
 | **`ai_assisted`** | **12/15** | **0.7368** [0.70, 2.91] | **8.4516** [8.42, 8.54] | 0.0066 + 0.000 | 10.4137 | **30.18** |
 
-- **Paired Speedups** (`ai_assisted`): **`11.22x`** `[2.73x, 11.55x]` per-task median speedup over `fixed_baseline`, **`2.06x`** `[1.93x, 2.13x]` per-task speedup over `pilot_autotuner` (and **4.01x** campaign speedup over `fixed_baseline`) without paying `pilot_autotuner`'s `22.29s` coarse-probe tax.
+- The published 11.22× task and 4.01× campaign ratios include time spent on failed attempts. The fixed policy had zero jointly accepted pairs, so equal-quality speedup is undefined. Every adviser trial used the offline policy. The RSS column covers the native solver.
 - **Honest Failure-Mode Analysis (`heldout_gaussian_steep`, 3/15)**: All 5 strategies failed strict held-out verification on the sharp `exp(-120 r^2)` spike ($\sigma \approx 0.0645$) without relaxing acceptance gates: uniform coarse grids (`n<=16`) failed `SELF_REPORT_MISMATCH` between fixed `2*order+4` native quadrature and higher-order Python Gauss rules on the under-resolved peak, while `amr-quad-p2-md4000` (`max_steps=10`) stopped cleanly with `ACCURACY_NOT_MET` (`1,297` DOFs, `L2 = 7.50e-5 > 4e-5`). Meanwhile `fixed_baseline` failed all `15/15` under the `90k`-DOF budget due to sub-optimal `Q1` scaling on `L2 <= 4e-5 .. 1e-7` targets.
 
 ![Adaptive Strategy Campaign Cost](../evidence/e3/fig_adaptive_campaign_cost.svg)
@@ -107,6 +107,9 @@ At `n=512` (263k DOFs), `e3_streaming_amg` cuts peak RSS by **4.14x** (`1,334.1 
 ## 4. Reproducibility Commands (Ubuntu 24.04 / WSL2)
 
 ```bash
+# Historical code is available in the original repository.
+git worktree add --detach ../project-e3 07dca409cb71d096c732f3a9825e88930c6ca79d
+cd ../project-e3
 # 1. Environment setup & pinned serial MFEM + solver build
 python3.12 -m venv .venv
 source .venv/bin/activate

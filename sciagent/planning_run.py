@@ -21,8 +21,8 @@ def _read(path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _settings(mode, model, model_digest, execute):
-    if type(execute) is not bool or mode not in ("rules", "llm"):
+def _settings(mode, model, model_digest, execute, proposal_manifest_sha256=None):
+    if type(execute) is not bool or mode not in ("rules", "llm", "bounded"):
         raise ValueError("invalid planning mode or execute flag")
     if mode == "rules":
         if model is not None or model_digest is not None:
@@ -30,7 +30,12 @@ def _settings(mode, model, model_digest, execute):
     elif (not isinstance(model, str) or not model or not isinstance(model_digest, str)
           or not re.fullmatch(r"[0-9a-f]{64}", model_digest)):
         raise ValueError("llm mode requires a local model name and its full lowercase SHA-256")
-    return {"mode": mode, "model": model, "model_digest": model_digest, "execute": execute}
+    settings = {"mode": mode, "model": model, "model_digest": model_digest, "execute": execute}
+    if proposal_manifest_sha256 is not None:
+        if mode != "bounded" or not re.fullmatch(r"[0-9a-f]{64}", proposal_manifest_sha256):
+            raise ValueError("proposal reuse requires bounded mode and a full lowercase preview digest")
+        settings["proposal_manifest_sha256"] = proposal_manifest_sha256
+    return settings
 
 
 def _messages(task):
@@ -50,6 +55,45 @@ def _llm_decision(task, config, response):
     return planner.decide(task, response["text"])
 
 
+_PREVIEW_FILES = ("task.json", "config.json", "messages.json", "response.json", "decision.json")
+
+
+def _copy_preview(directory, store, pin):
+    """Snapshot just the pinned proposal evidence. Numerical fields are produced afresh."""
+    directory = Path(directory)
+    if sha256_file(directory / "manifest.json") != pin:
+        raise ValueError("preview manifest digest mismatch")
+    for name in (*_PREVIEW_FILES, "manifest.json"):
+        with (directory / name).open("rb") as stream:
+            data = stream.read(2 * 1024 * 1024 + 1)
+        if len(data) > 2 * 1024 * 1024:
+            raise ValueError("preview record exceeds proposal size limit")
+        store.write_bytes_once("preview/" + name, data)
+
+
+def _reused_decision(task, config, root):
+    source = root / "preview"
+    if sha256_file(source / "manifest.json") != config["proposal_manifest_sha256"]:
+        raise ValueError("preview manifest digest mismatch")
+    manifest = _read(source / "manifest.json")
+    if (manifest.get("kind") != KIND or manifest.get("state") != "PLANNED"
+            or manifest.get("evidence_version") != 1 or manifest.get("model_calls") != 1):
+        raise ValueError("expected a completed live LLM planning preview")
+    pins = manifest["artifact_sha256"]
+    if any(sha256_file(source / name) != pins[name] for name in _PREVIEW_FILES):
+        raise ValueError("preview proposal evidence changed")
+    if (_read(source / "config.json") != _settings("llm", config["model"], config["model_digest"], False)
+            or planner.parse_task((source / "task.json").read_bytes()) != task
+            or _read(source / "messages.json") != _messages(task)):
+        raise ValueError("preview settings, task or prompt differ")
+    decision = _llm_decision(task, config, _read(source / "response.json"))
+    if (decision["status"] != "PLANNED" or decision != _read(source / "decision.json")
+            or decision["template_id"] != manifest["template_id"]
+            or planner.template_sha256(decision["template_id"]) != pins["template/study.json"]):
+        raise ValueError("reviewed template differs from pinned proposal")
+    return decision
+
+
 def _decide(task, config, root, store=None):
     """Replay reads the original proposal without calling a model."""
     usage = {"prompt_tokens": 0, "completion_tokens": 0}
@@ -58,6 +102,12 @@ def _decide(task, config, root, store=None):
         if any((root / f).exists() for f in ("messages.json", "response.json", "provider_error.json")):
             raise ValueError("preflight decision has unexpected provider artifacts")
         return gated, 0, usage
+    if config["mode"] == "bounded":
+        if "proposal_manifest_sha256" in config:
+            return _reused_decision(task, config, root), 0, usage
+        choices = planner.eligible_ids(task)
+        if len(choices) == 1:
+            return planner.decide(task, json.dumps({"template_id": choices[0]})), 0, usage
     if config["mode"] == "rules":
         if any((root / f).exists() for f in ("messages.json", "provider_error.json")):
             raise ValueError("rule selection has unexpected provider artifacts")
@@ -153,16 +203,27 @@ def _outcome(task, config, root, store=None, child_digest=None):
     result = {"state": state, "code": code, "template_id": selected, "mode": config["mode"],
             "model": config["model"], "model_digest": config["model_digest"],
             "task_sha256": sha256_file(root / "task.json"), "proposal_calls": calls,
-            "model_calls": calls if config["mode"] == "llm" else 0, "usage": usage,
+            "model_calls": calls if config["mode"] != "rules" else 0, "usage": usage,
             "proposal_retries": 0, "numerical_retries": retries, "child_manifest_sha256": child_digest}
+    if config["mode"] == "bounded":
+        if calls:
+            route = "live"
+        elif "proposal_manifest_sha256" in config and state != "REVIEW_REQUIRED":
+            route = "pinned_preview"
+        else:
+            route = "preflight" if state == "REVIEW_REQUIRED" else "single_eligible_template"
+        result["proposal_route"] = route
     if code == "PROVIDER_ERROR":
         result["reason"] = _read(root / "provider_error.json")["reason"]
     return result
 
 
 def run(task: planner.PlanningTask, directory: Path, *, mode: str = "rules", model: str | None = None,
-        model_digest: str | None = None, execute: bool = True) -> dict:
-    config = _settings(mode, model, model_digest, execute)
+        model_digest: str | None = None, execute: bool = True,
+        proposal_directory: Path | None = None, proposal_manifest_sha256: str | None = None) -> dict:
+    if (proposal_directory is None) != (proposal_manifest_sha256 is None):
+        raise ValueError("supply both the preview directory and its externally retained digest")
+    config = _settings(mode, model, model_digest, execute, proposal_manifest_sha256)
     raw_task = task.model_dump_json(exclude_defaults=True)
     task = planner.parse_task(raw_task)
     started = time.perf_counter()
@@ -170,6 +231,8 @@ def run(task: planner.PlanningTask, directory: Path, *, mode: str = "rules", mod
     store.write_once("task.json", raw_task)
     store.write_json_once("config.json", config)
     try:
+        if proposal_directory is not None:
+            _copy_preview(proposal_directory, store, proposal_manifest_sha256)
         result = _outcome(task, config, store.run_dir, store)
     except (OSError, ValueError, RuntimeError, KeyError, TypeError) as exc:
         store.finish_manifest({"kind": KIND, "state": "FAILED", "code": "EVIDENCE_OR_EXECUTION_ERROR",

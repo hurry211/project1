@@ -440,7 +440,9 @@ int main(int argc, char *argv[])
       return src_scale * source(p);
    });
    const Geometry::Type geom = mesh.GetTypicalElementGeometry();
-   const int rhs_q = (topo_s == "unstructured") ? std::max(2 * order + 4, 12) : (2 * order + 4);
+   // The localized Gaussian needs additional quadrature on under-resolved cells.
+   const int base_q = (topo_s == "unstructured") ? std::max(2 * order + 4, 12) : (2 * order + 4);
+   const int rhs_q = ((mc->id == "gaussian_steep" || mc->id == "gaussian_mid") && n <= 32) ? std::max(base_q, 20) : base_q;
    const IntegrationRule &ir_dom = IntRules.Get(geom, rhs_q);
    const IntegrationRule &ir_bdr = IntRules.Get(Geometry::SEGMENT, rhs_q);
 

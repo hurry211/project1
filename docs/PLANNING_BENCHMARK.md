@@ -42,3 +42,25 @@ cmp runs/paired-results.json runs/paired-replay.json
 - **Cost** includes measured input and generated tokens. A missing counter stays unknown, even when other calls reported a value. Local inference has zero hosted API charges. Electricity consumption and hardware depreciation were unmeasured.
 
 This is a fixed regression panel. Its denominators describe these requests and these reviewed templates. [Stage 4 results](RESULTS.md)
+
+## Three repetitions per request with explicit proposal reuse
+
+The E4 comparison exercised the same 19 fixed tasks three times per method in randomized order within each task/repeat block. Every eligible request ran a fresh native MFEM study with independent numerical checks. The bounded mode acquired a live preview for each of the nine ambiguous tasks and charged all nine to its total. Five singleton tasks used deterministic selection, and five review controls stopped at preflight. The live and bounded arms used the same Qwen2.5 1.5B GGUF model digest. [Benchmark source and offline audit](../benchmarks/planner_repeats.py) · [Measured data](../evidence/e4/planner-repeats.json.gz) · [Model prompts and responses](../evidence/e4/planner-model-records.tar.gz)
+
+| Method | Verified numerical requests | Required reviews | Expected template matches | New inference calls | Total measured seconds |
+|---|---:|---:|---:|---:|---:|
+| Rules | 42/42 | 15/15 | 24/42 | 0 | 83.96 |
+| Live model on eligible requests | 42/42 | 15/15 | 39/42 | 42 | 142.02 |
+| Bounded with pinned previews | 42/42 | 15/15 | 39/42 | 9 | 100.76 |
+
+The bounded total includes 14.68 s for its nine live previews and falls 29.1% below the always-live total on this panel. All three methods returned consistent template IDs in these three repetitions. The earlier independent Stage 4 captures did observe different live choices. Pinned preview reuse guarantees the same approved template only for the exact archived task, prompt, model settings and template digest. These measurements use one WSL2 host, a single pinned Python CPU and the local Ollama daemon. Other scientific jobs shared the host. The measured clock covers planning, numerical execution and its immediate evidence check. The separate post-run replay is outside that clock. [Results and source fingerprints](../evidence/e4/planner-audit.json)
+
+```bash
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
+taskset -c "$CPU" python -m benchmarks.planner_repeats \
+  --directory "$RUN/planner" --report "$RUN/planner.json" --repeats 3 \
+  --model qwen2.5:1.5b --model-digest 65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b
+sha256sum "$RUN/planner.json"
+python -m benchmarks.planner_repeats --directory "$RUN/planner" \
+  --report "$RUN/planner.json" --audit-sha256 "$REPORT_SHA"
+```

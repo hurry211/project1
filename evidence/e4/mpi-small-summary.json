@@ -1,0 +1,17 @@
+{
+  "scope": "32/64/128 cells per side with release sources",
+  "scored_blocks": 5,
+  "replayed_studies_including_control": 31,
+  "prospective_selection": "serial",
+  "prospective_replayed": true,
+  "prospective_verified_seconds": 2.2392669820001174,
+  "decision": {
+    "arm": "serial",
+    "campaign_sha256": "f95b05cc9d6a34b37f694d471363e5ac3255980dcd3c89b3539d998c22bbea34",
+    "seconds_before_native_launch": 0.35471565900002133
+  },
+  "release_qualified_binary_sha256": "fdbe3f731f7ad158d086b9cd4409111a29b7eb3f2a8511f0af32fd02999cf65b",
+  "archive_relative": "runs/e4-20261125/mpi-small-release.tar.gz",
+  "archive_bytes": 27240937,
+  "archive_sha256": "128bf1f68e2480c01a0da372a78a3d46f682a9b430c4e7b6d62682e3999400ce"
+}

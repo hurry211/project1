@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import math
+from concurrent.futures import ThreadPoolExecutor
 from itertools import permutations
 from pathlib import Path
 
@@ -92,16 +93,36 @@ def _boundary(n):
     return tags
 
 
-def _merge(directory, n, ranks):
-    for kind in ("cells", "boundary"):
-        _check({f.name for f in directory.glob(f"{kind}.*.tsv")} == {f"{kind}.{k}.tsv" for k in range(ranks)},
-               f"{kind}: missing or unexpected rank exports")
+def _binary_rows(path, dtype, width, max_rows):
+    stride = np.dtype(dtype).itemsize * width
+    raw = _bounded_bytes(path, stride * max_rows)
+    _check(0 < len(raw) and len(raw) % stride == 0, f"{path.name}: truncated or empty binary table")
+    return np.frombuffer(raw, dtype=dtype).reshape(-1, width)
+
+
+def _compact_rank(directory, n, rank):
+    nodes = _binary_rows(directory / f"nodes.{rank}.f64", "<f8", 3, (n + 1)**2)
+    ids = _binary_rows(directory / f"cells.{rank}.i32", "<i4", 3, 2*n*n)
+    _check(np.isfinite(nodes).all(), "nonfinite MPI vertex")
+    _check(ids.min() >= 0 and ids.max() < len(nodes), "MPI local vertex outside rank table")
+    _check(np.bincount(ids.ravel(), minlength=len(nodes)).min() > 0, "unreferenced MPI local vertex")
+    _check(len(np.unique(_ids(nodes[:, :2], n))) == len(nodes), "duplicate MPI local vertex")
+    return nodes[ids]
+
+
+def _merge(directory, n, ranks, *, compact=False):
+    streams = {"cells.*.i32": compact, "nodes.*.f64": compact, "cells.*.tsv": not compact,
+               "boundary.*.tsv": True}
+    for pattern, required in streams.items():
+        names = {pattern.replace("*", str(rank)) for rank in range(ranks)} if required else set()
+        _check({f.name for f in directory.glob(pattern)} == names, f"{pattern}: missing or unexpected rank exports")
     occurrences = np.zeros(2*n*n, dtype=int)
     vmin, vmax = np.full((n+1)**2, np.inf), np.full((n+1)**2, -np.inf)
     sides = _boundary(n)
     counts = []
     for rank in range(ranks):
-        rows = _rows(directory / f"cells.{rank}.tsv", 9, 2*n*n).reshape(-1,3,3)
+        rows = (_compact_rank(directory, n, rank) if compact else
+                _rows(directory / f"cells.{rank}.tsv", 9, 2*n*n).reshape(-1, 3, 3))
         points, vals = rows[:,:,:2], rows[:,:,2]
         a, b = points[:,1]-points[:,0], points[:,2]-points[:,0]
         _check((a[:,0]*b[:,1] > a[:,1]*b[:,0]).all(), "reversed or degenerate MPI triangle")
@@ -175,7 +196,52 @@ def _relative(actual, reference):
     return float(np.max(np.abs(actual-reference)) / scale)
 
 
-def _field_checks(field, serial, n, result):
+def _stream_integrals(n, coords, cells, field, serial, phi, weights, workers):
+    """Integrate bounded cell batches and reduce local loads in canonical cell order."""
+    import contextlib
+    native_phi, native_w = _native_quadrature()
+    size = 4096
+    lower_count = n*n
+    # Keep one orientation within each batch. The two triangles have different gradients.
+    parts = [(start, min(start + size, end), lower) for begin, end, lower in
+             ((0, lower_count, True), (lower_count, 2*lower_count, False)) for start in range(begin, end, size)]
+    def integrate(part):
+        begin, end, lower = part
+        ids = cells[begin:end]
+        verts = coords[ids]
+        def sample(rule):
+            x, y = np.einsum("qa,ead->deq", rule, verts)
+            return x, y, np.sin(np.pi*x)*np.sin(np.pi*y)
+        x, y, exact = sample(phi)
+        gx = np.pi*np.cos(np.pi*x)*np.sin(np.pi*y)
+        gy = np.pi*np.sin(np.pi*x)*np.cos(np.pi*y)
+        def squared_norms(values):
+            u = values[ids]
+            if lower:
+                dx, dy = u[:,1]-u[:,0], u[:,2]-u[:,1]
+            else:
+                dx, dy = u[:,1]-u[:,2], u[:,2]-u[:,0]
+            error = (n*dx[:,None]-gx)**2 + (n*dy[:,None]-gy)**2
+            return [np.sum((u @ phi.T - exact)**2 * weights), np.sum(error * weights)]
+        scale = 2*np.pi**2 / n**2
+        return ((exact*weights) @ phi * scale, (sample(native_phi)[2]*native_w) @ native_phi * scale,
+                np.asarray([squared_norms(field), squared_norms(serial)]))
+    load, native_load = np.zeros(len(coords)), np.zeros(len(coords))
+    squared = np.zeros((2, 2))
+    with (ThreadPoolExecutor(workers) if workers > 1 else contextlib.nullcontext()) as pool:
+        for i in range(0, len(parts), workers):
+            batch = parts[i:i+workers]
+            results = pool.map(integrate, batch) if pool else map(integrate, batch)
+            for (begin, end, _), (rhs, native, err) in zip(batch, results, strict=True):
+                np.add.at(load, cells[begin:end], rhs)
+                np.add.at(native_load, cells[begin:end], native)
+                squared += err
+    errors, serial_errors = np.sqrt(squared / n**2)
+    return (load.reshape(n+1, n+1)[1:-1, 1:-1].ravel(), native_load.reshape(n+1,n+1)[1:-1,1:-1].ravel(),
+            errors, serial_errors)
+
+
+def _field_checks(field, serial, n, result, *, streaming_workers=0):
     coords, cells = _grid(n)
     fixed = (coords == 0).any(axis=1) | (coords == 1).any(axis=1)
     _check(np.max(abs(field[fixed])) <= LIMITS.dirichlet_nodal_abs_tol, "Dirichlet boundary mismatch")
@@ -188,32 +254,41 @@ def _field_checks(field, serial, n, result):
     stiffness = kronsum(line, line, format="csr")
     xi, eta, w = reference_quadrature("tri", 1 + 1 + LIMITS.verifier_quadrature_extra_points)
     phi = np.stack((1-xi-eta, xi, eta), axis=1)
-    load, exact, x, y = _source_load(n, coords, cells, phi, w)
     reference = np.zeros_like(field)
-    reference[~fixed] = spsolve(stiffness, load)
+    solver_stats = {}
+    if streaming_workers:
+        from .reference_solver import solve_reference_amg_pcg
+        load, native_load, errors, serial_errors = _stream_integrals(n, coords, cells, field, serial, phi, w,
+                                                                    streaming_workers)
+        reference[~fixed], stats = solve_reference_amg_pcg(stiffness, load)
+        solver_stats = {"reference_method": stats.method, "reference_iterations": stats.iterations,
+                        "reference_relative_residual": stats.relative_residual}
+    else:
+        load, exact, x, y = _source_load(n, coords, cells, phi, w)
+        def norms(values):
+            u = values[cells]
+            value_error = u @ phi.T - exact
+            # On the lower triangle dx follows SW->SE and dy follows SE->NE.
+            # On the upper triangle dy follows SW->NW and dx follows NW->NE.
+            lower, upper = np.split(u, 2)
+            gx = n*np.concatenate((lower[:,1]-lower[:,0], upper[:,1]-upper[:,2]))
+            gy = n*np.concatenate((lower[:,2]-lower[:,1], upper[:,2]-upper[:,0]))
+            gradx = np.pi*np.cos(np.pi*x)*np.sin(np.pi*y)
+            grady = np.pi*np.sin(np.pi*x)*np.cos(np.pi*y)
+            error = (gx[:,None]-gradx)**2 + (gy[:,None]-grady)**2
+            return np.sqrt([np.sum(value_error**2*w)/n**2, np.sum(error*w)/n**2])
+
+        errors, serial_errors = norms(field), norms(serial)
+        native_load, *_ = _source_load(n, coords, cells, *_native_quadrature())
+        reference[~fixed] = spsolve(stiffness, load)
     reference_gap = _relative(field, reference)
     _check(reference_gap <= LIMITS.reference_solve_rel_tol, "MPI field differs from SciPy reference solve")
-
-    def norms(values):
-        u = values[cells]
-        value_error = u @ phi.T - exact
-        # On the lower triangle dx follows SW->SE and dy follows SE->NE.
-        # On the upper triangle dy follows SW->NW and dx follows NW->NE.
-        lower, upper = np.split(u, 2)
-        gx = n*np.concatenate((lower[:,1]-lower[:,0], upper[:,1]-upper[:,2]))
-        gy = n*np.concatenate((lower[:,2]-lower[:,1], upper[:,2]-upper[:,0]))
-        gradx = np.pi*np.cos(np.pi*x)*np.sin(np.pi*y)
-        grady = np.pi*np.sin(np.pi*x)*np.cos(np.pi*y)
-        error = (gx[:,None]-gradx)**2 + (gy[:,None]-grady)**2
-        return np.sqrt([np.sum(value_error**2*w)/n**2, np.sum(error*w)/n**2])
-
-    errors, serial_errors = norms(field), norms(serial)
     norms_gap = float(np.max(abs(errors/serial_errors-1)))
     _check(norms_gap <= LIMITS.self_report_rel_tol, "MPI error norms differ from serial")
     reported = np.array([result["l2_error"], result["h1_semi_error"]])
     _check(np.max(abs(reported/errors-1)) <= LIMITS.self_report_rel_tol, "incorrect native error norms")
 
-    load, *_ = _source_load(n, coords, cells, *_native_quadrature())
+    load = native_load
     # MFEM's boundary projection evaluates sin(pi) at x or y = 1 in floating
     # point; its tiny roundoff contribution is covered by the absolute floor.
     rhs = float(np.linalg.norm(load))
@@ -222,15 +297,16 @@ def _field_checks(field, serial, n, result):
     _check(abs(rhs-result["rhs_l2"]) <= 1e-12*rhs, "incorrect constrained RHS norm")
     _check(abs(residual-result["residual_l2"]) <= floor, "incorrect constrained residual norm")
     _check(residual/rhs <= LIMITS.reference_solve_rel_tol, "independent relative residual exceeds tolerance")
-    return {"l2_error": float(errors[0]), "h1_semi_error": float(errors[1]),
+    return {**solver_stats, "l2_error": float(errors[0]), "h1_semi_error": float(errors[1]),
             "serial_relative_field_difference": serial_gap, "reference_relative_field_difference": reference_gap,
             "serial_relative_norm_difference": norms_gap, "relative_residual": residual/rhs,
             "independent_residual_l2": residual, "independent_rhs_l2": rhs}
 
 
-def verify_mpi_level(mpi_dir: Path, serial_level: Path, *, n: int, ranks: int) -> dict:
+def verify_mpi_level(mpi_dir: Path, serial_level: Path, *, n: int, ranks: int, streaming=False, compact=False) -> dict:
     """Certify one rank set using the level from a separately pinned, accepted serial study."""
-    _check(type(n) is int and n in LEVELS and type(ranks) is int and ranks in RANKS,
+    sizes = LEVELS + (128, 256, 512) if streaming else LEVELS
+    _check(type(n) is int and n in sizes and type(ranks) is int and ranks in RANKS,
            "unreviewed MPI study dimensions")
     directory = Path(mpi_dir)
     try:
@@ -249,18 +325,19 @@ def verify_mpi_level(mpi_dir: Path, serial_level: Path, *, n: int, ranks: int) -
         _check(type(its) is int and 1 <= its <= result["max_iter"] and result["solver_initial_norm"] > 0
                and result["solver_final_norm"] <= result["rel_tol"]*result["solver_initial_norm"]*(1+1e-12),
                "solver stopping record inconsistent with convergence")
-        field, counts = _merge(directory, n, ranks)
+        field, counts = _merge(directory, n, ranks, compact=compact)
         serial = _serial_field(Path(serial_level), n)
-        checked = _field_checks(field, serial, n, result)
+        checked = _field_checks(field, serial, n, result, streaming_workers=ranks if streaming else 0)
         return {**expected, **{k:result[k] for k in metrics}, **checked,
                 "solver_iterations": its, "rank_elements": counts}
     except (OSError, ValueError, TypeError, OverflowError) as exc:
         raise ArtifactError(f"{directory}: {exc}") from exc
 
 
-def verify_mpi_orders(levels: list[dict]) -> dict:
+def verify_mpi_orders(levels: list[dict], *, expected_levels=LEVELS) -> dict:
     """Require monotone independently integrated errors and the original finest-pair P1 bands."""
-    _check(tuple(lv["n"] for lv in levels) == LEVELS and len({lv["ranks"] for lv in levels}) == 1,
+    _check(expected_levels in (LEVELS, (32, 64, 128), (128, 256, 512)) and
+           tuple(lv["n"] for lv in levels) == expected_levels and len({lv["ranks"] for lv in levels}) == 1,
            "incomplete or mixed MPI convergence sequence")
     errors = np.asarray([[lv["l2_error"], lv["h1_semi_error"]] for lv in levels])
     _check(np.isfinite(errors).all() and np.all(errors > 0) and (np.diff(errors, axis=0) < 0).all(),

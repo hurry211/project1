@@ -117,7 +117,7 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
 
     # ---- READY: capability + case binding -------------------------------------
     try:
-        cases = mfem_runner.list_cases()
+        cases = mfem_runner.list_cases(include_e3=True) if study.schema_version == "0.4" else mfem_runner.list_cases()
     except mfem_runner.BuildError as exc:
         return finish("BLOCKED", "BUILD_FAILURE", str(exc))
     store.write_json_once("case_registry.json", cases)

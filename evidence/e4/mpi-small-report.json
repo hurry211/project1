@@ -1,0 +1,48 @@
+{
+  "design_sha256": "19896a324296f196f5b2d0d9181e0f7b47c21046cd5867759d351e9979f70eeb",
+  "control_sha256": "4483da0b5c094d93d5c05de3c10f65b05950aef8c220048aeea194cfcfeb6ab3",
+  "rows_sha256": "a45b5638704266d5343ba8b3d1aeb1a0d3e3594165676ffa594d0f39e124c5bf",
+  "scores": {
+    "median_verified_seconds": {
+      "serial": 1.123750255999994,
+      "mpi1": 2.16872186899991,
+      "mpi2": 2.1341565820000596,
+      "mpi4": 2.613604079999959,
+      "mpi4_tsv": 2.8236731849999614
+    },
+    "paired": {
+      "mpi2_vs_mpi1": {
+        "ratio_of_medians": 1.0161962281921493,
+        "median_paired_seconds": 0.12695989699977872,
+        "paired_95pct_seconds": [
+          -0.034565286999850287,
+          1.1013438600000427
+        ]
+      },
+      "mpi4_vs_mpi1": {
+        "ratio_of_medians": 0.8297820949988507,
+        "median_paired_seconds": 0.4448822110000492,
+        "paired_95pct_seconds": [
+          0.2512512069999957,
+          0.8326978560003226
+        ]
+      },
+      "mpi4_vs_mpi4_tsv": {
+        "ratio_of_medians": 1.0803752590560716,
+        "median_paired_seconds": -0.2521004630000334,
+        "paired_95pct_seconds": [
+          -0.858910270999786,
+          0.12626639600011913
+        ]
+      },
+      "mpi4_vs_serial": {
+        "ratio_of_medians": 0.4299619305767274,
+        "median_paired_seconds": 1.464542295000001,
+        "paired_95pct_seconds": [
+          0.20091042400008519,
+          1.6283509330000925
+        ]
+      }
+    }
+  }
+}

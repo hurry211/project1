@@ -172,3 +172,40 @@ def test_convergence_gate_needs_all_screened_levels_in_order():
                 [*levels[:-1], {**levels[-1], "l2_error": levels[-2]["l2_error"]*.99}]):
         with pytest.raises(ArtifactError):
             verify_mpi_orders(bad)
+
+
+@pytest.mark.parametrize("damage", [None, "bad_index", "nan", "truncated", "duplicate_node", "old_cell_file"])
+def test_compact_partition_and_streaming_reference(exported, damage):
+    mpi, serial = exported
+    original = verify(exported)
+    for rank in range(2):
+        text = mpi / f"cells.{rank}.tsv"
+        nodes, inverse = np.unique(np.loadtxt(text).reshape(-1, 3), axis=0, return_inverse=True)
+        nodes.astype("<f8").tofile(mpi / f"nodes.{rank}.f64")
+        inverse.astype("<i4").tofile(mpi / f"cells.{rank}.i32")
+        text.unlink()
+    if damage:
+        path = mpi / "nodes.0.f64"
+        if damage == "bad_index":
+            path = mpi / "cells.0.i32"
+            ids = np.fromfile(path, dtype="<i4")
+            ids[0] = -1
+            ids.tofile(path)
+        elif damage == "truncated":
+            path.write_bytes(path.read_bytes()[:-1])
+        elif damage == "old_cell_file":
+            (mpi / "cells.0.tsv").write_text("0")
+        else:
+            values = np.fromfile(path, dtype="<f8").reshape(-1, 3)
+            if damage == "nan":
+                values[0, 2] = np.nan
+            else:
+                values[1] = values[0]
+            values.tofile(path)
+        with pytest.raises(ArtifactError):
+            verify_mpi_level(mpi, serial, n=8, ranks=2, streaming=True, compact=True)
+        return
+    actual = verify_mpi_level(mpi, serial, n=8, ranks=2, streaming=True, compact=True)
+    for key in ("l2_error", "h1_semi_error", "relative_residual", "reference_relative_field_difference"):
+        assert actual[key] == pytest.approx(original[key], abs=1e-13)
+    assert actual["reference_method"] == "amg_pcg" and actual["reference_relative_residual"] < 1e-10

@@ -1,0 +1,456 @@
+{
+  "manifest_sha256": "c75fea43cd96df7fe05893c9dfbb70825fd1e49b5dfdcf86471a66a71804dcb8",
+  "source_sha256": {
+    "baseline": "2c43c976d386f247be77d63416e2b31f323c67af994a3444b16e573919e6174b",
+    "candidate": "d8480f29ecda2b2521adb764f3d3cf120bc4dc6844efe9c26f00acd2a3a2310f"
+  },
+  "seed": 20261125,
+  "cpu": 2,
+  "address_space_limit_mib": 3072,
+  "all_verdicts": "ACCEPTED",
+  "input_sha256": {
+    "frozen/problem.json": "cc463b70cac2fab9416c28332affa67c3825424f125f1ee662077b439903cebc",
+    "frozen/validation.json": "f8c76c56716c4f53383d9787c7b4b067e82ded3d37a1778648ee5e60fee89fa5",
+    "execution.json": "fc99ac72eedead4b5494bbf641301d2a89a6df3a3a57930fce9545afbcf01e38",
+    "levels/n0256/result.json": "3b5780e0910fbead363c9937f4cf64940dbd256c8f061300b527c1e774f70e76",
+    "levels/n0256/dof_values.txt": "9d2d1dce3c10e94d9c3cde140d0545bc9fd092b2351c22577df8dbf10bc9dded",
+    "levels/n0256/element_dofs.txt": "27823dbafeebbdcb398a2936488caf7f965b6f630b7394792c8bb89eacc403da",
+    "levels/n0256/elements.txt": "f0864bac58369bb38ca68091a2283fb3f7b47f622b2102a938e3e93cf184d131",
+    "levels/n0256/boundary.txt": "b3fe1f5ea95a84aeecdec1058f8b48577fd291ad7eac66e3f1404aa80105412b",
+    "levels/n0512/result.json": "e3fb0dcd10d0b10c7cd59d1084ba7149653046199403538e1f36957cb4160f0d",
+    "levels/n0512/dof_values.txt": "2e1a8fd60254c1618ec2cf2940773af11d4023fae86420ef0faf5dc176f8e60c",
+    "levels/n0512/element_dofs.txt": "5db7bbfdf9ad5723bb0fc6195ae0732ad6220e55b5dbce5b5d719a95b8cb7d9f",
+    "levels/n0512/elements.txt": "74203b1116bd099b576946f14ecd9be8aeec86e19e8c035a37fb17ecb8a1a707",
+    "levels/n0512/boundary.txt": "891a1b6ed446b46d04ee139d5a5a13369b71380cacd72c140b5d3ae4bbf85d5f",
+    "levels/n1024/result.json": "fbd3aa0356876b4fcfa7b7cd7e6a5265c40e04f4dcd6b4a6f14505f9a81b54f5",
+    "levels/n1024/dof_values.txt": "d177d1d74be0b263992e12aa15fd038175352fd8e1b84dbc002de229859161a9",
+    "levels/n1024/element_dofs.txt": "40e89a57f43dd6156ff29ae22952fc0cf704573309f6a7be467dee57cef577d2",
+    "levels/n1024/elements.txt": "4d4be8753a44080f492b5e1d366400b119a7675adc798c7a4b6e118fc1f8d593",
+    "levels/n1024/boundary.txt": "1bc74254874666a526fdb13949e55493f7d4f17119536232a5a3f3c09dc96483"
+  },
+  "samples": [
+    {
+      "block": -1,
+      "order": [
+        "baseline",
+        "candidate"
+      ],
+      "baseline": {
+        "seconds": 74.864632218,
+        "rss_kib": 1112380,
+        "phases": {
+          "controller.other": 3.715599996212404e-05,
+          "verify.study": 0.003023110000071938,
+          "verify.solver_claims": 0.0017784809999739082,
+          "verify.field_load": 9.559451943999875,
+          "verify.geometry_boundary": 3.3794956350001257,
+          "verify.integration": 28.154557341999976,
+          "verify.reference": 32.27121123300003,
+          "verify.input_hashes": 0.8399788069999659
+        },
+        "levels": [
+          {
+            "n": 256,
+            "dofs": 66049,
+            "l2": 2.11320264374791e-05,
+            "h1": 0.013630458610920522,
+            "reference_difference": 2.7089781771018017e-14
+          },
+          {
+            "n": 512,
+            "dofs": 263169,
+            "l2": 5.28310049574059e-06,
+            "h1": 0.006815280128639913,
+            "reference_difference": 2.7422594745448682e-14
+          },
+          {
+            "n": 1024,
+            "dofs": 1050625,
+            "l2": 1.3207810026573408e-06,
+            "h1": 0.0034076464173011245,
+            "reference_difference": 3.9079881119709294e-14
+          }
+        ]
+      },
+      "candidate": {
+        "seconds": 63.96072984800003,
+        "rss_kib": 1169136,
+        "phases": {
+          "controller.other": 0.0002527469999904497,
+          "verify.study": 0.007800654000220675,
+          "verify.solver_claims": 0.0016360160000203905,
+          "verify.field_load": 9.881467107999924,
+          "verify.geometry_boundary": 3.8369917100000066,
+          "verify.integration": 1.542772140000011,
+          "verify.integration_and_assembly": 28.49209022299999,
+          "verify.reference": 18.542903312999897,
+          "verify.input_hashes": 1.0279930209999293
+        },
+        "levels": [
+          {
+            "n": 256,
+            "dofs": 66049,
+            "l2": 2.11320264374791e-05,
+            "h1": 0.013630458610920522,
+            "reference_difference": 2.7422852858366568e-14
+          },
+          {
+            "n": 512,
+            "dofs": 263169,
+            "l2": 5.28310049574059e-06,
+            "h1": 0.006815280128639913,
+            "reference_difference": 2.9198957158109425e-14
+          },
+          {
+            "n": 1024,
+            "dofs": 1050625,
+            "l2": 1.3207810026573408e-06,
+            "h1": 0.0034076464173011245,
+            "reference_difference": 4.0079082625610804e-14
+          }
+        ]
+      }
+    },
+    {
+      "block": 0,
+      "order": [
+        "candidate",
+        "baseline"
+      ],
+      "candidate": {
+        "seconds": 70.07297721500004,
+        "rss_kib": 1173964,
+        "phases": {
+          "controller.other": 8.568499993089063e-05,
+          "verify.study": 0.0032445190001908486,
+          "verify.solver_claims": 0.0024317239999618323,
+          "verify.field_load": 11.496288560000153,
+          "verify.geometry_boundary": 3.356654828999922,
+          "verify.integration": 1.9765956969999934,
+          "verify.integration_and_assembly": 30.991684309999982,
+          "verify.reference": 20.903014332999987,
+          "verify.input_hashes": 0.6289011959999016
+        },
+        "levels": [
+          {
+            "n": 256,
+            "dofs": 66049,
+            "l2": 2.11320264374791e-05,
+            "h1": 0.013630458610920522,
+            "reference_difference": 2.7422852858366568e-14
+          },
+          {
+            "n": 512,
+            "dofs": 263169,
+            "l2": 5.28310049574059e-06,
+            "h1": 0.006815280128639913,
+            "reference_difference": 2.9198957158109425e-14
+          },
+          {
+            "n": 1024,
+            "dofs": 1050625,
+            "l2": 1.3207810026573408e-06,
+            "h1": 0.0034076464173011245,
+            "reference_difference": 4.0079082625610804e-14
+          }
+        ]
+      },
+      "baseline": {
+        "seconds": 71.30765996100001,
+        "rss_kib": 1107116,
+        "phases": {
+          "controller.other": 4.944500005876762e-05,
+          "verify.study": 0.003131679999796688,
+          "verify.solver_claims": 0.002004231000114487,
+          "verify.field_load": 11.324647549999895,
+          "verify.geometry_boundary": 4.099532838000073,
+          "verify.integration": 22.62237221099997,
+          "verify.reference": 32.049785039000085,
+          "verify.input_hashes": 0.693890505000013
+        },
+        "levels": [
+          {
+            "n": 256,
+            "dofs": 66049,
+            "l2": 2.11320264374791e-05,
+            "h1": 0.013630458610920522,
+            "reference_difference": 2.7089781771018017e-14
+          },
+          {
+            "n": 512,
+            "dofs": 263169,
+            "l2": 5.28310049574059e-06,
+            "h1": 0.006815280128639913,
+            "reference_difference": 2.7422594745448682e-14
+          },
+          {
+            "n": 1024,
+            "dofs": 1050625,
+            "l2": 1.3207810026573408e-06,
+            "h1": 0.0034076464173011245,
+            "reference_difference": 3.9079881119709294e-14
+          }
+        ]
+      }
+    },
+    {
+      "block": 1,
+      "order": [
+        "baseline",
+        "candidate"
+      ],
+      "baseline": {
+        "seconds": 64.06993407699997,
+        "rss_kib": 1107784,
+        "phases": {
+          "controller.other": 3.74589999410091e-05,
+          "verify.study": 0.001966228999890518,
+          "verify.solver_claims": 0.0009135280001828505,
+          "verify.field_load": 10.140520613999911,
+          "verify.geometry_boundary": 3.358928717000026,
+          "verify.integration": 22.995070765000037,
+          "verify.reference": 26.71823038299999,
+          "verify.input_hashes": 0.4217011040000216
+        },
+        "levels": [
+          {
+            "n": 256,
+            "dofs": 66049,
+            "l2": 2.11320264374791e-05,
+            "h1": 0.013630458610920522,
+            "reference_difference": 2.7089781771018017e-14
+          },
+          {
+            "n": 512,
+            "dofs": 263169,
+            "l2": 5.28310049574059e-06,
+            "h1": 0.006815280128639913,
+            "reference_difference": 2.7422594745448682e-14
+          },
+          {
+            "n": 1024,
+            "dofs": 1050625,
+            "l2": 1.3207810026573408e-06,
+            "h1": 0.0034076464173011245,
+            "reference_difference": 3.9079881119709294e-14
+          }
+        ]
+      },
+      "candidate": {
+        "seconds": 52.3946228289999,
+        "rss_kib": 1178940,
+        "phases": {
+          "controller.other": 4.3521000065993576e-05,
+          "verify.study": 0.0024815980001449134,
+          "verify.solver_claims": 0.0013056819999519576,
+          "verify.field_load": 9.544148976999963,
+          "verify.geometry_boundary": 3.088850088999834,
+          "verify.integration": 1.4294350989999884,
+          "verify.integration_and_assembly": 22.378095926000128,
+          "verify.reference": 15.083822879999957,
+          "verify.input_hashes": 0.4153397310000173
+        },
+        "levels": [
+          {
+            "n": 256,
+            "dofs": 66049,
+            "l2": 2.11320264374791e-05,
+            "h1": 0.013630458610920522,
+            "reference_difference": 2.7422852858366568e-14
+          },
+          {
+            "n": 512,
+            "dofs": 263169,
+            "l2": 5.28310049574059e-06,
+            "h1": 0.006815280128639913,
+            "reference_difference": 2.9198957158109425e-14
+          },
+          {
+            "n": 1024,
+            "dofs": 1050625,
+            "l2": 1.3207810026573408e-06,
+            "h1": 0.0034076464173011245,
+            "reference_difference": 4.0079082625610804e-14
+          }
+        ]
+      }
+    },
+    {
+      "block": 2,
+      "order": [
+        "candidate",
+        "baseline"
+      ],
+      "candidate": {
+        "seconds": 53.96153054800004,
+        "rss_kib": 1175120,
+        "phases": {
+          "controller.other": 5.4381000154535286e-05,
+          "verify.study": 0.0023627869999245377,
+          "verify.solver_claims": 0.001621403000058308,
+          "verify.field_load": 8.656979970999942,
+          "verify.geometry_boundary": 2.615286889999993,
+          "verify.integration": 1.2830955730000824,
+          "verify.integration_and_assembly": 22.973821270999906,
+          "verify.reference": 17.404512307000005,
+          "verify.input_hashes": 0.4471547379999947
+        },
+        "levels": [
+          {
+            "n": 256,
+            "dofs": 66049,
+            "l2": 2.11320264374791e-05,
+            "h1": 0.013630458610920522,
+            "reference_difference": 2.7422852858366568e-14
+          },
+          {
+            "n": 512,
+            "dofs": 263169,
+            "l2": 5.28310049574059e-06,
+            "h1": 0.006815280128639913,
+            "reference_difference": 2.9198957158109425e-14
+          },
+          {
+            "n": 1024,
+            "dofs": 1050625,
+            "l2": 1.3207810026573408e-06,
+            "h1": 0.0034076464173011245,
+            "reference_difference": 4.0079082625610804e-14
+          }
+        ]
+      },
+      "baseline": {
+        "seconds": 65.91582847100005,
+        "rss_kib": 1094388,
+        "phases": {
+          "controller.other": 6.036100012352108e-05,
+          "verify.study": 0.003674747999639294,
+          "verify.solver_claims": 0.0017313880000529025,
+          "verify.field_load": 11.836583752000024,
+          "verify.geometry_boundary": 3.218918771999938,
+          "verify.integration": 22.820730234000052,
+          "verify.reference": 26.91718511600004,
+          "verify.input_hashes": 0.45014017100015735
+        },
+        "levels": [
+          {
+            "n": 256,
+            "dofs": 66049,
+            "l2": 2.11320264374791e-05,
+            "h1": 0.013630458610920522,
+            "reference_difference": 2.7089781771018017e-14
+          },
+          {
+            "n": 512,
+            "dofs": 263169,
+            "l2": 5.28310049574059e-06,
+            "h1": 0.006815280128639913,
+            "reference_difference": 2.7422594745448682e-14
+          },
+          {
+            "n": 1024,
+            "dofs": 1050625,
+            "l2": 1.3207810026573408e-06,
+            "h1": 0.0034076464173011245,
+            "reference_difference": 3.9079881119709294e-14
+          }
+        ]
+      }
+    },
+    {
+      "block": 3,
+      "order": [
+        "baseline",
+        "candidate"
+      ],
+      "baseline": {
+        "seconds": 57.474077867000005,
+        "rss_kib": 1111196,
+        "phases": {
+          "controller.other": 3.1182999919110443e-05,
+          "verify.study": 0.0020275340000353026,
+          "verify.solver_claims": 0.0015294620002350712,
+          "verify.field_load": 7.933061828999826,
+          "verify.geometry_boundary": 3.0183955580000656,
+          "verify.integration": 18.799567319999824,
+          "verify.reference": 26.86082100600015,
+          "verify.input_hashes": 0.43121161199997005
+        },
+        "levels": [
+          {
+            "n": 256,
+            "dofs": 66049,
+            "l2": 2.11320264374791e-05,
+            "h1": 0.013630458610920522,
+            "reference_difference": 2.7089781771018017e-14
+          },
+          {
+            "n": 512,
+            "dofs": 263169,
+            "l2": 5.28310049574059e-06,
+            "h1": 0.006815280128639913,
+            "reference_difference": 2.7422594745448682e-14
+          },
+          {
+            "n": 1024,
+            "dofs": 1050625,
+            "l2": 1.3207810026573408e-06,
+            "h1": 0.0034076464173011245,
+            "reference_difference": 3.9079881119709294e-14
+          }
+        ]
+      },
+      "candidate": {
+        "seconds": 48.81947111799991,
+        "rss_kib": 1182036,
+        "phases": {
+          "controller.other": 5.739199991694477e-05,
+          "verify.study": 0.0021512839998649724,
+          "verify.solver_claims": 0.0008412290001160727,
+          "verify.field_load": 7.555148254999949,
+          "verify.geometry_boundary": 2.064978823999809,
+          "verify.integration": 1.0469773750000968,
+          "verify.integration_and_assembly": 21.240989234999915,
+          "verify.reference": 16.06786943300017,
+          "verify.input_hashes": 0.463100329000099
+        },
+        "levels": [
+          {
+            "n": 256,
+            "dofs": 66049,
+            "l2": 2.11320264374791e-05,
+            "h1": 0.013630458610920522,
+            "reference_difference": 2.7422852858366568e-14
+          },
+          {
+            "n": 512,
+            "dofs": 263169,
+            "l2": 5.28310049574059e-06,
+            "h1": 0.006815280128639913,
+            "reference_difference": 2.9198957158109425e-14
+          },
+          {
+            "n": 1024,
+            "dofs": 1050625,
+            "l2": 1.3207810026573408e-06,
+            "h1": 0.0034076464173011245,
+            "reference_difference": 4.0079082625610804e-14
+          }
+        ]
+      }
+    }
+  ],
+  "median_seconds": {
+    "baseline": 64.99288127400001,
+    "candidate": 53.17807668849997
+  },
+  "median_rss_kib": {
+    "baseline": 1107450.0,
+    "candidate": 1177030.0
+  },
+  "paired_delta_seconds": -10.164958998500083,
+  "paired_95pct_seconds": [
+    -11.954297923000013,
+    -1.2346827459999759
+  ]
+}

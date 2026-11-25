@@ -1,0 +1,206 @@
+{
+  "scale": "small",
+  "repeats": 5,
+  "seed": 20261125,
+  "cpus": [
+    6,
+    8,
+    10,
+    20
+  ],
+  "request": {
+    "schema_version": "0.2",
+    "problem": {
+      "id": "poisson_unit_square_mms",
+      "equation": "-laplacian(u) = f",
+      "domain": "unit_square_2d",
+      "exact_solution": "sin(pi*x)*sin(pi*y)",
+      "source": "2*pi**2*sin(pi*x)*sin(pi*y)",
+      "boundaries": [
+        {
+          "attribute": 1,
+          "label": "bottom",
+          "kind": "dirichlet",
+          "value": "from_exact_solution"
+        },
+        {
+          "attribute": 2,
+          "label": "right",
+          "kind": "dirichlet",
+          "value": "from_exact_solution"
+        },
+        {
+          "attribute": 3,
+          "label": "top",
+          "kind": "dirichlet",
+          "value": "from_exact_solution"
+        },
+        {
+          "attribute": 4,
+          "label": "left",
+          "kind": "dirichlet",
+          "value": "from_exact_solution"
+        }
+      ]
+    },
+    "execution": {
+      "mesh_type": "tri",
+      "polynomial_order": 1,
+      "mesh_levels": [
+        32,
+        64,
+        128
+      ],
+      "backend": "serial_cpu",
+      "assembly": "full",
+      "solver": "cg_gs",
+      "rel_tol": 1e-12,
+      "max_iter": 20000,
+      "inject_fault": "none"
+    },
+    "validation": {
+      "require_solver_converged": true,
+      "min_levels": 3,
+      "l2_order_min_offset": 0.2,
+      "l2_order_max_offset": 0.5,
+      "h1_order_min_offset": 0.2,
+      "h1_order_max_offset": 0.5,
+      "require_monotone_decrease": true,
+      "max_l2_error_finest": null,
+      "dirichlet_nodal_abs_tol": 1e-10,
+      "self_report_rel_tol": 1e-06,
+      "require_reference_solve": true,
+      "reference_solve_rel_tol": 1e-07,
+      "reference_solve_max_dofs": 16641,
+      "reference_solve_method": "amg_pcg",
+      "mms_consistency_rel_tol": 1e-06,
+      "verifier_quadrature_extra_points": 3
+    },
+    "policy": {
+      "max_attempts": 3,
+      "action": "append_refined_level",
+      "max_dofs_per_level": 300000,
+      "max_total_wall_seconds": 900.0,
+      "per_level_timeout_seconds": 300.0,
+      "per_level_memory_mb": 3072
+    }
+  },
+  "serial_sha256": "fdbe3f731f7ad158d086b9cd4409111a29b7eb3f2a8511f0af32fd02999cf65b",
+  "mpi_build": {
+    "mfem": {
+      "install_dir": "/root/mfem-stage3-8UK5JL/toolchain/mfem-mpi-install",
+      "found": true,
+      "config": {
+        "MFEM_USE_MPI": true,
+        "MFEM_USE_METIS": true,
+        "MFEM_USE_METIS_5": true,
+        "MFEM_USE_SUITESPARSE": false,
+        "MFEM_USE_LAPACK": false,
+        "MFEM_USE_OPENMP": false,
+        "MFEM_USE_CUDA": false,
+        "MFEM_USE_HIP": false,
+        "MFEM_USE_RAJA": false,
+        "MFEM_USE_OCCA": false,
+        "MFEM_USE_PETSC": false,
+        "MFEM_USE_ZLIB": false,
+        "MFEM_USE_DOUBLE": true,
+        "MFEM_USE_SINGLE": false
+      },
+      "notes": [],
+      "version": "4.10.0",
+      "git": "tags/v4.10-0-gd964264cdb9a13e94a201b6c236c7721e0c8765f",
+      "library": "/root/mfem-stage3-8UK5JL/toolchain/mfem-mpi-install/lib/libmfem.a",
+      "library_sha256": "8791794f91d296829d872715681896ccac83d581852e22cec637b59ed1e85ada"
+    },
+    "native": {
+      "schema_version": 1,
+      "mfem_version": "4.10.0",
+      "mfem_git": "tags/v4.10-0-gd964264cdb9a13e94a201b6c236c7721e0c8765f",
+      "mfem_use_mpi": true,
+      "mfem_use_metis": true,
+      "mfem_use_metis_5": true,
+      "mfem_use_double": true,
+      "hypre_version": 22800,
+      "case": "sin_sin",
+      "solver": "cg_boomeramg"
+    },
+    "binary": "/root/mfem-e4-qSotR5/mpi-native/poisson_mpi",
+    "binary_sha256": "ec8aa9031ef6e780d137468327d8e76cf63ac6d829320423cba575ca45a42261",
+    "launcher": "/usr/bin/mpiexec",
+    "launcher_version": "mpiexec (OpenRTE) 4.1.6",
+    "launcher_sha256": "e3a009cd4ab8b41ef23019df3a1388944294b330b7c51ad17be18a0120b36daa",
+    "toolchain": {
+      "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "config_sha256": "ecda2f7dc8183d3668a683e3d880a4599525382095efcd7efe0a26d57ff6280f",
+      "library_sha256": "8791794f91d296829d872715681896ccac83d581852e22cec637b59ed1e85ada",
+      "mfem_commit": "d964264cdb9a13e94a201b6c236c7721e0c8765f",
+      "mfem_version": "4.10.0",
+      "packages": {
+        "libhypre-2.28.0": "2.28.0-8build2",
+        "libhypre-dev": "2.28.0-8build2",
+        "libmetis-dev": "5.1.0.dfsg-7build3",
+        "libmetis5": "5.1.0.dfsg-7build3",
+        "libopenmpi-dev": "4.1.6-7ubuntu2",
+        "libopenmpi3t64": "4.1.6-7ubuntu2",
+        "openmpi-bin": "4.1.6-7ubuntu2"
+      },
+      "schema_version": 1
+    },
+    "cpu_affinity": [
+      6,
+      8,
+      10,
+      20
+    ],
+    "runtime_packages": {
+      "libhypre-2.28.0": "2.28.0-8build2",
+      "libmetis5": "5.1.0.dfsg-7build3",
+      "libopenmpi3t64": "4.1.6-7ubuntu2",
+      "openmpi-bin": "4.1.6-7ubuntu2"
+    },
+    "runtime_libraries": {
+      "libmpi.so.": {
+        "path": "/lib/x86_64-linux-gnu/libmpi.so.40",
+        "sha256": "9055018b12757e830591aa0283e485e471f1f2a06d3bc0dd5fb35ab00386c172"
+      },
+      "libHYPRE-": {
+        "path": "/lib/x86_64-linux-gnu/libHYPRE-2.28.0.so",
+        "sha256": "515c0bcdbabcafb3a257efcf59f87ba5e31c6b1175619d21e2d00591c8d49c4a"
+      },
+      "libmetis.so.": {
+        "path": "/lib/x86_64-linux-gnu/libmetis.so.5",
+        "sha256": "e3644eb16d61bdc633255b36851aecbb61919963a3a3d3cd8a5eb9bf2895f200"
+      }
+    },
+    "native_threads": {
+      "OMP_NUM_THREADS": 1,
+      "OPENBLAS_NUM_THREADS": 1
+    },
+    "verifier_thread_environment": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    },
+    "binding": "none"
+  },
+  "runtime": {
+    "kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "packages": {
+      "numpy": "2.5.5",
+      "scipy": "1.18.1",
+      "pydantic": "2.14.4"
+    },
+    "cpu_model": "Intel(R) Core(TM) Ultra 7 155H",
+    "source_sha256": {
+      "benchmarks/mpi_scaling.py": "acd8e627526a7d0af7a7d266f64f1bb5a0bc31804e16cfb63a949959b7459ded",
+      "sciagent/mpi_study.py": "0c09d23bd16b61ad5752ddc76db26f52172283f5114461a6f4b2f47276d6abd3",
+      "sciagent/mfem_runner.py": "3ff7e15426db85a0334c04d9a1e90ab670b5817311f78e2b9b212a299482b0f2",
+      "sciagent/evidence.py": "a4501ad04f03571ee749d18b27429b166ea35257cc8b606e2c96d013627d5982",
+      "sciagent/spec.py": "1a755cc8f3adba951ace6d69f7aa8fdd89e822effb6c91a364df5cdb673f5322",
+      "verifier/fem.py": "87276898e460e97c0d3a3e4681a9d55e4bbefcbf98ef305de419bbe9f0442d7a",
+      "verifier/verifier.py": "2eb5195f0d63debc1d9cb1824655e625b9fbab52cc2efe596584ac541ed31366",
+      "verifier/mpi.py": "34002b0bfa13cb3abccb5bf0fb86501d0842f51ea76cfeb84234403c2c7a59d5",
+      "verifier/expr.py": "1c022c758ea7c3221ba6978ec3940d2d48f9e0d08974812d824c385bda381573",
+      "verifier/reference_solver.py": "2ef22290a8163c3c6e07fa0873d3e7f34fd69c40bfa0f30c1d26bf466c435924"
+    }
+  }
+}

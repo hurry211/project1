@@ -1,0 +1,8 @@
+{
+  "report_sha256": "9d0d9ca4872f9c4abe9171deb8cc5ae99ca031bb01cab8445ca3d33b7287f5e0",
+  "frozen_request_sha256": "d470f3e28279f347d9aeadc9695ba2550e94ccd28aeed531a3c451a657ec7a43",
+  "replayed": {
+    "RETRY_ELIGIBLE": 15,
+    "ACCEPTED": 15
+  }
+}

@@ -1,4 +1,4 @@
-# MFEM scientific agent for verified Poisson and scalar diffusion studies
+# MFEM scientific agent for verified finite-element studies
 
 A deterministic workflow that turns a frozen, machine-checked problem specification into **real MFEM computations** and lets an **independent verifier** decide whether the result is accepted. No LLM is used anywhere in the numerical path.
 
@@ -15,7 +15,13 @@ StudySpec (JSON) ─► schema + MMS consistency ─► freeze & hash ─► env
 * `docs/RESULTS.md`: generated from `runs/`, with error tables, retry history and the fault × gate detection matrix
 * `docs/E3_PERFORMANCE_ADAPTIVE.md`: E3 1.05M-DOF streaming+AMG verifier, unstructured/Example 6 AMR, and separated adaptive strategy research
 
-The performance benchmark measures time from a submitted request to an independently accepted solution. The latest comparison includes fresh MFEM studies, verifier-only timings and peak memory at 263,169 degrees of freedom. [Results](docs/RESULTS.md#verifier-revision-at-263169-degrees-of-freedom) · [Reproduction commands](docs/VERIFIED_PERFORMANCE.md#measure-a-verifier-change-from-submission-to-acceptance)
+The performance benchmark measures time from a submitted request to an independently accepted solution. The E2 comparison includes fresh MFEM studies, verifier-only timings and peak memory at 263,169 degrees of freedom. [Results](docs/RESULTS.md#verifier-revision-at-263169-degrees-of-freedom) · [Reproduction commands](docs/VERIFIED_PERFORMANCE.md#measure-a-verifier-change-from-submission-to-acceptance)
+
+## November 2026 review follow-up
+
+E4 adds independently replayable heat, wave and elasticity studies in 2D and 3D. The scalar verifier reaches 1.64 million DOFs under a 3 GiB address-space cap. On one host the four-rank MPI/hypre study reduced verified time from 15.93 to 11.06 seconds relative to one rank. An FP64 GPU audit independently integrated the exported MPI fields. The seven-task adaptive study met all 126 accuracy targets and measured the incremental cost of real model nominations.
+
+[Sixteen findings and reproduction commands](docs/ISSUE_RESOLUTION.md) · [Adaptive study and archive](docs/ADAPTIVE_REPAIRS.md) · [Raw release assets](https://github.com/rodriguezrobertbfrkx6857-sudo/project/releases/tag/e4-verified-studies-20261125)
 
 ## Requirements
 
@@ -27,10 +33,10 @@ Clone this repository inside Ubuntu. For an existing checkout, start at the dire
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y --no-install-recommends git g++-13 cmake make python3.12-venv
+sudo apt-get install -y --no-install-recommends git g++-13 cmake make time python3.12-venv
 # New checkout
-git clone --branch codex/mfem-performance-validation https://github.com/hurry211/project1.git
-cd project1
+git clone https://github.com/rodriguezrobertbfrkx6857-sudo/project.git
+cd project
 # From the repository root
 python3.12 -m venv .venv
 source .venv/bin/activate
@@ -180,7 +186,7 @@ Branch `research/e3-scaling-adaptive` extends E2 across three validated pillars 
 
 - **Verifier Scalability to 1.05M DOFs** (`verifier/reference_solver.py`, `verifier/fem.py`, `verifier/verifier.py`, `benchmarks/e3_scaling.py`): Chunked ASCII I/O, bounded-slice quadrature/assembly, and Oettli–Prager backward-stability verified SA-AMG-PCG verify `1,050,625` DOFs (`5.44e-14` relative agreement vs MFEM) within `1,081.4 MiB` peak RSS (`38.36 s`), eliminating SuperLU direct OOM above ~500k DOFs under a 3 GiB cap.
 - **Unstructured Gmsh, High-Order P3/Q3–P4/Q4 & MFEM Example 6 AMR** (`cpp/poisson_amr.cpp`, `sciagent/gmsh.py`, `verifier/amr.py`, `benchmarks/e3_complex_meshes.py`): Validates unstructured Delaunay triangles and distorted quads (`P1–P4`, `Q1–Q4`), Zienkiewicz–Zhu AMR with independent geometric hanging-node $C^T K C$ constraint verification on `gaussian_steep` and `lshape_singularity`, and empirical `repeated_element_period` speedup (`95x–1,087x`) vs degradation (`period == E`).
-- **Separated Adaptive Strategy Search** (`sciagent/adaptive.py`, `benchmarks/e3_adaptive.py`): Predictive cost/accuracy surrogates trained on a calibration corpus generalize to a disjoint 5-task held-out benchmark suite (`11.22x` median task speedup and `4.01x` campaign speedup over `fixed_baseline` with decision, pilot, and retry costs fully charged).
+- In E3 the predictor and offline adviser each met the accuracy target in 12 of 15 trials. The fixed policy met it in zero trials. An equal-quality speedup against the fixed policy is undefined.
 
 ## License note
 

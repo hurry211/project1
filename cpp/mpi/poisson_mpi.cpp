@@ -6,6 +6,8 @@
 #endif
 
 #include <cmath>
+#include <cstdint>
+#include <vector>
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
@@ -31,17 +33,48 @@ void BuildInfo()
 }
 
 bool ExportPartition(const fs::path &directory, int rank, ParMesh &mesh,
-                     ParFiniteElementSpace &space, const ParGridFunction &field)
+                     ParFiniteElementSpace &space, const ParGridFunction &field,
+                     bool compact)
 {
    const std::string suffix = "." + std::to_string(rank) + ".tsv";
-   std::ofstream cells(directory / ("cells" + suffix));
+   // Compact schema uses little-endian binary64 vertex triples and int32 local
+   // connectivity. Both streams contain the actual native geometry and field.
+   std::ofstream cells, nodes;
+   if (compact)
+   {
+      const std::uint32_t one = 1;
+      if (*reinterpret_cast<const unsigned char *>(&one) != 1 || sizeof(double) != 8) { return false; }
+      nodes.open(directory / ("nodes." + std::to_string(rank) + ".f64"), std::ios::binary);
+      cells.open(directory / ("cells." + std::to_string(rank) + ".i32"), std::ios::binary);
+   }
+   else { cells.open(directory / ("cells" + suffix)); }
    std::ofstream boundary(directory / ("boundary" + suffix));
    cells << std::setprecision(17);
    boundary << std::setprecision(17);
    Array<int> vertices, dofs;
+   if (compact)
+   {
+      for (int v = 0; v < mesh.GetNV(); ++v)
+      {
+         space.GetVertexDofs(v, dofs);
+         if (dofs.Size() != 1 || !std::isfinite(field(dofs[0]))) { return false; }
+         const double *xy = mesh.GetVertex(v);
+         const double node[] = {xy[0], xy[1], field(dofs[0])};
+         nodes.write(reinterpret_cast<const char *>(node), sizeof(node));
+      }
+      nodes.close();
+      if (!nodes.good()) { return false; }
+   }
    for (int e = 0; e < mesh.GetNE(); ++e)
    {
       mesh.GetElementVertices(e, vertices);
+      if (compact)
+      {
+         if (vertices.Size() != 3) { return false; }
+         const std::int32_t tri[] = {vertices[0], vertices[1], vertices[2]};
+         cells.write(reinterpret_cast<const char *>(tri), sizeof(tri));
+         continue;
+      }
       for (int j = 0; j < vertices.Size(); ++j)
       {
          int v = vertices[j];
@@ -74,7 +107,7 @@ int Solve(int argc, char **argv)
    const MPI_Comm comm = MPI_COMM_WORLD;
    const int rank = Mpi::WorldRank(), ranks = Mpi::WorldSize();
    const char *output = "";
-   bool phase_timing = false;
+   bool phase_timing = false, compact = false;
    int n = 8, max_iter = 20000;
    double tol = 1e-12;
    OptionsParser args(argc, argv);
@@ -84,8 +117,10 @@ int Solve(int argc, char **argv)
    args.AddOption(&output, "-o", "--out", "Existing, empty output directory.", true);
    args.AddOption(&phase_timing, "-pt", "--phase-timing", "-no-pt", "--no-phase-timing",
                   "Write optional per-rank performance measurements.");
+   args.AddOption(&compact, "-cp", "--compact-partition", "-no-cp", "--no-compact-partition",
+                  "Use Cartesian rank ownership and binary vertex/connectivity export.");
    args.Parse();
-   if (!args.Good() || n < 2 || n > 4096 || ranks > 2*n*n ||
+   if (!args.Good() || (compact && ranks != 1 && ranks != 2 && ranks != 4) || n < 2 || n > 4096 || ranks > 2*n*n ||
        !std::isfinite(tol) || tol <= 0 || tol >= 1 || max_iter < 1)
    {
       if (rank == 0) { args.PrintUsage(std::cerr); }
@@ -107,7 +142,22 @@ int Solve(int argc, char **argv)
    const double start = MPI_Wtime();
    // The small serial input mesh is replicated before METIS partitions it.
    Mesh serial = Mesh::MakeCartesian2D(n, n, Element::TRIANGLE, true, 1., 1.);
-   ParMesh mesh(comm, serial);
+   // The reviewed square permits a deterministic 1x1, 2x1 or 2x2 tiling.
+   // Obtain each centroid from its actual vertices, independent of element order.
+   Array<int> owners;
+   if (compact)
+   {
+      owners.SetSize(serial.GetNE());
+      Array<int> v;
+      for (int e = 0; e < serial.GetNE(); ++e)
+      {
+         serial.GetElementVertices(e, v);
+         double sx = 0., sy = 0.;
+         for (int i : v) { sx += serial.GetVertex(i)[0]; sy += serial.GetVertex(i)[1]; }
+         owners[e] = (ranks >= 2 && sx >= 1.5) + 2 * (ranks == 4 && sy >= 1.5);
+      }
+   }
+   ParMesh mesh(comm, serial, compact ? owners.GetData() : nullptr);
    const double partition_end = phase_timing ? MPI_Wtime() : 0.;
    H1_FECollection fec(1, 2);
    ParFiniteElementSpace space(&mesh, &fec);
@@ -169,7 +219,7 @@ int Solve(int argc, char **argv)
    int success = std::isfinite(residual_norm) && std::isfinite(rhs_norm) &&
                  std::isfinite(l2) && std::isfinite(h1) &&
                  std::isfinite(cg.GetInitialNorm()) && std::isfinite(cg.GetFinalNorm()) &&
-                 ExportPartition(directory, rank, mesh, space, field);
+                 ExportPartition(directory, rank, mesh, space, field, compact);
    if (phase_timing)
    {
       const double export_end = MPI_Wtime();

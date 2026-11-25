@@ -39,3 +39,17 @@ For a new physical model, changed validation threshold or larger resource budget
 The archive contains the task, mode, deterministic decision and manifest. Model calls also record the prompt, raw reply, installed model identity, sampling settings, usage and timings. The controller checks the approved study digest on the bytes it actually consumes. Numerical acceptance requires a digest-matched child study, verified input and output inventories, and independent replay of the attempts. Archive replay recomputes authorization and checks recorded proposals, the template bytes and the numerical results. It runs with the local model service and the native executable unavailable. Keep the manifest digest outside the archive to authenticate the capture. [Orchestrator and replay checks](../sciagent/planning_run.py) · [Fault regressions](../tests/test_planning_run.py)
 
 The measured comparison includes independent preference answers and review controls. The task description can guide the model to a better or worse eligible choice, which is scored separately from numerical correctness. [Benchmark protocol](PLANNING_BENCHMARK.md) · [Measured results](RESULTS.md#stage-4-controlled-planning-2026-11-24)
+
+## Repeated requests with a pinned proposal
+
+Use `--mode bounded` to select the sole eligible template directly. A request with multiple eligible templates invokes the pinned local model. For a repeated preference, a caller can bind the new request to the manifest digest of a previous successful live planning preview. Use the digest printed by the preview command above.
+
+```bash
+python -m sciagent plan specs/stage4/choose_preconditioner.json \
+  --mode bounded --model qwen2.5:1.5b \
+  --model-digest 65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b \
+  --proposal-directory runs/preconditioner-preview --proposal-manifest-sha256 "$PREVIEW_SHA" \
+  --directory runs/repeated-preconditioner --execute
+```
+
+The task, model, prompt, options and reviewed template pin are checked again. Each repeated execution computes and verifies a fresh solution. Its archive carries a copy of the pinned source proposal evidence for offline replay. The receipt records the route and counts new inference calls and tokens. Choosing a new preview can yield a different eligible template. [Repeat benchmark](../benchmarks/planner_repeats.py) · [Regression tests](../tests/test_planner_reuse.py)

@@ -1,0 +1,65 @@
+{
+  "report_sha256": "1dc8c0aff8b1b1449a46a6e5323cf718535270460f316b3b3b2496e229041649",
+  "verified_previews": 9,
+  "verified_trials": 171,
+  "matched_metrics": true,
+  "numerical_binary_sha256": "601b2c42aaab558c4371a9a4f9e365671667de2159eeb1570525dfa533446564",
+  "report_gzip_sha256": "c1e3621e995a828e0ed83ed77912f7ffe50924b883f62cd31fa5460a121807bb",
+  "model_records_archive_sha256": "dbc53b13bf767e1b2d8fa2b3c8979d203f316eab342bdfebd7735bc7f308c81e",
+  "metrics": {
+    "rules": {
+      "model_calls_including_previews": 0,
+      "seconds_including_previews": 83.96173271599986,
+      "preference_matches": 24,
+      "states": {
+        "ACCEPTED": 42,
+        "REVIEW_REQUIRED": 15
+      },
+      "routes": {
+        "rules": 57
+      },
+      "tasks_with_changing_choices": []
+    },
+    "llm": {
+      "model_calls_including_previews": 42,
+      "seconds_including_previews": 142.01993745299967,
+      "preference_matches": 39,
+      "states": {
+        "ACCEPTED": 42,
+        "REVIEW_REQUIRED": 15
+      },
+      "routes": {
+        "llm": 57
+      },
+      "tasks_with_changing_choices": []
+    },
+    "bounded": {
+      "model_calls_including_previews": 9,
+      "seconds_including_previews": 100.75646049899996,
+      "preference_matches": 39,
+      "states": {
+        "ACCEPTED": 42,
+        "REVIEW_REQUIRED": 15
+      },
+      "routes": {
+        "single_eligible_template": 15,
+        "pinned_preview": 27,
+        "preflight": 15
+      },
+      "tasks_with_changing_choices": []
+    }
+  },
+  "execution": {
+    "base_revision": "07dca409cb71d096c732f3a9825e88930c6ca79d",
+    "affinity_cpu": 10,
+    "replay_and_capture_threads": 1,
+    "input_model": "Ollama on local host; three repeats on one WSL2 host alongside other scientific workloads",
+    "source_sha256": {
+      "sciagent/planner.py": "0c455a0fd1bce10b594650fec3f08cda8e6170b320d3b3821a92aecf80ff0a87",
+      "sciagent/planning_run.py": "74a95c91d7f932858bccb5261fa25acd66a17cfb2ee836b42b0b6d274516451a",
+      "sciagent/local_llm.py": "cf7bfc7c3354d0f70dcc2fb950a0f2df48492f841a177dc597b6291f844241c2",
+      "sciagent/controller.py": "2fbfd1e5465c354710b6d3d4a3a564921f58d1e93b2ec7576d0bd44d668aef58",
+      "verifier/verifier.py": "729a3553f7f65cd40b13e390e4f20fdbd9dc915c67318cd98635bb08b5e2ab5d"
+    }
+  }
+}

@@ -1,26 +1,11 @@
-"""E3 Task 3 & Task 4: Separated calibration/held-out adaptive strategy benchmark.
-
-Runs randomized paired experiments comparing 5 strategies on disjoint held-out tasks:
-  1. fixed_baseline     (E2 Q1 full CG+GS with retry escalation)
-  2. expert_rules       (domain heuristic rules)
-  3. predictive_model   (Ridge log-linear surrogate on problem+hardware features)
-  4. pilot_autotuner    (real coarse probes + asymptotic extrapolation, pilots charged)
-  5. ai_assisted        (local Ollama hook if active, else guardrail-checked structured advisor)
-
-Publishes raw paired trial archives, median + 95% bootstrap CIs, peak RSS,
-failure/pilot overhead accounting, and SVG charts under evidence/e3/.
-"""
+"""Measure six predeclared adaptive policies on real, independently verified MFEM tasks."""
 
 from __future__ import annotations
 
 import argparse
 import json
-import math
-import shutil
-import statistics
+import os
 import sys
-import tempfile
-from dataclasses import asdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -29,12 +14,13 @@ if str(ROOT) not in sys.path:
 
 import numpy as np
 
-from benchmarks.e3_plots import render_bar_comparison
+from benchmarks.adaptive_measure import measured
+from sciagent.evidence import artifact_hashes, sha256_file
 from sciagent import adaptive, environment, mfem_runner
 from sciagent.spec import ProblemSpec, RetryPolicy, ValidationSpec
 
 
-STRATEGIES = ("fixed_baseline", "expert_rules", "predictive_model", "pilot_autotuner", "ai_assisted")
+STRATEGIES = ("fixed_baseline", "expert_rules", "predictive_model", "pilot_autotuner", "advisor_rules", "ai_assisted")
 
 
 def _prob(cid: str, eq: str, u: str, f: str, kappa: str = "1", neumann: tuple[str, ...] = ()) -> ProblemSpec:
@@ -119,6 +105,20 @@ def build_held_out_tasks() -> list[adaptive.AdaptiveTask]:
                           neumann=("right", "top")),
             validation=ValidationSpec(max_l2_error_finest=1e-7), policy=pol,
         ),
+        adaptive.AdaptiveTask(
+            task_id="transfer_unstructured_quad", split="held_out", case_id="sin_sin_variable",
+            problem=_prob("sin_sin_variable", "-div(kappa*grad(u)) = f", "sin(pi*x)*sin(2*pi*y)",
+                          "5*pi**2*(1+x)*sin(pi*x)*sin(2*pi*y)-pi*cos(pi*x)*sin(2*pi*y)",
+                          kappa="1+x", neumann=("top",)),
+            validation=ValidationSpec(max_l2_error_finest=4e-5), policy=pol,
+            base_mesh_type="quad", mesh_topology="unstructured", unstructured_nx=8, unstructured_seed=27,
+        ),
+        adaptive.AdaptiveTask(
+            task_id="transfer_sine_mixed", split="held_out", case_id="sin_2x_2y",
+            problem=_prob("sin_2x_2y", "-laplacian(u) = f", "sin(2*pi*x)*sin(2*pi*y)",
+                          "8*pi**2*sin(2*pi*x)*sin(2*pi*y)", neumann=("top",)),
+            validation=ValidationSpec(max_l2_error_finest=3e-5), policy=pol,
+        ),
     ]
 
 
@@ -131,6 +131,11 @@ def collect_calibration_observations(work_dir: Path, mms_bin: Path, amr_bin: Pat
         ("quad", "cartesian", 1, "full", "cg_gs", (16, 32, 64)),
         ("quad", "cartesian", 2, "full", "cg_gs", (16, 32, 64)),
         ("quad", "cartesian", 2, "partial", "cg_jacobi", (16, 32, 64)),
+        ("quad", "cartesian", 2, "full", "cg_jacobi", (16, 32, 64)),
+        ("quad", "cartesian", 2, "full", "cg_none", (8, 16, 32)),
+        ("quad", "cartesian", 2, "full", "cg_gs", (8, 16, 32)),
+        ("quad", "cartesian", 2, "full", "cg_jacobi", (8, 16, 32)),
+        ("quad", "cartesian", 2, "partial", "cg_jacobi", (8, 16, 32)),
         ("tri", "cartesian", 2, "full", "cg_gs", (16, 32, 64)),
         ("quad", "cartesian", 3, "full", "cg_gs", (8, 16, 32)),
         ("quad", "cartesian", 4, "partial", "cg_jacobi", (8, 16, 32)),
@@ -157,9 +162,10 @@ def collect_calibration_observations(work_dir: Path, mms_bin: Path, amr_bin: Pat
                 estimated_finest_dofs=(4000 if topo == "amr" else (sched[-1] * p + 1) ** 2),
                 amr_max_steps=10, amr_max_dofs=4000,
             )
-            res = adaptive.execute_candidate(
-                probe_task, cand, work_dir / task.task_id / cand.candidate_id, mms_bin=mms_bin, amr_bin=amr_bin
-            )
+            dest = work_dir / task.task_id / cand.candidate_id
+            res = measured(dest.with_suffix(".json"), task.policy, adaptive.execute_candidate,
+                           probe_task, cand, dest, mms_bin=mms_bin, amr_bin=amr_bin)
+            res["wall_seconds"] = res["external_wall_seconds"]
             records.append({"pf": pf, "hw": hw, "cand": cand, **res})
             print(json.dumps({"stage": "calibrate", "task": task.task_id, "cand": cand.candidate_id,
                               "ok": res["ok"], "l2": res["l2_error"], "s": res["wall_seconds"]}), flush=True)
@@ -182,40 +188,76 @@ def _bootstrap_ci(values: list[float], n_boot: int = 4096, seed: int = 123) -> t
     return round(med, 4), round(float(lo), 4), round(float(hi), 4)
 
 
+def paired_results(trials):
+    indexed = {(t["task_id"], t["repeat"], t["strategy"]): t for t in trials}
+    if len(indexed) != len(trials):
+        raise ValueError("duplicate task/repeat/strategy")
+    pairs = {}
+    for strategy in ("expert_rules", "predictive_model", "pilot_autotuner", "advisor_rules", "ai_assisted"):
+        for base in ("fixed_baseline", "advisor_rules") if strategy == "ai_assisted" else ("fixed_baseline",):
+            ratios = {}
+            excluded = []
+            for (task, rep, arm), row in indexed.items():
+                if arm != strategy:
+                    continue
+                control = indexed[task, rep, base]
+                if row["target_l2"] != control["target_l2"]:
+                    raise ValueError("paired accuracy targets differ")
+                if row["accepted"] and control["accepted"]:
+                    ratios.setdefault(task, []).append(control["total_end_to_end_seconds"] / row["total_end_to_end_seconds"])
+                else:
+                    excluded.append({"task": task, "repeat": rep})
+            # Resample independent problem clusters, keeping each task's paired repeats together.
+            per_task = [float(np.median(values)) for values in ratios.values()]
+            stats = _bootstrap_ci(per_task) if per_task else (None, None, None)
+            pairs[f"{strategy}_vs_{base}"] = {"matched_accepted": sum(map(len, ratios.values())), "matched_tasks": len(ratios), "excluded": excluded,
+                "median_ratio": stats[0], "task_cluster_ci95": list(stats[1:])}
+    return pairs
+
+
 def run_adaptive_benchmark(
     repeats: int = 3,
-    out_dir: Path = ROOT / "evidence/e3",
-    mms_bin: Path = ROOT / "build/cpp/poisson_mms",
-    amr_bin: Path = ROOT / "build/cpp/poisson_amr",
+    out_dir: Path = ROOT / "runs/adaptive-report",
+    mms_bin: Path | None = None,
+    amr_bin: Path | None = None,
+    *, work_dir: Path | None = None, ollama_model=None, ollama_digest=None,
 ) -> dict:
-    work = Path(tempfile.mkdtemp(prefix="e3_adaptive_"))
-    try:
-        predictor, cal_summary = collect_calibration_observations(work / "cal", mms_bin, amr_bin)
-        held_out = build_held_out_tasks()
-        rng = np.random.default_rng(2026)
-
-        trials = []
-        for rep in range(repeats):
-            for task in held_out:
-                order = list(STRATEGIES)
-                rng.shuffle(order)
-                for strat in order:
-                    res = adaptive.run_strategy_on_task(
-                        strat, task, work / f"rep{rep}_{task.task_id}_{strat}",
-                        predictor=predictor, mms_bin=mms_bin, amr_bin=amr_bin,
-                    )
-                    res["repeat"] = rep
-                    res["order_position"] = order.index(strat)
-                    trials.append(res)
-                    print(json.dumps({
-                        "stage": "trial", "rep": rep, "task": task.task_id, "strat": strat,
-                        "ok": res["accepted"], "init": res["selected_initial_candidate"],
-                        "total_s": res["total_end_to_end_seconds"], "pilot_s": res["pilot_seconds"],
-                        "rss_mb": res["peak_rss_mb"], "l2": res["finest_l2_error"],
-                    }), flush=True)
-    finally:
-        shutil.rmtree(work, ignore_errors=True)
-
+    if repeats < 1 or bool(ollama_model) != bool(ollama_digest):
+        raise ValueError("supply at least one repeat and a complete model pin")
+    mms_bin = (mms_bin or mfem_runner.solver_binary()).resolve(strict=True)
+    amr_bin = (amr_bin or mfem_runner.amr_binary()).resolve(strict=True)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    if (out_dir / "adaptive_comparison.json").exists():
+        raise FileExistsError(out_dir / "adaptive_comparison.json")
+    work = (work_dir or out_dir / "raw").resolve()
+    work.mkdir(parents=True, exist_ok=False)
+    design = {"schema": "adaptive_v2", "seed": 2026, "repeats": repeats,
+              "strategies": STRATEGIES, "model": ollama_model, "model_digest": ollama_digest,
+              "serial_sha256": sha256_file(mms_bin), "amr_sha256": sha256_file(amr_bin),
+              "cpu_affinity": sorted(os.sched_getaffinity(0)),
+              "sources_sha256": {p.relative_to(ROOT).as_posix(): sha256_file(p)
+                  for folder in ("benchmarks", "sciagent", "verifier", "cpp")
+                  for p in sorted((ROOT / folder).glob("*")) if p.suffix in (".py", ".cpp", ".hpp")},
+              "tasks": [t.task_id for t in build_calibration_tasks()+build_held_out_tasks()]}
+    (work / "design.json").write_text(json.dumps(design, indent=2))
+    predictor, cal_summary = collect_calibration_observations(work / "cal", mms_bin, amr_bin)
+    held_out = build_held_out_tasks()
+    rng = np.random.default_rng(2026)
+    trials = []
+    for rep in range(repeats):
+        for task in held_out:
+            order = list(STRATEGIES)
+            rng.shuffle(order)
+            for pos, strat in enumerate(order):
+                dest = work / f"rep{rep}_{task.task_id}_{strat}"
+                res = measured(dest.with_suffix(".json"), task.policy, adaptive.run_strategy_on_task,
+                               strat, task, dest, predictor=predictor, mms_bin=mms_bin, amr_bin=amr_bin,
+                               ollama_model=ollama_model, ollama_digest=ollama_digest)
+                res.update(task_id=task.task_id, strategy=strat, target_l2=task.validation.max_l2_error_finest,
+                           repeat=rep, order_position=pos, directory=dest.name,
+                           total_end_to_end_seconds=res["external_wall_seconds"])
+                trials.append(res)
+                print(rep, task.task_id, strat, res["accepted"], round(res["external_wall_seconds"], 3), flush=True)
     # Aggregate statistics cleanly per strategy across all randomized held-out trials
     strategy_summary = {}
     campaign_totals_by_rep = {s: [] for s in STRATEGIES}
@@ -225,7 +267,7 @@ def run_adaptive_benchmark(
         pilots = [t["pilot_seconds"] for t in rows]
         decs = [t["decision_seconds"] for t in rows]
         retry_waste = [
-            sum(a["wall_seconds"] for a in t["attempts"][:-1]) + (0.0 if t["accepted"] else t["attempts"][-1]["wall_seconds"])
+            sum(a["wall_seconds"] for a in t["attempts"] if not a["ok"]) if t["attempts"] else t["external_wall_seconds"]
             for t in rows
         ]
         rss = [t["peak_rss_mb"] for t in rows]
@@ -249,22 +291,14 @@ def run_adaptive_benchmark(
             "max_peak_rss_mb": round(float(max(rss)), 2),
         }
 
-    # Pairwise paired speedup of predictive_model & ai_assisted over fixed_baseline & pilot_autotuner
-    paired_speedups = {}
-    for target_s in ("predictive_model", "ai_assisted"):
-        for base_s in ("fixed_baseline", "pilot_autotuner"):
-            ratios = []
-            for rep in range(repeats):
-                for task in held_out:
-                    t_base = next(t for t in trials if t["repeat"] == rep and t["task_id"] == task.task_id and t["strategy"] == base_s)
-                    t_targ = next(t for t in trials if t["repeat"] == rep and t["task_id"] == task.task_id and t["strategy"] == target_s)
-                    ratios.append(t_base["total_end_to_end_seconds"] / max(t_targ["total_end_to_end_seconds"], 1e-6))
-            med_r, lo_r, hi_r = _bootstrap_ci(ratios)
-            paired_speedups[f"{target_s}_vs_{base_s}"] = {"median_ratio": med_r, "ci95": [lo_r, hi_r]}
-
+    paired_speedups = paired_results(trials)
+    inventory = artifact_hashes(work)
+    (work / "inventory.json").write_text(json.dumps(inventory, sort_keys=True))
     out_dir.mkdir(parents=True, exist_ok=True)
     report = {
-        "schema": "e3_adaptive_v1",
+        "schema": "adaptive_v2", "design": design, "design_sha256": sha256_file(work / "design.json"),
+        "inventory_sha256": sha256_file(work / "inventory.json"), "raw_files": len(inventory),
+        "memory_definition": "Maximum of Python worker and child high-water marks and 10-ms sampled sum of simultaneous RSS; shared pages may be counted twice. The external Ollama daemon is excluded.",
         "repeats": repeats,
         "calibration_task_ids": [t.task_id for t in build_calibration_tasks()],
         "held_out_task_ids": [t.task_id for t in build_held_out_tasks()],
@@ -276,51 +310,21 @@ def run_adaptive_benchmark(
     }
     (out_dir / "adaptive_comparison.json").write_text(json.dumps(report, indent=2) + "\n")
 
-    bars = [
-        {
-            "label": s.replace("_", " ").title(),
-            "value": strategy_summary[s]["campaign_total_median_seconds"],
-            "lo": strategy_summary[s]["campaign_total_ci95"][0],
-            "hi": strategy_summary[s]["campaign_total_ci95"][1],
-            "sublabel": f"acc={strategy_summary[s]['accepted_count']}/{strategy_summary[s]['trials']}",
-        }
-        for s in STRATEGIES
-    ]
-    render_bar_comparison(
-        out_dir / "fig_adaptive_campaign_cost.svg",
-        title="Held-Out Campaign End-to-End Trusted Cost (Median & 95% Bootstrap CI)",
-        ylabel="Campaign Wall Time across 5 Held-Out Tasks (s)",
-        bars=bars,
-    )
-
-    per_task_bars = []
-    for task in build_held_out_tasks():
-        for strat, short in (("fixed_baseline", "Fix"), ("expert_rules", "Exp"),
-                             ("predictive_model", "Pred"), ("pilot_autotuner", "Tune"), ("ai_assisted", "AI")):
-            vals = [t["total_end_to_end_seconds"] for t in trials if t["task_id"] == task.task_id and t["strategy"] == strat]
-            per_task_bars.append({
-                "label": f"{task.task_id.replace('heldout_', '')}:{short}",
-                "value": statistics.median(vals),
-            })
-    render_bar_comparison(
-        out_dir / "fig_adaptive_per_task.svg",
-        title="Per-Task Median Trusted Solve Time on Disjoint Held-Out Corpus",
-        ylabel="End-to-End Seconds (incl. decision/pilot/retry)",
-        bars=per_task_bars,
-        width=1120,
-        height=440,
-    )
     return report
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repeats", type=int, default=3)
-    parser.add_argument("--out-dir", type=Path, default=ROOT / "evidence/e3")
-    parser.add_argument("--mms-bin", type=Path, default=ROOT / "build/cpp/poisson_mms")
-    parser.add_argument("--amr-bin", type=Path, default=ROOT / "build/cpp/poisson_amr")
+    parser.add_argument("--out-dir", type=Path, default=ROOT / "runs/adaptive-report")
+    parser.add_argument("--mms-bin", type=Path, default=None)
+    parser.add_argument("--amr-bin", type=Path, default=None)
+    parser.add_argument("--work-dir", type=Path)
+    parser.add_argument("--ollama-model")
+    parser.add_argument("--ollama-digest")
     args = parser.parse_args(argv)
-    run_adaptive_benchmark(args.repeats, args.out_dir, args.mms_bin, args.amr_bin)
+    run_adaptive_benchmark(args.repeats, args.out_dir, args.mms_bin, args.amr_bin,
+                           work_dir=args.work_dir, ollama_model=args.ollama_model, ollama_digest=args.ollama_digest)
     return 0
 
 

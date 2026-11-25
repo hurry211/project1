@@ -1,0 +1,42 @@
+{
+  "command": "python -m benchmarks.mpi_scaling --directory <extracted-campaign> --replay-sha256 <external-report-sha256>",
+  "replay_runtime": {
+    "kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "packages": {
+      "numpy": "2.5.5",
+      "scipy": "1.18.1",
+      "pydantic": "2.14.4"
+    },
+    "cpu_model": "Intel(R) Core(TM) Ultra 7 155H",
+    "source_sha256": {
+      "benchmarks/mpi_scaling.py": "acd8e627526a7d0af7a7d266f64f1bb5a0bc31804e16cfb63a949959b7459ded",
+      "sciagent/mpi_study.py": "0c09d23bd16b61ad5752ddc76db26f52172283f5114461a6f4b2f47276d6abd3",
+      "sciagent/mfem_runner.py": "3ff7e15426db85a0334c04d9a1e90ab670b5817311f78e2b9b212a299482b0f2",
+      "sciagent/evidence.py": "a4501ad04f03571ee749d18b27429b166ea35257cc8b606e2c96d013627d5982",
+      "sciagent/spec.py": "1a755cc8f3adba951ace6d69f7aa8fdd89e822effb6c91a364df5cdb673f5322",
+      "verifier/fem.py": "87276898e460e97c0d3a3e4681a9d55e4bbefcbf98ef305de419bbe9f0442d7a",
+      "verifier/verifier.py": "2eb5195f0d63debc1d9cb1824655e625b9fbab52cc2efe596584ac541ed31366",
+      "verifier/mpi.py": "34002b0bfa13cb3abccb5bf0fb86501d0842f51ea76cfeb84234403c2c7a59d5",
+      "verifier/expr.py": "1c022c758ea7c3221ba6978ec3940d2d48f9e0d08974812d824c385bda381573",
+      "verifier/reference_solver.py": "2ef22290a8163c3c6e07fa0873d3e7f34fd69c40bfa0f30c1d26bf466c435924"
+    }
+  },
+  "captures": {
+    "large": {
+      "studies_replayed": 31,
+      "manifest_sha256": "e6f17f845cc4fb9d1afc1da2082c46d1e39bef57b23ff202f7d965a8f47ea0d8",
+      "prospective_receipt_sha256": "7ea59ea22c7f3260be616edc49b1193dd9d908f02f06928b5dcdeeb1bf9eae1b",
+      "prospective_selection": "mpi4",
+      "prospective_replayed": true
+    },
+    "small": {
+      "studies_replayed": 31,
+      "manifest_sha256": "f95b05cc9d6a34b37f694d471363e5ac3255980dcd3c89b3539d998c22bbea34",
+      "prospective_receipt_sha256": "7a1659cc27fe3813e5e9c57fdcd2d7ca6bf0be5af89a3cf4cad4f0c063d41923",
+      "prospective_selection": "serial",
+      "prospective_replayed": true
+    }
+  },
+  "native_test_command": "python -m pytest -q tests/test_mpi_selection.py tests/test_mpi_protocol.py tests/test_mpi_timeout.py tests/test_mpi_verifier.py tests/test_mpi_native.py --require-mpi",
+  "native_test_result": "49 passed in 23.82s"
+}

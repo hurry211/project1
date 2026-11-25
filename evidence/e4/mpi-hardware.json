@@ -1,0 +1,56 @@
+{
+  "kernel": "6.6.87.2-microsoft-standard-WSL2",
+  "host": "desktop",
+  "windows_adapter": {
+    "name": "Intel(R) Arc(TM) Graphics",
+    "driver_version": "32.0.101.5768",
+    "probe": "Get-CimInstance Win32_VideoController"
+  },
+  "wsl_nodes": {
+    "/dev/dxg": true,
+    "/dev/dri": false,
+    "/dev/nvidia0": false,
+    "/dev/kfd": false
+  },
+  "wsl_driver_libraries": [
+    "libd3d12.so",
+    "libd3d12core.so",
+    "libdxcore.so"
+  ],
+  "tool_paths": {
+    "nvidia-smi": null,
+    "nvcc": null,
+    "hipcc": null,
+    "rocminfo": null,
+    "icpx": null,
+    "sycl-ls": null,
+    "clinfo": null,
+    "mpiexec": "/usr/bin/mpiexec"
+  },
+  "opencl_icds": [],
+  "allocated_scheduler_environment": [],
+  "serial_build": {
+    "MFEM_USE_MPI": false,
+    "MFEM_USE_CUDA": false,
+    "MFEM_USE_HIP": false,
+    "MFEM_USE_OCCA": false,
+    "MFEM_USE_RAJA": false,
+    "MFEM_USE_CEED": false
+  },
+  "mpi_build": {
+    "MFEM_USE_MPI": true,
+    "MFEM_USE_CUDA": false,
+    "MFEM_USE_HIP": false,
+    "MFEM_USE_OCCA": false,
+    "MFEM_USE_RAJA": false,
+    "MFEM_USE_CEED": false
+  },
+  "tested_hosts": 1,
+  "tested_backends": [
+    "serial_cpu",
+    "mpi_cpu"
+  ],
+  "multinode_numerical_trials": 0,
+  "scope": "WSL2 MFEM executables and this MPI scaling campaign",
+  "native_mfem_gpu_trials": 0
+}

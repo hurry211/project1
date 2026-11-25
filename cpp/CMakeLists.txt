@@ -16,6 +16,7 @@ endif()
 
 add_executable(poisson_mms poisson_mms.cpp)
 add_executable(poisson_amr poisson_amr.cpp)
+add_executable(field_family field_family.cpp)
 # Archive the linked package configuration alongside the compilation unit.
 set(config_fields)
 foreach(feature MPI METIS METIS_5 SUITESPARSE LAPACK OPENMP CUDA HIP RAJA OCCA PETSC ZLIB DOUBLE SINGLE)
@@ -27,7 +28,7 @@ foreach(feature MPI METIS METIS_5 SUITESPARSE LAPACK OPENMP CUDA HIP RAJA OCCA P
 endforeach()
 list(JOIN config_fields "," config_json)
 configure_file(mfem_build.hpp.in mfem_build.hpp @ONLY)
-foreach(_tgt poisson_mms poisson_amr)
+foreach(_tgt poisson_mms poisson_amr field_family)
   target_include_directories(${_tgt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
   target_include_directories(${_tgt} PRIVATE ${MFEM_INCLUDE_DIRS})
   target_link_libraries(${_tgt} PRIVATE ${MFEM_LIBRARIES})

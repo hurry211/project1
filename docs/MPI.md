@@ -51,3 +51,42 @@ bash scripts/build_solver_mpi.sh
 taskset -c "$CPU_LIST" python -m benchmarks.mpi_phases --directory runs/mpi-phases --repetitions 8
 python -m benchmarks.mpi_phases --directory runs/mpi-phases --replay-sha256 "$SHA"
 ```
+
+## Larger strong-scaling campaign with E3 verification
+
+The E4 experiment solves the same sine P1 problem at 128, 256 and 512 cells per side. The finest grid contains 524,288 triangles and 263,169 DOFs. The reference for every MPI field uses the independent five-point stiffness derivation, chunked high-order error/load integration and the E3 residual-checked SA-AMG-PCG solver. The quadrature workers process disjoint batches under a bounded thread pool and reduce contributions in canonical cell order. The E3 serial verifier separately assembles and verifies the serial control. Rank ownership, the exported field, boundary traces, native stopping claims, both error norms, accuracy targets, reconstructed residual and finest-pair convergence are mandatory. The two final targets are L2 at most `2/512²` and H1 seminorm at most `5/512`. [MPI verifier](../verifier/mpi.py) · [AMG residual checks](../verifier/reference_solver.py)
+
+The compact driver partitions actual Cartesian element centroids into 1×1, 2×1 or 2×2 tiles. Each rank writes every local vertex's coordinates and field value once as three little-endian binary64 numbers. Three little-endian int32 local indices encode each owned triangle. Physical boundary edges retain their existing text format. A separate legacy arm uses METIS and the original text exports with the same streaming verifier. The single-node launcher starts once per mesh level. Each rank still constructs the input Cartesian mesh before building its partition. This leaves a replicated-memory cost at larger node and rank counts. [Native partition and export](../cpp/mpi/poisson_mpi.cpp)
+
+Each arm runs all three levels with one BLAS thread. The serial arm uses one physical core, and each MPI arm uses the corresponding number of physical cores from the same set. The measured interval includes native process launch, assembly, solve, export, independent numerical checks, convergence and hashing the raw trial files. Each MPI trial re-reads an accepted serial control. The campaign records the initial cost of producing and validating that shared control separately. A warm-up block precedes five scored blocks. The seeded arm order rotates to cover each within-block position once. The intervals resample complete paired differences. The sample size and shared WSL2 host limit interpretation. Serial GS and MPI BoomerAMG use different preconditioners and export formats. The MPI one-rank comparison isolates strong scaling within the parallel implementation. [Capture, selection and replay](../benchmarks/mpi_scaling.py)
+
+From the serial and MPI installations described above, choose four logical CPU IDs on different physical cores and an empty output path on a Linux filesystem. Use the SHA-256 printed by capture as PIN. The offline replay rechecks the control and every trial. Prospective selection checks the pinned calibration, executable, hardware, loaded code and numerical libraries, records the decision, then runs and independently verifies a new study. It considers a change from serial only when the candidate's upper paired interval shows at least 5% lower verified time with at least five scored pairs.
+
+```bash
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
+taskset -c "$CPUS" python -m benchmarks.mpi_scaling --directory "$RUN" --scale large
+taskset -c "$CPUS" python -m benchmarks.mpi_scaling --directory "$RUN" --replay-sha256 "$PIN"
+taskset -c "$CPUS" python -m sciagent select-mpi --calibration "$RUN" --report-sha256 "$PIN" --directory "$NEW_STUDY"
+```
+
+## Measured E4 results
+
+The large calibration used logical CPUs 12, 14, 16 and 18 on separate physical cores. Each row gives medians across five scored studies. Each study verified one field at each of the three mesh sizes. Wall time for the prospective choice also includes the decision itself. [Design and source hashes](../evidence/e4/mpi-design.json) · [Paired comparisons](../evidence/e4/mpi-report.json) · [Phase and field comparison results](../evidence/e4/mpi-summary.json)
+
+| Large study | Native process time (s) | Entire verified study (s) |
+|---|---:|---:|
+| Serial, GS | 12.821 | 25.317 |
+| 1 rank, BoomerAMG | 7.486 | 15.933 |
+| 2 ranks, BoomerAMG | 6.207 | 14.712 |
+| 4 ranks, BoomerAMG | 4.643 | 11.064 |
+| 4 ranks, BoomerAMG, METIS and text exports | 5.720 | 12.651 |
+
+Four compact-output ranks achieved **1.44× verified strong scaling** over one. The median paired difference was −5.53 s, with a 95% paired bootstrap interval of −10.72 to −1.96 s. The two-rank interval included zero. Comparing four ranks to the serial GS configuration gave a 2.29× ratio of medians. That comparison includes the effects of the different solver, preconditioner, field format and verification implementation. Across every scored compact four-rank level, the maximum relative field difference from the independent AMG reference was 1.44 × 10⁻¹³ and from the serial control was 1.48 × 10⁻¹³. [Per-trial numerical results and artifact digests](../evidence/e4/mpi-trials.jsonl.gz)
+
+At four ranks, the median of the summed rank-maximum export times across the three meshes decreased from 0.426 s (text) to 0.014 s (compact). The median end-to-end difference for this combined partition and export change was −1.77 s, with a 95% paired interval of −7.94 to +2.35 s. The five paired blocks resolve the four-versus-one scaling effect more clearly than the difference between the two four-rank export paths. [Measured phase summaries](../evidence/e4/mpi-summary.json)
+
+The policy selected four ranks for a fresh large study. It spent 0.685 s validating the calibration and recording the decision, then completed all three verified levels in 16.646 s (17.331 s including the decision). The raw bundle retains the executable pair, frozen versions of the tracked timing and numerical modules, control, six complete blocks, selected field and receipt. Later changes to a pinned module require fresh calibration for a new production decision. The replay command can check archived fields from these frozen experiments independently of the native executables. [Decision](../evidence/e4/mpi-decision.json) · [Fresh-study receipt](../evidence/e4/mpi-selection.json) · [Archive digest and size](../evidence/e4/mpi-summary.json)
+
+A second five-block calibration used the release source tree, meshes of 32, 64 and 128 cells per side, and logical CPUs 6, 8, 10 and 20. Median verified times were 1.124 s for serial, 2.169 s for one rank, 2.134 s for two ranks, 2.614 s for four ranks and 2.824 s for the four-rank text export. The paired four-rank minus serial interval was +0.20 to +1.63 s. The public `select-mpi` command chose serial, verified the fresh study in 2.239 s and returned an accepted receipt in 2.595 s including the decision. Independent replay reproduced all 31 calibration studies and the selected study. CPU sets and capture times differ between campaigns, so the two size points establish a policy choice on each tested setup without estimating a precise crossover size. [Release design](../evidence/e4/mpi-small-design.json) · [Paired statistics](../evidence/e4/mpi-small-report.json) · [Selected study](../evidence/e4/mpi-small-selection.json) · [Raw archive digest](../evidence/e4/mpi-small-summary.json)
+
+This WSL2 campaign reserved four physical cores and addressed one host. The host exposes a Windows Intel Arc graphics adapter through a D3D12 bridge. Both MFEM installations used here were CPU builds. The scaling figures cover single-node CPU solves and parallel field verification. [Hardware and build inventory](../evidence/e4/mpi-hardware.json)

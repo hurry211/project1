@@ -1,0 +1,12 @@
+{
+  "report_sha256": "68d585c4b44c3cb3fc57c195926ef95889b85025115ad51001f2deca4c9c0e9f",
+  "inventory_sha256": "c4d248c4b79cc34427c0e578d221db8ce787e88c3b55a4f0e9b61eaf65634c7d",
+  "verified_files": 12048,
+  "trial_receipts_checked": 126,
+  "full_verdict_replays": {
+    "ACCEPTED": 221,
+    "REJECTED": 51,
+    "RETRY_ELIGIBLE": 18
+  },
+  "mode": "all"
+}

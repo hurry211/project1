@@ -1,0 +1,204 @@
+{
+  "historical": {
+    "source_commit": "ceb485cb9836c73ce846f62d49ca9591fcb83bfc",
+    "audit_sha256": "3b73a01af43c22e4df923b4ab9c6f02a155dd1fe52428533d17ed44d880f3c7a",
+    "published_audit_identical_bytes": true,
+    "design_sha256": "8ade49e156696eb5ab3b8548cb04af09a7f09e4facbd1fce92fa4b5215869fa9",
+    "report_sha256": "221178e7fe3ea8e30e15a2fbd63bee84cd50f7a055b0c4b39f238f15d84dcc99",
+    "journal_sha256": "11397f2c64ebb414994b37dfb3d99cf9082fdbdc8f19874f2458a1604fb00fd5",
+    "inventories_checked": 52,
+    "replayed": [
+      {
+        "directory": "H1_000_baseline",
+        "manifest_sha256": "499aef2653c20f2e77ce333475624838544586312a1f783fca7368ab90eab296"
+      },
+      {
+        "directory": "H1_000_candidate",
+        "manifest_sha256": "a1edaa7184726b6d380950f4d4a3d29f7d182b935a1e0c1984ec3c7d460232d3"
+      },
+      {
+        "directory": "H2_000_candidate",
+        "manifest_sha256": "4a246c57b0cba8a6c038c9d4f0c45e766f616c1ceb40ffa7e5183293fdbcbb2c"
+      },
+      {
+        "directory": "H2_000_baseline",
+        "manifest_sha256": "97ed6e46a5f29c04507769b08bd494fe9335e540b1110c7b12d14a95f8540327"
+      }
+    ],
+    "numerical_sha256": {
+      "H1": "226e3d8befc05e5a60d8b13203675ef0a4707ff7ea8e40bbdb9cb4a867ac0e05",
+      "H2": "84dcf52001f1a97c382cb6fb0705eff08ee6dfd34a00cbb429d2d3952972c77c"
+    },
+    "scores": {
+      "H1": {
+        "median_seconds": {
+          "baseline": 30.811961814500023,
+          "candidate": 23.714370947499987
+        },
+        "median_paired_delta_seconds": -7.643018558999984,
+        "paired_95pct_seconds": [
+          -8.376549674000046,
+          -6.8917581054999175
+        ]
+      },
+      "H2": {
+        "median_seconds": {
+          "baseline": 2.369868987000018,
+          "candidate": 2.047157018500002
+        },
+        "median_paired_delta_seconds": -0.3101306125000747,
+        "paired_95pct_seconds": [
+          -0.5164725475000296,
+          -0.17773617349996584
+        ]
+      }
+    }
+  },
+  "current_compact_aa": {
+    "scored_blocks": 2,
+    "warmup_pairs": 1,
+    "input_design": {
+      "workloads": {
+        "C1": {
+          "case": "sin_sin",
+          "levels": [
+            4,
+            8,
+            16
+          ],
+          "l2_target": 0.0078125,
+          "h1_target": 0.3125
+        }
+      },
+      "request_sha256": {
+        "C1": "15bba4ad1d00a2a784da96bb9133bf8a87be56e8942cf6d0404837910ee9b868"
+      },
+      "binary_sha256": "fdbe3f731f7ad158d086b9cd4409111a29b7eb3f2a8511f0af32fd02999cf65b",
+      "cpu": 10,
+      "threads": {
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1"
+      },
+      "kernel": "6.6.87.2-microsoft-standard-WSL2",
+      "python": "3.12.3",
+      "source_sha256": {
+        "baseline": {
+          "sciagent/controller.py": "32ea7114995068eb12292d332c71e01dac4fd9277419f4535e2ec28732842b42",
+          "sciagent/environment.py": "a2595725bff8c6b900d66487d97ce703587f4838bdcd6e7e24fdfdf94e1c890e",
+          "sciagent/evidence.py": "a4501ad04f03571ee749d18b27429b166ea35257cc8b606e2c96d013627d5982",
+          "sciagent/mfem_runner.py": "3ff7e15426db85a0334c04d9a1e90ab670b5817311f78e2b9b212a299482b0f2",
+          "sciagent/profiling.py": "9998a514547552b468d19c712602cf0eb73b22c6ad8d75b2e623a2e10cebc118",
+          "sciagent/spec.py": "1a755cc8f3adba951ace6d69f7aa8fdd89e822effb6c91a364df5cdb673f5322",
+          "sciagent/verification_process.py": "fd2aa10fb351cd755f2c5ca2aff506c2fc2d93f688ca8b252b9ae3db9b7d3a14",
+          "sciagent/verification_worker.py": "0aa6f7fc7db75713942f1c524036272bd8f1ea427b4a88a44970e837695789ed",
+          "verifier/expr.py": "1c022c758ea7c3221ba6978ec3940d2d48f9e0d08974812d824c385bda381573",
+          "verifier/fem.py": "87276898e460e97c0d3a3e4681a9d55e4bbefcbf98ef305de419bbe9f0442d7a",
+          "verifier/verifier.py": "2eb5195f0d63debc1d9cb1824655e625b9fbab52cc2efe596584ac541ed31366",
+          "benchmarks/e1.py": "1f30ee9ac12c78e5a79f3186057fde1bfce59946afc76be558222e3e77bfb6d2"
+        },
+        "candidate": {
+          "sciagent/controller.py": "32ea7114995068eb12292d332c71e01dac4fd9277419f4535e2ec28732842b42",
+          "sciagent/environment.py": "a2595725bff8c6b900d66487d97ce703587f4838bdcd6e7e24fdfdf94e1c890e",
+          "sciagent/evidence.py": "a4501ad04f03571ee749d18b27429b166ea35257cc8b606e2c96d013627d5982",
+          "sciagent/mfem_runner.py": "3ff7e15426db85a0334c04d9a1e90ab670b5817311f78e2b9b212a299482b0f2",
+          "sciagent/profiling.py": "9998a514547552b468d19c712602cf0eb73b22c6ad8d75b2e623a2e10cebc118",
+          "sciagent/spec.py": "1a755cc8f3adba951ace6d69f7aa8fdd89e822effb6c91a364df5cdb673f5322",
+          "sciagent/verification_process.py": "fd2aa10fb351cd755f2c5ca2aff506c2fc2d93f688ca8b252b9ae3db9b7d3a14",
+          "sciagent/verification_worker.py": "0aa6f7fc7db75713942f1c524036272bd8f1ea427b4a88a44970e837695789ed",
+          "verifier/expr.py": "1c022c758ea7c3221ba6978ec3940d2d48f9e0d08974812d824c385bda381573",
+          "verifier/fem.py": "87276898e460e97c0d3a3e4681a9d55e4bbefcbf98ef305de419bbe9f0442d7a",
+          "verifier/verifier.py": "2eb5195f0d63debc1d9cb1824655e625b9fbab52cc2efe596584ac541ed31366",
+          "benchmarks/e1.py": "1f30ee9ac12c78e5a79f3186057fde1bfce59946afc76be558222e3e77bfb6d2"
+        }
+      },
+      "seed": 20261125,
+      "orders_including_warmup": {
+        "C1": [
+          [
+            "candidate",
+            "baseline"
+          ],
+          [
+            "baseline",
+            "candidate"
+          ],
+          [
+            "candidate",
+            "baseline"
+          ]
+        ]
+      },
+      "capture_script_sha256": {
+        "benchmarks/verified_revision.py": "2602fec4520807bc78aeb12474714bfe7d43b7b6d25c5b53a9674dcf18ec6d8b"
+      }
+    },
+    "raw_archive_sha256": "7fcf49f9ab0e6300a9d546632a3240057b16df65f9e60b9d1a20a52496e07295",
+    "audit_sha256": "bbaf9fd0ae21ce6492aa26d1bfd6f155a6ae21972b0b98dee7b8fc58effc8fb5",
+    "design_sha256": "5f0fbefc7cbb26413c5243b468f1e98c720cd2c479f03f07e2cfaf00da91cae0",
+    "report_sha256": "6b986f2cfff173dff852a24d6b1de22b5f5ae16a81210f9086923086daa9ad7b",
+    "journal_sha256": "2919db8127bb83571174f18c571bd710ad90ab8da1c90dbd12995def5ca1e6b2",
+    "inventories_checked": 6,
+    "replayed": [
+      {
+        "directory": "C1_000_baseline",
+        "manifest_sha256": "c60d970bee5ab324251a87d27a11f8647a078ab154c4a9635700cf5adfab6be3"
+      },
+      {
+        "directory": "C1_000_candidate",
+        "manifest_sha256": "786ecb95f80fb5bcdcf15beb24694ca47f6ae6b6e94462072241511a04de0e17"
+      }
+    ],
+    "numerical_sha256": {
+      "C1": "e463f585369e784ac23e56cd70b56264c2e0f3c946b9f747f394068f60ec7480"
+    },
+    "scores": {
+      "C1": {
+        "median_seconds": {
+          "baseline": 1.9934804929999927,
+          "candidate": 2.2222244385001204
+        },
+        "median_paired_delta_seconds": 0.22874394550012767,
+        "paired_95pct_seconds": [
+          0.2127008540001043,
+          0.24478703700015103
+        ]
+      }
+    }
+  },
+  "current_verifier_on_historical_H2_000_baseline": {
+    "historical_manifest_sha256": "97ed6e46a5f29c04507769b08bd494fe9335e540b1110c7b12d14a95f8540327",
+    "old_verdict_sha256": "387b3cf051db1bbf0c70d2313cf246121c832ce4c2a2919eb544169a09a87810",
+    "replay_verifier_sha256": "2eb5195f0d63debc1d9cb1824655e625b9fbab52cc2efe596584ac541ed31366",
+    "inventory_passed": true,
+    "saved_state": "ACCEPTED",
+    "replay_state": "ACCEPTED",
+    "saved_verifier_version": "0.4.0",
+    "replay_verifier_version": "0.6.0",
+    "change_count": 5,
+    "changed_fields": [
+      {
+        "path": "/levels/0/checks/20/detail",
+        "change": "value"
+      },
+      {
+        "path": "/levels/1/checks/20/detail",
+        "change": "value"
+      },
+      {
+        "path": "/levels/2/checks/20/detail",
+        "change": "value"
+      },
+      {
+        "path": "/levels/3/checks/20/detail",
+        "change": "value"
+      },
+      {
+        "path": "/verifier_version",
+        "change": "value",
+        "saved": "0.4.0",
+        "current": "0.6.0"
+      }
+    ]
+  }
+}

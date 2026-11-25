@@ -1,0 +1,68 @@
+{
+  "report_sha256": "e6f17f845cc4fb9d1afc1da2082c46d1e39bef57b23ff202f7d965a8f47ea0d8",
+  "archive_relative": "runs/e4-20261125/mpi-qualified.tar.gz",
+  "archive_sha256": "8478910501230465aa87e2969550909d06a405d9d67af52f772eb866007b7e8d",
+  "archive_bytes": 86692131,
+  "scored_blocks": 5,
+  "total_studies_including_control": 31,
+  "prospective_selection": "mpi4",
+  "prospective_accepted_and_replayed": true,
+  "per_arm": {
+    "serial": {
+      "median_verified_seconds": 25.316926202000104,
+      "median_native_process_seconds": 12.8205,
+      "median_verified_minus_native_seconds": 11.863126202000105,
+      "max_reference_relative_field_difference": 2.9198957158109425e-14,
+      "max_serial_relative_field_difference": 0,
+      "median_sum_of_rank_phase_maxima": {}
+    },
+    "mpi1": {
+      "median_verified_seconds": 15.93301894199999,
+      "median_native_process_seconds": 7.486486927999977,
+      "median_verified_minus_native_seconds": 8.50935075599989,
+      "max_reference_relative_field_difference": 1.9207099370434866e-13,
+      "max_serial_relative_field_difference": 2.0700368078714156e-13,
+      "median_sum_of_rank_phase_maxima": {
+        "mesh_partition_seconds": 0.497000252,
+        "partition_export_seconds": 0.035182447000000394,
+        "cg_including_lazy_amg_seconds": 0.864127815
+      }
+    },
+    "mpi2": {
+      "median_verified_seconds": 14.712268772000016,
+      "median_native_process_seconds": 6.207029649999981,
+      "median_verified_minus_native_seconds": 7.975847378000026,
+      "max_reference_relative_field_difference": 2.5146867094817904e-13,
+      "max_serial_relative_field_difference": 2.3864543408525655e-13,
+      "median_sum_of_rank_phase_maxima": {
+        "mesh_partition_seconds": 0.626029276,
+        "partition_export_seconds": 0.019191881000000133,
+        "cg_including_lazy_amg_seconds": 0.541651212
+      }
+    },
+    "mpi4": {
+      "median_verified_seconds": 11.064359319999994,
+      "median_native_process_seconds": 4.643190372999925,
+      "median_verified_minus_native_seconds": 6.2888838500000475,
+      "max_reference_relative_field_difference": 1.4344261495145578e-13,
+      "max_serial_relative_field_difference": 1.4766151539120315e-13,
+      "median_sum_of_rank_phase_maxima": {
+        "mesh_partition_seconds": 0.579938799,
+        "partition_export_seconds": 0.014269317000000115,
+        "cg_including_lazy_amg_seconds": 0.30735375800000003
+      }
+    },
+    "mpi4_tsv": {
+      "median_verified_seconds": 12.651241802999948,
+      "median_native_process_seconds": 5.72013882400006,
+      "median_verified_minus_native_seconds": 7.26640404699981,
+      "max_reference_relative_field_difference": 3.4084274605338176e-13,
+      "max_serial_relative_field_difference": 3.368458930051958e-13,
+      "median_sum_of_rank_phase_maxima": {
+        "mesh_partition_seconds": 0.884372023,
+        "partition_export_seconds": 0.4256027270000001,
+        "cg_including_lazy_amg_seconds": 0.3276542230000001
+      }
+    }
+  }
+}

@@ -78,3 +78,18 @@ def test_iteration_limit_fails_collectively(tmp_path):
     record = json.loads((tmp_path / "result.json").read_text())
     assert record["solver_converged"] is False and record["solver_iterations"] == 1
     assert record["solver_final_norm"] > record["rel_tol"] * record["solver_initial_norm"]
+
+
+def test_compact_cartesian_tiles_match_full_mpi_field(tmp_path):
+    import numpy as np
+    from verifier.mpi import _merge
+
+    legacy, compact = tmp_path / "metis", tmp_path / "tiles"
+    legacy.mkdir()
+    compact.mkdir()
+    assert run_level(legacy, 4).returncode == 0
+    assert run_level(compact, 4, "--compact-partition").returncode == 0
+    old_field, _ = _merge(legacy, 16, 4)
+    new_field, counts = _merge(compact, 16, 4, compact=True)
+    assert counts == [128] * 4
+    np.testing.assert_allclose(old_field, new_field, atol=1e-10, rtol=0)

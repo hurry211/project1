@@ -1,0 +1,1109 @@
+{
+  "schema": 1,
+  "studies": [
+    {
+      "directory": "heat-2d-q1",
+      "request": {
+        "schema": 1,
+        "family": "heat",
+        "dimension": 2,
+        "order": 1,
+        "levels": [
+          4,
+          8,
+          16
+        ],
+        "scheme": "Crank-Nicolson",
+        "domain": "unit hypercube",
+        "trace": "homogeneous Dirichlet",
+        "end_time": 0.03125,
+        "steps_per_cell": 4,
+        "memory_mib": 3072,
+        "process_timeout_seconds": 300
+      },
+      "capture": {
+        "verdict": "ACCEPTED",
+        "l2_orders": [
+          1.9362546385877863,
+          1.9841290551425308
+        ],
+        "minimum_finest_order": 1.5,
+        "levels": [
+          {
+            "n": 4,
+            "scalar_nodes": 25,
+            "system_dofs": 25,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 9.15914672265856e-13,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.13055098003768767,
+            "l2_limit": 0.7503814697265625,
+            "passed": true
+          },
+          {
+            "n": 8,
+            "scalar_nodes": 81,
+            "system_dofs": 81,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 3.789928766653672e-13,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.03411217499437567,
+            "l2_limit": 0.18759536743164062,
+            "passed": true
+          },
+          {
+            "n": 16,
+            "scalar_nodes": 289,
+            "system_dofs": 289,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 1.6318286863715937e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.008622377839500015,
+            "l2_limit": 0.046898841857910156,
+            "passed": true
+          }
+        ],
+        "manifest_sha256": "06a3328c70e397913419eb14e3930ea8905fa2be12452fb0eb8b9c00704b3dec",
+        "costs": [
+          {
+            "n": 4,
+            "native_seconds": 0.014797461999933148,
+            "native_peak_rss_kib": 8272,
+            "verifier_seconds": 0.44789698199997474,
+            "verifier_peak_rss_kib": 55800
+          },
+          {
+            "n": 8,
+            "native_seconds": 0.007023931999924571,
+            "native_peak_rss_kib": 8272,
+            "verifier_seconds": 0.39212083000006714,
+            "verifier_peak_rss_kib": 56044
+          },
+          {
+            "n": 16,
+            "native_seconds": 0.010017770999979803,
+            "native_peak_rss_kib": 8272,
+            "verifier_seconds": 0.4710427400000299,
+            "verifier_peak_rss_kib": 56104
+          }
+        ]
+      },
+      "replay": "ACCEPTED"
+    },
+    {
+      "directory": "heat-2d-q2",
+      "request": {
+        "schema": 1,
+        "family": "heat",
+        "dimension": 2,
+        "order": 2,
+        "levels": [
+          4,
+          8,
+          16
+        ],
+        "scheme": "Crank-Nicolson",
+        "domain": "unit hypercube",
+        "trace": "homogeneous Dirichlet",
+        "end_time": 0.03125,
+        "steps_per_cell": 4,
+        "memory_mib": 3072,
+        "process_timeout_seconds": 300
+      },
+      "capture": {
+        "verdict": "ACCEPTED",
+        "l2_orders": [
+          3.012775865694653,
+          3.0002245682019737
+        ],
+        "minimum_finest_order": 2.5,
+        "levels": [
+          {
+            "n": 4,
+            "scalar_nodes": 81,
+            "system_dofs": 81,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 3.5153439027334657e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.004012521861455132,
+            "l2_limit": 0.1878814697265625,
+            "passed": true
+          },
+          {
+            "n": 8,
+            "scalar_nodes": 289,
+            "system_dofs": 289,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 5.13522835560811e-13,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.0004971432026983533,
+            "l2_limit": 0.023532867431640625,
+            "passed": true
+          },
+          {
+            "n": 16,
+            "scalar_nodes": 1089,
+            "system_dofs": 1089,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 1.2689702745863753e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 6.21332279998141e-05,
+            "l2_limit": 0.0029535293579101562,
+            "passed": true
+          }
+        ],
+        "manifest_sha256": "d674bb914c41ecfb13043f4a024167b3e670733c4cef6f0112a02d0d9855f92c",
+        "costs": [
+          {
+            "n": 4,
+            "native_seconds": 0.006525818999989497,
+            "native_peak_rss_kib": 8272,
+            "verifier_seconds": 0.5749282499999708,
+            "verifier_peak_rss_kib": 56028
+          },
+          {
+            "n": 8,
+            "native_seconds": 0.009720423999965533,
+            "native_peak_rss_kib": 8448,
+            "verifier_seconds": 0.5404423210000004,
+            "verifier_peak_rss_kib": 55852
+          },
+          {
+            "n": 16,
+            "native_seconds": 0.03464641699997628,
+            "native_peak_rss_kib": 8940,
+            "verifier_seconds": 0.49044870799991713,
+            "verifier_peak_rss_kib": 56200
+          }
+        ]
+      },
+      "replay": "ACCEPTED"
+    },
+    {
+      "directory": "heat-3d-q1",
+      "request": {
+        "schema": 1,
+        "family": "heat",
+        "dimension": 3,
+        "order": 1,
+        "levels": [
+          4,
+          8,
+          16
+        ],
+        "scheme": "Crank-Nicolson",
+        "domain": "unit hypercube",
+        "trace": "homogeneous Dirichlet",
+        "end_time": 0.03125,
+        "steps_per_cell": 4,
+        "memory_mib": 3072,
+        "process_timeout_seconds": 300
+      },
+      "capture": {
+        "verdict": "ACCEPTED",
+        "l2_orders": [
+          1.8995423793244068,
+          1.9747656904401978
+        ],
+        "minimum_finest_order": 1.5,
+        "levels": [
+          {
+            "n": 4,
+            "scalar_nodes": 125,
+            "system_dofs": 125,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 1.2660698632211702e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.18764023836751337,
+            "l2_limit": 0.7503814697265625,
+            "passed": true
+          },
+          {
+            "n": 8,
+            "scalar_nodes": 729,
+            "system_dofs": 729,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 1.217793708375974e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.050292907300534956,
+            "l2_limit": 0.18759536743164062,
+            "passed": true
+          },
+          {
+            "n": 16,
+            "scalar_nodes": 4913,
+            "system_dofs": 4913,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 2.4921461720424826e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.012795080852047249,
+            "l2_limit": 0.046898841857910156,
+            "passed": true
+          }
+        ],
+        "manifest_sha256": "de75fef8092adfdb64f9b4f4c23cb7b71d4336368a94e899f6e3d5524d39d5a9",
+        "costs": [
+          {
+            "n": 4,
+            "native_seconds": 0.00746701100001701,
+            "native_peak_rss_kib": 8448,
+            "verifier_seconds": 0.4670651149999685,
+            "verifier_peak_rss_kib": 56428
+          },
+          {
+            "n": 8,
+            "native_seconds": 0.02404800699991938,
+            "native_peak_rss_kib": 9116,
+            "verifier_seconds": 0.41722246599999835,
+            "verifier_peak_rss_kib": 57848
+          },
+          {
+            "n": 16,
+            "native_seconds": 0.23233455000001868,
+            "native_peak_rss_kib": 15424,
+            "verifier_seconds": 0.4467903120000756,
+            "verifier_peak_rss_kib": 65640
+          }
+        ]
+      },
+      "replay": "ACCEPTED"
+    },
+    {
+      "directory": "heat-3d-q2",
+      "request": {
+        "schema": 1,
+        "family": "heat",
+        "dimension": 3,
+        "order": 2,
+        "levels": [
+          8,
+          16,
+          32
+        ],
+        "scheme": "Crank-Nicolson",
+        "domain": "unit hypercube",
+        "trace": "homogeneous Dirichlet",
+        "end_time": 0.03125,
+        "steps_per_cell": 4,
+        "memory_mib": 3072,
+        "process_timeout_seconds": 300
+      },
+      "capture": {
+        "verdict": "ACCEPTED",
+        "l2_orders": [
+          2.985107419042553,
+          2.916123035632879
+        ],
+        "minimum_finest_order": 2.5,
+        "levels": [
+          {
+            "n": 8,
+            "scalar_nodes": 4913,
+            "system_dofs": 4913,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 6.097007158520971e-13,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.0006223939304702005,
+            "l2_limit": 0.023532867431640625,
+            "passed": true
+          },
+          {
+            "n": 16,
+            "scalar_nodes": 35937,
+            "system_dofs": 35937,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 3.9839297772056243e-13,
+            "independent_limit": 1e-08,
+            "relative_l2": 7.860650287751108e-05,
+            "l2_limit": 0.0029535293579101562,
+            "passed": true
+          },
+          {
+            "n": 32,
+            "scalar_nodes": 274625,
+            "system_dofs": 274625,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 3.3174029512522707e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 1.0414009526397631e-05,
+            "l2_limit": 0.00037217140197753906,
+            "passed": true
+          }
+        ],
+        "manifest_sha256": "af3732f1952d4d5db2133efd38e10badd6ae4d3fb6913ec8e5f27f1b8157ab2f",
+        "costs": [
+          {
+            "n": 8,
+            "native_seconds": 0.31884355800002595,
+            "native_peak_rss_kib": 21860,
+            "verifier_seconds": 0.40935322200004975,
+            "verifier_peak_rss_kib": 59048
+          },
+          {
+            "n": 16,
+            "native_seconds": 8.634457894999969,
+            "native_peak_rss_kib": 111376,
+            "verifier_seconds": 0.4963235610000538,
+            "verifier_peak_rss_kib": 73088
+          },
+          {
+            "n": 32,
+            "native_seconds": 203.29628611200008,
+            "native_peak_rss_kib": 827444,
+            "verifier_seconds": 2.348863940000001,
+            "verifier_peak_rss_kib": 167828
+          }
+        ]
+      },
+      "replay": "ACCEPTED"
+    },
+    {
+      "directory": "wave-2d-q1",
+      "request": {
+        "schema": 1,
+        "family": "wave",
+        "dimension": 2,
+        "order": 1,
+        "levels": [
+          4,
+          8,
+          16
+        ],
+        "scheme": "implicit midpoint in displacement and velocity",
+        "domain": "unit hypercube",
+        "trace": "homogeneous Dirichlet",
+        "end_time": 0.03125,
+        "steps_per_cell": 4,
+        "memory_mib": 3072,
+        "process_timeout_seconds": 300
+      },
+      "capture": {
+        "verdict": "ACCEPTED",
+        "l2_orders": [
+          1.9514372807109155,
+          1.9878459721000246
+        ],
+        "minimum_finest_order": 1.5,
+        "levels": [
+          {
+            "n": 4,
+            "scalar_nodes": 25,
+            "system_dofs": 25,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 5.491326287629223e-15,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.1035471449693718,
+            "l2_limit": 0.7503814697265625,
+            "passed": true
+          },
+          {
+            "n": 8,
+            "scalar_nodes": 81,
+            "system_dofs": 81,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 3.2313372780683864e-11,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.026772995978190727,
+            "l2_limit": 0.18759536743164062,
+            "passed": true
+          },
+          {
+            "n": 16,
+            "scalar_nodes": 289,
+            "system_dofs": 289,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 2.6878790597083702e-11,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.006749874660054128,
+            "l2_limit": 0.046898841857910156,
+            "passed": true
+          }
+        ],
+        "manifest_sha256": "75d9b24d7fc2cf3f7af59cb8ce3b48f88f0217e5c6bb065623d2010f83ed9bcb",
+        "costs": [
+          {
+            "n": 4,
+            "native_seconds": 0.004709666999929141,
+            "native_peak_rss_kib": 8096,
+            "verifier_seconds": 0.3751659600000039,
+            "verifier_peak_rss_kib": 55828
+          },
+          {
+            "n": 8,
+            "native_seconds": 0.005217767999965872,
+            "native_peak_rss_kib": 8272,
+            "verifier_seconds": 0.39200430300002154,
+            "verifier_peak_rss_kib": 55800
+          },
+          {
+            "n": 16,
+            "native_seconds": 0.00958033400002023,
+            "native_peak_rss_kib": 8448,
+            "verifier_seconds": 0.40223498599993945,
+            "verifier_peak_rss_kib": 55908
+          }
+        ]
+      },
+      "replay": "ACCEPTED"
+    },
+    {
+      "directory": "wave-2d-q2",
+      "request": {
+        "schema": 1,
+        "family": "wave",
+        "dimension": 2,
+        "order": 2,
+        "levels": [
+          4,
+          8,
+          16
+        ],
+        "scheme": "implicit midpoint in displacement and velocity",
+        "domain": "unit hypercube",
+        "trace": "homogeneous Dirichlet",
+        "end_time": 0.03125,
+        "steps_per_cell": 4,
+        "memory_mib": 3072,
+        "process_timeout_seconds": 300
+      },
+      "capture": {
+        "verdict": "ACCEPTED",
+        "l2_orders": [
+          3.0012779165073695,
+          2.997952823620627
+        ],
+        "minimum_finest_order": 2.5,
+        "levels": [
+          {
+            "n": 4,
+            "scalar_nodes": 81,
+            "system_dofs": 81,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 1.7020078700968717e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.003934713615718657,
+            "l2_limit": 0.1878814697265625,
+            "passed": true
+          },
+          {
+            "n": 8,
+            "scalar_nodes": 289,
+            "system_dofs": 289,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 3.134290202482849e-11,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.0004914037314538778,
+            "l2_limit": 0.023532867431640625,
+            "passed": true
+          },
+          {
+            "n": 16,
+            "scalar_nodes": 1089,
+            "system_dofs": 1089,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 1.6105114136452073e-11,
+            "independent_limit": 1e-08,
+            "relative_l2": 6.151269070368693e-05,
+            "l2_limit": 0.0029535293579101562,
+            "passed": true
+          }
+        ],
+        "manifest_sha256": "64ec8b9eb3207666efc7f9ca940f41d62f85c9dcf6375c8db2c2f7d876057c35",
+        "costs": [
+          {
+            "n": 4,
+            "native_seconds": 0.007751099999950384,
+            "native_peak_rss_kib": 8272,
+            "verifier_seconds": 0.7445034239999586,
+            "verifier_peak_rss_kib": 55980
+          },
+          {
+            "n": 8,
+            "native_seconds": 0.020415451000076246,
+            "native_peak_rss_kib": 8624,
+            "verifier_seconds": 0.7864809970000124,
+            "verifier_peak_rss_kib": 55860
+          },
+          {
+            "n": 16,
+            "native_seconds": 0.0551061150000578,
+            "native_peak_rss_kib": 9112,
+            "verifier_seconds": 0.9424061940000001,
+            "verifier_peak_rss_kib": 56236
+          }
+        ]
+      },
+      "replay": "ACCEPTED"
+    },
+    {
+      "directory": "wave-3d-q1",
+      "request": {
+        "schema": 1,
+        "family": "wave",
+        "dimension": 3,
+        "order": 1,
+        "levels": [
+          4,
+          8,
+          16
+        ],
+        "scheme": "implicit midpoint in displacement and velocity",
+        "domain": "unit hypercube",
+        "trace": "homogeneous Dirichlet",
+        "end_time": 0.03125,
+        "steps_per_cell": 4,
+        "memory_mib": 3072,
+        "process_timeout_seconds": 300
+      },
+      "capture": {
+        "verdict": "ACCEPTED",
+        "l2_orders": [
+          1.9218471789241856,
+          1.9803368503593037
+        ],
+        "minimum_finest_order": 1.5,
+        "levels": [
+          {
+            "n": 4,
+            "scalar_nodes": 125,
+            "system_dofs": 125,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 4.6185987149974434e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.14882936158277674,
+            "l2_limit": 0.7503814697265625,
+            "passed": true
+          },
+          {
+            "n": 8,
+            "scalar_nodes": 729,
+            "system_dofs": 729,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 1.1043236473399602e-11,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.03927850693169699,
+            "l2_limit": 0.18759536743164062,
+            "passed": true
+          },
+          {
+            "n": 16,
+            "scalar_nodes": 4913,
+            "system_dofs": 4913,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 7.47511467286303e-11,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.009954379125597204,
+            "l2_limit": 0.046898841857910156,
+            "passed": true
+          }
+        ],
+        "manifest_sha256": "161783ff06fb72b897fa517d1e19ec74a04d5345484d73c410e75a82da73beb5",
+        "costs": [
+          {
+            "n": 4,
+            "native_seconds": 0.008375378999971872,
+            "native_peak_rss_kib": 8624,
+            "verifier_seconds": 0.4528774569999996,
+            "verifier_peak_rss_kib": 56272
+          },
+          {
+            "n": 8,
+            "native_seconds": 0.033353701000010005,
+            "native_peak_rss_kib": 9328,
+            "verifier_seconds": 0.6105903410000337,
+            "verifier_peak_rss_kib": 58084
+          },
+          {
+            "n": 16,
+            "native_seconds": 0.41200036300006104,
+            "native_peak_rss_kib": 15424,
+            "verifier_seconds": 0.5004451590000372,
+            "verifier_peak_rss_kib": 65952
+          }
+        ]
+      },
+      "replay": "ACCEPTED"
+    },
+    {
+      "directory": "wave-3d-q2",
+      "request": {
+        "schema": 1,
+        "family": "wave",
+        "dimension": 3,
+        "order": 2,
+        "levels": [
+          4,
+          8,
+          16
+        ],
+        "scheme": "implicit midpoint in displacement and velocity",
+        "domain": "unit hypercube",
+        "trace": "homogeneous Dirichlet",
+        "end_time": 0.03125,
+        "steps_per_cell": 4,
+        "memory_mib": 3072,
+        "process_timeout_seconds": 300
+      },
+      "capture": {
+        "verdict": "ACCEPTED",
+        "l2_orders": [
+          3.0113073747002685,
+          3.0006623874154874
+        ],
+        "minimum_finest_order": 2.5,
+        "levels": [
+          {
+            "n": 4,
+            "scalar_nodes": 729,
+            "system_dofs": 729,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 2.208295003041968e-11,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.004864821404097757,
+            "l2_limit": 0.1878814697265625,
+            "passed": true
+          },
+          {
+            "n": 8,
+            "scalar_nodes": 4913,
+            "system_dofs": 4913,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 4.548515302937073e-11,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.0006033551933536256,
+            "l2_limit": 0.023532867431640625,
+            "passed": true
+          },
+          {
+            "n": 16,
+            "scalar_nodes": 35937,
+            "system_dofs": 35937,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_nodal_linf",
+            "independent_error": 1.7601363237901737e-11,
+            "independent_limit": 1e-08,
+            "relative_l2": 7.538477965999526e-05,
+            "l2_limit": 0.0029535293579101562,
+            "passed": true
+          }
+        ],
+        "manifest_sha256": "23b12be14aa5790cbe36c6dc5a5c7b91a9dbd404e8a62bd876fac454839e85db",
+        "costs": [
+          {
+            "n": 4,
+            "native_seconds": 0.0361256209999965,
+            "native_peak_rss_kib": 9764,
+            "verifier_seconds": 0.3690347220000376,
+            "verifier_peak_rss_kib": 56372
+          },
+          {
+            "n": 8,
+            "native_seconds": 0.4633637339999268,
+            "native_peak_rss_kib": 21856,
+            "verifier_seconds": 0.37840327399999296,
+            "verifier_peak_rss_kib": 59232
+          },
+          {
+            "n": 16,
+            "native_seconds": 15.722181076000084,
+            "native_peak_rss_kib": 111468,
+            "verifier_seconds": 0.9917311469999959,
+            "verifier_peak_rss_kib": 73748
+          }
+        ]
+      },
+      "replay": "ACCEPTED"
+    },
+    {
+      "directory": "elasticity-2d-q1",
+      "request": {
+        "schema": 1,
+        "family": "elasticity",
+        "dimension": 2,
+        "order": 1,
+        "levels": [
+          4,
+          8,
+          16
+        ],
+        "scheme": "static Galerkin",
+        "domain": "unit hypercube",
+        "trace": "homogeneous Dirichlet",
+        "end_time": null,
+        "steps_per_cell": null,
+        "memory_mib": 3072,
+        "process_timeout_seconds": 300
+      },
+      "capture": {
+        "verdict": "ACCEPTED",
+        "l2_orders": [
+          1.9833188228653396,
+          1.99494907029531
+        ],
+        "minimum_finest_order": 1.5,
+        "levels": [
+          {
+            "n": 4,
+            "scalar_nodes": 25,
+            "system_dofs": 50,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_weak_residual",
+            "independent_error": 1.0479045018790926e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.061951267731533206,
+            "l2_limit": 0.75,
+            "passed": true
+          },
+          {
+            "n": 8,
+            "scalar_nodes": 81,
+            "system_dofs": 162,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_weak_residual",
+            "independent_error": 2.948822930030352e-13,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.015667934282708757,
+            "l2_limit": 0.1875,
+            "passed": true
+          },
+          {
+            "n": 16,
+            "scalar_nodes": 289,
+            "system_dofs": 578,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_weak_residual",
+            "independent_error": 8.717026063242725e-13,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.003930721111557888,
+            "l2_limit": 0.046875,
+            "passed": true
+          }
+        ],
+        "manifest_sha256": "6081c63cef59102cf82ac112da6e45893230908318155a6b2d75e49c8d0a04ae",
+        "costs": [
+          {
+            "n": 4,
+            "native_seconds": 0.006593250999912925,
+            "native_peak_rss_kib": 7920,
+            "verifier_seconds": 0.48482485099998485,
+            "verifier_peak_rss_kib": 54568
+          },
+          {
+            "n": 8,
+            "native_seconds": 0.0094611500001065,
+            "native_peak_rss_kib": 7920,
+            "verifier_seconds": 0.5306813149999243,
+            "verifier_peak_rss_kib": 54756
+          },
+          {
+            "n": 16,
+            "native_seconds": 0.008628025000007256,
+            "native_peak_rss_kib": 8096,
+            "verifier_seconds": 0.4377198130000579,
+            "verifier_peak_rss_kib": 55000
+          }
+        ]
+      },
+      "replay": "ACCEPTED"
+    },
+    {
+      "directory": "elasticity-2d-q2",
+      "request": {
+        "schema": 1,
+        "family": "elasticity",
+        "dimension": 2,
+        "order": 2,
+        "levels": [
+          4,
+          8,
+          16
+        ],
+        "scheme": "static Galerkin",
+        "domain": "unit hypercube",
+        "trace": "homogeneous Dirichlet",
+        "end_time": null,
+        "steps_per_cell": null,
+        "memory_mib": 3072,
+        "process_timeout_seconds": 300
+      },
+      "capture": {
+        "verdict": "ACCEPTED",
+        "l2_orders": [
+          3.003077557241568,
+          3.0024195139429186
+        ],
+        "minimum_finest_order": 2.5,
+        "levels": [
+          {
+            "n": 4,
+            "scalar_nodes": 81,
+            "system_dofs": 162,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_weak_residual",
+            "independent_error": 8.135847554472145e-13,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.003957857189027159,
+            "l2_limit": 0.1875,
+            "passed": true
+          },
+          {
+            "n": 8,
+            "scalar_nodes": 289,
+            "system_dofs": 578,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_weak_residual",
+            "independent_error": 6.91583330388362e-13,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.0004936779107970132,
+            "l2_limit": 0.0234375,
+            "passed": true
+          },
+          {
+            "n": 16,
+            "scalar_nodes": 1089,
+            "system_dofs": 2178,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_weak_residual",
+            "independent_error": 1.4881509138149132e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 6.160633345973116e-05,
+            "l2_limit": 0.0029296875,
+            "passed": true
+          }
+        ],
+        "manifest_sha256": "418e29496e0fc5f4b49f7d31797e112da5440f981f6f0cf090e3c08a69a6bff2",
+        "costs": [
+          {
+            "n": 4,
+            "native_seconds": 0.00821867900003781,
+            "native_peak_rss_kib": 8096,
+            "verifier_seconds": 0.4299402219999138,
+            "verifier_peak_rss_kib": 54780
+          },
+          {
+            "n": 8,
+            "native_seconds": 0.01048195599992141,
+            "native_peak_rss_kib": 8272,
+            "verifier_seconds": 0.3841650459999073,
+            "verifier_peak_rss_kib": 54808
+          },
+          {
+            "n": 16,
+            "native_seconds": 0.026681700999915847,
+            "native_peak_rss_kib": 9856,
+            "verifier_seconds": 0.4157818579999457,
+            "verifier_peak_rss_kib": 54900
+          }
+        ]
+      },
+      "replay": "ACCEPTED"
+    },
+    {
+      "directory": "elasticity-3d-q1",
+      "request": {
+        "schema": 1,
+        "family": "elasticity",
+        "dimension": 3,
+        "order": 1,
+        "levels": [
+          4,
+          8,
+          16
+        ],
+        "scheme": "static Galerkin",
+        "domain": "unit hypercube",
+        "trace": "homogeneous Dirichlet",
+        "end_time": null,
+        "steps_per_cell": null,
+        "memory_mib": 3072,
+        "process_timeout_seconds": 300
+      },
+      "capture": {
+        "verdict": "ACCEPTED",
+        "l2_orders": [
+          1.989264598609678,
+          1.996204193110736
+        ],
+        "minimum_finest_order": 1.5,
+        "levels": [
+          {
+            "n": 4,
+            "scalar_nodes": 125,
+            "system_dofs": 375,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_weak_residual",
+            "independent_error": 1.460798905168853e-13,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.06718234637273537,
+            "l2_limit": 0.75,
+            "passed": true
+          },
+          {
+            "n": 8,
+            "scalar_nodes": 729,
+            "system_dofs": 2187,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_weak_residual",
+            "independent_error": 6.421773997937953e-13,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.0169210322891823,
+            "l2_limit": 0.1875,
+            "passed": true
+          },
+          {
+            "n": 16,
+            "scalar_nodes": 4913,
+            "system_dofs": 14739,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_weak_residual",
+            "independent_error": 1.408193595100101e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.004241402759525819,
+            "l2_limit": 0.046875,
+            "passed": true
+          }
+        ],
+        "manifest_sha256": "c2bf2a0499fa386db36c95c6ed7c51dc7f19b0584a23fa8deb8a3dfa643a69c5",
+        "costs": [
+          {
+            "n": 4,
+            "native_seconds": 0.01779818400007116,
+            "native_peak_rss_kib": 8448,
+            "verifier_seconds": 0.42911318999995274,
+            "verifier_peak_rss_kib": 55160
+          },
+          {
+            "n": 8,
+            "native_seconds": 0.1071174119999796,
+            "native_peak_rss_kib": 14432,
+            "verifier_seconds": 0.507975934000001,
+            "verifier_peak_rss_kib": 57012
+          },
+          {
+            "n": 16,
+            "native_seconds": 0.8417374370000061,
+            "native_peak_rss_kib": 55088,
+            "verifier_seconds": 0.5792263870000625,
+            "verifier_peak_rss_kib": 64656
+          }
+        ]
+      },
+      "replay": "ACCEPTED"
+    },
+    {
+      "directory": "elasticity-3d-q2",
+      "request": {
+        "schema": 1,
+        "family": "elasticity",
+        "dimension": 3,
+        "order": 2,
+        "levels": [
+          4,
+          8,
+          16
+        ],
+        "scheme": "static Galerkin",
+        "domain": "unit hypercube",
+        "trace": "homogeneous Dirichlet",
+        "end_time": null,
+        "steps_per_cell": null,
+        "memory_mib": 3072,
+        "process_timeout_seconds": 300
+      },
+      "capture": {
+        "verdict": "ACCEPTED",
+        "l2_orders": [
+          3.000427112288374,
+          3.002556875137811
+        ],
+        "minimum_finest_order": 2.5,
+        "levels": [
+          {
+            "n": 4,
+            "scalar_nodes": 729,
+            "system_dofs": 2187,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_weak_residual",
+            "independent_error": 1.3831842243851148e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.004839444992865359,
+            "l2_limit": 0.1875,
+            "passed": true
+          },
+          {
+            "n": 8,
+            "scalar_nodes": 4913,
+            "system_dofs": 14739,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_weak_residual",
+            "independent_error": 1.0285872502919075e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 0.0006047515598889846,
+            "l2_limit": 0.0234375,
+            "passed": true
+          },
+          {
+            "n": 16,
+            "scalar_nodes": 35937,
+            "system_dofs": 107811,
+            "boundary_linf": 0.0,
+            "independent_measure": "relative_weak_residual",
+            "independent_error": 1.2298072071534337e-12,
+            "independent_limit": 1e-08,
+            "relative_l2": 7.5460089184171e-05,
+            "l2_limit": 0.0029296875,
+            "passed": true
+          }
+        ],
+        "manifest_sha256": "cd85fc882c8f1434618da02a0c9f40addb06c5841f02e0cb0abb89722b61302b",
+        "costs": [
+          {
+            "n": 4,
+            "native_seconds": 0.23865988400007154,
+            "native_peak_rss_kib": 23936,
+            "verifier_seconds": 0.4016851719999295,
+            "verifier_peak_rss_kib": 55444
+          },
+          {
+            "n": 8,
+            "native_seconds": 1.9042373620000035,
+            "native_peak_rss_kib": 117920,
+            "verifier_seconds": 0.44896485200001734,
+            "verifier_peak_rss_kib": 58092
+          },
+          {
+            "n": 16,
+            "native_seconds": 19.955684983000083,
+            "native_peak_rss_kib": 790548,
+            "verifier_seconds": 0.9243432690000191,
+            "verifier_peak_rss_kib": 72496
+          }
+        ]
+      },
+      "replay": "ACCEPTED"
+    }
+  ]
+}

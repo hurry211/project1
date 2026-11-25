@@ -151,6 +151,8 @@ def _launch(directory: Path, build: dict, ranks: int, n: int, timeout: float, *,
     argv = _mpi_argv(build, ranks, n, str(directory.resolve()))
     if diagnostic == "null":
         argv = argv[:argv.index(build["binary"]) + 1] + ["--null-launch"]
+    elif diagnostic == "compact":
+        argv.extend(("--phase-timing", "--compact-partition"))
     elif diagnostic == "phases":
         argv.append("--phase-timing")
     elif diagnostic is not None:

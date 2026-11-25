@@ -1,0 +1,76 @@
+{
+  "schema_version": "0.4",
+  "problem": {
+    "id": "sin_2x_2y",
+    "equation": "-laplacian(u) = f",
+    "domain": "unit_square_2d",
+    "exact_solution": "sin(2*pi*x)*sin(2*pi*y)",
+    "source": "8*pi**2*sin(2*pi*x)*sin(2*pi*y)",
+    "boundaries": [
+      {
+        "attribute": 1,
+        "label": "bottom",
+        "kind": "dirichlet",
+        "value": "from_exact_solution"
+      },
+      {
+        "attribute": 2,
+        "label": "right",
+        "kind": "dirichlet",
+        "value": "from_exact_solution"
+      },
+      {
+        "attribute": 3,
+        "label": "top",
+        "kind": "dirichlet",
+        "value": "from_exact_solution"
+      },
+      {
+        "attribute": 4,
+        "label": "left",
+        "kind": "dirichlet",
+        "value": "from_exact_solution"
+      }
+    ]
+  },
+  "execution": {
+    "mesh_type": "quad",
+    "polynomial_order": 1,
+    "mesh_levels": [
+      8,
+      16,
+      32
+    ],
+    "backend": "serial_cpu",
+    "assembly": "full",
+    "solver": "cg_jacobi",
+    "rel_tol": 1e-12,
+    "max_iter": 20000,
+    "inject_fault": "none"
+  },
+  "validation": {
+    "require_solver_converged": true,
+    "min_levels": 3,
+    "l2_order_min_offset": 0.2,
+    "l2_order_max_offset": 0.5,
+    "h1_order_min_offset": 0.2,
+    "h1_order_max_offset": 0.5,
+    "require_monotone_decrease": true,
+    "max_l2_error_finest": 0.0001,
+    "dirichlet_nodal_abs_tol": 1e-10,
+    "self_report_rel_tol": 1e-06,
+    "require_reference_solve": true,
+    "reference_solve_rel_tol": 1e-07,
+    "reference_solve_max_dofs": 300000,
+    "mms_consistency_rel_tol": 1e-06,
+    "verifier_quadrature_extra_points": 3
+  },
+  "policy": {
+    "max_attempts": 1,
+    "action": "append_refined_level",
+    "max_dofs_per_level": 300000,
+    "max_total_wall_seconds": 900.0,
+    "per_level_timeout_seconds": 300.0,
+    "per_level_memory_mb": 3072
+  }
+}

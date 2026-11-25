@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
    args.AddOption(&abs_tol, "-atol", "--abs-tol", "CG absolute tolerance.");
    args.AddOption(&max_iter, "-maxit", "--max-iter", "CG iteration cap.");
    args.AddOption(&max_steps, "-ms", "--max-steps", "Maximum AMR solve/refine cycles.");
-   args.AddOption(&max_dofs, "-md", "--max-dofs", "Stop once true DOFs exceed max_dofs.");
+   args.AddOption(&max_dofs, "-md", "--max-dofs", "Maximum true DOFs permitted in a solved step.");
    args.AddOption(&theta, "-th", "--theta", "ThresholdRefiner total error fraction (0..1).");
    args.AddOption(&out_dir, "-out", "--out", "Output directory for step_XX artifacts.");
    args.AddOption(&fault, "-fault", "--inject-fault",
@@ -331,6 +331,7 @@ int main(int argc, char *argv[])
       const int v_dofs = fespace.GetNDofs();
       const int t_dofs = fespace.GetTrueVSize();
 
+      if (t_dofs > max_dofs) { break; }
       b.Assemble();
       Array<int> ess_tdof_list;
       x.ProjectBdrCoefficient(u_coef, ess_bdr);
@@ -520,7 +521,7 @@ int main(int argc, char *argv[])
 
       if (!finite) { return 6; }
       if (!converged) { return 5; }
-      if (it + 1 >= max_steps || t_dofs > max_dofs) { break; }
+      if (it + 1 >= max_steps || t_dofs >= max_dofs) { break; }
 
       refiner.Apply(mesh);
       if (refiner.Stop()) { break; }
