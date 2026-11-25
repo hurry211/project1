@@ -1,0 +1,140 @@
+{
+  "schema": "cfac-reserve-v1",
+  "policies": [
+    "cfac",
+    "cfac_reserve",
+    "classical"
+  ],
+  "blocks": 6,
+  "timeout_s": 30,
+  "fixed_relative": "1/1000000",
+  "classical_fraction": "1/2",
+  "cases": [
+    {
+      "id": "unit_separating",
+      "role": "historical physical",
+      "n": 2,
+      "loads": [1, 1, 1, 1, 1, 1, 1, 1],
+      "diffusion": "1",
+      "epsilon": "3/20",
+      "max_actions": 128
+    },
+    {
+      "id": "unit_tighter",
+      "role": "historical physical",
+      "n": 2,
+      "loads": [1, 1, 1, 1, 1, 1, 1, 1],
+      "diffusion": "1",
+      "epsilon": "1/8",
+      "max_actions": 128
+    },
+    {
+      "id": "signed_loose",
+      "role": "historical physical",
+      "n": 3,
+      "loads": [2, 2, -1, -1, -2, -2, 2, 2, -1, -1, -2, -2, 2, 2, -1, -1, -2, -2],
+      "diffusion": "1",
+      "epsilon": "1/6",
+      "max_actions": 128
+    },
+    {
+      "id": "signed_tight",
+      "role": "diagnosed regression",
+      "n": 3,
+      "loads": [2, 2, -1, -1, -2, -2, 2, 2, -1, -1, -2, -2, 2, 2, -1, -1, -2, -2],
+      "diffusion": "1",
+      "epsilon": "1/9",
+      "max_actions": 128
+    },
+    {
+      "id": "hot_loose",
+      "role": "historical physical",
+      "n": 3,
+      "loads": [1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1],
+      "diffusion": "1",
+      "epsilon": "1/5",
+      "max_actions": 128
+    },
+    {
+      "id": "hot_tight",
+      "role": "historical physical",
+      "n": 3,
+      "loads": [1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1],
+      "diffusion": "1",
+      "epsilon": "3/20",
+      "max_actions": 128
+    },
+    {
+      "id": "checker_loose",
+      "role": "held-out checker",
+      "n": 3,
+      "loads": [2, 2, -1, -1, 2, 2, -1, -1, 2, 2, -1, -1, 2, 2, -1, -1, 2, 2],
+      "diffusion": "1",
+      "epsilon": "2/15",
+      "max_actions": 128
+    },
+    {
+      "id": "checker_tight",
+      "role": "held-out checker",
+      "n": 3,
+      "loads": [2, 2, -1, -1, 2, 2, -1, -1, 2, 2, -1, -1, 2, 2, -1, -1, 2, 2],
+      "diffusion": "1",
+      "epsilon": "1/12",
+      "max_actions": 128
+    },
+    {
+      "id": "diagonal_loose",
+      "role": "held-out diagonal",
+      "n": 3,
+      "loads": [3, 3, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 3, 3],
+      "diffusion": "1",
+      "epsilon": "1/5",
+      "max_actions": 128
+    },
+    {
+      "id": "diagonal_tight",
+      "role": "held-out diagonal",
+      "n": 3,
+      "loads": [3, 3, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 3, 3],
+      "diffusion": "1",
+      "epsilon": "2/15",
+      "max_actions": 128
+    },
+    {
+      "id": "dipole_loose",
+      "role": "held-out dipole",
+      "n": 3,
+      "loads": [3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -3, -3],
+      "diffusion": "1",
+      "epsilon": "1/8",
+      "max_actions": 128
+    },
+    {
+      "id": "dipole_tight",
+      "role": "held-out dipole",
+      "n": 3,
+      "loads": [3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -3, -3],
+      "diffusion": "1",
+      "epsilon": "1/12",
+      "max_actions": 128
+    },
+    {
+      "id": "null",
+      "role": "zero-load control",
+      "n": 2,
+      "loads": [0, 0, 0, 0, 0, 0, 0, 0],
+      "diffusion": "1",
+      "epsilon": "1/8",
+      "max_actions": 128
+    },
+    {
+      "id": "budget",
+      "role": "budget negative control",
+      "n": 2,
+      "loads": [1, 1, 1, 1, 1, 1, 1, 1],
+      "diffusion": "1",
+      "epsilon": "1/8",
+      "max_actions": 1
+    }
+  ]
+}

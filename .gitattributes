@@ -15,3 +15,4 @@ research/cfac/microcheck.py text eol=lf
 evidence/cfac/** text eol=lf
 evidence/cfac/*.gz binary
 research/cfac/stopping_design.json text eol=lf
+research/cfac/reserve_design.json text eol=lf
