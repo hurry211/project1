@@ -4,6 +4,8 @@ A deterministic workflow that turns a frozen, machine-checked problem specificat
 
 The CFAC research branch adds a small CPU prototype that certifies energy error for P1 Poisson fields without an exact solution. It can also determine whether further iteration on a fixed P1/RT0 pair can meet a tolerance. [Mathematical specification](docs/CFAC_MATHEMATICAL_SPEC.md) · [Implementation report](docs/CFAC_IMPLEMENTATION_REPORT.md) · [Experiments and replay](docs/CFAC_EXPERIMENTAL_EVIDENCE.md) · [Open problems](docs/CFAC_OPEN_PROBLEMS.md)
 
+An optional RT1 flux reconstruction can certify the same P1 field after a proof that the RT0 pair cannot meet tolerance. At a target of 0.15 the enriched policy accepted on the original mesh. At 0.125 the RT1 trial missed and the controller still refined. [RT1 method, controls and replay](docs/CFAC_RT1_ENRICHMENT.md)
+
 ```
 StudySpec (JSON) ─► schema + MMS consistency ─► freeze & hash ─► environment probe ─► capability matrix
      ─► bind to compiled C++ case ─► MFEM poisson_mms (per mesh level, time/memory limited)

@@ -6,7 +6,7 @@ A proof that the current P1/RT0 pair cannot attain the tolerance leaves two poss
 
 ## A stronger dual baseline
 
-Implement a degree-robust patch reconstruction using the mixed local Neumann problems of Ern and Vohralík. For P1 investigate RT1 with shared oriented face moments and cell moments. Specify the local compatibility conditions, boundary traces, Piola orientation, stable lifting for an inexact iterate and independently checked polynomial equilibrium. Verify that the checker can integrate the higher-degree gap exactly. Start with deterministic unit tests on one patch, then compare local RT0, globally optimized RT0 and patch RT1 at fixed primal fields. The inexpensive spanning-tree flux supplies feasibility but its quality depends on the tree. [Ern and Vohralík, SIAM Journal on Numerical Analysis (2015)](https://doi.org/10.1137/130950100)
+The P1/RT1 vertex-patch construction and independent moment checker now work on the frozen rational contract. Exact tests cover patch stationarity, non-Galerkin iterates, affine-divergence modes and quartic integration. At fixed Galerkin fields, six tolerance rows on two mesh resolutions could certify before refining. The inexact-field control gave a wider RT1 bound than optimal RT0. The next proof question is whether an efficient, local algebraic residual lifting can retain quality for inexact iterates. Higher polynomial degrees and robustness in degree remain open. [RT1 experiments](CFAC_RT1_ENRICHMENT.md) · [Ern and Vohralík, SIAM Journal on Numerical Analysis (2015)](https://doi.org/10.1137/130950100)
 
 ## Classical algebraic stopping
 
