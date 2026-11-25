@@ -1,0 +1,179 @@
+{
+  "workloads": {
+    "H1": {
+      "case": "sin_sin",
+      "levels": [
+        64,
+        128,
+        256,
+        512
+      ],
+      "l2_target": 7.62939453125e-06,
+      "h1_target": 0.009765625
+    },
+    "H2": {
+      "case": "cos_exp",
+      "levels": [
+        16,
+        32,
+        64,
+        128
+      ],
+      "l2_target": 0.0001220703125,
+      "h1_target": 0.0390625
+    }
+  },
+  "request_sha256": {
+    "H1": "f0f35de53608647d7b0a43ff417ecd6ae367adf4c1d3d8edcfa7aadf5f100cd6",
+    "H2": "08682ef3427e72199693ead54fe5dec6db83cc1d26d1bbc45202b116ea3acfa2"
+  },
+  "binary_sha256": "e2a75e0eff6dcbd40ae13515498f7d3a4fe3756b8bdef41aca126397bd8b6438",
+  "cpu": 4,
+  "threads": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "kernel": "6.6.87.2-microsoft-standard-WSL2",
+  "python": "3.12.3",
+  "source_sha256": {
+    "baseline": {
+      "sciagent/controller.py": "9625c973119b349d144cfdd13bd0a7852e08307f8866b3ee41b3480daeb104bd",
+      "sciagent/environment.py": "a2595725bff8c6b900d66487d97ce703587f4838bdcd6e7e24fdfdf94e1c890e",
+      "sciagent/evidence.py": "a4501ad04f03571ee749d18b27429b166ea35257cc8b606e2c96d013627d5982",
+      "sciagent/mfem_runner.py": "13bbc0a7229623fe297ecbb2b1c30b1451a511bb666ec360ad3f042c6ac8af36",
+      "sciagent/profiling.py": "e09eb18e3b6c47e2a67b992e129d1654763f88ba71b77a4e743653c9f36eb4ca",
+      "sciagent/spec.py": "02b0a59a9e7be51cd0a220061d2814a19b7fa8567360993509d063baf238f3d9",
+      "verifier/expr.py": "955752968ef00ff57d4a1cce1b81e7edddcce4f0196343e42052f7e4c1d3c183",
+      "verifier/fem.py": "2ecdc0b5a9122968343d3dbef94203f3b12d69d77f69d549c88a02b897fb07a0",
+      "verifier/verifier.py": "120987b430b285e0f22f7007fdb1c99d9f34471ee5e91f3546654a0d3a745d98",
+      "benchmarks/e1.py": "90202a7a4a4e2cef4e9d47459fca50d7410401eb2a509cbbcc1bb0735457bb36"
+    },
+    "candidate": {
+      "sciagent/controller.py": "9625c973119b349d144cfdd13bd0a7852e08307f8866b3ee41b3480daeb104bd",
+      "sciagent/environment.py": "a2595725bff8c6b900d66487d97ce703587f4838bdcd6e7e24fdfdf94e1c890e",
+      "sciagent/evidence.py": "a4501ad04f03571ee749d18b27429b166ea35257cc8b606e2c96d013627d5982",
+      "sciagent/mfem_runner.py": "13bbc0a7229623fe297ecbb2b1c30b1451a511bb666ec360ad3f042c6ac8af36",
+      "sciagent/profiling.py": "e09eb18e3b6c47e2a67b992e129d1654763f88ba71b77a4e743653c9f36eb4ca",
+      "sciagent/spec.py": "02b0a59a9e7be51cd0a220061d2814a19b7fa8567360993509d063baf238f3d9",
+      "verifier/expr.py": "955752968ef00ff57d4a1cce1b81e7edddcce4f0196343e42052f7e4c1d3c183",
+      "verifier/fem.py": "4b543771b43d3367e06eb606ba9b414c43bb9e085b2c055730c0437a334da4c4",
+      "verifier/verifier.py": "9d0eef58a16b05b4226aea00979ad547f278e36886d08c231e6f965947e903b7",
+      "benchmarks/e1.py": "90202a7a4a4e2cef4e9d47459fca50d7410401eb2a509cbbcc1bb0735457bb36"
+    }
+  },
+  "seed": 20261125,
+  "orders_including_warmup": {
+    "H1": [
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ]
+    ],
+    "H2": [
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ]
+    ]
+  },
+  "capture_script_sha256": {
+    "benchmarks/verified_revision.py": "cb0a6e92c09fea7f6a6abdca8a5f1d436db2b7ea5806eb41c21481df6067166b"
+  }
+}

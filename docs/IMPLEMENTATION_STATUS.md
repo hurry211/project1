@@ -1,5 +1,9 @@
 # Implementation Status
 
+## Independent verification on the large P1 benchmark
+
+The production verifier now processes element records in typed arrays and batches finite-element error integration and reference assembly. Reuse depends on exact equality of the contributing local data. Both the original full-array norm reduction and the independent sparse direct reference solve remain in the acceptance path. The revision benchmark measures complete fresh MFEM studies and repeated verification of identical archived fields. CI runs a compact paired study, a relocated numerical replay test and a complete evidence audit. [Reproduction instructions](VERIFIED_PERFORMANCE.md#measure-a-verifier-change-from-submission-to-acceptance) · [Measured results](RESULTS.md#verifier-revision-at-263169-degrees-of-freedom)
+
 ## Verified performance on scalar workloads
 
 The agent now offers a calibrated serial solver selector and a paired benchmark from request submission to verified result. Each winner must meet independent L2 and H1 accuracy targets and the original numerical gates. The selector checks the mathematical and hardware envelope, records its decision before execution, and can run four coarse native pilots when calibration warrants their cost. Source or build mismatches disable automatic switching. The benchmark preserves unsuccessful runs and an A/A noise control. [Operation and scope](VERIFIED_PERFORMANCE.md)
@@ -12,7 +16,7 @@ The optional local Ollama provider and the deterministic selection rule use the 
 
 Two live paired campaigns ran on a fixed bilingual panel. Both paths completed all 14 eligible numerical studies in each campaign. The review gate held all five review controls, and the post-proposal gate rejected all four supplemental candidates. Live model choices varied on three tasks across captures. The archives preserve the exact prompt, response, model provenance and the outcome of numerical verification for each decision. [Benchmark protocol](PLANNING_BENCHMARK.md) · [Measured results](RESULTS.md#stage-4-controlled-planning-2026-11-24)
 
-The five handoff stages are complete for the measured configurations. Open research questions include preference generalization beyond this panel, additional finite-element families, and larger parallel workloads. The Stage 4 changes and performance measurements are local. Hosted CI has not run this revision.
+The five handoff stages are complete for the measured configurations. Open research questions include preference generalization beyond this panel, additional finite-element families, and larger parallel workloads. The Stage 4 implementation and E1 measurements were published in the main branch. The hosted Python and clean serial MFEM jobs passed for the E1 release. [Hosted verification](https://github.com/rodriguezrobertbfrkx6857-sudo/project/actions/runs/45536377697)
 
 ## Completed Stage 3, 2026-11-24
 

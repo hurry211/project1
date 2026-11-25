@@ -14,6 +14,8 @@ StudySpec (JSON) ─► schema + MMS consistency ─► freeze & hash ─► env
 * `docs/IMPLEMENTATION_STATUS.md`: inventory, environment, verified results, blockers, next actions
 * `docs/RESULTS.md`: generated from `runs/`, with error tables, retry history and the fault × gate detection matrix
 
+The performance benchmark measures time from a submitted request to an independently accepted solution. The latest comparison includes fresh MFEM studies, verifier-only timings and peak memory at 263,169 degrees of freedom. [Results](docs/RESULTS.md#verifier-revision-at-263169-degrees-of-freedom) · [Reproduction commands](docs/VERIFIED_PERFORMANCE.md#measure-a-verifier-change-from-submission-to-acceptance)
+
 ## Requirements
 
 The reproduced configuration uses x86-64 Ubuntu 24.04, CPython 3.12, GCC 13, CMake 3.28 and double-precision serial MFEM 4.10. The solver uses POSIX process resource limits. On Windows, select the Ubuntu 24.04 WSL2 distribution shown by `wsl -l -v` and run the following commands in its Bash shell. A checkout in the Linux home directory keeps compilation and the many small evidence files on the Linux filesystem.

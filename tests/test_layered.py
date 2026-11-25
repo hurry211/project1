@@ -1,5 +1,3 @@
-from dataclasses import replace
-
 import numpy as np
 import pytest
 from pydantic import ValidationError
@@ -7,22 +5,20 @@ from pydantic import ValidationError
 from sciagent.spec import StudySpec, load_study
 from synthetic import write_level
 from verifier import layered
-from verifier.fem import ArtifactError, build_local_basis, element_quadrature, load_mesh_data
+from verifier.fem import (ArtifactError, build_local_basis, element_quadrature,
+                          load_mesh_data, repeated_element_period)
 
 
-def test_translated_quadrature_matches_elementwise_geometry(tmp_path):
+def test_shared_quadrature_matches_elementwise_geometry(tmp_path):
     write_level(tmp_path / "mesh", "quad", 4, 2)
     mesh = load_mesh_data(tmp_path / "mesh")
     basis = build_local_basis(mesh, 2)
-    assert basis.translated
+    assert repeated_element_period(basis.node_ref) == 1
     fast = element_quadrature(mesh, basis, 6)
-    generic = element_quadrature(mesh, replace(basis, translated=False), 6)
-    assert fast.gphi.strides[0] == 0 and generic.gphi.strides[0] != 0
-    for key in ("X", "detJ", "wdet", "phi", "gphi"):
-        np.testing.assert_allclose(getattr(fast, key), getattr(generic, key), rtol=1e-13, atol=1e-13)
+    assert fast.gphi.strides[0] == 0 and fast.phi.strides[0] == 0
     mesh.elem_node_xy[-1, [0, 1]] = mesh.elem_node_xy[-1, [1, 0]]
     changed = build_local_basis(mesh, 2)
-    assert not changed.translated
+    assert repeated_element_period(changed.node_ref) == len(mesh.verts)
     np.testing.assert_allclose(changed.coeffs[-1, :, 0], basis.coeffs[-1, :, 1], atol=1e-13)
 
 

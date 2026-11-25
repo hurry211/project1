@@ -54,6 +54,43 @@ A separate experiment times a cheap rejection screen alongside full verification
 
 For assembly comparisons, the program compares Q1 and Q2 full and partial assembly with the same Jacobi action. The independent reference covers three manufactured cases and both generated and imported meshes. For parallel comparisons the matched serial control, one-rank MPI baseline, empty MPI launches and per-rank timers distinguish numerical work from process costs on the tested host. [Assembly experiment](../benchmarks/assembly_comparison.py) · [MPI measurements and commands](MPI.md)
 
+## Measure a verifier change from submission to acceptance
+
+The revision experiment keeps the MFEM executable, solver (CG with symmetric Gauss–Seidel), requests, mesh levels, tolerances and reference solve fixed. H1 stresses the large affine triangle mesh. H2 exercises transfer to a mixed Dirichlet–Neumann problem. Each revision runs a fresh native study in every block. The reported clock spans request preparation through the verified worker's exit. An additional process repeatedly verifies identical archived fields and measures the verifier's time and peak resident memory in isolation. [Live acquisition](../benchmarks/verified_revision.py) · [Archived-field measurement](../benchmarks/verification_cost.py)
+
+Both comparisons discard one warm-up pair per workload and counterbalance the order of the two revisions across scored blocks. The paired statistic is the median within-block difference, candidate minus baseline. Each 95% percentile interval uses 4,096 resamples of complete pairs within the workload. In fresh studies, the numerical comparison retains every check, convergence value, export digest and native result field after normalizing the per-run directory and three native wall-clock fields. On an identical archived input, the entire verdict must have the same hash. The offline audit checks each inventory against its recorded manifest and repeats the independent numerical verification on representative archives. [Offline audit](../benchmarks/verified_revision_audit.py)
+
+The verifier reads the element table into typed arrays. It evaluates expression and gradient temporaries in batches of up to 65,536 quadrature points and retains the quadrature densities for the original full-array summations. Ordered nodal layouts, quadrature weights and physical gradients must match bit for bit before the corresponding local computations can be reused. Variable diffusivity still receives pointwise integration. Global sparse assembly and the direct reference solve continue to scale with mesh size. [Finite-element data](../verifier/fem.py) · [Integration and reference solve](../verifier/verifier.py)
+
+With the serial solver built using the README, run these commands from the updated checkout on Linux. RUN should be on a Linux filesystem. The example selects one allowed logical CPU.
+
+```bash
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
+export POISSON_MMS_BIN="$PWD/build/cpp/poisson_mms"
+export THIRD_PARTY="$PWD/third_party"
+CPU="$(python -c 'import os; print(min(os.sched_getaffinity(0)))')"
+RUN="$(mktemp -d)"
+mkdir "$RUN/baseline" "$RUN/candidate"
+git archive 6b5761cf4765a8bc7028922348202d6b6cf12076 | tar -x -C "$RUN/baseline"
+git archive HEAD | tar -x -C "$RUN/candidate"
+taskset -c "$CPU" python -m benchmarks.verified_revision \
+  --baseline "$RUN/baseline" --candidate "$RUN/candidate" --cpu "$CPU" \
+  --blocks 12 --seed 20261125 --directory "$RUN/live"
+sha256sum "$RUN/live/design.json" "$RUN/live/report.json"
+```
+
+Retain those two SHA-256 values separately. Set DESIGN and REPORT to the respective digests when auditing the live records. To measure isolated verification on the newly generated fields, select the first scored baseline attempt of each workload. The published replay used the corresponding retained E1 attempts.
+
+```bash
+python -m benchmarks.verified_revision_audit --directory "$RUN/live" \
+  --design-sha256 "$DESIGN" --report-sha256 "$REPORT" --output "$RUN/audit.json"
+H1="$(find "$RUN/live/H1_000_baseline/studies" -type d -name attempt_01)"
+H2="$(find "$RUN/live/H2_000_baseline/studies" -type d -name attempt_01)"
+taskset -c "$CPU" python -m benchmarks.verification_cost \
+  --baseline "$RUN/baseline" --candidate "$RUN/candidate" --attempt "$H1" --attempt "$H2" \
+  --blocks 30 --seed 20261124 --expect-verdict ACCEPTED --output "$RUN/replay.json"
+```
+
 ## Facts resolved from the local revision
 
 The benchmark host exposed 22 logical CPUs in WSL2. The serial measurements bound each study to one logical CPU. The MPI diagnostic used four logical CPUs on different physical cores. The MPI driver writes owned partitions on each rank and the Python verifier merges them. CG timing includes lazy BoomerAMG setup. The stored launcher time also covers partitioning, assembly, export and shutdown. These boundaries explain why a break-even rank count or problem size cannot be extrapolated from a single CG measurement. [MPI driver](../cpp/mpi/poisson_mpi.cpp) · [Rank-local diagnostics](../evidence/e1/mpi-phases.json)

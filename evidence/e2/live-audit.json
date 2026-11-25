@@ -1,0 +1,52 @@
+{
+  "design_sha256": "8ade49e156696eb5ab3b8548cb04af09a7f09e4facbd1fce92fa4b5215869fa9",
+  "report_sha256": "221178e7fe3ea8e30e15a2fbd63bee84cd50f7a055b0c4b39f238f15d84dcc99",
+  "journal_sha256": "11397f2c64ebb414994b37dfb3d99cf9082fdbdc8f19874f2458a1604fb00fd5",
+  "inventories_checked": 52,
+  "replayed": [
+    {
+      "directory": "H1_000_baseline",
+      "manifest_sha256": "499aef2653c20f2e77ce333475624838544586312a1f783fca7368ab90eab296"
+    },
+    {
+      "directory": "H1_000_candidate",
+      "manifest_sha256": "a1edaa7184726b6d380950f4d4a3d29f7d182b935a1e0c1984ec3c7d460232d3"
+    },
+    {
+      "directory": "H2_000_candidate",
+      "manifest_sha256": "4a246c57b0cba8a6c038c9d4f0c45e766f616c1ceb40ffa7e5183293fdbcbb2c"
+    },
+    {
+      "directory": "H2_000_baseline",
+      "manifest_sha256": "97ed6e46a5f29c04507769b08bd494fe9335e540b1110c7b12d14a95f8540327"
+    }
+  ],
+  "numerical_sha256": {
+    "H1": "226e3d8befc05e5a60d8b13203675ef0a4707ff7ea8e40bbdb9cb4a867ac0e05",
+    "H2": "84dcf52001f1a97c382cb6fb0705eff08ee6dfd34a00cbb429d2d3952972c77c"
+  },
+  "scores": {
+    "H1": {
+      "median_seconds": {
+        "baseline": 30.811961814500023,
+        "candidate": 23.714370947499987
+      },
+      "median_paired_delta_seconds": -7.643018558999984,
+      "paired_95pct_seconds": [
+        -8.376549674000046,
+        -6.8917581054999175
+      ]
+    },
+    "H2": {
+      "median_seconds": {
+        "baseline": 2.369868987000018,
+        "candidate": 2.047157018500002
+      },
+      "median_paired_delta_seconds": -0.3101306125000747,
+      "paired_95pct_seconds": [
+        -0.5164725475000296,
+        -0.17773617349996584
+      ]
+    }
+  }
+}
