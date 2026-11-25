@@ -129,7 +129,7 @@ def run(problem, trusted_digest, *, allow_rt1=False, ablation=None, refine_piece
 
 
 def _run(problem, trusted_digest, *, allow_rt1, ablation=None, refine_piecewise=False, stopping=None,
-         progress_reserve=False):
+         progress_reserve=False, futile_stopping=None):
     """Common numerical actions and independent acceptance for all scheduling policies."""
     start = perf_counter_ns()
     if ablation not in (None, "no_coarse", "no_witness", "no_floor"):
@@ -141,6 +141,7 @@ def _run(problem, trusted_digest, *, allow_rt1, ablation=None, refine_piecewise=
     state = previous_gap = None
     refined, dual_steps = False, 0
     prepared_rt1 = False
+    gate_origin = None
     reserve = _ProgressReserve() if progress_reserve else None
     scheduled_sweeps = ("primal_sweep", "dual_coarse", "dual_local")
     next_sweep = 0
@@ -162,14 +163,25 @@ def _run(problem, trusted_digest, *, allow_rt1, ablation=None, refine_piecewise=
                         next_action, next_reason = "stopping_check", "inspect the primal stopping rule on this level"
                 except ValueError as exc:
                     next_action, next_reason = "INVALID_INPUT", str(exc)
-        elif action == "stopping_check":
+        elif action in ("stopping_check", "futile_stopping_check"):
             try:
-                observation = stopping(problem, trusted_digest, primal)
-            except ValueError as exc:
+                inspect_rule = futile_stopping if action == "futile_stopping_check" else stopping
+                observation = inspect_rule(problem, trusted_digest, primal)
+            except (ArithmeticError, ValueError) as exc:
                 next_action, next_reason = "INVALID_INPUT", str(exc)
             else:
                 observation["state_digest"] = state["state_digest"]
-                if observation["stop"]:
+                if action == "futile_stopping_check":
+                    remaining = problem.max_actions - index - 1
+                    limited = not observation["stop"] and remaining < 4
+                    observation.update(remaining_actions=remaining, budget_limited=limited)
+                    if observation["stop"]:
+                        next_action, next_reason = "rt1_reconstruct", "the refined primal meets the algebraic stopping rule"
+                    elif limited:
+                        next_action, next_reason = "rt1_reconstruct", "use the remaining budget for RT1 construction and checking"
+                    else:
+                        next_action, next_reason = "primal_sweep", "smooth the refined primal before the RT1 trial"
+                elif observation["stop"]:
                     next_action, next_reason = "inspect", "the primal stopping rule permits certificate inspection"
                 else:
                     next_action, next_reason = "primal_sweep", "the primal stopping rule requires another sweep"
@@ -218,6 +230,13 @@ def _run(problem, trusted_digest, *, allow_rt1, ablation=None, refine_piecewise=
                     else:
                         next_action = "rt1_reconstruct"
                         next_reason = "try RT1 on this field after the certified P1/RT0 pair-futility test"
+                        if refined and futile_stopping:
+                            remaining = problem.max_actions - index - 1
+                            observation["futile_gate"] = {"remaining_actions": remaining, "entered": remaining >= 3}
+                            if remaining >= 3:
+                                gate_origin = state["state_digest"]
+                                next_action = "futile_stopping_check"
+                                next_reason = "check the refined primal before RT1 after certified RT0 pair futility"
                 if reserve and refined and action == "witness_probe" and not reserve.attempted:
                     progress = reserve.observe(report, problem.epsilon**2, problem.max_actions - index - 1)
                     observation["progress_reserve"] = progress
@@ -253,6 +272,9 @@ def _run(problem, trusted_digest, *, allow_rt1, ablation=None, refine_piecewise=
                 next_action, next_reason = "INVALID_INPUT", "the RT1 checker could not bind a certified upper bound"
             else:
                 gain = str(previous_gap - cert.gap_sq)
+                if gate_origin is not None:
+                    # This delta includes every sweep since the last RT0 inspection.
+                    observation["gap_gain_from_state_digest"] = gate_origin
                 if cert.accepted:
                     next_action, next_reason = "ACCEPTED", "the RT1 checker accepted this P1 field"
                 elif reserve and reserve.active:
@@ -284,6 +306,8 @@ def _run(problem, trusted_digest, *, allow_rt1, ablation=None, refine_piecewise=
                 primal = system.primal_step(primal)
                 if stopping:
                     next_action, next_reason = "stopping_check", "inspect the stopping rule after the primal sweep"
+                elif gate_origin is not None:
+                    next_action, next_reason = "futile_stopping_check", "check the algebraic error on the updated refined field"
             elif action == "dual_coarse":
                 flux = system.coarse_dual_step(flux)
                 dual_steps += 1
