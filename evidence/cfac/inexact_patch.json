@@ -1,0 +1,18 @@
+[
+  {
+    "n": 8,
+    "offset": 0.0,
+    "index": 24,
+    "residual_inf": 1.1657341758564144e-15,
+    "relative_equilibrium_defect": 2.0316242000092676e-15,
+    "relative_identity_residual": 0.0
+  },
+  {
+    "n": 8,
+    "offset": 0.015625,
+    "index": 24,
+    "residual_inf": 0.06250000000000056,
+    "relative_equilibrium_defect": 0.051986488580220355,
+    "relative_identity_residual": 0.0003732730599751158
+  }
+]

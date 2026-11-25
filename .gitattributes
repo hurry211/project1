@@ -11,3 +11,5 @@ evidence/e2/*.json.gz binary
 *.cl text eol=lf
 evidence/e4/*.json text eol=lf
 evidence/e4/*.gz binary
+research/cfac/microcheck.py text eol=lf
+evidence/cfac/** text eol=lf

@@ -1,0 +1,257 @@
+{
+  "affine_load": {
+    "changed_first_flux_moment": "-469/8100",
+    "description": "original f=x, projected f_h=cell mean of x, on the same n=3 mesh",
+    "flux": [
+      "-11/162",
+      "7/162",
+      "0",
+      "-2/27",
+      "1/18",
+      "0",
+      "-4/81",
+      "7/162",
+      "0",
+      "0",
+      "-1/27",
+      "1/54",
+      "0",
+      "-5/162",
+      "2/81",
+      "0",
+      "0",
+      "0",
+      "-7/162",
+      "-5/54",
+      "-1/81",
+      "1/162",
+      "0",
+      "0",
+      "0",
+      "5/162",
+      "0",
+      "0",
+      "0",
+      "-4/81",
+      "0",
+      "1/18",
+      "7/162"
+    ],
+    "original": {
+      "certificate": {
+        "accepted": false,
+        "defect_sq": "0",
+        "exact_equilibrium": true,
+        "gap_sq": "1603/157464",
+        "oscillation_sq": "1/162",
+        "reason": "validated original-PDE upper bound",
+        "state_digest": "55e966315a830916bf5af7e78c67cb3d28a9224f352066aef61ecaf85e2e7ce3",
+        "status": "CERTIFIED",
+        "upper_sq": "5065852976464807158400252823429/389861980692066239213431393615872"
+      },
+      "dual_alg": null,
+      "floor": null,
+      "primal_alg": null,
+      "primal_disc_lower_sq": null,
+      "verdict": "UNDETERMINED",
+      "witness_lower_sq": null
+    },
+    "original_digest": "84dd0da2dbfb41aa890d8ed91d7d5b5e7700d0540eaf576bfec93618227e1892",
+    "perturbed_projected": {
+      "certificate": {
+        "accepted": false,
+        "defect_sq": "9/5000",
+        "exact_equilibrium": false,
+        "gap_sq": "3888511/393660000",
+        "oscillation_sq": "0",
+        "reason": "validated original-PDE upper bound",
+        "state_digest": "ab3e626805b2cb405205bc649b70c685435d95c02e38dc7bd1337e61c7e07079",
+        "status": "CERTIFIED",
+        "upper_sq": "5523072526291105344420127862084581/487327475865082799016789242019840000"
+      },
+      "dual_alg": null,
+      "floor": null,
+      "primal_alg": null,
+      "primal_disc_lower_sq": null,
+      "verdict": "UNDETERMINED",
+      "witness_lower_sq": null
+    },
+    "primal": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0"
+    ],
+    "projected": {
+      "certificate": {
+        "accepted": false,
+        "defect_sq": "0",
+        "exact_equilibrium": true,
+        "gap_sq": "1603/157464",
+        "oscillation_sq": "0",
+        "reason": "validated original-PDE upper bound",
+        "state_digest": "51dbbaa16ae285442e6279b53f5ad68e0c182ebc00082ccf845e4fe4da6da87a",
+        "status": "CERTIFIED",
+        "upper_sq": "1603/157464"
+      },
+      "dual_alg": {
+        "lower": "204523/44089920",
+        "upper": "204523/44089920"
+      },
+      "floor": {
+        "lower": "33559/14696640",
+        "upper": "33559/14696640"
+      },
+      "primal_alg": {
+        "lower": "19/5832",
+        "upper": "19/5832"
+      },
+      "primal_disc_lower_sq": "0",
+      "verdict": "PAIR_SUFFICIENT",
+      "witness_lower_sq": "0"
+    },
+    "projected_digest": "5db5b5a6946de3af919a4fa8b76627a1f1f2cee7eaaa5ffe44ed62e3066f5dcb"
+  },
+  "constant_load": {
+    "diffusion": 2,
+    "epsilon": "1/10",
+    "flux": [
+      "-7/72",
+      "7/72",
+      "0",
+      "-35/288",
+      "1/24",
+      "-7/128",
+      "-11/192",
+      "13/1152",
+      "-25/384",
+      "-73/1152",
+      "-1/24",
+      "35/288",
+      "7/128",
+      "-47/1152",
+      "47/1152",
+      "0",
+      "-1/48",
+      "-17/1152",
+      "-89/1536",
+      "-427/4608",
+      "-13/1152",
+      "11/192",
+      "25/384",
+      "17/1152",
+      "1/48",
+      "89/1536",
+      "19/1536",
+      "-19/1536",
+      "0",
+      "-313/4608",
+      "73/1152",
+      "427/4608",
+      "313/4608"
+    ],
+    "load": 1,
+    "loose": {
+      "certificate": {
+        "accepted": false,
+        "defect_sq": "0",
+        "exact_equilibrium": true,
+        "gap_sq": "123391/10616832",
+        "oscillation_sq": "0",
+        "reason": "validated original-PDE upper bound",
+        "state_digest": "fb4e1530ad96179aeb6947ecfa24c6e441f4cd710708d877dc2823a49d91d72d",
+        "status": "CERTIFIED",
+        "upper_sq": "123391/10616832"
+      },
+      "dual_alg": {
+        "lower": "6419695129/3993080168448",
+        "upper": "123391/10616832"
+      },
+      "floor": {
+        "lower": "0",
+        "upper": "71266842923393/8589115442331648"
+      },
+      "primal_alg": {
+        "lower": "1681/978944",
+        "upper": "11143031/2105708544"
+      },
+      "primal_disc_lower_sq": "0",
+      "verdict": "PAIR_SUFFICIENT",
+      "witness_lower_sq": "16129/4478976"
+    },
+    "n": 3,
+    "primal": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1/72",
+      "5/288",
+      "0",
+      "0",
+      "5/288",
+      "13/576",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0"
+    ],
+    "problem_digest": "906426ed4c5b91567e20338853c35fb85b7a49e1850186c76520ca933c4ea4ef",
+    "separate_reference": {
+      "dual_alg_sq": "130811/53084160",
+      "dual_disc_sq": [
+        "10127793/5000000000",
+        "4054097/2000000000"
+      ],
+      "pair_floor_sq": "47/6480",
+      "primal_alg_sq": "79/41472",
+      "primal_disc_sq": [
+        "2613019/500000000",
+        "26137639/5000000000"
+      ],
+      "series_cutoff": 31
+    },
+    "tight": {
+      "certificate": {
+        "accepted": false,
+        "defect_sq": "0",
+        "exact_equilibrium": true,
+        "gap_sq": "123391/10616832",
+        "oscillation_sq": "0",
+        "reason": "validated original-PDE upper bound",
+        "state_digest": "fb4e1530ad96179aeb6947ecfa24c6e441f4cd710708d877dc2823a49d91d72d",
+        "status": "CERTIFIED",
+        "upper_sq": "123391/10616832"
+      },
+      "dual_alg": {
+        "lower": "130811/53084160",
+        "upper": "130811/53084160"
+      },
+      "floor": {
+        "lower": "47/6480",
+        "upper": "47/6480"
+      },
+      "primal_alg": {
+        "lower": "79/41472",
+        "upper": "79/41472"
+      },
+      "primal_disc_lower_sq": "7597/4478976",
+      "verdict": "PAIR_SUFFICIENT",
+      "witness_lower_sq": "16129/4478976"
+    }
+  }
+}

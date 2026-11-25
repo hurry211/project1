@@ -2,6 +2,8 @@
 
 A deterministic workflow that turns a frozen, machine-checked problem specification into **real MFEM computations** and lets an **independent verifier** decide whether the result is accepted. No LLM is used anywhere in the numerical path.
 
+The CFAC research branch adds a small CPU prototype that certifies energy error for P1 Poisson fields without an exact solution. It can also determine whether further iteration on a fixed P1/RT0 pair can meet a tolerance. [Mathematical specification](docs/CFAC_MATHEMATICAL_SPEC.md) · [Implementation report](docs/CFAC_IMPLEMENTATION_REPORT.md) · [Experiments and replay](docs/CFAC_EXPERIMENTAL_EVIDENCE.md) · [Open problems](docs/CFAC_OPEN_PROBLEMS.md)
+
 ```
 StudySpec (JSON) ─► schema + MMS consistency ─► freeze & hash ─► environment probe ─► capability matrix
      ─► bind to compiled C++ case ─► MFEM poisson_mms (per mesh level, time/memory limited)
