@@ -1,0 +1,3 @@
+panel {'numerical_fault': (98, {'REJECTED': 98}), 'numerical_clean': (14, {'ACCEPTED': 14}), 'archive_fault': (21, {'REJECTED': 21}), 'archive_clean': (7, {'ACCEPTED': 7})}
+iid {'numerical_fault': (64, {'REJECTED': 64}), 'numerical_clean': (32, {'ACCEPTED': 32}), 'archive_fault': (32, {'REJECTED': 32}), 'archive_clean': (16, {'ACCEPTED': 16})}
+14 reference checker controls; saved /home/fy/project1-review-903bb0b/logs/challenge.json

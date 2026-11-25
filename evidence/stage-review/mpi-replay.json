@@ -1,0 +1,11 @@
+{
+  "state": "ACCEPTED",
+  "ranks": [
+    1,
+    2,
+    4
+  ],
+  "screened_levels": 12,
+  "verified_timing_samples": 12,
+  "manifest_sha256": "5be36e2e77f0a8ab97579f6742f44b2dc0073e7e3f682df27997874ad5f48357"
+}

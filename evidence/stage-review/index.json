@@ -1,0 +1,28 @@
+{
+  "tested_revision": "903bb0b6a02694c16cb1cbaf393e96549ccbea8f",
+  "upstream_revision": "ceb485cb9836c73ce846f62d49ca9591fcb83bfc",
+  "mfem_commit": "d964264cdb9a13e94a201b6c236c7721e0c8765f",
+  "tests": {
+    "serial_passed": 433,
+    "mpi_passed_separately": 9
+  },
+  "historical_e2_files_hash_checked": 11,
+  "local_archive": {
+    "name": "stage-review-archives.tar.gz",
+    "bytes": 29132121,
+    "sha256": "11f47b1bc70483218a3ec127c3f912846486db9c4927ad20363098b5dd83477d"
+  },
+  "files_sha256": {
+    "challenge.json.gz": "0f98c4bc9c50e19ecdec0b08f527ffcbf6b157acd0176a0359f3e9561af9cf4c",
+    "challenge.log": "320e04bb3db3b098e5f9369596d488bcdcc89af19f2126ea14c4f836b361ce1a",
+    "legacy.json": "1b672c793690dc7a6fe842779857d67f620246820ae6d1f0d792dac9c8c7ca6e",
+    "mpi-replay.json": "f5f62208757bfebeeef190f922cdb636bffd6bce3165f219d254acdabc1ea091",
+    "mpi-tests.log": "8f06c372f243ba177b57a4ced3e2aa6bdf35e9f6f8ddfbd584270d515d48be61",
+    "performance.json.gz": "cc832e26b593be7d446aa044802eceb111513d36dd7fb0e99d70360244580333",
+    "planner-replay.json": "029c615421b90c591f3fe08e81286f53ca09244ca09b4110bac489b34bef213d",
+    "portable.json": "0683ca0d2836db8a2f78cdcf5c0f012ceb0e41e2d0bde9465dcc1d298ef543bb",
+    "retry.json.gz": "3634354da1bc41c3821ef617915c361046675305074a858144f761e9936b2710",
+    "stage2.json": "26976a72eae5876612b9cd90e63f35c69d590b507fb64a2f44e35c02314d122b",
+    "tests.log": "23d285bf0eecb73fd7d1b90cd908f6e5e1ba99834495196330897097588a1d0d"
+  }
+}

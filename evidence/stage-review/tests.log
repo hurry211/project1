@@ -1,0 +1,15 @@
+........................................................................ [ 16%]
+........................................................................ [ 32%]
+........................................................................ [ 48%]
+...........sssssss......ss.............................................. [ 65%]
+........................................................................ [ 81%]
+........................................................................ [ 97%]
+..........                                                               [100%]
+=========================== short test summary info ============================
+SKIPPED [1] tests/test_mpi_native.py:26: MPI driver or launcher unavailable (see docs/MPI.md)
+SKIPPED [3] tests/test_mpi_native.py:34: MPI driver or launcher unavailable (see docs/MPI.md)
+SKIPPED [1] tests/test_mpi_native.py:46: MPI driver or launcher unavailable (see docs/MPI.md)
+SKIPPED [1] tests/test_mpi_native.py:53: MPI driver or launcher unavailable (see docs/MPI.md)
+SKIPPED [1] tests/test_mpi_native.py:75: MPI driver or launcher unavailable (see docs/MPI.md)
+SKIPPED [2] tests/test_mpi_timeout.py:13: MPI driver or launcher unavailable (see docs/MPI.md)
+433 passed, 9 skipped in 141.28s (0:02:21)

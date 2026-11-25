@@ -1,5 +1,7 @@
 # MFEM scientific agent for verified Poisson and scalar diffusion studies
 
+中文阶段汇报汇总了整合版本的装配对照、重试成本、特殊算例及 MPI 复现结果。[阅读阶段汇报](docs/MFEM阶段复现与归纳.md)
+
 A deterministic workflow that turns a frozen, machine-checked problem specification into **real MFEM computations** and lets an **independent verifier** decide whether the result is accepted. No LLM is used anywhere in the numerical path.
 
 ```

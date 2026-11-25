@@ -1,0 +1,742 @@
+{
+  "schema_version": 1,
+  "mfem_version": "4.10.0",
+  "mfem_commit": "d964264cdb9a13e94a201b6c236c7721e0c8765f",
+  "build_flags": {
+    "MFEM_USE_MPI": false,
+    "MFEM_USE_METIS": false,
+    "MFEM_USE_METIS_5": false,
+    "MFEM_USE_SUITESPARSE": false,
+    "MFEM_USE_LAPACK": false,
+    "MFEM_USE_OPENMP": false,
+    "MFEM_USE_CUDA": false,
+    "MFEM_USE_HIP": false,
+    "MFEM_USE_RAJA": false,
+    "MFEM_USE_OCCA": false,
+    "MFEM_USE_PETSC": false,
+    "MFEM_USE_ZLIB": false,
+    "MFEM_USE_DOUBLE": true,
+    "MFEM_USE_SINGLE": false
+  },
+  "mesh_levels": [
+    8,
+    16,
+    32
+  ],
+  "rows": {
+    "sin_sin_cartesian_quad_1_full_cg_gs": {
+      "case": "sin_sin",
+      "mesh_source": "cartesian",
+      "mesh_type": "quad",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "935ab0c5c7dbf36eb482c3ac97f7c190a024f35ec0f42125ffd12dd4780d52f5",
+      "max_relative_field_difference": 4.514477400306389e-12,
+      "max_relative_norm_difference": 3.258615599577297e-12,
+      "finest_l2": 0.0004751661479408013,
+      "finest_h1_semi": 0.06295197000147605,
+      "finest_orders": [
+        1.999931380016132,
+        0.9996554271298876
+      ]
+    },
+    "sin_sin_cartesian_quad_1_partial_cg_jacobi": {
+      "case": "sin_sin",
+      "mesh_source": "cartesian",
+      "mesh_type": "quad",
+      "order": 1,
+      "assembly": "partial",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "bf0a78e9f5ec4d43dee1ed308d77e4a3abada0bccad12ba487f0c2f5cf2d0d5b",
+      "max_relative_field_difference": 4.484225973616952e-12,
+      "max_relative_norm_difference": 3.258393554972372e-12,
+      "finest_l2": 0.00047516614793934465,
+      "finest_h1_semi": 0.06295197000147605,
+      "finest_orders": [
+        1.9999313800204657,
+        0.9996554271298876
+      ]
+    },
+    "sin_sin_cartesian_quad_2_full_cg_gs": {
+      "case": "sin_sin",
+      "mesh_source": "cartesian",
+      "mesh_type": "quad",
+      "order": 2,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "48753d15160aef4e8dc1c14c478860f2d6a8eb58e1e7630bd53ad4e1837b7428",
+      "max_relative_field_difference": 7.083221982329482e-14,
+      "max_relative_norm_difference": 5.108913292417583e-12,
+      "finest_l2": 3.846536264826521e-06,
+      "finest_h1_semi": 0.0007979182794900212,
+      "finest_orders": [
+        2.9987594971273976,
+        1.9998989518315953
+      ]
+    },
+    "sin_sin_cartesian_quad_2_partial_cg_jacobi": {
+      "case": "sin_sin",
+      "mesh_source": "cartesian",
+      "mesh_type": "quad",
+      "order": 2,
+      "assembly": "partial",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "8bf01d44ac4d5e3ffd56c0c25909b3dceb690f8508601e3d693ff524eb46e8dd",
+      "max_relative_field_difference": 1.2767563134292955e-14,
+      "max_relative_norm_difference": 5.061506769266089e-12,
+      "finest_l2": 3.8465362644604105e-06,
+      "finest_h1_semi": 0.0007979182794900157,
+      "finest_orders": [
+        2.99875949724867,
+        1.9998989518316064
+      ]
+    },
+    "sin_sin_cartesian_tri_1_full_cg_gs": {
+      "case": "sin_sin",
+      "mesh_source": "cartesian",
+      "mesh_type": "tri",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "92b3c3f8127533f637b163a1041035b00fd56066687a1bfa075527340b124f53",
+      "max_relative_field_difference": 6.209267904474798e-11,
+      "max_relative_norm_difference": 9.5776719888363e-12,
+      "finest_l2": 0.0013504362485497858,
+      "finest_h1_semi": 0.10897542351921914,
+      "finest_orders": [
+        1.9934926491175458,
+        0.9972535922789276
+      ]
+    },
+    "sin_sin_cartesian_tri_1_full_cg_jacobi": {
+      "case": "sin_sin",
+      "mesh_source": "cartesian",
+      "mesh_type": "tri",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "17ddce247bbcabf6ecd59e697c454876def4c659443d576b0cd84a3576a22e16",
+      "max_relative_field_difference": 6.202790416852838e-11,
+      "max_relative_norm_difference": 9.5776719888363e-12,
+      "finest_l2": 0.0013504362485508216,
+      "finest_h1_semi": 0.10897542351921913,
+      "finest_orders": [
+        1.9934926491165426,
+        0.9972535922789278
+      ]
+    },
+    "sin_sin_cartesian_tri_2_full_cg_gs": {
+      "case": "sin_sin",
+      "mesh_source": "cartesian",
+      "mesh_type": "tri",
+      "order": 2,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "70d91056abed708b9f29150e3dc7687600b78b32b6c94d43f2e25e476b98cd91",
+      "max_relative_field_difference": 2.9032305892459053e-13,
+      "max_relative_norm_difference": 2.0890844609766646e-11,
+      "finest_l2": 8.600535267664235e-06,
+      "finest_h1_semi": 0.002109524424385056,
+      "finest_orders": [
+        2.9986338757765667,
+        1.9967543710235567
+      ]
+    },
+    "sin_sin_gmsh22_quad_1_full_cg_gs": {
+      "case": "sin_sin",
+      "mesh_source": "gmsh22",
+      "mesh_type": "quad",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "b92efcf92571174e555dafdb8d5ab7bbf97fc6a02b277e410bb22c6f6a4920d4",
+      "max_relative_field_difference": 4.4853220398013514e-12,
+      "max_relative_norm_difference": 3.258615599577297e-12,
+      "finest_l2": 0.00047516614794024383,
+      "finest_h1_semi": 0.06295197000147605,
+      "finest_orders": [
+        1.9999313800177962,
+        0.9996554271298876
+      ]
+    },
+    "sin_sin_gmsh22_quad_1_partial_cg_jacobi": {
+      "case": "sin_sin",
+      "mesh_source": "gmsh22",
+      "mesh_type": "quad",
+      "order": 1,
+      "assembly": "partial",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "3681510f8ce230f66a7cb5a8698ca3f7bda513124249d7b66877e434a280e383",
+      "max_relative_field_difference": 4.484664400090712e-12,
+      "max_relative_norm_difference": 3.258615599577297e-12,
+      "finest_l2": 0.0004751661479390022,
+      "finest_h1_semi": 0.06295197000147605,
+      "finest_orders": [
+        1.9999313800217706,
+        0.9996554271298876
+      ]
+    },
+    "sin_sin_gmsh22_quad_2_full_cg_gs": {
+      "case": "sin_sin",
+      "mesh_source": "gmsh22",
+      "mesh_type": "quad",
+      "order": 2,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "5da76ecf86c4865c911894bbc0bc9cb5a11d787841cdacc7a00f9a1a75cc88db",
+      "max_relative_field_difference": 1.0152968520007378e-13,
+      "max_relative_norm_difference": 5.046962847643499e-12,
+      "finest_l2": 3.8465362648530085e-06,
+      "finest_h1_semi": 0.000797918279490017,
+      "finest_orders": [
+        2.998759497118169,
+        1.9998989518316062
+      ]
+    },
+    "sin_sin_gmsh22_quad_2_partial_cg_jacobi": {
+      "case": "sin_sin",
+      "mesh_source": "gmsh22",
+      "mesh_type": "quad",
+      "order": 2,
+      "assembly": "partial",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "19ff2b0c2f01d4ebd4536d05292eeb76868d5ee24c635d9533ad1ab16f3c43f4",
+      "max_relative_field_difference": 2.4646947963591616e-14,
+      "max_relative_norm_difference": 5.056177698747888e-12,
+      "finest_l2": 3.846536264353357e-06,
+      "finest_h1_semi": 0.0007979182794900255,
+      "finest_orders": [
+        2.998759497289097,
+        1.9998989518315913
+      ]
+    },
+    "sin_sin_gmsh22_tri_1_full_cg_gs": {
+      "case": "sin_sin",
+      "mesh_source": "gmsh22",
+      "mesh_type": "tri",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "10fe6d85526e998d48811e5eb773cf30a9c1721651fe905a936bb6a54aea672d",
+      "max_relative_field_difference": 6.202902873235164e-11,
+      "max_relative_norm_difference": 9.577894033441225e-12,
+      "finest_l2": 0.0013504362485501392,
+      "finest_h1_semi": 0.10897542351921913,
+      "finest_orders": [
+        1.9934926491170586,
+        0.9972535922789278
+      ]
+    },
+    "sin_sin_gmsh22_tri_1_full_cg_jacobi": {
+      "case": "sin_sin",
+      "mesh_source": "gmsh22",
+      "mesh_type": "tri",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "e8cc675a9f5564087d04e840b2eced3b81ef07e03ddf83c8e56a9ebaebb88480",
+      "max_relative_field_difference": 6.202756679938141e-11,
+      "max_relative_norm_difference": 9.5776719888363e-12,
+      "finest_l2": 0.0013504362485496936,
+      "finest_h1_semi": 0.10897542351921914,
+      "finest_orders": [
+        1.9934926491176912,
+        0.9972535922789276
+      ]
+    },
+    "sin_sin_gmsh22_tri_2_full_cg_gs": {
+      "case": "sin_sin",
+      "mesh_source": "gmsh22",
+      "mesh_type": "tri",
+      "order": 2,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "a60b2e14d8515ca9c0f530f91a4c2990d95c5224313fa2b4443df789d1a4ac2e",
+      "max_relative_field_difference": 3.101960331301361e-13,
+      "max_relative_norm_difference": 2.0892620966606046e-11,
+      "finest_l2": 8.60053526762885e-06,
+      "finest_h1_semi": 0.002109524424385044,
+      "finest_orders": [
+        2.9986338757867737,
+        1.9967543710235653
+      ]
+    },
+    "cos_exp_cartesian_quad_1_full_cg_gs": {
+      "case": "cos_exp",
+      "mesh_source": "cartesian",
+      "mesh_type": "quad",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "c1b477a5c8fa9d4889062352d51169d10c0d6b450d7a97c34d41ab060ee5a5d0",
+      "max_relative_field_difference": 8.162846522333175e-13,
+      "max_relative_norm_difference": 2.9279911828439253e-12,
+      "finest_l2": 0.001017748458885173,
+      "finest_h1_semi": 0.11308772872558785,
+      "finest_orders": [
+        1.9994971575369553,
+        0.9995039754522065
+      ]
+    },
+    "cos_exp_cartesian_quad_1_partial_cg_jacobi": {
+      "case": "cos_exp",
+      "mesh_source": "cartesian",
+      "mesh_type": "quad",
+      "order": 1,
+      "assembly": "partial",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "84a0e5a0a0cdbcece5519514d17a64d21a48e2d8c8b9e73868eef3b591e68f54",
+      "max_relative_field_difference": 7.192421057654719e-13,
+      "max_relative_norm_difference": 2.9279911828439253e-12,
+      "finest_l2": 0.0010177484588859288,
+      "finest_h1_semi": 0.11308772872558787,
+      "finest_orders": [
+        1.9994971575362264,
+        0.9995039754522063
+      ]
+    },
+    "cos_exp_cartesian_quad_2_full_cg_gs": {
+      "case": "cos_exp",
+      "mesh_source": "cartesian",
+      "mesh_type": "quad",
+      "order": 2,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "fcfbcd41d24cb2a73b3ba5812f2d6b4574ff146d6836901f8c61df67c24d7f58",
+      "max_relative_field_difference": 2.4378468160126273e-12,
+      "max_relative_norm_difference": 4.564681965746331e-12,
+      "finest_l2": 6.879398911635882e-06,
+      "finest_h1_semi": 0.00142673348741538,
+      "finest_orders": [
+        2.999280429593317,
+        1.9994552557141163
+      ]
+    },
+    "cos_exp_cartesian_quad_2_partial_cg_jacobi": {
+      "case": "cos_exp",
+      "mesh_source": "cartesian",
+      "mesh_type": "quad",
+      "order": 2,
+      "assembly": "partial",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "5c29d4b63763fce03822d1d8e83547f0bd64aedaa805b9ae9096fae4ee57e0d7",
+      "max_relative_field_difference": 1.5978529052672793e-12,
+      "max_relative_norm_difference": 4.5751180621778076e-12,
+      "finest_l2": 6.879398911163317e-06,
+      "finest_h1_semi": 0.0014267334874154616,
+      "finest_orders": [
+        2.9992804297125537,
+        1.9994552557140175
+      ]
+    },
+    "cos_exp_cartesian_tri_1_full_cg_gs": {
+      "case": "cos_exp",
+      "mesh_source": "cartesian",
+      "mesh_type": "tri",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "724db95456255404b83896d7421cb9e697798e67ac6fcfc745fb993a3182f95d",
+      "max_relative_field_difference": 1.2138486872998196e-12,
+      "max_relative_norm_difference": 3.0397906414236786e-12,
+      "finest_l2": 0.0011534448652450943,
+      "finest_h1_semi": 0.13382673370082,
+      "finest_orders": [
+        1.9963334932300112,
+        0.9983542672088538
+      ]
+    },
+    "cos_exp_cartesian_tri_1_full_cg_jacobi": {
+      "case": "cos_exp",
+      "mesh_source": "cartesian",
+      "mesh_type": "tri",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "bb6eb15e6414a49d7bcd23167b607f0cdfa01813c0896a2506dedb39dfa6543f",
+      "max_relative_field_difference": 1.0439425453359148e-12,
+      "max_relative_norm_difference": 3.0397906414236786e-12,
+      "finest_l2": 0.0011534448652450071,
+      "finest_h1_semi": 0.13382673370082,
+      "finest_orders": [
+        1.9963334932313588,
+        0.9983542672088538
+      ]
+    },
+    "cos_exp_cartesian_tri_2_full_cg_gs": {
+      "case": "cos_exp",
+      "mesh_source": "cartesian",
+      "mesh_type": "tri",
+      "order": 2,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "9098a65fbf15288159c7f49b5983f43cbc242ee4a4fbaa92277311410b3fb349",
+      "max_relative_field_difference": 2.1734916468151818e-12,
+      "max_relative_norm_difference": 5.641376255027808e-12,
+      "finest_l2": 7.566218671155486e-06,
+      "finest_h1_semi": 0.0017074794947961422,
+      "finest_orders": [
+        2.993114281429165,
+        1.992775060850391
+      ]
+    },
+    "cos_exp_gmsh22_quad_1_full_cg_gs": {
+      "case": "cos_exp",
+      "mesh_source": "gmsh22",
+      "mesh_type": "quad",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "1feb706cbaf0b6d17d8e3821f699e4fc57aec9dab67432bbae03a63a6c0b92a9",
+      "max_relative_field_difference": 1.5922165957502074e-12,
+      "max_relative_norm_difference": 2.928102205146388e-12,
+      "finest_l2": 0.001017748458887052,
+      "finest_h1_semi": 0.11308772872558788,
+      "finest_orders": [
+        1.9994971575340181,
+        0.9995039754522062
+      ]
+    },
+    "cos_exp_gmsh22_quad_1_partial_cg_jacobi": {
+      "case": "cos_exp",
+      "mesh_source": "gmsh22",
+      "mesh_type": "quad",
+      "order": 1,
+      "assembly": "partial",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "447dd44290c82acd0798a15c2bc0003fe7595e67c8d6a165d9092a3528aaf379",
+      "max_relative_field_difference": 7.192421057654719e-13,
+      "max_relative_norm_difference": 2.928324249751313e-12,
+      "finest_l2": 0.001017748458885905,
+      "finest_h1_semi": 0.11308772872558788,
+      "finest_orders": [
+        1.9994971575362537,
+        0.9995039754522062
+      ]
+    },
+    "cos_exp_gmsh22_quad_2_full_cg_gs": {
+      "case": "cos_exp",
+      "mesh_source": "gmsh22",
+      "mesh_type": "quad",
+      "order": 2,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "63c3e037c6b88dc34ee36c202c02ba1aafe0f531699202da19067e7b67bf0ef4",
+      "max_relative_field_difference": 2.3849247286449037e-12,
+      "max_relative_norm_difference": 4.583111667955109e-12,
+      "finest_l2": 6.879398911556433e-06,
+      "finest_h1_semi": 0.001426733487415343,
+      "finest_orders": [
+        2.9992804296267304,
+        1.9994552557141514
+      ]
+    },
+    "cos_exp_gmsh22_quad_2_partial_cg_jacobi": {
+      "case": "cos_exp",
+      "mesh_source": "gmsh22",
+      "mesh_type": "quad",
+      "order": 2,
+      "assembly": "partial",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "802f8cee4d85712b07c45c09384f79027df750181bc7adce6794df8966e42bce",
+      "max_relative_field_difference": 1.5978529052672793e-12,
+      "max_relative_norm_difference": 4.566236277980806e-12,
+      "finest_l2": 6.879398911166517e-06,
+      "finest_h1_semi": 0.001426733487415409,
+      "finest_orders": [
+        2.9992804297119164,
+        1.9994552557140748
+      ]
+    },
+    "cos_exp_gmsh22_tri_1_full_cg_gs": {
+      "case": "cos_exp",
+      "mesh_source": "gmsh22",
+      "mesh_type": "tri",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "f0b604d63a864c14ea8cbe3bc2146b2f09e3f18b19367a43b244fd560088d83c",
+      "max_relative_field_difference": 9.286024143488794e-13,
+      "max_relative_norm_difference": 3.0397906414236786e-12,
+      "finest_l2": 0.0011534448652537291,
+      "finest_h1_semi": 0.13382673370082,
+      "finest_orders": [
+        1.9963334932223487,
+        0.9983542672088538
+      ]
+    },
+    "cos_exp_gmsh22_tri_1_full_cg_jacobi": {
+      "case": "cos_exp",
+      "mesh_source": "gmsh22",
+      "mesh_type": "tri",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "9f838a868b258a4da45fdff1c108bf426734c3a4411d61db70e302f74cb832d0",
+      "max_relative_field_difference": 1.049007055336762e-12,
+      "max_relative_norm_difference": 3.0397906414236786e-12,
+      "finest_l2": 0.00115344486524512,
+      "finest_h1_semi": 0.13382673370082,
+      "finest_orders": [
+        1.9963334932312107,
+        0.9983542672088538
+      ]
+    },
+    "cos_exp_gmsh22_tri_2_full_cg_gs": {
+      "case": "cos_exp",
+      "mesh_source": "gmsh22",
+      "mesh_type": "tri",
+      "order": 2,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "69269a0fbc542fa72e527e4c5ff25413427a22ecc913f2d6708fc240e39c5e05",
+      "max_relative_field_difference": 2.179168799154841e-12,
+      "max_relative_norm_difference": 5.558442595088309e-12,
+      "finest_l2": 7.5662186785690984e-06,
+      "finest_h1_semi": 0.0017074794947961908,
+      "finest_orders": [
+        2.9931142800304538,
+        1.9927750608503543
+      ]
+    },
+    "sin_sin_variable_cartesian_quad_1_full_cg_gs": {
+      "case": "sin_sin_variable",
+      "mesh_source": "cartesian",
+      "mesh_type": "quad",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "c70195bd709e3752d4938add87b4b44bdd4ad2ac907a5cda7ed24ec99111bf93",
+      "max_relative_field_difference": 6.196889319099131e-10,
+      "max_relative_norm_difference": 1.435433993890456e-10,
+      "finest_l2": 0.0014674141121025495,
+      "finest_h1_semi": 0.18348161449638903,
+      "finest_orders": [
+        1.9978374341998124,
+        0.9983979191733879
+      ]
+    },
+    "sin_sin_variable_cartesian_quad_1_partial_cg_jacobi": {
+      "case": "sin_sin_variable",
+      "mesh_source": "cartesian",
+      "mesh_type": "quad",
+      "order": 1,
+      "assembly": "partial",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "555ad4503bfb6e1b2ee35c083e99ab08fff8910ec85336bcd19e390dac9ef0b8",
+      "max_relative_field_difference": 6.198315151810391e-10,
+      "max_relative_norm_difference": 1.435433993890456e-10,
+      "finest_l2": 0.0014674141121014848,
+      "finest_h1_semi": 0.183481614496389,
+      "finest_orders": [
+        1.997837434200882,
+        0.998397919173388
+      ]
+    },
+    "sin_sin_variable_cartesian_quad_2_full_cg_gs": {
+      "case": "sin_sin_variable",
+      "mesh_source": "cartesian",
+      "mesh_type": "quad",
+      "order": 2,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "9469d2b4871b5c99a40b7932cdf5dfededa03eda56ebc87f49717b4993ad0782",
+      "max_relative_field_difference": 2.1547506125834352e-12,
+      "max_relative_norm_difference": 7.34092786558449e-11,
+      "finest_l2": 2.1913530751778676e-05,
+      "finest_h1_semi": 0.004547009553175106,
+      "finest_orders": [
+        2.995774945794955,
+        1.9981622021464935
+      ]
+    },
+    "sin_sin_variable_cartesian_quad_2_partial_cg_jacobi": {
+      "case": "sin_sin_variable",
+      "mesh_source": "cartesian",
+      "mesh_type": "quad",
+      "order": 2,
+      "assembly": "partial",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "9bf8f76709d1c4d54b2b70ef620a81e0341dcbe5508194258dea0c712acbb921",
+      "max_relative_field_difference": 2.1277759900056304e-12,
+      "max_relative_norm_difference": 7.341149910189415e-11,
+      "finest_l2": 2.1913530751771998e-05,
+      "finest_h1_semi": 0.0045470095531751084,
+      "finest_orders": [
+        2.9957749457945804,
+        1.9981622021464842
+      ]
+    },
+    "sin_sin_variable_cartesian_tri_1_full_cg_gs": {
+      "case": "sin_sin_variable",
+      "mesh_source": "cartesian",
+      "mesh_type": "tri",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "996231c042c43b877d00cfc75a5d699133aac2a5fc064b289fa54850d5403c40",
+      "max_relative_field_difference": 2.2726151911451412e-09,
+      "max_relative_norm_difference": 6.707323585430913e-11,
+      "finest_l2": 0.0028978804044704053,
+      "finest_h1_semi": 0.25537873593887556,
+      "finest_orders": [
+        1.9855988081663918,
+        0.994025267640602
+      ]
+    },
+    "sin_sin_variable_cartesian_tri_1_full_cg_jacobi": {
+      "case": "sin_sin_variable",
+      "mesh_source": "cartesian",
+      "mesh_type": "tri",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "0eabe630c4adb76e2f73c1e3c460a62c6744cba2948fee73e4a13240cd43418a",
+      "max_relative_field_difference": 2.2725457594971984e-09,
+      "max_relative_norm_difference": 6.707367994351898e-11,
+      "finest_l2": 0.0028978804044715047,
+      "finest_h1_semi": 0.2553787359388763,
+      "finest_orders": [
+        1.9855988081660745,
+        0.9940252676405986
+      ]
+    },
+    "sin_sin_variable_cartesian_tri_2_full_cg_gs": {
+      "case": "sin_sin_variable",
+      "mesh_source": "cartesian",
+      "mesh_type": "tri",
+      "order": 2,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "50d3a4b7b90a473794d8345f860add8cee693f54d6098faffa7deb052de6005f",
+      "max_relative_field_difference": 3.743932398973832e-11,
+      "max_relative_norm_difference": 9.284240043427872e-11,
+      "finest_l2": 3.2670422446593146e-05,
+      "finest_h1_semi": 0.0076512841255934666,
+      "finest_orders": [
+        2.993541680609076,
+        1.9912921221818016
+      ]
+    },
+    "sin_sin_variable_gmsh22_quad_1_full_cg_gs": {
+      "case": "sin_sin_variable",
+      "mesh_source": "gmsh22",
+      "mesh_type": "quad",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "d7bed892be503d725cc99c3a029adf526cafd0140cc9d91b04f9bf2f8f3ed0f4",
+      "max_relative_field_difference": 6.195711926936046e-10,
+      "max_relative_norm_difference": 1.4354317734444066e-10,
+      "finest_l2": 0.0014674141121024033,
+      "finest_h1_semi": 0.18348161449638906,
+      "finest_orders": [
+        1.99783743419986,
+        0.9983979191733874
+      ]
+    },
+    "sin_sin_variable_gmsh22_quad_1_partial_cg_jacobi": {
+      "case": "sin_sin_variable",
+      "mesh_source": "gmsh22",
+      "mesh_type": "quad",
+      "order": 1,
+      "assembly": "partial",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "f8437826508740ff49dc864847837cf3baf1ce542843bfa82a15ab7a03c0e4bb",
+      "max_relative_field_difference": 6.198315151810391e-10,
+      "max_relative_norm_difference": 1.4354317734444066e-10,
+      "finest_l2": 0.0014674141121015624,
+      "finest_h1_semi": 0.183481614496389,
+      "finest_orders": [
+        1.9978374342008092,
+        0.9983979191733879
+      ]
+    },
+    "sin_sin_variable_gmsh22_quad_2_full_cg_gs": {
+      "case": "sin_sin_variable",
+      "mesh_source": "gmsh22",
+      "mesh_type": "quad",
+      "order": 2,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "239c8792533cc4836853acc86c504501fadcd8c4ce1536600ce82a6c1d0c1b4e",
+      "max_relative_field_difference": 2.1508653788788133e-12,
+      "max_relative_norm_difference": 7.341038887886953e-11,
+      "finest_l2": 2.191353075177558e-05,
+      "finest_h1_semi": 0.004547009553175079,
+      "finest_orders": [
+        2.995774945795234,
+        1.9981622021464982
+      ]
+    },
+    "sin_sin_variable_gmsh22_quad_2_partial_cg_jacobi": {
+      "case": "sin_sin_variable",
+      "mesh_source": "gmsh22",
+      "mesh_type": "quad",
+      "order": 2,
+      "assembly": "partial",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "96cdeabd2d531690b1f7efb6f23025afb57a864f6a2783074a542b6a1c8830f8",
+      "max_relative_field_difference": 2.1275539766510804e-12,
+      "max_relative_norm_difference": 7.340950070044983e-11,
+      "finest_l2": 2.1913530751771314e-05,
+      "finest_h1_semi": 0.004547009553175073,
+      "finest_orders": [
+        2.9957749457946408,
+        1.998162202146497
+      ]
+    },
+    "sin_sin_variable_gmsh22_tri_1_full_cg_gs": {
+      "case": "sin_sin_variable",
+      "mesh_source": "gmsh22",
+      "mesh_type": "tri",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "da1054ed26abf0bdef0a69809f0c18309be59d62f10ec59432820ae7350cf5c4",
+      "max_relative_field_difference": 2.272517006102063e-09,
+      "max_relative_norm_difference": 6.707345789891406e-11,
+      "finest_l2": 0.002897880404471707,
+      "finest_h1_semi": 0.25537873593887644,
+      "finest_orders": [
+        1.985598808166098,
+        0.9940252676405957
+      ]
+    },
+    "sin_sin_variable_gmsh22_tri_1_full_cg_jacobi": {
+      "case": "sin_sin_variable",
+      "mesh_source": "gmsh22",
+      "mesh_type": "tri",
+      "order": 1,
+      "assembly": "full",
+      "solver": "cg_jacobi",
+      "manifest_sha256": "ee70ac7d055e0c5a74cc83921322e33a875d76f8120ee962917edc234a0d85d8",
+      "max_relative_field_difference": 2.2725458709444665e-09,
+      "max_relative_norm_difference": 6.707323585430913e-11,
+      "finest_l2": 0.0028978804044715954,
+      "finest_h1_semi": 0.2553787359388763,
+      "finest_orders": [
+        1.9855988081661293,
+        0.9940252676405986
+      ]
+    },
+    "sin_sin_variable_gmsh22_tri_2_full_cg_gs": {
+      "case": "sin_sin_variable",
+      "mesh_source": "gmsh22",
+      "mesh_type": "tri",
+      "order": 2,
+      "assembly": "full",
+      "solver": "cg_gs",
+      "manifest_sha256": "3ce2bc4709e34031449088d7646effd015721cde1107dd4d83e9bb751d8ba1a3",
+      "max_relative_field_difference": 3.738794952437203e-11,
+      "max_relative_norm_difference": 9.284151225585902e-11,
+      "finest_l2": 3.2670422446840886e-05,
+      "finest_h1_semi": 0.007651284125593518,
+      "finest_orders": [
+        2.9935416805979327,
+        1.9912921221817796
+      ]
+    }
+  }
+}
