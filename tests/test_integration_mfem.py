@@ -39,6 +39,18 @@ def test_positive_studies_accepted(specs_dir, tmp_path, spec):
         assert e["reference_rel_diff"] is not None and e["reference_rel_diff"] < 1e-7
 
 
+def test_variable_p2_triangle_resolves_coefficient_in_stiffness(specs_dir, tmp_path):
+    study = json.loads((specs_dir / "stage2/diffusion_mixed_p1_tri.json").read_text())
+    study["execution"]["polynomial_order"] = 2
+    spec = tmp_path / "variable_p2_tri.json"
+    spec.write_text(json.dumps(study))
+    manifest = controller.run_study(spec, tmp_path / "runs")
+    assert manifest["final_state"] == "ACCEPTED", manifest["final_reason"]
+    errors = manifest["attempts"][-1]["errors"]
+    assert [level["n"] for level in errors] == [8, 16, 32]
+    assert max(level["reference_rel_diff"] for level in errors) < 1e-7
+
+
 @pytest.mark.parametrize("spec,state,code", [
     ("negative/unsupported_backend_mpi.json", "BLOCKED", "UNSUPPORTED_BACKEND"),
     ("negative/unsupported_backend_cuda.json", "BLOCKED", "UNSUPPORTED_BACKEND"),
@@ -183,4 +195,4 @@ def test_binary_reports_output_failure(tmp_path, obstruction):
 
 def test_list_cases_matches_header():
     ids = {c["id"] for c in list_cases()["cases"]}
-    assert ids == {"sin_sin", "cos_exp", "anisotropic_1000_sin_sin", "layered_unit_drop_10000", "gaussian_offset"}
+    assert ids == {"sin_sin", "cos_exp", "sin_sin_variable", "anisotropic_1000_sin_sin", "layered_unit_drop_10000", "gaussian_offset"}

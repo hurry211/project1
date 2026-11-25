@@ -1,6 +1,6 @@
 # Codex development handoff — MFEM Scientific Computing Agent
 
-Stage 0 and Stage 1 were completed on 2026-11-20. The original 31 studies reproduced their historical decisions. In Stage 1 the repaired verifier rejected all 98 fixed-panel and 64 sampled numerical faults and accepted all 46 clean numerical controls. The next milestone starts with a reviewed registry for the two existing manufactured cases. [Implementation status](docs/IMPLEMENTATION_STATUS.md) · [Verifier challenge and trust boundaries](docs/VERIFIER_CHALLENGE.md)
+All five stages of this handoff have reached their stated acceptance criteria locally. Stages 0 and 1 completed on 2026-11-20, Stage 2 on 2026-11-23, and Stages 3 and 4 on 2026-11-24. Stage 4 restricts the optional local model to nine reviewed serial requests and measures its selections against the rule baseline. The broader research agenda remains a separate planning document. [Implementation status](docs/IMPLEMENTATION_STATUS.md) · [Serial matrix](evidence/stage2/coverage.json) · [Parallel results](evidence/stage3/results.json) · [Planner comparison](docs/RESULTS.md#stage-4-controlled-planning-2026-11-24)
 
 ## Project goal
 

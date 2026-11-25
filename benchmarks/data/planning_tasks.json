@@ -1,0 +1,276 @@
+{
+  "version": 1,
+  "protocol": "Reviewed Stage 4 paired local study. Gold preferences and permitted sets are fixed independently of planner output. Corpus order is fixed; the first method alternates by row.",
+  "tasks": [
+    {
+      "id": "T01",
+      "group": "unique",
+      "task": {
+        "case": "sin_sin",
+        "description": "Run the homogeneous sine problem on the reviewed P2 triangular grid with full assembly.",
+        "mesh_type": "tri",
+        "polynomial_order": 2,
+        "assembly": "full"
+      },
+      "permitted_ids": [
+        "poisson_sin_sin_p2_tri"
+      ],
+      "expected_template_id": "poisson_sin_sin_p2_tri",
+      "expected_state": "ACCEPTED"
+    },
+    {
+      "id": "T02",
+      "group": "unique",
+      "task": {
+        "case": "cos_exp",
+        "description": "请使用二次四边形的全装配方案，求解顶部带 Neumann 数据的余弦指数算例。",
+        "polynomial_order": 2,
+        "assembly": "full"
+      },
+      "permitted_ids": [
+        "poisson_cos_exp_mixed_p2_quad"
+      ],
+      "expected_template_id": "poisson_cos_exp_mixed_p2_quad",
+      "expected_state": "ACCEPTED"
+    },
+    {
+      "id": "T03",
+      "group": "unique",
+      "task": {
+        "case": "sin_sin_variable",
+        "description": "Use the reviewed named physical boundary groups on the imported mesh for this varying diffusivity.",
+        "mesh_source": "gmsh22"
+      },
+      "permitted_ids": [
+        "diffusion_gmsh_p2_quad"
+      ],
+      "expected_template_id": "diffusion_gmsh_p2_quad",
+      "expected_state": "ACCEPTED"
+    },
+    {
+      "id": "T04",
+      "group": "unique",
+      "task": {
+        "case": "sin_sin_variable",
+        "description": "请在生成的三角形网格上运行带系数的混合边界问题。",
+        "mesh_source": "cartesian"
+      },
+      "permitted_ids": [
+        "diffusion_mixed_p1_tri"
+      ],
+      "expected_template_id": "diffusion_mixed_p1_tri",
+      "expected_state": "ACCEPTED"
+    },
+    {
+      "id": "T05",
+      "group": "unique",
+      "task": {
+        "case": "sin_sin",
+        "description": "Use the diagonal preconditioner for the first-order sine benchmark.",
+        "solver": "cg_jacobi"
+      },
+      "permitted_ids": [
+        "poisson_sin_sin_p1_tri_jacobi"
+      ],
+      "expected_template_id": "poisson_sin_sin_p1_tri_jacobi",
+      "expected_state": "ACCEPTED"
+    },
+    {
+      "id": "T06",
+      "group": "preference",
+      "task": {
+        "case": "sin_sin",
+        "description": "I need first-order triangles. Prefer diagonal preconditioning so the sweep has no Gauss-Seidel dependency.",
+        "mesh_type": "tri",
+        "polynomial_order": 1
+      },
+      "permitted_ids": [
+        "poisson_sin_sin_p1_tri",
+        "poisson_sin_sin_p1_tri_jacobi"
+      ],
+      "expected_template_id": "poisson_sin_sin_p1_tri_jacobi",
+      "expected_state": "ACCEPTED"
+    },
+    {
+      "id": "T07",
+      "group": "preference",
+      "task": {
+        "case": "sin_sin",
+        "description": "三角形可用任一已审核配置；我要比较二阶元的离散误差。",
+        "mesh_type": "tri"
+      },
+      "permitted_ids": [
+        "poisson_sin_sin_p1_tri",
+        "poisson_sin_sin_p1_tri_jacobi",
+        "poisson_sin_sin_p2_tri"
+      ],
+      "expected_template_id": "poisson_sin_sin_p2_tri",
+      "expected_state": "ACCEPTED"
+    },
+    {
+      "id": "T08",
+      "group": "preference",
+      "task": {
+        "case": "sin_sin",
+        "description": "Keep linear elements; I want the assembled-matrix symmetric Gauss-Seidel smoother.",
+        "polynomial_order": 1
+      },
+      "permitted_ids": [
+        "poisson_sin_sin_p1_tri",
+        "poisson_sin_sin_p1_tri_jacobi"
+      ],
+      "expected_template_id": "poisson_sin_sin_p1_tri",
+      "expected_state": "ACCEPTED"
+    },
+    {
+      "id": "T09",
+      "group": "preference",
+      "task": {
+        "case": "cos_exp",
+        "description": "Use first-order elements. My memory study needs the partial-assembly operator.",
+        "polynomial_order": 1
+      },
+      "permitted_ids": [
+        "poisson_cos_exp_mixed_p1_quad",
+        "poisson_cos_exp_mixed_p1_quad_pa"
+      ],
+      "expected_template_id": "poisson_cos_exp_mixed_p1_quad_pa",
+      "expected_state": "ACCEPTED"
+    },
+    {
+      "id": "T10",
+      "group": "preference",
+      "task": {
+        "case": "cos_exp",
+        "description": "我需要保留完整装配的矩阵，并用二次形函数来改善光滑解的精度。",
+        "mesh_type": "quad"
+      },
+      "permitted_ids": [
+        "poisson_cos_exp_mixed_p1_quad",
+        "poisson_cos_exp_mixed_p1_quad_pa",
+        "poisson_cos_exp_mixed_p2_quad",
+        "poisson_cos_exp_mixed_p2_quad_pa"
+      ],
+      "expected_template_id": "poisson_cos_exp_mixed_p2_quad",
+      "expected_state": "ACCEPTED"
+    },
+    {
+      "id": "T11",
+      "group": "preference",
+      "task": {
+        "case": "cos_exp",
+        "description": "Although full assembly is permitted, use partial assembly on the second-order space for this comparison.",
+        "polynomial_order": 2
+      },
+      "permitted_ids": [
+        "poisson_cos_exp_mixed_p2_quad",
+        "poisson_cos_exp_mixed_p2_quad_pa"
+      ],
+      "expected_template_id": "poisson_cos_exp_mixed_p2_quad_pa",
+      "expected_state": "ACCEPTED"
+    },
+    {
+      "id": "T12",
+      "group": "preference",
+      "task": {
+        "case": "cos_exp",
+        "description": "Use the lower-order option for this partial-assembly smoke test.",
+        "assembly": "partial"
+      },
+      "permitted_ids": [
+        "poisson_cos_exp_mixed_p1_quad_pa",
+        "poisson_cos_exp_mixed_p2_quad_pa"
+      ],
+      "expected_template_id": "poisson_cos_exp_mixed_p1_quad_pa",
+      "expected_state": "ACCEPTED"
+    },
+    {
+      "id": "T13",
+      "group": "preference",
+      "task": {
+        "case": "sin_sin_variable",
+        "description": "为检查外部物理组标签，请使用随例提供的 Gmsh 网格。"
+      },
+      "permitted_ids": [
+        "diffusion_gmsh_p2_quad",
+        "diffusion_mixed_p1_tri"
+      ],
+      "expected_template_id": "diffusion_gmsh_p2_quad",
+      "expected_state": "ACCEPTED"
+    },
+    {
+      "id": "T14",
+      "group": "preference",
+      "task": {
+        "case": "sin_sin_variable",
+        "description": "Choose the manufactured Cartesian grid using linear triangles; the imported mesh is for another study."
+      },
+      "permitted_ids": [
+        "diffusion_gmsh_p2_quad",
+        "diffusion_mixed_p1_tri"
+      ],
+      "expected_template_id": "diffusion_mixed_p1_tri",
+      "expected_state": "ACCEPTED"
+    },
+    {
+      "id": "T15",
+      "group": "review",
+      "task": {
+        "case": "sin_sin",
+        "description": "Use a quadratic triangle with Jacobi; I need this exact combination.",
+        "polynomial_order": 2,
+        "solver": "cg_jacobi"
+      },
+      "permitted_ids": [],
+      "expected_template_id": null,
+      "expected_state": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "T16",
+      "group": "review",
+      "task": {
+        "case": "cos_exp",
+        "description": "在 Gmsh 导入的网格上运行这个余弦指数混合边界算例。",
+        "mesh_source": "gmsh22"
+      },
+      "permitted_ids": [],
+      "expected_template_id": null,
+      "expected_state": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "T17",
+      "group": "review",
+      "task": {
+        "case": "sin_sin_variable",
+        "description": "Please rerun with a relaxed acceptance threshold.",
+        "change_request": "Raise the allowed relative field error to 1e-2."
+      },
+      "permitted_ids": [],
+      "expected_template_id": null,
+      "expected_state": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "T18",
+      "group": "review",
+      "task": {
+        "case": "sin_sin",
+        "description": "使用不同的方程再求解。",
+        "change_request": "Replace scalar Poisson with linear elasticity."
+      },
+      "permitted_ids": [],
+      "expected_template_id": null,
+      "expected_state": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "T19",
+      "group": "review",
+      "task": {
+        "case": "elasticity",
+        "description": "Solve the displacement problem for the elastic membrane."
+      },
+      "permitted_ids": [],
+      "expected_template_id": null,
+      "expected_state": "REVIEW_REQUIRED"
+    }
+  ]
+}

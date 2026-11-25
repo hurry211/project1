@@ -3,7 +3,7 @@
 // Registry of manufactured solutions compiled into the MFEM solver.
 //
 // Design note: the solver does NOT parse arbitrary expressions. Each case is a
-// reviewed, hard-coded C++ implementation of u, grad(u) and f. The
+// reviewed C++ implementation of u, grad(u), kappa and f = -div(kappa grad u). The
 // canonical expression strings below are emitted by `poisson_mms --list-cases`
 // so that the Python layer can bind a ProblemSpec (which stores expression
 // strings) to a compiled case and refuse to run on any textual mismatch.
@@ -22,6 +22,43 @@
 namespace mms
 {
 
+// The natural load is kappa grad(u).n. The outward diffusive flux is its negative.
+struct Formulation
+{
+   const char *equation;
+   const char *domain;
+   const char *space;
+   const char *bilinear_integrator;
+   const char *dirichlet_trace;
+   const char *neumann_trace;
+   const char *kappa = "1";
+};
+
+inline constexpr Formulation UnitSquarePoisson =
+{
+   "-laplacian(u) = f", "unit_square_2d", "scalar_H1", "DiffusionIntegrator",
+   "u_exact", "grad(u_exact).n"
+};
+
+inline constexpr Formulation UnitSquareVariableDiffusion =
+{
+   "-div(kappa*grad(u)) = f", "unit_square_2d", "scalar_H1", "DiffusionIntegrator",
+   "u_exact", "kappa*grad(u_exact).n", "1+x"
+};
+
+inline constexpr Formulation UnitSquareAnisotropic =
+{
+   "-div(diag(1000,1)*grad(u)) = f", "unit_square_2d", "scalar_H1", "DiffusionIntegrator",
+   "u_exact", "(A*grad(u_exact)).n", "diag(1000,1)"
+};
+
+inline constexpr Formulation UnitSquareLayered =
+{
+   "-div(a(x)*grad(u)) = f, a(x)=1 (x<0.5), 10000 (x>=0.5)", "unit_square_2d",
+   "scalar_H1", "DiffusionIntegrator", "u_exact", "a(x)*grad(u_exact).n",
+   "1 (x<0.5), 10000 (x>=0.5)"
+};
+
 struct ManufacturedCase
 {
    std::string id;
@@ -30,7 +67,9 @@ struct ManufacturedCase
    mfem::real_t (*u)(const mfem::Vector &);
    void (*grad_u)(const mfem::Vector &, mfem::Vector &);
    mfem::real_t (*f)(const mfem::Vector &);
-   std::string equation = "-laplacian(u) = f";
+   const Formulation &form = UnitSquarePoisson;
+   mfem::real_t (*diffusivity)(const mfem::Vector &) = nullptr;
+   mfem::real_t (*source_without_coefficient_gradient)(const mfem::Vector &) = nullptr;
    double diffusion_x = 1.0;
    bool layered = false;
 };
@@ -110,6 +149,32 @@ inline mfem::real_t gaussian_f(const mfem::Vector &p)
    return (100.0 - 2500.0 * gaussian_r2(p)) * gaussian_u(p);
 }
 
+inline mfem::real_t one_plus_x(const mfem::Vector &p)
+{
+   return 1.0 + p(0);
+}
+
+inline mfem::real_t variable_u(const mfem::Vector &p)
+{
+   return std::sin(M_PI * p(0)) * std::sin(2.0 * M_PI * p(1));
+}
+inline void variable_grad(const mfem::Vector &p, mfem::Vector &g)
+{
+   g.SetSize(2);
+   g(0) = M_PI * std::cos(M_PI * p(0)) * std::sin(2.0 * M_PI * p(1));
+   g(1) = 2.0 * M_PI * std::sin(M_PI * p(0)) * std::cos(2.0 * M_PI * p(1));
+}
+inline mfem::real_t variable_laplacian_term(const mfem::Vector &p)
+{
+   return 5.0 * M_PI * M_PI * one_plus_x(p) * variable_u(p);
+}
+inline mfem::real_t variable_f(const mfem::Vector &p)
+{
+   // grad(kappa) = (1,0), so the product rule contributes -du/dx.
+   return variable_laplacian_term(p)
+          - M_PI * std::cos(M_PI * p(0)) * std::sin(2.0 * M_PI * p(1));
+}
+
 inline const std::vector<ManufacturedCase> &Registry()
 {
    static const std::vector<ManufacturedCase> cases =
@@ -136,13 +201,20 @@ inline const std::vector<ManufacturedCase> &Registry()
          "sin(pi*x)*sin(pi*y)",
          "1001*pi**2*sin(pi*x)*sin(pi*y)",
          sin_sin_u, sin_sin_grad, anisotropic_f,
-         "-div(diag(1000,1)*grad(u)) = f", 1000.0
+         UnitSquareAnisotropic, nullptr, nullptr, 1000.0
       },
       {
          "layered_unit_drop_10000",
          "(10001*x-9999*(sqrt((x-0.5)**2)-0.5))/10001", "0",
          layered_u, layered_grad, zero_source,
-         "-div(a(x)*grad(u)) = f, a(x)=1 (x<0.5), 10000 (x>=0.5)", 1.0, true
+         UnitSquareLayered, layered_a, nullptr, 1.0, true
+      },
+      {
+         "sin_sin_variable",
+         "sin(pi*x)*sin(2*pi*y)",
+         "5*pi**2*(1+x)*sin(pi*x)*sin(2*pi*y)-pi*cos(pi*x)*sin(2*pi*y)",
+         variable_u, variable_grad, variable_f,
+         UnitSquareVariableDiffusion, one_plus_x, variable_laplacian_term
       }
    };
    return cases;

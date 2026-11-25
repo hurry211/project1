@@ -16,8 +16,9 @@ import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+from . import profiling
 from .environment import DEFAULT_SOLVER_BIN, PROJECT_ROOT, mfem_install_dir
-from .spec import POISSON, ExecutionSpec, ProblemSpec, compact_expression
+from .spec import ANISOTROPIC, LAYERED, POISSON, ExecutionSpec, ProblemSpec, compact_expression
 
 EXIT_CODES = {
     0: "OK", 2: "INVALID_ARGUMENTS", 3: "BOUNDARY_COVERAGE", 4: "UNSUPPORTED_COMBINATION",
@@ -27,6 +28,16 @@ EXIT_CODES = {
 
 class BuildError(RuntimeError):
     pass
+
+
+# This adapter runs scalar H1 diffusion with boundary data from the exact
+# solution. ProblemSpec supplies the equation, domain, and assignment of sides.
+_POISSON_FORM = {
+    "space": "scalar_H1",
+    "bilinear_integrator": "DiffusionIntegrator",
+    "dirichlet_trace": "u_exact",
+    "neumann_trace": "grad(u_exact).n",
+}
 
 
 def solver_binary() -> Path:
@@ -61,6 +72,37 @@ def build_solver(log_dir: Path | None = None) -> dict:
     return record
 
 
+def _require_text_fields(record, keys, name: str):
+    if not isinstance(record, dict) or not all(
+        isinstance(record.get(k), str) and record[k].strip() for k in keys
+    ):
+        raise ValueError(f"invalid {name}")
+
+
+def _validate_registry(catalog):
+    if not isinstance(catalog, dict) or not isinstance(catalog.get("cases"), list):
+        raise ValueError("expected a cases array")
+    version = catalog.get("registry_version")
+    if "registry_version" in catalog or "formulation" in catalog:
+        if type(version) is not int or version not in (1, 2):
+            raise ValueError("unsupported case registry version")
+        _require_text_fields(catalog.get("formulation"), ("equation", "domain", *_POISSON_FORM), "formulation")
+
+    ids, signatures = set(), set()
+    for case in catalog["cases"]:
+        _require_text_fields(case, ("id", "exact_solution", "source"), "manufactured case entry")
+        if "formulation" in case:
+            if version != 2:
+                raise ValueError("case-specific formulations require registry version 2")
+            _require_text_fields(case["formulation"], ("equation", "domain", "kappa", *_POISSON_FORM),
+                                 "case-specific formulation")
+        signature = (compact_expression(case["exact_solution"]), compact_expression(case["source"]))
+        if case["id"] in ids or signature in signatures:
+            raise ValueError("duplicate case identifier or formula signature")
+        ids.add(case["id"])
+        signatures.add(signature)
+
+
 def list_cases(binary: Path | None = None) -> dict:
     binary = binary or solver_binary()
     if not binary.is_file():
@@ -73,21 +115,41 @@ def list_cases(binary: Path | None = None) -> dict:
         raise BuildError(f"--list-cases failed: {p.stderr}")
     try:
         cases = json.loads(p.stdout)
-        if not isinstance(cases, dict) or not isinstance(cases.get("cases"), list):
-            raise ValueError("expected a cases array")
-        if not all(isinstance(c, dict) and all(isinstance(c.get(k), str) for k in ("id", "exact_solution", "source"))
-                   for c in cases["cases"]):
-            raise ValueError("invalid manufactured case entry")
+        _validate_registry(cases)
         return cases
     except ValueError as exc:
         raise BuildError(f"invalid --list-cases output: {exc}") from exc
 
 
 def bind_case(problem: ProblemSpec, cases: dict) -> str | None:
-    """Return the compiled case id implementing exactly this problem, if any."""
+    """Return a unique compatible case from a current or historical catalog."""
+    try:
+        _validate_registry(cases)
+    except ValueError:
+        return None
+    expected = {"equation": problem.equation, "domain": problem.domain, **_POISSON_FORM}
+    variable = problem.equation == "-div(kappa*grad(u)) = f"
+    if variable:
+        expected["neumann_trace"] = "kappa*grad(u_exact).n"
+    coefficient = problem.kappa
+    if problem.equation == ANISOTROPIC:
+        coefficient, expected["neumann_trace"] = "diag(1000,1)", "(A*grad(u_exact)).n"
+    elif problem.equation == LAYERED:
+        coefficient, expected["neumann_trace"] = "1 (x<0.5), 10000 (x>=0.5)", "a(x)*grad(u_exact).n"
     for c in cases["cases"]:
-        if (c.get("equation", POISSON) == problem.equation
-                and compact_expression(c["exact_solution"]) == compact_expression(problem.exact_solution)
+        if "equation" in c and c["equation"] != problem.equation:
+            continue
+        if variable and "formulation" not in c:
+            continue  # Historical solvers implement only unit diffusion.
+        form = c.get("formulation", cases.get("formulation"))
+        if form is None and c.get("equation", POISSON) != problem.equation:
+            continue
+        if form is not None and (
+            any(form[key] != value for key, value in expected.items())
+            or compact_expression(form.get("kappa", "1")) != compact_expression(coefficient)
+        ):
+            continue
+        if (compact_expression(c["exact_solution"]) == compact_expression(problem.exact_solution)
                 and compact_expression(c["source"]) == compact_expression(problem.source)):
             return c["id"]
     return None
@@ -114,7 +176,8 @@ def _limits(mem_mb: int):
 
 
 def run_level(problem: ProblemSpec, execution: ExecutionSpec, case_id: str, n: int,
-              level_dir: Path, timeout_s: float, mem_mb: int, binary: Path | None = None) -> LevelRun:
+              level_dir: Path, timeout_s: float, mem_mb: int, binary: Path | None = None, *,
+              mesh_path: Path | None = None, refinements: int = 0) -> LevelRun:
     binary = binary or solver_binary()
     level_dir.mkdir(parents=True, exist_ok=False)  # never overwrite evidence
     cmd = [
@@ -126,19 +189,24 @@ def run_level(problem: ProblemSpec, execution: ExecutionSpec, case_id: str, n: i
         "--rel-tol", repr(execution.rel_tol), "--max-iter", str(execution.max_iter),
         "--inject-fault", execution.inject_fault, "--out", str(level_dir),
     ]
+    if mesh_path is not None:
+        cmd.extend(["--mesh", str(mesh_path), "--mesh-refinements", str(refinements)])
     (level_dir / "command.json").write_text(json.dumps({"argv": cmd, "shell": shlex.join(cmd)}, indent=2))
-    t0 = time.time()
+    t0 = time.monotonic()
     timed_out = False
     try:
-        p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout_s,
-                           preexec_fn=_limits(mem_mb))
+        env = {**os.environ, "MFEM_STUDY_PROFILE": "1"} if profiling.enabled() else None
+        with profiling.phase("native.process"):
+            p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout_s,
+                               preexec_fn=_limits(mem_mb), env=env)
         code, out, err = p.returncode, p.stdout, p.stderr
     except subprocess.TimeoutExpired as exc:
         timed_out = True
         code = None
         out = exc.stdout.decode() if isinstance(exc.stdout, bytes) else (exc.stdout or "")
         err = exc.stderr.decode() if isinstance(exc.stderr, bytes) else (exc.stderr or "")
-    wall = time.time() - t0
+    wall = time.monotonic() - t0
+    profiling.record_native(n, wall, err)
     (level_dir / "stdout.txt").write_text(out)
     (level_dir / "stderr.txt").write_text(err)
     meaning = "TIMEOUT" if timed_out else EXIT_CODES.get(code, f"UNKNOWN_EXIT_{code}")

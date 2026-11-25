@@ -1,0 +1,2382 @@
+{
+  "seed": 20261120,
+  "scope": "historical numerical cases on warm local archives",
+  "full_verdict_counts": {
+    "REJECTED": 162,
+    "ACCEPTED": 46
+  },
+  "early_rejections_by_family": {
+    "quadrature_claim": 10,
+    "cg_residual": 10,
+    "cg_iterations": 12,
+    "cached_result": 4
+  },
+  "clean_inputs_rejected": 0,
+  "escalations": 172,
+  "escalated_faults": 126,
+  "full_seconds": 9.59984690999994,
+  "screen_seconds_all": 0.043993304000025546,
+  "projected_screen_plus_escalated_full_seconds": 7.881691728000021,
+  "rows": [
+    {
+      "cohort": "panel",
+      "family": "source_sign",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 2059455963,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002009119999684117,
+      "full_seconds": 0.05809694900000295
+    },
+    {
+      "cohort": "panel",
+      "family": "stiffness_scale",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 2321697473,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00038334900000336347,
+      "full_seconds": 0.07318807500001867
+    },
+    {
+      "cohort": "panel",
+      "family": "centroid_errors",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 3248079017,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002012560000252961,
+      "full_seconds": 0.06426603300002398
+    },
+    {
+      "cohort": "panel",
+      "family": "quadrature_claim",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 3750420281,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "QUADRATURE_CLAIM_MISMATCH"
+      ],
+      "screen_seconds": 0.0001354670000068836,
+      "full_seconds": 0.06441300099999125
+    },
+    {
+      "cohort": "panel",
+      "family": "boundary_labels",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 1652368287,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019534699998757787,
+      "full_seconds": 0.06526064499996664
+    },
+    {
+      "cohort": "panel",
+      "family": "dof_swap",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 2833994481,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002201839999997901,
+      "full_seconds": 0.06884800099999211
+    },
+    {
+      "cohort": "panel",
+      "family": "duplicate_cell",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 1286128420,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.000498249000031592,
+      "full_seconds": 0.0710235070000067
+    },
+    {
+      "cohort": "panel",
+      "family": "interior_warp",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 3989847175,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00024717600001622486,
+      "full_seconds": 0.06510947499998565
+    },
+    {
+      "cohort": "panel",
+      "family": "nan",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 2293642510,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002152190000401788,
+      "full_seconds": 0.056881627999985085
+    },
+    {
+      "cohort": "panel",
+      "family": "infinity",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 4009142980,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002188099999784754,
+      "full_seconds": 0.0631086239999945
+    },
+    {
+      "cohort": "panel",
+      "family": "cg_residual",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 3657111784,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 0.00010255899996991502,
+      "full_seconds": 0.06904769999999871
+    },
+    {
+      "cohort": "panel",
+      "family": "cg_iterations",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 2163508714,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 0.00011704799999279203,
+      "full_seconds": 0.06873357900002475
+    },
+    {
+      "cohort": "panel",
+      "family": "cached_result",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 1754643523,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "QUADRATURE_CLAIM_MISMATCH"
+      ],
+      "screen_seconds": 0.00010619199997563555,
+      "full_seconds": 0.06277997199998708
+    },
+    {
+      "cohort": "panel",
+      "family": "inconsistent_source",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 2400771667,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002502479999861862,
+      "full_seconds": 0.000776509999980135
+    },
+    {
+      "cohort": "panel",
+      "family": "source_sign",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 4149685720,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002167690000192124,
+      "full_seconds": 0.07504814899999701
+    },
+    {
+      "cohort": "panel",
+      "family": "stiffness_scale",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 3107858783,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00023740400001770467,
+      "full_seconds": 0.06411531099996637
+    },
+    {
+      "cohort": "panel",
+      "family": "centroid_errors",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 1398946643,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020926400003418166,
+      "full_seconds": 0.06174763200004918
+    },
+    {
+      "cohort": "panel",
+      "family": "quadrature_claim",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 1382058921,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "QUADRATURE_CLAIM_MISMATCH"
+      ],
+      "screen_seconds": 0.000122240999985479,
+      "full_seconds": 0.06662779000004093
+    },
+    {
+      "cohort": "panel",
+      "family": "boundary_labels",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 2508277365,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020747999997183797,
+      "full_seconds": 0.06467009099998222
+    },
+    {
+      "cohort": "panel",
+      "family": "dof_swap",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 1988650790,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.000245336999967094,
+      "full_seconds": 0.09090108699996335
+    },
+    {
+      "cohort": "panel",
+      "family": "duplicate_cell",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 161084565,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00021450599996342135,
+      "full_seconds": 0.07263176899999735
+    },
+    {
+      "cohort": "panel",
+      "family": "interior_warp",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 447730534,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00027104899999130794,
+      "full_seconds": 0.05904475799997044
+    },
+    {
+      "cohort": "panel",
+      "family": "nan",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 3722815617,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00023293599997487036,
+      "full_seconds": 0.052631394000002274
+    },
+    {
+      "cohort": "panel",
+      "family": "infinity",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 2315384186,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020525899998347086,
+      "full_seconds": 0.051128529999971306
+    },
+    {
+      "cohort": "panel",
+      "family": "cg_residual",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 431178683,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 0.00011495100000047387,
+      "full_seconds": 0.06393469700003607
+    },
+    {
+      "cohort": "panel",
+      "family": "cg_iterations",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 4188596920,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 0.00012287099997365658,
+      "full_seconds": 0.06252781999995705
+    },
+    {
+      "cohort": "panel",
+      "family": "cached_result",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 268953872,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00017333799996777088,
+      "full_seconds": 0.05675818600002458
+    },
+    {
+      "cohort": "panel",
+      "family": "inconsistent_source",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 1579155801,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00023560900001484697,
+      "full_seconds": 0.0005425869999839961
+    },
+    {
+      "cohort": "panel",
+      "family": "source_sign",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 1696077867,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0001966190000075585,
+      "full_seconds": 0.04606852799997796
+    },
+    {
+      "cohort": "panel",
+      "family": "stiffness_scale",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 1917478902,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00047112200002175086,
+      "full_seconds": 0.0493994590000284
+    },
+    {
+      "cohort": "panel",
+      "family": "centroid_errors",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 3839070746,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002277780000099483,
+      "full_seconds": 0.045225491999985934
+    },
+    {
+      "cohort": "panel",
+      "family": "quadrature_claim",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 1042395933,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "QUADRATURE_CLAIM_MISMATCH"
+      ],
+      "screen_seconds": 9.420399999271467e-05,
+      "full_seconds": 0.042010736999998244
+    },
+    {
+      "cohort": "panel",
+      "family": "boundary_labels",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 2837600893,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0005871160000197051,
+      "full_seconds": 0.040555036000000655
+    },
+    {
+      "cohort": "panel",
+      "family": "dof_swap",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 1424385108,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018092799996338726,
+      "full_seconds": 0.04028705500002161
+    },
+    {
+      "cohort": "panel",
+      "family": "duplicate_cell",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 691453466,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002462130000253637,
+      "full_seconds": 0.04010226199994804
+    },
+    {
+      "cohort": "panel",
+      "family": "interior_warp",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 3336961869,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00021170700000539,
+      "full_seconds": 0.03979102199997442
+    },
+    {
+      "cohort": "panel",
+      "family": "nan",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 240934912,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020788099999435872,
+      "full_seconds": 0.035651705000020684
+    },
+    {
+      "cohort": "panel",
+      "family": "infinity",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 3612828399,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018665499999315216,
+      "full_seconds": 0.03486037499999384
+    },
+    {
+      "cohort": "panel",
+      "family": "cg_residual",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 2657753415,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 8.639899999707268e-05,
+      "full_seconds": 0.041896340999983295
+    },
+    {
+      "cohort": "panel",
+      "family": "cg_iterations",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 3780866754,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 9.849999997868508e-05,
+      "full_seconds": 0.047636510000018006
+    },
+    {
+      "cohort": "panel",
+      "family": "cached_result",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 3296750544,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0001960639999651903,
+      "full_seconds": 0.041967372999977215
+    },
+    {
+      "cohort": "panel",
+      "family": "inconsistent_source",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 3212239636,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00036322500000096625,
+      "full_seconds": 0.001524706999987302
+    },
+    {
+      "cohort": "panel",
+      "family": "source_sign",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 1420352568,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002446679999934531,
+      "full_seconds": 0.044196312999986276
+    },
+    {
+      "cohort": "panel",
+      "family": "stiffness_scale",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 2116883202,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00022277299996176225,
+      "full_seconds": 0.040564813999992566
+    },
+    {
+      "cohort": "panel",
+      "family": "centroid_errors",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 2757529389,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00024175300001161304,
+      "full_seconds": 0.040893971000002693
+    },
+    {
+      "cohort": "panel",
+      "family": "quadrature_claim",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 1804687079,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "QUADRATURE_CLAIM_MISMATCH"
+      ],
+      "screen_seconds": 0.0001067339999849537,
+      "full_seconds": 0.04443785999995953
+    },
+    {
+      "cohort": "panel",
+      "family": "boundary_labels",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 1229363806,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00021758799999815892,
+      "full_seconds": 0.0413598009999987
+    },
+    {
+      "cohort": "panel",
+      "family": "dof_swap",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 3857035840,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020163700003195117,
+      "full_seconds": 0.045099639000000025
+    },
+    {
+      "cohort": "panel",
+      "family": "duplicate_cell",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 4261613401,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.000208756999995785,
+      "full_seconds": 0.039622403000009854
+    },
+    {
+      "cohort": "panel",
+      "family": "interior_warp",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 3840712461,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00048156100001506275,
+      "full_seconds": 0.04332891900003233
+    },
+    {
+      "cohort": "panel",
+      "family": "nan",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 3415953759,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00023765200000980258,
+      "full_seconds": 0.036532649000037054
+    },
+    {
+      "cohort": "panel",
+      "family": "infinity",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 2781110276,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0005069950000233803,
+      "full_seconds": 0.042814250999981596
+    },
+    {
+      "cohort": "panel",
+      "family": "cg_residual",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 2397783143,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 0.00010060599998951147,
+      "full_seconds": 0.04109096999997064
+    },
+    {
+      "cohort": "panel",
+      "family": "cg_iterations",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 1500827499,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 9.867599999324739e-05,
+      "full_seconds": 0.04292636599996058
+    },
+    {
+      "cohort": "panel",
+      "family": "cached_result",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 1201524782,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020597199994654147,
+      "full_seconds": 0.045072011999991446
+    },
+    {
+      "cohort": "panel",
+      "family": "inconsistent_source",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 1988912916,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002008449999948425,
+      "full_seconds": 0.00046852200000557787
+    },
+    {
+      "cohort": "panel",
+      "family": "source_sign",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 234805067,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0001901770000358738,
+      "full_seconds": 0.043487670999979855
+    },
+    {
+      "cohort": "panel",
+      "family": "stiffness_scale",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 2342543601,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00021929799999043098,
+      "full_seconds": 0.06287630199994965
+    },
+    {
+      "cohort": "panel",
+      "family": "centroid_errors",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 2740976731,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0001906420000068465,
+      "full_seconds": 0.041201080999996975
+    },
+    {
+      "cohort": "panel",
+      "family": "quadrature_claim",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 1874025491,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "QUADRATURE_CLAIM_MISMATCH"
+      ],
+      "screen_seconds": 9.531400002060764e-05,
+      "full_seconds": 0.04504091299997981
+    },
+    {
+      "cohort": "panel",
+      "family": "boundary_labels",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 1848458337,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002120540000305482,
+      "full_seconds": 0.08392095400000699
+    },
+    {
+      "cohort": "panel",
+      "family": "dof_swap",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 1288340364,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00023554099999500977,
+      "full_seconds": 0.04277647600002865
+    },
+    {
+      "cohort": "panel",
+      "family": "duplicate_cell",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 3402127547,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019681500003798647,
+      "full_seconds": 0.0465339320000453
+    },
+    {
+      "cohort": "panel",
+      "family": "interior_warp",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 4060207689,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.000199538999993365,
+      "full_seconds": 0.04644722199998341
+    },
+    {
+      "cohort": "panel",
+      "family": "nan",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 3361862565,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00022407199998042415,
+      "full_seconds": 0.05819345700001577
+    },
+    {
+      "cohort": "panel",
+      "family": "infinity",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 2891564982,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00025934100000313265,
+      "full_seconds": 0.041700838999986445
+    },
+    {
+      "cohort": "panel",
+      "family": "cg_residual",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 3831869937,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 9.90290000117966e-05,
+      "full_seconds": 0.04997074999999995
+    },
+    {
+      "cohort": "panel",
+      "family": "cg_iterations",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 4281726992,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 9.440500002710905e-05,
+      "full_seconds": 0.04183480900002223
+    },
+    {
+      "cohort": "panel",
+      "family": "cached_result",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 3559542191,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "QUADRATURE_CLAIM_MISMATCH"
+      ],
+      "screen_seconds": 0.00012421700000686542,
+      "full_seconds": 0.041908307000028344
+    },
+    {
+      "cohort": "panel",
+      "family": "inconsistent_source",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 1772086826,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0001986269999747492,
+      "full_seconds": 0.0004859280000459876
+    },
+    {
+      "cohort": "panel",
+      "family": "source_sign",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 765260857,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002848240000048463,
+      "full_seconds": 0.043728046000012455
+    },
+    {
+      "cohort": "panel",
+      "family": "stiffness_scale",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 1021601953,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019262600000047314,
+      "full_seconds": 0.03982354099997565
+    },
+    {
+      "cohort": "panel",
+      "family": "centroid_errors",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 1341033801,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00021153900001991133,
+      "full_seconds": 0.04469229500000438
+    },
+    {
+      "cohort": "panel",
+      "family": "quadrature_claim",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 3010415688,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "QUADRATURE_CLAIM_MISMATCH"
+      ],
+      "screen_seconds": 0.0001434440000025461,
+      "full_seconds": 0.04129172699998662
+    },
+    {
+      "cohort": "panel",
+      "family": "boundary_labels",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 147856382,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018676400003414528,
+      "full_seconds": 0.04290370100000018
+    },
+    {
+      "cohort": "panel",
+      "family": "dof_swap",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 3472052455,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020701799996913905,
+      "full_seconds": 0.04693823400003794
+    },
+    {
+      "cohort": "panel",
+      "family": "duplicate_cell",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 2398466403,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0001738999999929547,
+      "full_seconds": 0.03904558799996494
+    },
+    {
+      "cohort": "panel",
+      "family": "interior_warp",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 1488470335,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019634800003132113,
+      "full_seconds": 0.046007656999961455
+    },
+    {
+      "cohort": "panel",
+      "family": "nan",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 2707360200,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019371999997019884,
+      "full_seconds": 0.03821572399999695
+    },
+    {
+      "cohort": "panel",
+      "family": "infinity",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 722805432,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00021903100002873543,
+      "full_seconds": 0.04123469699999305
+    },
+    {
+      "cohort": "panel",
+      "family": "cg_residual",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 2799918923,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 8.318200002577214e-05,
+      "full_seconds": 0.04328195200002938
+    },
+    {
+      "cohort": "panel",
+      "family": "cg_iterations",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 3555833715,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 0.0002471800000307667,
+      "full_seconds": 0.04897419799999625
+    },
+    {
+      "cohort": "panel",
+      "family": "cached_result",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 77637587,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "QUADRATURE_CLAIM_MISMATCH"
+      ],
+      "screen_seconds": 8.707299997467999e-05,
+      "full_seconds": 0.047307231999980104
+    },
+    {
+      "cohort": "panel",
+      "family": "inconsistent_source",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 175101587,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00024289300000646108,
+      "full_seconds": 0.000587311000003865
+    },
+    {
+      "cohort": "panel",
+      "family": "source_sign",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 4075599833,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018783500001973152,
+      "full_seconds": 0.04931471600002624
+    },
+    {
+      "cohort": "panel",
+      "family": "stiffness_scale",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 2153321454,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018876600000794497,
+      "full_seconds": 0.04258210500000814
+    },
+    {
+      "cohort": "panel",
+      "family": "centroid_errors",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 1817453041,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018179199997803153,
+      "full_seconds": 0.046486141999992014
+    },
+    {
+      "cohort": "panel",
+      "family": "quadrature_claim",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 928151494,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "QUADRATURE_CLAIM_MISMATCH"
+      ],
+      "screen_seconds": 0.00013105799996537826,
+      "full_seconds": 0.04886588499999789
+    },
+    {
+      "cohort": "panel",
+      "family": "boundary_labels",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 1053697315,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002570089999949232,
+      "full_seconds": 0.043765118999999686
+    },
+    {
+      "cohort": "panel",
+      "family": "dof_swap",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 2155687817,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020542200002182653,
+      "full_seconds": 0.04373755300002813
+    },
+    {
+      "cohort": "panel",
+      "family": "duplicate_cell",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 1169526586,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020262799995407477,
+      "full_seconds": 0.04023138799999515
+    },
+    {
+      "cohort": "panel",
+      "family": "interior_warp",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 787581541,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002126239999711288,
+      "full_seconds": 0.0406755280000084
+    },
+    {
+      "cohort": "panel",
+      "family": "nan",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 4031841865,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00022469499998578613,
+      "full_seconds": 0.03563600399996858
+    },
+    {
+      "cohort": "panel",
+      "family": "infinity",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 2622677148,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0003050499999517342,
+      "full_seconds": 0.03671446900000319
+    },
+    {
+      "cohort": "panel",
+      "family": "cg_residual",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 1787095253,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 8.903899998813358e-05,
+      "full_seconds": 0.04107324099999232
+    },
+    {
+      "cohort": "panel",
+      "family": "cg_iterations",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 109152756,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 0.00012236999998549436,
+      "full_seconds": 0.0425015150000263
+    },
+    {
+      "cohort": "panel",
+      "family": "cached_result",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 3027951873,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00022525700001096993,
+      "full_seconds": 0.04343172399995865
+    },
+    {
+      "cohort": "panel",
+      "family": "inconsistent_source",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 3597355853,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00025588800002651624,
+      "full_seconds": 0.0005878200000211109
+    },
+    {
+      "cohort": "iid",
+      "family": "infinity",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 8,
+      "draw_seed": 3102349442,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019262099999650673,
+      "full_seconds": 0.032195104000038555
+    },
+    {
+      "cohort": "iid",
+      "family": "duplicate_cell",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 2840804066,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018861600000263934,
+      "full_seconds": 0.0427789870000197
+    },
+    {
+      "cohort": "iid",
+      "family": "cg_iterations",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 1772133552,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 8.618300000762247e-05,
+      "full_seconds": 0.036939007000000856
+    },
+    {
+      "cohort": "iid",
+      "family": "cg_iterations",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 32,
+      "draw_seed": 1700737715,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 0.00024734499999112813,
+      "full_seconds": 0.055034017000025415
+    },
+    {
+      "cohort": "iid",
+      "family": "duplicate_cell",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 359939929,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00025072500000078435,
+      "full_seconds": 0.06011207900002091
+    },
+    {
+      "cohort": "iid",
+      "family": "duplicate_cell",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 32,
+      "draw_seed": 3236806257,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00021639999999933934,
+      "full_seconds": 0.05969612699999516
+    },
+    {
+      "cohort": "iid",
+      "family": "inconsistent_source",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 16,
+      "draw_seed": 2786821376,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020655299999816634,
+      "full_seconds": 0.0004919520000044031
+    },
+    {
+      "cohort": "iid",
+      "family": "boundary_labels",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 32,
+      "draw_seed": 3824576316,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002723030000311155,
+      "full_seconds": 0.06307949500001087
+    },
+    {
+      "cohort": "iid",
+      "family": "interior_warp",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 16,
+      "draw_seed": 526689934,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002618160000338321,
+      "full_seconds": 0.06686523900003749
+    },
+    {
+      "cohort": "iid",
+      "family": "inconsistent_source",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 8,
+      "draw_seed": 2939822909,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00023706300004278091,
+      "full_seconds": 0.00046788700001343386
+    },
+    {
+      "cohort": "iid",
+      "family": "centroid_errors",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 16,
+      "draw_seed": 427791743,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018001999995931328,
+      "full_seconds": 0.039857827999981055
+    },
+    {
+      "cohort": "iid",
+      "family": "cg_residual",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 32,
+      "draw_seed": 782108269,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 0.0002975909999918258,
+      "full_seconds": 0.04897609699997929
+    },
+    {
+      "cohort": "iid",
+      "family": "boundary_labels",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 758172419,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00023440800003982076,
+      "full_seconds": 0.05018299799996839
+    },
+    {
+      "cohort": "iid",
+      "family": "boundary_labels",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 16,
+      "draw_seed": 4053237718,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019277400002692957,
+      "full_seconds": 0.059780480000029
+    },
+    {
+      "cohort": "iid",
+      "family": "stiffness_scale",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 16,
+      "draw_seed": 2709838615,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002554139999801919,
+      "full_seconds": 0.07211694099999022
+    },
+    {
+      "cohort": "iid",
+      "family": "dof_swap",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 16,
+      "draw_seed": 561789005,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.000322422000010647,
+      "full_seconds": 0.04587997300001234
+    },
+    {
+      "cohort": "iid",
+      "family": "cached_result",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 16,
+      "draw_seed": 1002748797,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "QUADRATURE_CLAIM_MISMATCH"
+      ],
+      "screen_seconds": 0.00015590800001064054,
+      "full_seconds": 0.040784732000020085
+    },
+    {
+      "cohort": "iid",
+      "family": "dof_swap",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 16,
+      "draw_seed": 2474913446,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00022741799995174006,
+      "full_seconds": 0.04351144699995757
+    },
+    {
+      "cohort": "iid",
+      "family": "duplicate_cell",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 8,
+      "draw_seed": 2780992258,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018280400001913222,
+      "full_seconds": 0.03597144200000457
+    },
+    {
+      "cohort": "iid",
+      "family": "dof_swap",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 32,
+      "draw_seed": 1629476272,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002466340000069067,
+      "full_seconds": 0.04635485000000017
+    },
+    {
+      "cohort": "iid",
+      "family": "source_sign",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 16,
+      "draw_seed": 3603596187,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019564199999422272,
+      "full_seconds": 0.039352456999949936
+    },
+    {
+      "cohort": "iid",
+      "family": "nan",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 8,
+      "draw_seed": 2339505882,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00026078199999801654,
+      "full_seconds": 0.03617487599996139
+    },
+    {
+      "cohort": "iid",
+      "family": "quadrature_claim",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 32,
+      "draw_seed": 2648360038,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "QUADRATURE_CLAIM_MISMATCH"
+      ],
+      "screen_seconds": 0.0001834309999821926,
+      "full_seconds": 0.04020659599996179
+    },
+    {
+      "cohort": "iid",
+      "family": "quadrature_claim",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 16,
+      "draw_seed": 670209010,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "QUADRATURE_CLAIM_MISMATCH"
+      ],
+      "screen_seconds": 0.0002419159999931253,
+      "full_seconds": 0.03707757099999753
+    },
+    {
+      "cohort": "iid",
+      "family": "interior_warp",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 16,
+      "draw_seed": 629514661,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018852400000923808,
+      "full_seconds": 0.04383365500001446
+    },
+    {
+      "cohort": "iid",
+      "family": "cg_iterations",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 279002513,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 0.0001111980000132462,
+      "full_seconds": 0.05477222700000084
+    },
+    {
+      "cohort": "iid",
+      "family": "dof_swap",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 4110595744,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018031900003734336,
+      "full_seconds": 0.03935169199996835
+    },
+    {
+      "cohort": "iid",
+      "family": "infinity",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 3329184027,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00023666699996738316,
+      "full_seconds": 0.06457428899994966
+    },
+    {
+      "cohort": "iid",
+      "family": "nan",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 16,
+      "draw_seed": 476246092,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00015885800002024553,
+      "full_seconds": 0.0186382169999888
+    },
+    {
+      "cohort": "iid",
+      "family": "dof_swap",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 16,
+      "draw_seed": 350985816,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019720999995342936,
+      "full_seconds": 0.046681411000008666
+    },
+    {
+      "cohort": "iid",
+      "family": "interior_warp",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 8,
+      "draw_seed": 264213028,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00023184700000911107,
+      "full_seconds": 0.06528162399996518
+    },
+    {
+      "cohort": "iid",
+      "family": "interior_warp",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 16,
+      "draw_seed": 710793518,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002255289999766319,
+      "full_seconds": 0.04791952899995522
+    },
+    {
+      "cohort": "iid",
+      "family": "boundary_labels",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 16,
+      "draw_seed": 2445671211,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018697400003020448,
+      "full_seconds": 0.04018801000000849
+    },
+    {
+      "cohort": "iid",
+      "family": "cg_residual",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 8,
+      "draw_seed": 1458118348,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 0.00037521600000900435,
+      "full_seconds": 0.03944282300000168
+    },
+    {
+      "cohort": "iid",
+      "family": "source_sign",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 8,
+      "draw_seed": 1921559857,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019642599994540433,
+      "full_seconds": 0.03886491999998043
+    },
+    {
+      "cohort": "iid",
+      "family": "infinity",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 32,
+      "draw_seed": 357624902,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00023373200002652084,
+      "full_seconds": 0.017243520000022272
+    },
+    {
+      "cohort": "iid",
+      "family": "interior_warp",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 16,
+      "draw_seed": 2567831838,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00021038599999201324,
+      "full_seconds": 0.047221482999987074
+    },
+    {
+      "cohort": "iid",
+      "family": "nan",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 16,
+      "draw_seed": 282167640,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002588360000004286,
+      "full_seconds": 0.04702471500002048
+    },
+    {
+      "cohort": "iid",
+      "family": "cg_residual",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 8,
+      "draw_seed": 3934412131,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 0.0001443969999854744,
+      "full_seconds": 0.03953929499999731
+    },
+    {
+      "cohort": "iid",
+      "family": "quadrature_claim",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 2200630199,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "QUADRATURE_CLAIM_MISMATCH"
+      ],
+      "screen_seconds": 0.00010203200002933954,
+      "full_seconds": 0.05541970299998411
+    },
+    {
+      "cohort": "iid",
+      "family": "centroid_errors",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 218855224,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00029570999998895786,
+      "full_seconds": 0.04213954700003342
+    },
+    {
+      "cohort": "iid",
+      "family": "inconsistent_source",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 8,
+      "draw_seed": 2404555881,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00021685800004433986,
+      "full_seconds": 0.0006600739999953475
+    },
+    {
+      "cohort": "iid",
+      "family": "centroid_errors",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 32,
+      "draw_seed": 2675218922,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00017722599994840493,
+      "full_seconds": 0.05407671199998276
+    },
+    {
+      "cohort": "iid",
+      "family": "cached_result",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 16,
+      "draw_seed": 2613593637,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.000212056999998822,
+      "full_seconds": 0.04560261599999649
+    },
+    {
+      "cohort": "iid",
+      "family": "boundary_labels",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 8,
+      "draw_seed": 1352541565,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00017933400005176736,
+      "full_seconds": 0.03841061599996465
+    },
+    {
+      "cohort": "iid",
+      "family": "dof_swap",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 32,
+      "draw_seed": 2403507178,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019498599999678845,
+      "full_seconds": 0.043072445000007065
+    },
+    {
+      "cohort": "iid",
+      "family": "centroid_errors",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 16,
+      "draw_seed": 1380662911,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00017990700001746518,
+      "full_seconds": 0.038829743000007966
+    },
+    {
+      "cohort": "iid",
+      "family": "source_sign",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 32,
+      "draw_seed": 74384036,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019174599998450503,
+      "full_seconds": 0.05707993800001532
+    },
+    {
+      "cohort": "iid",
+      "family": "interior_warp",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 8,
+      "draw_seed": 1939002392,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018611799998780043,
+      "full_seconds": 0.04242690700004914
+    },
+    {
+      "cohort": "iid",
+      "family": "source_sign",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 8,
+      "draw_seed": 1118207186,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0001934539999979279,
+      "full_seconds": 0.049771682999960376
+    },
+    {
+      "cohort": "iid",
+      "family": "cg_iterations",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 610287733,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 0.00014202599999180165,
+      "full_seconds": 0.04312797900001897
+    },
+    {
+      "cohort": "iid",
+      "family": "centroid_errors",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 1598803537,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020248300000957897,
+      "full_seconds": 0.06635513500003754
+    },
+    {
+      "cohort": "iid",
+      "family": "source_sign",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 2364358703,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020062499999085048,
+      "full_seconds": 0.05117069499999616
+    },
+    {
+      "cohort": "iid",
+      "family": "source_sign",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 32,
+      "draw_seed": 3516802067,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00021809399999028756,
+      "full_seconds": 0.07194994000002453
+    },
+    {
+      "cohort": "iid",
+      "family": "duplicate_cell",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 3180868052,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00021099299999605137,
+      "full_seconds": 0.039544430000034936
+    },
+    {
+      "cohort": "iid",
+      "family": "cg_iterations",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 3155945158,
+      "verdict": "REJECTED",
+      "screen_codes": [
+        "CG_RECORD_INCONSISTENT"
+      ],
+      "screen_seconds": 9.628200001543519e-05,
+      "full_seconds": 0.06071456699999089
+    },
+    {
+      "cohort": "iid",
+      "family": "infinity",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 16,
+      "draw_seed": 1927819743,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018444400001271788,
+      "full_seconds": 0.01782668300000978
+    },
+    {
+      "cohort": "iid",
+      "family": "source_sign",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 8,
+      "draw_seed": 2267493343,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018779600003426822,
+      "full_seconds": 0.042960951999987174
+    },
+    {
+      "cohort": "iid",
+      "family": "nan",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 8,
+      "draw_seed": 1641261461,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00027945599998702164,
+      "full_seconds": 0.0364699770000243
+    },
+    {
+      "cohort": "iid",
+      "family": "centroid_errors",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 136993635,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002036259999727008,
+      "full_seconds": 0.06506999800001267
+    },
+    {
+      "cohort": "iid",
+      "family": "source_sign",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 16,
+      "draw_seed": 2552071152,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020018499998286643,
+      "full_seconds": 0.05745077000000265
+    },
+    {
+      "cohort": "iid",
+      "family": "source_sign",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 3467369272,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018980600003715153,
+      "full_seconds": 0.04201558800002658
+    },
+    {
+      "cohort": "iid",
+      "family": "centroid_errors",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 32,
+      "draw_seed": 1164244413,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0003200609999680637,
+      "full_seconds": 0.06360948500002905
+    },
+    {
+      "cohort": "iid",
+      "family": "source_sign",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 2990478389,
+      "verdict": "REJECTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019393799999534167,
+      "full_seconds": 0.04724296599999889
+    },
+    {
+      "cohort": "panel",
+      "family": "original",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 1821091904,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019531399999550558,
+      "full_seconds": 0.06108194400002276
+    },
+    {
+      "cohort": "panel",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 3157288455,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018362499997692794,
+      "full_seconds": 0.05412280399997371
+    },
+    {
+      "cohort": "panel",
+      "family": "original",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 1037992230,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0001772489999893878,
+      "full_seconds": 0.055272933000026114
+    },
+    {
+      "cohort": "panel",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "draw_seed": 4122651814,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002528559999745994,
+      "full_seconds": 0.05938085900004353
+    },
+    {
+      "cohort": "panel",
+      "family": "original",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 2491658144,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00021221299999751864,
+      "full_seconds": 0.04370494400001235
+    },
+    {
+      "cohort": "panel",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 3289363473,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002181750000431748,
+      "full_seconds": 0.05165994399999363
+    },
+    {
+      "cohort": "panel",
+      "family": "original",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 3837614090,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020102400003452203,
+      "full_seconds": 0.04344479299999193
+    },
+    {
+      "cohort": "panel",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 3310086690,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0003706610000335786,
+      "full_seconds": 0.040607696999984455
+    },
+    {
+      "cohort": "panel",
+      "family": "original",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 1331288631,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002246130000003177,
+      "full_seconds": 0.05268557400000873
+    },
+    {
+      "cohort": "panel",
+      "family": "renumbered",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "draw_seed": 1689649691,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.000192083999991155,
+      "full_seconds": 0.049888431999988825
+    },
+    {
+      "cohort": "panel",
+      "family": "original",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 1152015731,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019814199998791082,
+      "full_seconds": 0.04309437300003083
+    },
+    {
+      "cohort": "panel",
+      "family": "renumbered",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 3818113448,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019221799999513678,
+      "full_seconds": 0.04295616199999586
+    },
+    {
+      "cohort": "panel",
+      "family": "original",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 2878648163,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00021559100002832565,
+      "full_seconds": 0.04182858300004
+    },
+    {
+      "cohort": "panel",
+      "family": "renumbered",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 3315282050,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0001933149999899797,
+      "full_seconds": 0.044219533999978466
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 16,
+      "draw_seed": 3499311971,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0001780150000172398,
+      "full_seconds": 0.05509451399996124
+    },
+    {
+      "cohort": "iid",
+      "family": "original",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 32,
+      "draw_seed": 589030069,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019164399998317094,
+      "full_seconds": 0.044084553999994114
+    },
+    {
+      "cohort": "iid",
+      "family": "original",
+      "case": "poisson_sin_sin_p1_tri",
+      "n": 16,
+      "draw_seed": 4029572710,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.000194263000025785,
+      "full_seconds": 0.04331267699996033
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 2968016157,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00025820900003736824,
+      "full_seconds": 0.056693601999995735
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 16,
+      "draw_seed": 3544523566,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018742600002497056,
+      "full_seconds": 0.04751486500003921
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 16,
+      "draw_seed": 4103901084,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019395700002178273,
+      "full_seconds": 0.05807554099999379
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 32,
+      "draw_seed": 1256736286,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020009299998946517,
+      "full_seconds": 0.05871621200003574
+    },
+    {
+      "cohort": "iid",
+      "family": "original",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 16,
+      "draw_seed": 3986151014,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018587199997455173,
+      "full_seconds": 0.04299869799996259
+    },
+    {
+      "cohort": "iid",
+      "family": "original",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 16,
+      "draw_seed": 1061107463,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00020181299998967006,
+      "full_seconds": 0.044438928999966265
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 988300341,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002755780000143204,
+      "full_seconds": 0.04124675200000638
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 16,
+      "draw_seed": 1071799911,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002902400000266425,
+      "full_seconds": 0.0430783649999853
+    },
+    {
+      "cohort": "iid",
+      "family": "original",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 343823722,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019402399999535191,
+      "full_seconds": 0.04102944400000297
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 16,
+      "draw_seed": 364377774,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.000395909000019401,
+      "full_seconds": 0.049911752000014076
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 16,
+      "draw_seed": 3102775479,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019064099996057848,
+      "full_seconds": 0.05249579399998083
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 8,
+      "draw_seed": 1303051473,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002998410000145668,
+      "full_seconds": 0.041253969000024426
+    },
+    {
+      "cohort": "iid",
+      "family": "original",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 8,
+      "draw_seed": 574053682,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019054800003459604,
+      "full_seconds": 0.038302987999998095
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 16,
+      "draw_seed": 1840933871,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0001800190000267321,
+      "full_seconds": 0.04056533200002832
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 8,
+      "draw_seed": 1358756062,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018975399996179476,
+      "full_seconds": 0.03792608699995981
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 8,
+      "draw_seed": 1795495823,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00023542599996062563,
+      "full_seconds": 0.045218228000010185
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "draw_seed": 168876360,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.000192999000034888,
+      "full_seconds": 0.04107125400003042
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 16,
+      "draw_seed": 3473128138,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.000211351000018567,
+      "full_seconds": 0.03897575300004519
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 16,
+      "draw_seed": 1030038502,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0003127709999830586,
+      "full_seconds": 0.04117612300001383
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 16,
+      "draw_seed": 758656211,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019148100000165869,
+      "full_seconds": 0.05726679500003229
+    },
+    {
+      "cohort": "iid",
+      "family": "original",
+      "case": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "draw_seed": 3409111004,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00022453100001484927,
+      "full_seconds": 0.057698715000015
+    },
+    {
+      "cohort": "iid",
+      "family": "original",
+      "case": "poisson_cos_exp_mixed_p2_quad",
+      "n": 16,
+      "draw_seed": 1042922339,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002548319999959858,
+      "full_seconds": 0.04079119399995079
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 32,
+      "draw_seed": 2961045430,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019684800003005876,
+      "full_seconds": 0.05920398300003171
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 8,
+      "draw_seed": 417507145,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019141299998182149,
+      "full_seconds": 0.040614914999991925
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "draw_seed": 2471453116,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002002149999498215,
+      "full_seconds": 0.04340611300000319
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "draw_seed": 968099089,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00019146599998975944,
+      "full_seconds": 0.04364463299998533
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 16,
+      "draw_seed": 891568120,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.00018818899997086191,
+      "full_seconds": 0.042189715000006345
+    },
+    {
+      "cohort": "iid",
+      "family": "original",
+      "case": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 8,
+      "draw_seed": 1437205069,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0001990420000197446,
+      "full_seconds": 0.04014943599997878
+    },
+    {
+      "cohort": "iid",
+      "family": "renumbered",
+      "case": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "draw_seed": 125707993,
+      "verdict": "ACCEPTED",
+      "screen_codes": [],
+      "screen_seconds": 0.0002159590000019307,
+      "full_seconds": 0.055044316000021354
+    }
+  ]
+}

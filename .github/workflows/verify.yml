@@ -29,7 +29,7 @@ jobs:
           cache-dependency-path: requirements-linux-py312.lock
       - run: |
           python -m pip install --require-hashes --only-binary=:all: -r requirements-linux-py312.lock
-      - run: python -m pytest -q -m 'not mfem'
+      - run: python -m pytest -q -m 'not mfem and not mpi'
 
   integration:
     name: MFEM source build and integration
@@ -56,10 +56,25 @@ jobs:
       - run: ./scripts/build_solver.sh
       - run: python -m pytest -q -m mfem --require-mfem
       - run: python -m sciagent quickstart
+      - name: Verify the candidate-to-solver path and replay its evidence
+        run: |
+          python -m sciagent plan specs/stage4/choose_diffusion.json --directory runs/planner-smoke --execute > runs/planner-receipt.json
+          digest="$(python -c "import json; print(json.load(open('runs/planner-receipt.json'))['manifest_sha256'])")"
+          python -m sciagent verify-plan runs/planner-smoke --manifest-sha256 "$digest"
+      - name: Verify generated and Gmsh scalar studies against scikit-fem
+        run: python -m benchmarks.stage2 --directory runs/stage2 --report runs/stage2.json
       - name: Challenge the verifier on independently certified MFEM controls
-        run: python -m benchmarks.robustness --generate-controls runs/challenge-controls --report runs/challenge.json
+        run: python -m benchmarks.robustness --generate-controls runs/challenge-controls --report runs/challenge.json --check-profiling
+      - name: Run and replay a paired verified-time smoke study
+        run: |
+          python -m benchmarks.e1 --directory runs/e1 --scale compact --workloads C1 H2 --warmups 0 --repetitions 1
+          digest="$(sha256sum runs/e1/campaign.json | cut -d' ' -f1)"
+          python -m benchmarks.e1_audit --directory runs/e1 --campaign-sha256 "$digest" --all --output runs/e1-audit.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        if: always() && hashFiles('runs/challenge.json') != ''
+        if: always() && hashFiles('runs/challenge.json', 'runs/stage2.json') != ''
         with:
-          name: verifier-challenge
-          path: runs/challenge.json
+          name: scalar-verification-reports
+          path: |
+            runs/challenge.json
+            runs/stage2.json
+            runs/e1-audit.json

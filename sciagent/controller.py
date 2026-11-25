@@ -24,10 +24,11 @@ from pydantic import ValidationError
 
 from verifier.verifier import ACCEPTED, RETRY_ELIGIBLE, check_mms_consistency
 
-from . import capability, environment, mfem_runner
+from . import capability, environment, mfem_runner, profiling
 from .evidence import EvidenceStore, artifact_hashes, check_archive, sha256_file, utc_now
 from .spec import ExecutionSpec, RetryPolicy, StudySpec, canonical_json, sha256_of
 from .verification_process import verify_bounded
+from .gmsh import ARCHIVED_MESH, inspect_gmsh, read_mesh
 
 TERMINAL = {"ACCEPTED", "FAILED", "BLOCKED", "BUDGET_EXHAUSTED", "INVALID_SPEC"}
 STRUCTURAL_EXITS = {"INVALID_ARGUMENTS", "BOUNDARY_COVERAGE", "UNSUPPORTED_COMBINATION", "ARTIFACT_WRITE_ERROR", "TIMEOUT"}
@@ -38,13 +39,20 @@ def _new_run_dir(runs_dir: Path, label: str) -> Path:
     return Path(runs_dir) / f"{stamp}_{label}"
 
 
-def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *, reuse_levels: bool = True) -> dict:
+@profiling.phase("controller.inputs")
+def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
+              reuse_levels: bool = True, expected_spec_sha256: str | None = None) -> dict:
     spec_path = Path(spec_path)
-    raw = spec_path.read_text()
+    received = spec_path.read_bytes()
+    raw = received.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
     label = spec_path.stem[:60]
     store = EvidenceStore(_new_run_dir(Path(runs_dir), label))
-    store.write_once("request/study_spec.json", raw)
-    store.event("RECEIVED", spec_file=str(spec_path), sha256=hashlib.sha256(raw.encode()).hexdigest())
+    # Preserve historical text archives. A planner pin covers the exact bytes
+    # consumed at this boundary, including the original line endings.
+    archived = received if expected_spec_sha256 is not None else raw.encode("utf-8")
+    store.write_bytes_once("request/study_spec.json", archived)
+    input_digest = hashlib.sha256(archived).hexdigest()
+    store.event("RECEIVED", spec_file=str(spec_path), sha256=input_digest)
     started = time.monotonic()
     manifest: dict = {"run_dir": str(store.run_dir), "spec_file": str(spec_path),
                       "started_utc": utc_now(), "attempts": []}
@@ -53,8 +61,12 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *, reuse_lev
         store.event(state, code=code, reason=reason)
         manifest.update({"final_state": state, "final_code": code, "final_reason": reason,
                          "finished_utc": utc_now(), "total_wall_seconds": round(time.monotonic() - started, 3)})
-        store.finish_manifest(manifest)
+        with profiling.phase("archive.finalize"):
+            store.finish_manifest(manifest)
         return manifest
+
+    if expected_spec_sha256 is not None and input_digest != expected_spec_sha256:
+        return finish("FAILED", "SPEC_TAMPERED", "received study text differs from the approved template")
 
     # ---- SPEC_VALIDATED -----------------------------------------------------
     try:
@@ -67,6 +79,16 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *, reuse_lev
     if not mms.passed:
         return finish("INVALID_SPEC", mms.code, f"{mms.name}: {mms.detail} (value={mms.value})")
 
+    mesh = None
+    if study.external_mesh is not None:
+        try:
+            data = read_mesh(spec_path.parent / study.external_mesh.file, study.external_mesh)
+            mesh = inspect_gmsh(data, study.problem, study.execution)
+        except (OSError, ValueError) as exc:
+            return finish("INVALID_SPEC", "INVALID_EXTERNAL_MESH", str(exc))
+        store.write_bytes_once(ARCHIVED_MESH, data)
+        manifest["external_mesh"] = {"sha256": study.external_mesh.sha256, "base_n": mesh.subdivisions}
+
     frozen = {"problem": study.problem, "validation": study.validation, "policy": study.policy}
     hashes = {}
     for name, model in frozen.items():
@@ -76,6 +98,7 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *, reuse_lev
     store.event("SPEC_VALIDATED", frozen_sha256=hashes)
 
     # ---- ENVIRONMENT_CHECKED --------------------------------------------------
+    profiling.mark("controller.environment")
     env = environment.probe()
     store.write_json_once("environment.json", env)
     manifest["environment"] = {"mfem_version": env["mfem"].get("version"), "mfem_git": env["mfem"].get("git"),
@@ -88,23 +111,27 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *, reuse_lev
         return finish("BLOCKED", "BUILD_MISSING", f"solver binary not found at {env['solver_binary']}")
 
     # ---- READY: capability + case binding -------------------------------------
-    decision = capability.evaluate(study.execution, env, study.problem.equation, exact_solution=study.problem.exact_solution)
-    manifest["capability"] = decision.__dict__
-    if decision.status != "tested":
-        state = "BLOCKED" if decision.code == "UNSUPPORTED_BACKEND" else "FAILED"
-        return finish(state, decision.code, decision.reason)
     try:
         cases = mfem_runner.list_cases()
     except mfem_runner.BuildError as exc:
         return finish("BLOCKED", "BUILD_FAILURE", str(exc))
+    store.write_json_once("case_registry.json", cases)
     case_id = mfem_runner.bind_case(study.problem, cases)
+    mesh_source = "gmsh22" if study.external_mesh is not None else "cartesian"
+    decision = capability.evaluate(study.execution, env, study.problem.equation, exact_solution=study.problem.exact_solution,
+                                   case_id=case_id, mesh_source=mesh_source, catalog=cases)
+    manifest["capability"] = decision.__dict__
+    if decision.status != "tested":
+        state = "BLOCKED" if decision.code in {"UNSUPPORTED_BACKEND", "NOT_VERIFIED_BUILD"} else "FAILED"
+        return finish(state, decision.code, decision.reason)
     if case_id is None:
         return finish("FAILED", "UNSUPPORTED_PROBLEM",
-                      "no compiled manufactured case matches the ProblemSpec expressions exactly")
+                      "the compiled catalog has no matching formulation and manufactured expression pair")
     manifest["bound_case"] = case_id
     store.event("READY", case=case_id, capability=decision.code)
 
     # ---- attempt loop ---------------------------------------------------------
+    profiling.mark("controller.attempt")
     pol = study.policy
     execution = study.execution
     reusable = {}
@@ -116,6 +143,8 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *, reuse_lev
         store.write_once(f"{adir}/execution.json", canonical_json(execution))
         pinned = {store.path("frozen", f"{name}.json"): h for name, h in hashes.items()}
         pinned[store.path(adir, "execution.json")] = sha256_of(execution)
+        if mesh is not None:
+            pinned[store.path(ARCHIVED_MESH)] = study.external_mesh.sha256
         if any(sha256_file(p) != h for p, h in pinned.items()):
             return finish("FAILED", "SPEC_TAMPERED", "frozen inputs changed before solver execution")
         store.event("RUNNING", attempt=attempt, mesh_levels=list(execution.mesh_levels),
@@ -128,6 +157,7 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *, reuse_lev
             if remaining <= 0:
                 manifest["attempts"].append({"attempt": attempt, "levels": level_runs, "verdict": None})
                 return finish("BUDGET_EXHAUSTED", "RESOURCE_LIMIT", f"wall budget exceeded ({elapsed:.1f}s)")
+            mesh_args = {"mesh_path": store.path(ARCHIVED_MESH), "refinements": mesh.refinements(n)} if mesh else {}
             level_dir = store.path(adir, "levels", f"n{n:04d}")
             if n in reusable:
                 origin = source_attempt / "levels" / level_dir.name
@@ -145,7 +175,7 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *, reuse_lev
                 continue
             lr = mfem_runner.run_level(study.problem, execution, case_id, n, level_dir,
                                        timeout_s=min(pol.per_level_timeout_seconds, remaining),
-                                       mem_mb=pol.per_level_memory_mb)
+                                       mem_mb=pol.per_level_memory_mb, **mesh_args)
             level_runs.append({"n": n, "exit_code": lr.exit_code, "exit_meaning": lr.exit_meaning,
                                "wall_seconds": lr.wall_seconds})
             store.event("LEVEL_DONE", attempt=attempt, n=n, exit=lr.exit_meaning, seconds=lr.wall_seconds)
@@ -207,7 +237,8 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *, reuse_lev
                           f"next level n={n_next} would need ~{execution.estimated_dofs(n_next)} dofs "
                           f"> max_dofs_per_level={pol.max_dofs_per_level}")
         new_exec = ExecutionSpec.model_validate({**execution.model_dump(), "mesh_levels": [*execution.mesh_levels, n_next]})
-        decision = capability.evaluate(new_exec, env, study.problem.equation, exact_solution=study.problem.exact_solution)
+        decision = capability.evaluate(new_exec, env, study.problem.equation, exact_solution=study.problem.exact_solution,
+                                       case_id=case_id, mesh_source=mesh_source, catalog=cases)
         if decision.status != "tested":
             return finish("BLOCKED", decision.code, decision.reason)
         store.event("RETRY_ALLOWED", attempt=attempt, action=pol.action, old_levels=list(execution.mesh_levels),

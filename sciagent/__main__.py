@@ -7,7 +7,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import capability, controller, environment, mfem_runner
+from . import capability, controller, environment, mfem_runner, mpi_study
 from .evidence import sha256_file
 
 
@@ -17,7 +17,30 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("env", help="print the environment probe as JSON")
     sub.add_parser("build", help="build cpp/poisson_mms against the pinned MFEM install")
     sub.add_parser("cases", help="list manufactured cases compiled into the solver")
-    sub.add_parser("matrix", help="print the capability matrix")
+    sub.add_parser("plan-catalog", help="list reviewed planner templates and their hashes")
+    from benchmarks.e1_select import selection_arguments
+    tune = sub.add_parser("select-solver", help="select and verify a solver for a calibrated serial E1 workload")
+    selection_arguments(tune)
+    plan = sub.add_parser("plan", help="select an authorized template and optionally execute it")
+    plan.add_argument("task", type=Path, help="JSON task with a case, hard selectors and optional preferences")
+    plan.add_argument("--directory", type=Path, required=True, help="fresh planning archive")
+    plan.add_argument("--mode", choices=("rules", "llm"), default="rules")
+    plan.add_argument("--model", help="installed local Ollama model name")
+    plan.add_argument("--model-digest", help="full SHA-256 of the local model")
+    plan.add_argument("--execute", action="store_true", help="run the selected template and independently verify it")
+    pv = sub.add_parser("verify-plan", help="reconstruct the plan and replay any numerical attempts offline")
+    pv.add_argument("directory", type=Path)
+    pv.add_argument("--manifest-sha256", help="externally retained planning manifest digest")
+    matrix = sub.add_parser("matrix", help="print reviewed build and solver coverage as JSON lines")
+    matrix.add_argument("--case", choices=capability.ALL_CASE_IDS)
+    matrix.add_argument("--mesh-source", choices=capability.MESH_SOURCES, default="cartesian")
+    matrix.add_argument("--backend", choices=("serial_cpu", "mpi_cpu"), default="serial_cpu")
+    mpi = sub.add_parser("mpi-study", help="verify MPI against serial and measure strong and weak scaling")
+    mpi.add_argument("--directory", type=Path, required=True, help="new campaign directory")
+    mpi.add_argument("--repetitions", type=int, default=3, help="timing samples per configuration (3 to 15)")
+    mpiv = sub.add_parser("verify-mpi", help="replay an MPI campaign from archived fields and timing records")
+    mpiv.add_argument("directory", type=Path)
+    mpiv.add_argument("--manifest-sha256", help="externally retained campaign manifest digest")
     r = sub.add_parser("run", help="run a study spec end to end")
     r.add_argument("spec")
     r.add_argument("--runs-dir", default="runs")
@@ -40,9 +63,52 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if rec["ok"] else 1
     elif a.cmd == "cases":
         print(json.dumps(mfem_runner.list_cases(), indent=2))
+    elif a.cmd == "plan-catalog":
+        from .planner import catalog_rows
+        print(json.dumps(catalog_rows(), indent=2, ensure_ascii=False))
+    elif a.cmd == "select-solver":
+        from benchmarks.e1_select import submit
+        try:
+            return submit(a)
+        except (OSError, ValueError) as exc:
+            print(json.dumps({"eligible": False, "reason": str(exc)}))
+            return 2
+    elif a.cmd in ("plan", "verify-plan"):
+        from . import planner, planning_run
+        try:
+            if a.cmd == "plan":
+                with a.task.open("rb") as src:
+                    task = planner.parse_task(src.read(8193))
+                report = planning_run.run(task, a.directory, mode=a.mode, model=a.model,
+                                          model_digest=a.model_digest, execute=a.execute)
+            else:
+                report = planning_run.replay(a.directory, a.manifest_sha256)
+        except (OSError, ValueError, TypeError, KeyError, RuntimeError) as exc:
+            print(json.dumps({"state": "FAILED", "reason": str(exc)}, ensure_ascii=False))
+            return 1
+        print(json.dumps(report, indent=2, ensure_ascii=False, allow_nan=False))
+        if a.cmd == "verify-plan":
+            return 0  # A correctly replayed refusal is a valid archive.
+        return 0 if report["state"] in ("PLANNED", "ACCEPTED") else 1
     elif a.cmd == "matrix":
-        for row in capability.matrix_as_rows():
-            print(json.dumps(row))
+        if a.backend == "mpi_cpu":
+            reviewed = a.mesh_source == "cartesian" and a.case in (None, "sin_sin")
+            print(json.dumps({"status": "tested", **mpi_study.reviewed_configuration()} if reviewed else
+                             {"status": "not_verified", "case": a.case, "mesh_source": a.mesh_source,
+                              "backend": a.backend}))
+        else:
+            for row in capability.matrix_as_rows(a.case, a.mesh_source):
+                print(json.dumps(row))
+    elif a.cmd in ("mpi-study", "verify-mpi"):
+        try:
+            if a.cmd == "mpi-study":
+                report = mpi_study.run(a.directory, a.repetitions)
+            else:
+                report = mpi_study.replay(a.directory, a.manifest_sha256)
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            report = {"state": "FAILED", "reason": str(exc)}
+        print(json.dumps(report, indent=2, allow_nan=False))
+        return 0 if report["state"] == "ACCEPTED" else 1
     elif a.cmd == "run":
         m = controller.run_study(a.spec, a.runs_dir)
         print(controller.summarize(m))

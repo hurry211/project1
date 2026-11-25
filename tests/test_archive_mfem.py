@@ -59,6 +59,14 @@ def test_relocated_archive_with_trusted_digest(archive, original):
     result = controller.reverify(archive / "attempts/attempt_01", digest)
     assert result["verdict"] == "ACCEPTED"
     assert result["integrity"] == {"passed": True, "mode": "sha256-inventory"}
+    manifest = json.loads((archive / "manifest.json").read_text())
+    snapshot = (archive / "case_registry.json").read_bytes()
+    assert hashlib.sha256(snapshot).hexdigest() == manifest["artifact_sha256"]["case_registry.json"]
+    catalog = json.loads(snapshot)
+    selected, = [case for case in catalog["cases"] if case["id"] == manifest["bound_case"]]
+    problem = json.loads((archive / "frozen/problem.json").read_text())
+    assert catalog["formulation"]["equation"] == problem["equation"]
+    assert selected["source"] == problem["source"]
 
 
 @pytest.mark.parametrize("file,operation", [
@@ -117,6 +125,13 @@ def test_report_checks_evidence_before_writing(original, tmp_path):
     subprocess.run(cmd, check=True, capture_output=True)
     report = output.read_text()
     assert "ACCEPTED" in report and "| 16 | 1/16 | 289 |" in report
+    native = json.loads((run / "attempts/attempt_01/levels/n0016/result.json").read_text())["diagnostics"]
+    residual = native["algebraic_residual"]
+    flux = native["boundary_flux"]
+    assert "Native solver diagnostics (informational)" in report
+    assert (f"| 16 | {residual['absolute_l2']:.4e} | {residual['rhs_l2']:.4e} | "
+            f"{residual['relative_l2']:.4e} | {flux['outward_total']:.4e} | "
+            f"{flux['source_integral']:.4e} | {flux['signed_imbalance']:.4e} |") in report
     (run / "events.jsonl").write_text("")
     proc = subprocess.run(cmd, capture_output=True, text=True)
     assert proc.returncode != 0 and "events.jsonl" in proc.stderr

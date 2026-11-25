@@ -13,9 +13,9 @@ from .spec import POISSON, StudySpec
 
 def search(study: StudySpec, output: Path, repeats: int) -> dict:
     """Run reviewed candidates and choose the least median-cost feasible one."""
-    if (study.problem.equation != POISSON or study.execution.mesh_type != "quad"
+    if (study.external_mesh is not None or study.problem.equation != POISSON or study.execution.mesh_type != "quad"
             or study.execution.backend != "serial_cpu" or study.execution.inject_fault != "none"):
-        raise ValueError("search supports fault-free serial CPU Poisson on quadrilateral meshes")
+        raise ValueError("search supports fault-free serial CPU Poisson on generated Cartesian quadrilaterals")
     if study.validation.max_l2_error_finest is None or not study.validation.require_reference_solve:
         raise ValueError("search requires a frozen L2 target and independent reference solves")
     if not 1 <= repeats <= 10:

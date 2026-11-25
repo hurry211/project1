@@ -30,6 +30,26 @@ def fmt(v, f="{:.4e}"):
     return "—" if v is None else f.format(v)
 
 
+def native_diagnostics_table(attempt, levels):
+    rows = []
+    for level in levels:
+        n = level["n"]
+        path = attempt / "levels" / f"n{n:04d}" / "result.json"
+        diagnostics = json.loads(path.read_text()).get("diagnostics") if path.is_file() else None
+        if not isinstance(diagnostics, dict) or diagnostics.get("schema_version") != 1:
+            continue
+        residual = diagnostics["algebraic_residual"]
+        flux = diagnostics["boundary_flux"]
+        rows.append(f"| {n} | {fmt(residual['absolute_l2'])} | {fmt(residual['rhs_l2'])} | "
+                    f"{fmt(residual['relative_l2'])} | {fmt(flux['outward_total'])} | "
+                    f"{fmt(flux['source_integral'])} | {fmt(flux['signed_imbalance'])} |")
+    if not rows:
+        return []
+    return ["Native solver diagnostics (informational)", "",
+            "| n | Residual L2 | RHS L2 | Relative residual | Outward flux | Volume source | Flux minus source |",
+            "|---:|---:|---:|---:|---:|---:|---:|", *rows, ""]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("runs_dir", nargs="?", type=Path, default=ROOT / "runs")
@@ -85,6 +105,7 @@ def main():
                        f"{fmt(p.get('l2_order'), '{:.4f}')} | {fmt(p.get('h1_semi_order'), '{:.4f}')} | "
                        f"{fmt(lv['reference_rel_diff'], '{:.2e}')} |")
         out.append("")
+        out.extend(native_diagnostics_table(att, v["levels"]))
 
     out += ["## Bounded retry history", ""]
     for spec, (d, man) in sorted(runs.items()):

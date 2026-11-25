@@ -1,4 +1,4 @@
-"""Independent verification of MFEM Poisson runs against a frozen spec.
+"""Independent verification of MFEM scalar diffusion runs against a frozen spec.
 
 Inputs per attempt directory (written by the runner, read-only here):
     frozen/problem.json, frozen/validation.json, execution.json
@@ -20,16 +20,18 @@ import numpy as np
 import scipy.sparse as sp
 import scipy.sparse.linalg as spla
 
-from sciagent.spec import (ANISOTROPIC, LAYERED, LAYERED_EXACT, LAYERED_LEVELS, POISSON,
-                           SIDE_GEOMETRY, SIDE_NORMAL, ExecutionSpec, ProblemSpec,
+from sciagent.spec import (ANISOTROPIC, GAUSSIAN_EXACT, LAYERED, LAYERED_EXACT, LAYERED_LEVELS, POISSON,
+                           SIDE_GEOMETRY, SIDE_NORMAL, ExecutionSpec, ProblemSpec, StudySpec,
                            ValidationSpec, compact_expression)
 from sciagent.evidence import artifact_hashes, sha256_file
+from sciagent.profiling import mark, phase
+from sciagent.gmsh import ARCHIVED_MESH, CartesianGmsh, inspect_gmsh, read_mesh
 
 from . import expr, layered
 from .fem import (ArtifactError, MeshData, build_local_basis, cartesian_partition,
                   element_quadrature, gauss_01, inverse_map, lattice_indices, load_mesh_data)
 
-VERIFIER_VERSION = "0.5.0"
+VERIFIER_VERSION = "0.6.0"
 GEOM_TOL = 1e-12
 
 ACCEPTED = "ACCEPTED"
@@ -90,7 +92,7 @@ def _finite(v) -> bool:
 
 
 def check_mms_consistency(problem: ProblemSpec, rel_tol: float) -> Check:
-    """Gate A: check the declared source against the frozen differential operator."""
+    """Compare the declared source with the strong operator on the exact field."""
     try:
         u = expr.compile_expr(problem.exact_solution)
         f = expr.compile_expr(problem.source)
@@ -105,14 +107,21 @@ def check_mms_consistency(problem: ProblemSpec, rel_tol: float) -> Check:
                      "registered solution matches the continuous unit drop with constant a*du/dx", error, 1e-14)
     rng = np.random.default_rng(12345)
     pts = rng.uniform(0.05, 0.95, size=(256, 2))
-    diffusion_x = 1000.0 if problem.equation == ANISOTROPIC else 1.0
-    lap = expr.neg_laplacian(u, pts[:, 0], pts[:, 1], diffusion_x=diffusion_x)
-    fv = f(pts[:, 0], pts[:, 1])
-    if not (np.all(np.isfinite(lap)) and np.all(np.isfinite(fv))):
+    x, y = pts.T
+    operator = expr.neg_laplacian(u, x, y, diffusion_x=1000.0 if problem.equation == ANISOTROPIC else 1.0)
+    description = "(-div(A grad u_exact))" if problem.equation == ANISOTROPIC else "(-lap u_exact)"
+    if problem.kappa != "1":
+        kappa = expr.compile_expr(problem.kappa)
+        kx, ky = expr.gradient(kappa, x, y)
+        ux, uy = expr.gradient(u, x, y)
+        operator = kappa(x, y) * operator - (kx * ux + ky * uy)
+        description = "(-div(kappa*grad u_exact))"
+    fv = f(x, y)
+    if not (np.all(np.isfinite(operator)) and np.all(np.isfinite(fv))):
         return Check("mms_consistency", False, "MMS_INCONSISTENT", "non-finite expression values")
-    err = float(np.max(np.abs(lap - fv) / (1.0 + np.abs(fv))))
+    err = float(np.max(np.abs(operator - fv) / (1.0 + np.abs(fv))))
     return Check("mms_consistency", err <= rel_tol, "MMS_INCONSISTENT",
-                 "max |(-div(A grad u_exact)) - f| / (1+|f|) at 256 fixed random interior points "
+                 f"max |{description} - f| / (1+|f|) at 256 fixed random interior points "
                  "(4th-order finite differences, h=1e-3)", err, rel_tol)
 
 
@@ -157,8 +166,26 @@ def _native_claims(res, execution, rep):
                   f"iterations={iterations}, initial={initial}, final={final}, abs_tol={absolute}"))
 
 
+def _refined_diagonals(mesh: MeshData, n: int, source: CartesianGmsh) -> bool:
+    """Red refinement of a square split into two triangles preserves its diagonal in every child."""
+    if not source.rising_diagonal:
+        return mesh.geom == "quad"
+    if mesh.geom != "tri":
+        return False
+    grid = lattice_indices(mesh.verts, n, GEOM_TOL)
+    lower = grid.min(axis=1)
+    dx, dy = (grid - lower[:, None, :]).transpose(2, 0, 1)
+    # A triangle containing SW and NE omits either SE (1) or NW (2).
+    missing = 6 - (dx + 2 * dy).sum(axis=1)
+    coarse = lower // (n // source.subdivisions)
+    indices = coarse[:, 0] + source.subdivisions * coarse[:, 1]
+    return bool(np.array_equal(np.isin(missing, [1, 2]), np.asarray(source.rising_diagonal)[indices]))
+
+
+@phase("verify.solver_claims")
 def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec,
-                 validation: ValidationSpec, n: int, *, require_run_record: bool = False) -> LevelReport:
+                 validation: ValidationSpec, n: int, *, require_run_record: bool = False,
+                 external_grid: CartesianGmsh | None = None) -> LevelReport:
     rep = LevelReport(n=n, level_dir=str(level_dir))
     level_dir = Path(level_dir)
 
@@ -194,9 +221,19 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
         "source": (compact_expression(res.get("case_source")), compact_expression(problem.source)),
         "equation": (res.get("case_equation", POISSON), problem.equation),
     }
+    # The original constant-coefficient binary omitted both fields.
+    if problem.kappa != "1" or "case_diffusivity" in res:
+        claimed["equation"] = (compact_expression(res.get("case_equation")), compact_expression(problem.equation))
+        claimed["kappa"] = (compact_expression(res.get("case_diffusivity")), compact_expression(problem.kappa))
     bad = [k for k, (got, want) in claimed.items() if got != want or isinstance(got, bool)]
     rep.add(Check("solver_claims_match_spec", not bad, "CLAIM_SPEC_MISMATCH",
                   f"mismatched fields: {bad}" if bad else "run parameters match frozen spec"))
+
+    if problem.kappa != "1":
+        order = res.get("stiffness_quadrature_order")
+        expected = 2 * execution.polynomial_order + 1
+        rep.add(Check("variable_stiffness_quadrature_order", type(order) is int and order == expected,
+                      "QUADRATURE_CLAIM_MISMATCH", f"reported weighted stiffness order {order}, expected {expected}"))
 
     conv = res.get("solver_converged")
     rep.add(Check("solver_reported_convergence",
@@ -216,6 +253,7 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
         except (OSError, ValueError) as exc:
             rep.add(Check("process_completed", False, "MALFORMED_ARTIFACT", str(exc)))
 
+    mark("verify.field_load")
     try:
         mesh = load_mesh_data(level_dir)
     except (ArtifactError, OSError, UnicodeError) as exc:
@@ -228,6 +266,7 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
     if not finite:
         return rep
 
+    mark("verify.geometry_boundary")
     try:
         coords, spread = _unique_dof_coords(mesh, N)
     except ArtifactError as exc:
@@ -241,8 +280,12 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
                   f"{mesh.verts.shape[0]} elements, expected {expected_E}"))
     rep.add(Check("dof_count", type(rep.num_dofs) is int and rep.num_dofs == N == execution.estimated_dofs(n),
                   "MESH_MISMATCH", f"claimed {rep.num_dofs}, exported {N}, expected {execution.estimated_dofs(n)}"))
-    rep.add(Check("cartesian_cell_partition", cartesian_partition(mesh, n, GEOM_TOL), "MESH_MISMATCH",
+    partition_ok = cartesian_partition(mesh, n, GEOM_TOL)
+    rep.add(Check("cartesian_cell_partition", partition_ok, "MESH_MISMATCH",
                   "each unit-grid cell has one cyclic quadrilateral or two complementary triangles"))
+    if external_grid is not None:
+        rep.add(Check("external_mesh_refinement", partition_ok and _refined_diagonals(mesh, n, external_grid),
+                      "MESH_MISMATCH", "exported elements follow uniform refinement of the archived input"))
     p = execution.polynomial_order
     if p in (1, 2):
         grid = lattice_indices(coords, n * p, GEOM_TOL)
@@ -301,6 +344,7 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
                   dmax, validation.dirichlet_nodal_abs_tol))
 
     # ---- Gate C: independent error integration ---------------------------
+    mark("verify.integration")
     try:
         basis = build_local_basis(mesh, p)
         m = p + 1 + validation.verifier_quadrature_extra_points
@@ -349,6 +393,7 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
                           detail, measured[key], tol))
 
     # ---- Gate D: independent reference solve -----------------------------
+    mark("verify.reference")
     if validation.require_reference_solve:
         if N > validation.reference_solve_max_dofs:
             rep.add(Check("reference_solve", False, "REFERENCE_SKIPPED_TOO_LARGE",
@@ -390,8 +435,11 @@ def integrated_errors(mesh, q, u_fn, equation):
 def reference_solve(mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m) -> np.ndarray:
     N = coords.shape[0]
     E, nloc = mesh.elem_dofs.shape
-    shared = q.wdet.strides[0] == 0 and q.gphi.strides[0] == 0
+    kappa = expr.compile_expr(problem.kappa)
+    shared = problem.kappa == "1" and q.wdet.strides[0] == 0 and q.gphi.strides[0] == 0
     weights = q.wdet[:1] if shared else q.wdet
+    if problem.kappa != "1":
+        weights = weights * kappa(q.X[..., 0], q.X[..., 1])
     grads = q.gphi[:1] if shared else q.gphi
     if problem.equation == ANISOTROPIC:
         Ke = np.einsum("eq,eqid,d,eqjd->eij", weights, grads, [1000.0, 1.0], grads)
@@ -412,19 +460,11 @@ def reference_solve(mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m) -> n
     K = sp.coo_matrix((Ke.ravel(), (rows, cols)), shape=(N, N)).tocsr()
     F = np.bincount(mesh.elem_dofs.ravel(), weights=Fe.ravel(), minlength=N)
 
-    # Neumann boundary terms: int_{Gamma_N} (grad u_exact . n) v ds
+    # Prescribed outward flux is kappa * grad(u_exact) . n.
     neu = {b.attribute: b.label for b in problem.boundaries if b.kind == "neumann"}
     if neu:
-        nv = mesh.verts.shape[1]
-        edge_owner = {}
-        # Locate all exterior edges geometrically. A swapped declaration must still
-        # reach the independent solve so its reference mismatch stays observable.
-        for label in SIDE_GEOMETRY:
-            on_side = _side_of_points(mesh.verts, label)
-            for e, k in zip(*np.nonzero(on_side & np.roll(on_side, -1, axis=1))):
-                a = tuple(np.round(mesh.verts[e, k], 12))
-                b = tuple(np.round(mesh.verts[e, (k + 1) % nv], 12))
-                edge_owner[frozenset((a, b))] = e
+        from .fem import boundary_edge_owners
+        edge_owner = boundary_edge_owners(mesh, neu)
         g1, w1 = gauss_01(m)
         for attr, seg in zip(mesh.bdr_attr, mesh.bdr_xy):
             lbl = neu.get(int(attr))
@@ -445,7 +485,7 @@ def reference_solve(mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m) -> n
             else:
                 gx, gy = expr.gradient(u_fn, pts[:, 0], pts[:, 1])
             nx, ny = SIDE_NORMAL[lbl]
-            gn = gx * nx + gy * ny
+            gn = kappa(pts[:, 0], pts[:, 1]) * (gx * nx + gy * ny)
             F[mesh.elem_dofs[e]] += (w1 * L * gn) @ phi
 
     u = np.zeros(N)
@@ -469,12 +509,14 @@ def observed_orders(levels: list[LevelReport]) -> list[dict]:
     return pairs
 
 
+@phase("verify.study")
 def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False,
                    reused_levels: dict | None = None) -> dict:
     """Verify one attempt directory from its files alone."""
     attempt_dir = Path(attempt_dir)
     run_dir = attempt_dir.parent.parent
     frozen = run_dir / "frozen"
+    external_grid = None
     try:
         problem = ProblemSpec.model_validate_json((frozen / "problem.json").read_text())
         validation = ValidationSpec.model_validate_json((frozen / "validation.json").read_text())
@@ -484,6 +526,16 @@ def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False,
                 (execution.mesh_type, execution.polynomial_order, execution.backend, execution.assembly, execution.solver)
                 != ("quad", 1, "serial_cpu", "full", "cg_gs") or any(n not in LAYERED_LEVELS for n in execution.mesh_levels)):
             raise ValueError("frozen execution is outside the reviewed aligned layered Q1 case")
+        request_path = run_dir / "request/study_spec.json"
+        if request_path.exists() or (run_dir / ARCHIVED_MESH).exists():
+            request = StudySpec.model_validate_json(request_path.read_text())
+            if request.external_mesh is not None:
+                if problem.equation in (LAYERED, ANISOTROPIC) or compact_expression(problem.exact_solution) == GAUSSIAN_EXACT:
+                    raise ValueError("this reviewed case requires a generated mesh")
+                data = read_mesh(run_dir / ARCHIVED_MESH, request.external_mesh)
+                external_grid = inspect_gmsh(data, problem, execution)
+            elif (run_dir / ARCHIVED_MESH).exists():
+                raise ValueError("the request did not declare the archived external mesh")
         mms = check_mms_consistency(problem, validation.mms_consistency_rel_tol)
     except (OSError, ValueError) as exc:
         code = "MISSING_ARTIFACT" if isinstance(exc, FileNotFoundError) else "MALFORMED_ARTIFACT"
@@ -500,7 +552,7 @@ def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False,
         reused = (reused_levels or {}).get(n)
         if reused is None:
             levels.append(verify_level(level_dir, problem, execution, validation, n,
-                                       require_run_record=require_run_records))
+                                       require_run_record=require_run_records, external_grid=external_grid))
             continue
         rep = LevelReport(n=n, level_dir=str(level_dir))
         try:
@@ -564,14 +616,18 @@ def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False,
     else:
         verdict = ACCEPTED
 
+    mark("verify.input_hashes")
     inputs = {"frozen/problem.json": sha256_file(frozen / "problem.json"),
               "frozen/validation.json": sha256_file(frozen / "validation.json"),
               "execution.json": sha256_file(attempt_dir / "execution.json")}
+    if external_grid is not None:
+        inputs[ARCHIVED_MESH] = sha256_file(run_dir / ARCHIVED_MESH)
     for lv in levels:
         for fn in ("result.json", "dof_values.txt", "element_dofs.txt", "elements.txt", "boundary.txt"):
             pth = Path(lv.level_dir) / fn
             inputs[pth.relative_to(attempt_dir).as_posix()] = sha256_file(pth)
 
+    mark("verify.study")
     return {
         "verifier": "verifier.verifier", "verifier_version": VERIFIER_VERSION,
         "verdict": verdict,

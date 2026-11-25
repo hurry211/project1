@@ -7,9 +7,11 @@ import sys
 import time
 from pathlib import Path
 
+from . import profiling
 from .spec import VERIFIER_MEMORY_MB, VERIFIER_TIMEOUT_SECONDS, RetryPolicy
 
 
+@profiling.phase("verify.process")
 def verify_bounded(attempt: Path, policy: RetryPolicy, *, remaining: float | None = None,
                    reused: dict | None = None) -> tuple[dict, dict]:
     timeout = policy.verifier_timeout_seconds or VERIFIER_TIMEOUT_SECONDS
@@ -20,6 +22,8 @@ def verify_bounded(attempt: Path, policy: RetryPolicy, *, remaining: float | Non
     start = time.monotonic()
     metrics = {"timeout_seconds": timeout, "memory_mb": memory, "peak_rss_kib": None}
     command = [sys.executable, "-m", "sciagent.verification_worker", str(attempt), str(memory)]
+    if profiling.enabled():
+        command.append("--profile")
     try:
         proc = subprocess.run(command, input=json.dumps(reused or {}), capture_output=True,
                               text=True, timeout=timeout, env=env)
@@ -28,6 +32,8 @@ def verify_bounded(attempt: Path, policy: RetryPolicy, *, remaining: float | Non
         if proc.returncode == 0:
             data = json.loads(proc.stdout)
             metrics["peak_rss_kib"] = data["peak_rss_kib"]
+            if "phase_seconds" in data:
+                profiling.record_verifier(data["phase_seconds"], data["peak_rss_kib"])
             return data["verdict"], metrics
         code = "VERIFIER_MEMORY_LIMIT" if proc.returncode == 2 else "VERIFIER_PROCESS_FAILED"
     except subprocess.TimeoutExpired:

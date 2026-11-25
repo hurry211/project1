@@ -3,6 +3,7 @@
 import json
 import resource
 import sys
+from contextlib import nullcontext
 from pathlib import Path
 
 
@@ -21,10 +22,15 @@ def main() -> int:
     resource.setrlimit(resource.RLIMIT_AS, (limit, limit))
     try:
         from verifier.verifier import verify_attempt
+        from . import profiling
 
         reused = {int(n): entry for n, entry in json.load(sys.stdin).items()}
-        verdict = verify_attempt(Path(sys.argv[1]), require_run_records=True, reused_levels=reused)
-        print(json.dumps({"verdict": verdict, "peak_rss_kib": peak_rss_kib()}))
+        with (profiling.capture() if "--profile" in sys.argv[3:] else nullcontext()) as profile:
+            verdict = verify_attempt(Path(sys.argv[1]), require_run_records=True, reused_levels=reused)
+        reply = {"verdict": verdict, "peak_rss_kib": peak_rss_kib()}
+        if profile is not None:
+            reply["phase_seconds"] = profile.summary()["phase_seconds"]
+        print(json.dumps(reply))
         return 0
     except MemoryError:
         return 2

@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.16)
+project(verified_parallel_poisson LANGUAGES CXX)
+
+if(NOT EXISTS "${MFEM_DIR}/MFEMConfig.cmake")
+  message(FATAL_ERROR "MFEM_DIR must select the parallel MFEM package")
+endif()
+find_package(MFEM 4.10.0 EXACT REQUIRED CONFIG NAMES MFEM mfem)
+if(NOT MFEM_USE_MPI OR NOT MFEM_USE_METIS OR NOT MFEM_USE_METIS_5 OR NOT MFEM_USE_DOUBLE)
+  message(FATAL_ERROR "The parallel solver requires double-precision MFEM with MPI and METIS 5")
+endif()
+
+add_executable(poisson_mpi poisson_mpi.cpp)
+target_compile_features(poisson_mpi PRIVATE cxx_std_17)
+target_include_directories(poisson_mpi PRIVATE .. ${MFEM_INCLUDE_DIRS})
+target_link_libraries(poisson_mpi PRIVATE ${MFEM_LIBRARIES})
+target_compile_options(poisson_mpi PRIVATE -Wall -Wextra)

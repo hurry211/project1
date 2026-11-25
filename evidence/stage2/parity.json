@@ -1,0 +1,851 @@
+{
+  "baseline": "52fed54",
+  "study_count": 31,
+  "counts": {
+    "paired_attempt_replays": 22,
+    "matched_error_values": 158,
+    "matched_native_results": 83,
+    "byte_identical_field_exports": 83
+  },
+  "studies": {
+    "budget_demo_sin_sin_p1_tri": {
+      "state": "BUDGET_EXHAUSTED",
+      "code": "BUDGET_EXHAUSTED",
+      "stage1_manifest": "c3d3205138964dbab8f2d2f3964a478c8009c1f6e8874889b17d3278bb16e59b",
+      "new_manifest": "7097d381e31c1ee6fb2eed44a9aa5e204cc24a07ada41560d6f6bbea105aba9c"
+    },
+    "poisson_cos_exp_mixed_p1_quad": {
+      "state": "ACCEPTED",
+      "code": "OK",
+      "stage1_manifest": "baf811492fd02aac69ef2944b82923722fda40557efe8a67175662c03f212552",
+      "new_manifest": "0007423f63cb2b6614c375d1727eb3a4b9b91da5227ade722fdf7f91de5a7891"
+    },
+    "poisson_cos_exp_mixed_p1_quad_pa": {
+      "state": "ACCEPTED",
+      "code": "OK",
+      "stage1_manifest": "c3c2c2aaf4f0429249a930cb33d4e03f508a1dd7d54210c3a2cdad802f653d86",
+      "new_manifest": "a173e5cbd47f1735d77b21473ad70a5158a2070e2ae651ed70a8100bad71a7e9"
+    },
+    "poisson_cos_exp_mixed_p2_quad": {
+      "state": "ACCEPTED",
+      "code": "OK",
+      "stage1_manifest": "81d777557014a1cb449c4de367b870404dc68c5ac1b9da55ac3a2bd1c98c21eb",
+      "new_manifest": "96aca680c1e3bf930ff391186ea29edff65d577e638cf1de62fb5dabeae0cd60"
+    },
+    "poisson_cos_exp_mixed_p2_quad_pa": {
+      "state": "ACCEPTED",
+      "code": "OK",
+      "stage1_manifest": "bd811ace4cb737ae3853ce6a12429bb3a535052e819bbad7b2e399d5dde9ac10",
+      "new_manifest": "51a0d1936881857e55d28f1544b8a03f29b4c275d4dec253fccd782059acee25"
+    },
+    "poisson_sin_sin_p1_tri": {
+      "state": "ACCEPTED",
+      "code": "OK",
+      "stage1_manifest": "9aa7fcf70342ee2e58888d4191bb118b1bc12c6bdfea19baf59ad92fdc73cf30",
+      "new_manifest": "1a45ddcc27dcc539a74000134fb4e62810935c96902087a63bf952b23dc9ad53"
+    },
+    "poisson_sin_sin_p1_tri_jacobi": {
+      "state": "ACCEPTED",
+      "code": "OK",
+      "stage1_manifest": "118a0f10f9c7ceba60155b5a9eee4dd7eb8a159a0d03e061b0952c78d528492d",
+      "new_manifest": "8848cffe3310a9eb7d9a01228148375dc52b2fe9f06408a87ffc62c1b429a720"
+    },
+    "poisson_sin_sin_p2_tri": {
+      "state": "ACCEPTED",
+      "code": "OK",
+      "stage1_manifest": "498e97044cdeae2b8a0366b40469caef1bde9e7e0923880b2461d1fa21d42354",
+      "new_manifest": "cb4bf7c7dcc98d970d8e65b3e214e715689a2f702e220be82f6a9b323206f66f"
+    },
+    "retry_demo_sin_sin_p1_tri": {
+      "state": "ACCEPTED",
+      "code": "OK",
+      "stage1_manifest": "83bb21150c9ba75ed67d04597b3d681d6de225e9ed6e6777657ddd69cc435dcc",
+      "new_manifest": "fb27a7dfbcb71cea9bd47c4e1f83032ce6ac07e94b626f9ccd4e06f463eb1d69"
+    },
+    "duplicate_attribute": {
+      "state": "INVALID_SPEC",
+      "code": "INVALID_SPEC",
+      "stage1_manifest": "3b7b415d2f016930e473ec3e8ef1a674b80760a063766daa39a45f98381e05de",
+      "new_manifest": "a4f5146ad28efaa78d110fd323eb980091a9a06724366dbe317f8b06f966d469"
+    },
+    "fault_drop_dirichlet_attr": {
+      "state": "FAILED",
+      "code": "VALIDATION_FAILED",
+      "stage1_manifest": "3d8d4fee71815734063fd78eed0dcd67dde66198d0b71070ca957b2c985faac0",
+      "new_manifest": "389173b7dfd27c1b759e0fa96ce5c9036f2be414b0f0ec00797fae6bad6b2ec3"
+    },
+    "fault_early_stop_lie": {
+      "state": "FAILED",
+      "code": "VALIDATION_FAILED",
+      "stage1_manifest": "b9c5e04c61d6c9a0dd449870a490d16de4c2552240abe1a7cf4bf986ad32503b",
+      "new_manifest": "c3ec19e878e87ac1c0a8b49049a3f9cdee8304ab7424dee8c819abbac8ad4d41"
+    },
+    "fault_nan_value": {
+      "state": "FAILED",
+      "code": "VALIDATION_FAILED",
+      "stage1_manifest": "67a121913e393b0a23535beb9a5d670db9ee04f3d284f468bcb2c430993136f5",
+      "new_manifest": "6e4b2c0064836929b4cabbf17cdeea926e5e05c2a0e72ce510beae940e7f0072"
+    },
+    "fault_self_report_lie": {
+      "state": "FAILED",
+      "code": "VALIDATION_FAILED",
+      "stage1_manifest": "6c4a1864d952bffb06d2259c1e4dc17fb20c231428f400d144dfbbdc776160ce",
+      "new_manifest": "9ce91cd8e4ff32e2c2d92f64c061d340aa2032ecdebdeabdc971fe6011edb6dc"
+    },
+    "fault_wrong_source": {
+      "state": "FAILED",
+      "code": "VALIDATION_FAILED",
+      "stage1_manifest": "e6b4d9eb081d794ab30bd66bbbd05ca272dee05ed521ba7944697ce13c6d7f5a",
+      "new_manifest": "480e637a707aa2ef6f1d6fe69c3ea9c4b0dddc8e20a80cac2247099d514a7a65"
+    },
+    "inconsistent_mms_source": {
+      "state": "INVALID_SPEC",
+      "code": "MMS_INCONSISTENT",
+      "stage1_manifest": "1f859b66e1a7c151f0f962af4facbdfd2783e2deda6f6262109de091eaf6614b",
+      "new_manifest": "98707b40b705581e80a7fefdbf3980c85b49dd85c40aecd550d2c596f60d6293"
+    },
+    "malicious_expression": {
+      "state": "INVALID_SPEC",
+      "code": "INVALID_EXPRESSION",
+      "stage1_manifest": "f0b7fd5ccc686d44e3925251f6dac72dea0447348fc992d55e156ba07783942b",
+      "new_manifest": "f32bdcd88177be7d1303ba4c8863b3c32c7058e9aab02044f9500eea7fae8ad7"
+    },
+    "missing_boundary": {
+      "state": "INVALID_SPEC",
+      "code": "INVALID_SPEC",
+      "stage1_manifest": "69d6066ca5c12b9c2bbd54d072982dbb8676b00bd3d41aec8ed22d461fe11817",
+      "new_manifest": "49f503ddb9eed054e9801064822aa7b1a0fb9c17f271857abfbcceb67cef0275"
+    },
+    "non_doubling_levels": {
+      "state": "INVALID_SPEC",
+      "code": "INVALID_SPEC",
+      "stage1_manifest": "3c58eaccd24a105b2197b5e01a72eb368e1c311f718e548a3b30ffbcb3a31647",
+      "new_manifest": "cac255c3b69c61120d8339fd1e93fa2af49288aee709fe4bd20b745d45ca6cc8"
+    },
+    "not_verified_order3": {
+      "state": "FAILED",
+      "code": "NOT_VERIFIED_COMBINATION",
+      "stage1_manifest": "6a34d08994bd76b6ecb482bc459d0c354833483b9311bfaf03ec5ec99eb21140",
+      "new_manifest": "5919328236adbadbcc73e7fe0dbb46f8507fa94c64f4bb7c2e69c540f0bdf26e"
+    },
+    "preasymptotic_strict_band": {
+      "state": "FAILED",
+      "code": "VALIDATION_FAILED",
+      "stage1_manifest": "3180dd595a1a47cbbfaf38259c504e11cb19c326f24fe7f94737488c533ec805",
+      "new_manifest": "1c26754dfcf7f5ebd3bd7889a3f37ec8884dbe8a652cfc7a80a3d152638940f2"
+    },
+    "strict_band_resolved": {
+      "state": "FAILED",
+      "code": "VALIDATION_FAILED",
+      "stage1_manifest": "596a209f20d9a85ff7af30eadb5d8a97d6d6979170c5c20ac4ece1d45f824aa4",
+      "new_manifest": "2d94dda8671fc15b3b447d97be1d058b308d7bd0927af26b84ed6f34c9899804"
+    },
+    "swapped_boundary_labels": {
+      "state": "FAILED",
+      "code": "VALIDATION_FAILED",
+      "stage1_manifest": "9df8a4b6eba7fd191d2160f4a2b70b1d7c90ea5052e1088048e3d5b95e57b86c",
+      "new_manifest": "d82776fb2ce1d28c7c9c11a916a29b19e2b920e4582e2501fe933990603ad553"
+    },
+    "unassigned_mesh_attribute": {
+      "state": "FAILED",
+      "code": "VALIDATION_FAILED",
+      "stage1_manifest": "dcf2f062a7171d976eb5c826d4d82296bc9fa9895cc69d22b61cfd4281d06bc5",
+      "new_manifest": "6394b40d3b69c6605a5e36ded7b65599a30441153834b4fb0c9e5a282eb8bdf7"
+    },
+    "unbound_case": {
+      "state": "FAILED",
+      "code": "UNSUPPORTED_PROBLEM",
+      "stage1_manifest": "b5a9764b08a2d0cd66b757db2bfcba64fe94cb2b8a0bf49261a6c5a2bcff568a",
+      "new_manifest": "3d7f53f267ddc8fa3a90d205e733f76383e6a046ddf187d71cb1ed646afa685e"
+    },
+    "unknown_field": {
+      "state": "INVALID_SPEC",
+      "code": "INVALID_SPEC",
+      "stage1_manifest": "52f08f1d75a6c15582e70d1e6f6a67ead4964199e0608a183cdbff9cdfb9f5a0",
+      "new_manifest": "10d090543d89f943acaaf8216e5d8fb76027a1f7d570bbf500a1a44388efdb2c"
+    },
+    "unsupported_backend_cuda": {
+      "state": "BLOCKED",
+      "code": "UNSUPPORTED_BACKEND",
+      "stage1_manifest": "adeb4a81370128bf7358f693a3c614883c6114ebbd098b605eb07396e2476d3f",
+      "new_manifest": "745ae32724e619b64340c01c2221865419c173560927ebe9e1255e02abf474d3"
+    },
+    "unsupported_backend_mpi": {
+      "state": "BLOCKED",
+      "code": "UNSUPPORTED_BACKEND",
+      "stage1_manifest": "f471785b4d29ab69a21ec9a9700a1a6f090438d95ce10ab87202fea6878b60e9",
+      "new_manifest": "589e6878e41136de6953f31e5cb5f70f056151968ad4306113ab95139914c991"
+    },
+    "unsupported_bc_value": {
+      "state": "INVALID_SPEC",
+      "code": "INVALID_SPEC",
+      "stage1_manifest": "f06b650b98fe5abb424df91f63deb9603335c14014c950e1f803c2e4e84f7ee0",
+      "new_manifest": "b292b699f38f066546a17193e5a1e052351535aac51eeb1cd4a8d6919cef4e71"
+    },
+    "unsupported_pa_with_gs": {
+      "state": "FAILED",
+      "code": "UNSUPPORTED_COMBINATION",
+      "stage1_manifest": "700db17633edfed2ccc0f054325977bc9761fc6c4edb8801087061eb3f7cff51",
+      "new_manifest": "90b28b4b220aba8744a0744c676cff31af52ff458224f79a328497391f40569f"
+    },
+    "unsupported_solver_umfpack": {
+      "state": "FAILED",
+      "code": "UNSUPPORTED_SOLVER",
+      "stage1_manifest": "ce130370914c418987b38ed94d352c3ff34fb3ce78bc045139bd31692e9d2d9b",
+      "new_manifest": "eac99da9338ad94ecf615a96379118dc9639c54cde5d8af9a207e90ae96656ca"
+    }
+  },
+  "canonical_levels_and_fault_examples": [
+    {
+      "study": "poisson_cos_exp_mixed_p1_quad",
+      "n": 8,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 4.791754797776702e-12,
+        "rhs_l2": 12.491562449928452,
+        "relative_l2": 3.835993148962841e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": -4.74578709663831e-13,
+          "right": 1.048432587205316,
+          "top": -1.9752255386862316e-13,
+          "left": -1.0484325872097542
+        },
+        "outward_total": -5.1103565823495956e-12,
+        "source_integral": -6.201636426617085e-16,
+        "signed_imbalance": -5.109736418706934e-12
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p1_quad",
+      "n": 16,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 2.5611418378855397e-12,
+        "rhs_l2": 17.369177902815157,
+        "relative_l2": 1.474532561193029e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 1.3986971303392437e-12,
+          "right": 0.5286557181612466,
+          "top": 1.0345578560500002e-12,
+          "left": -0.5286557181590568
+        },
+        "outward_total": 4.622968674539152e-12,
+        "source_integral": -7.268491364342822e-16,
+        "signed_imbalance": 4.623695523675586e-12
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p1_quad",
+      "n": 32,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 7.82651763583654e-12,
+        "rhs_l2": 24.566500857542028,
+        "relative_l2": 3.185849576714855e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 2.1718521078795128e-12,
+          "right": 0.2648523201812886,
+          "top": 3.674473919579313e-13,
+          "left": -0.2648523201729434
+        },
+        "outward_total": 1.0884515511122572e-11,
+        "source_integral": 1.1560305664126691e-15,
+        "signed_imbalance": 1.088335948055616e-11
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p1_quad",
+      "n": 64,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 1.539618900215604e-11,
+        "rhs_l2": 34.837030142404046,
+        "relative_l2": 4.4194895314614137e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 1.2618855613211188e-12,
+          "right": 0.1324831290843563,
+          "top": -2.6108403633484656e-12,
+          "left": -0.13248312908813042
+        },
+        "outward_total": -5.123068635981554e-12,
+        "source_integral": 3.9546409766680335e-15,
+        "signed_imbalance": -5.127023276958222e-12
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 8,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 6.486274388102645e-12,
+        "rhs_l2": 11.383796806795942,
+        "relative_l2": 5.697812863481931e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": -1.0408340855860843e-16,
+          "right": 1.048432587208099,
+          "top": -6.938893903907228e-16,
+          "left": -1.048432587208098
+        },
+        "outward_total": 4.440892098500626e-16,
+        "source_integral": -6.201636426617085e-16,
+        "signed_imbalance": 1.0642528525117712e-15
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 16,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 4.218907520669946e-12,
+        "rhs_l2": 15.24723379276208,
+        "relative_l2": 2.766998642516177e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 5.152128723651117e-16,
+          "right": 0.528655718160284,
+          "top": 6.071532165918825e-16,
+          "left": -0.5286557181602846
+        },
+        "outward_total": 5.551115123125783e-16,
+        "source_integral": -7.268491364342822e-16,
+        "signed_imbalance": 1.2819606487468604e-15
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 32,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 1.3497751194961489e-11,
+        "rhs_l2": 21.18074657331554,
+        "relative_l2": 6.372651288867488e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": -1.2967057982926633e-15,
+          "right": 0.2648523201774317,
+          "top": 2.949029909160572e-17,
+          "left": -0.2648523201774353
+        },
+        "outward_total": -4.829470157119431e-15,
+        "source_integral": 1.1560305664126691e-15,
+        "signed_imbalance": -5.9855007235321e-15
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p1_quad_pa",
+      "n": 64,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 1.4693767152773325e-11,
+        "rhs_l2": 29.787491619992405,
+        "relative_l2": 4.932864888465916e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 1.0863705768304754e-15,
+          "right": 0.1324831290851312,
+          "top": -6.875576497034075e-15,
+          "left": -0.1324831290851323
+        },
+        "outward_total": -6.8833827526759706e-15,
+        "source_integral": 3.9546409766680335e-15,
+        "signed_imbalance": -1.0838023729344004e-14
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p2_quad",
+      "n": 4,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 6.4307292093006e-13,
+        "rhs_l2": 16.796003192410492,
+        "relative_l2": 3.8287258793844564e-14
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 7.234143839518481e-14,
+          "right": 0.08433914652193124,
+          "top": -4.0181052929355587e-13,
+          "left": -0.08433914652194836
+        },
+        "outward_total": -3.4659775050016606e-13,
+        "source_integral": 1.8006429680639258e-15,
+        "signed_imbalance": -3.4839839346823e-13
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p2_quad",
+      "n": 8,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 5.96363658074933e-12,
+        "rhs_l2": 22.95672418523863,
+        "relative_l2": 2.597773328907266e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 7.067842838770488e-12,
+          "right": 0.010792039045873676,
+          "top": 8.365044767977281e-13,
+          "left": -0.010792039039696888
+        },
+        "outward_total": 1.408113556311541e-11,
+        "source_integral": -2.0448052973076614e-15,
+        "signed_imbalance": 1.4083180368412718e-11
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p2_quad",
+      "n": 16,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 1.5116221458732904e-11,
+        "rhs_l2": 32.196763848622396,
+        "relative_l2": 4.694950563915039e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": -1.554487788490988e-11,
+          "right": 0.001357755608017132,
+          "top": 2.574322699455678e-12,
+          "left": -0.0013577556070968383
+        },
+        "outward_total": -1.205026139636245e-11,
+        "source_integral": 1.3769367590565906e-17,
+        "signed_imbalance": -1.205027516573004e-11
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p2_quad",
+      "n": 32,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 2.3039271140954925e-11,
+        "rhs_l2": 45.46669819522935,
+        "relative_l2": 5.067284860234771e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 2.803490946334808e-12,
+          "right": 0.0001700537377993557,
+          "top": 3.787786057030118e-13,
+          "left": -0.000170053746352515
+        },
+        "outward_total": -5.3708897680866674e-12,
+        "source_integral": 3.5293491219834383e-15,
+        "signed_imbalance": -5.374419117208651e-12
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 4,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 5.330458588522463e-13,
+        "rhs_l2": 14.319637138225303,
+        "relative_l2": 3.722481608345482e-14
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 2.6020852139652106e-16,
+          "right": 0.08433914652200458,
+          "top": -7.424616477180734e-16,
+          "left": -0.08433914652200296
+        },
+        "outward_total": 1.1518563880486e-15,
+        "source_integral": 1.8006429680639258e-15,
+        "signed_imbalance": -6.487865800153259e-16
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 8,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 5.0077040460866256e-12,
+        "rhs_l2": 18.888848303137504,
+        "relative_l2": 2.6511431325618877e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 1.8214596497756474e-16,
+          "right": 0.010792039041899168,
+          "top": -3.1086244689504383e-15,
+          "left": -0.010792039041900455
+        },
+        "outward_total": -4.2136433231476644e-15,
+        "source_integral": -2.155827599770177e-15,
+        "signed_imbalance": -2.0578157233774874e-15
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 16,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 1.3932855558381937e-11,
+        "rhs_l2": 26.084652529106584,
+        "relative_l2": 5.341399714960722e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 8.821068875342064e-16,
+          "right": 0.0013577556075360236,
+          "top": -9.457712391025552e-15,
+          "left": -0.001357755607539102
+        },
+        "outward_total": -1.165387231161219e-14,
+        "source_integral": 7.354143335969177e-16,
+        "signed_imbalance": -1.2389286645209108e-14
+      }
+    },
+    {
+      "study": "poisson_cos_exp_mixed_p2_quad_pa",
+      "n": 32,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 2.6755157833962058e-11,
+        "rhs_l2": 36.59466960931776,
+        "relative_l2": 7.311217212670132e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 1.9936309547663456e-15,
+          "right": 0.00017005374338028485,
+          "top": -1.1032841307212493e-15,
+          "left": -0.00017005374336239245
+        },
+        "outward_total": 1.878274554119319e-14,
+        "source_integral": 4.639572146608595e-15,
+        "signed_imbalance": 1.4143173394584596e-14
+      }
+    },
+    {
+      "study": "poisson_sin_sin_p1_tri",
+      "n": 8,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 7.687311307987422e-13,
+        "rhs_l2": 1.202452500953836,
+        "relative_l2": 6.393027002637961e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 1.8993456036541205,
+          "right": 1.8993456036541978,
+          "top": 1.899345603654198,
+          "left": 1.8993456036541199
+        },
+        "outward_total": 7.597382414616637,
+        "source_integral": 7.999999999944408,
+        "signed_imbalance": -0.40261758532777137
+      }
+    },
+    {
+      "study": "poisson_sin_sin_p1_tri",
+      "n": 16,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 5.804623721037961e-13,
+        "rhs_l2": 0.6129018253741071,
+        "relative_l2": 9.470723500447884e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 1.974433744976398,
+          "right": 1.974433744976374,
+          "top": 1.9744337449763751,
+          "left": 1.9744337449763973
+        },
+        "outward_total": 7.897734979905544,
+        "source_integral": 7.9999999999998,
+        "signed_imbalance": -0.10226502009425609
+      }
+    },
+    {
+      "study": "poisson_sin_sin_p1_tri",
+      "n": 32,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 2.8115428400412457e-13,
+        "rhs_l2": 0.3079301743684818,
+        "relative_l2": 9.130455778837832e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 1.9935829854260476,
+          "right": 1.993582985425963,
+          "top": 1.9935829854259612,
+          "left": 1.9935829854260474
+        },
+        "outward_total": 7.974331941704019,
+        "source_integral": 7.999999999999984,
+        "signed_imbalance": -0.02566805829596497
+      }
+    },
+    {
+      "study": "poisson_sin_sin_p1_tri",
+      "n": 64,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 1.660781608259285e-13,
+        "rhs_l2": 0.15415065308578052,
+        "relative_l2": 1.0773756549283685e-12
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 1.9983941511952696,
+          "right": 1.9983941511952936,
+          "top": 1.9983941511952927,
+          "left": 1.9983941511952705
+        },
+        "outward_total": 7.9935766047811265,
+        "source_integral": 8.000000000000066,
+        "signed_imbalance": -0.0064233952189391985
+      }
+    },
+    {
+      "study": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 8,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 2.349694314496013e-15,
+        "rhs_l2": 1.202452500953836,
+        "relative_l2": 1.954084932778747e-15
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 1.899345603654226,
+          "right": 1.8993456036542256,
+          "top": 1.899345603654226,
+          "left": 1.8993456036542262
+        },
+        "outward_total": 7.597382414616904,
+        "source_integral": 7.999999999944408,
+        "signed_imbalance": -0.402617585327504
+      }
+    },
+    {
+      "study": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 16,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 1.116198849732884e-14,
+        "rhs_l2": 0.6129018253741071,
+        "relative_l2": 1.8211707055229784e-14
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 1.9744337449764102,
+          "right": 1.9744337449764093,
+          "top": 1.9744337449764093,
+          "left": 1.9744337449764102
+        },
+        "outward_total": 7.897734979905639,
+        "source_integral": 7.9999999999998,
+        "signed_imbalance": -0.10226502009416105
+      }
+    },
+    {
+      "study": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 32,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 2.4853490515957255e-13,
+        "rhs_l2": 0.3079301743684818,
+        "relative_l2": 8.071144884364777e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 1.993582985426008,
+          "right": 1.993582985426009,
+          "top": 1.9935829854260099,
+          "left": 1.9935829854260085
+        },
+        "outward_total": 7.974331941704035,
+        "source_integral": 7.999999999999984,
+        "signed_imbalance": -0.02566805829594898
+      }
+    },
+    {
+      "study": "poisson_sin_sin_p1_tri_jacobi",
+      "n": 64,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 1.3282375914751057e-13,
+        "rhs_l2": 0.15415065308578052,
+        "relative_l2": 8.616490198948289e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 1.9983941511952323,
+          "right": 1.9983941511952326,
+          "top": 1.9983941511952308,
+          "left": 1.998394151195232
+        },
+        "outward_total": 7.993576604780928,
+        "source_integral": 8.000000000000066,
+        "signed_imbalance": -0.0064233952191381505
+      }
+    },
+    {
+      "study": "poisson_sin_sin_p2_tri",
+      "n": 4,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 5.969988966988343e-13,
+        "rhs_l2": 1.379140298515225,
+        "relative_l2": 4.3287756680126025e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 2.1272119501540683,
+          "right": 2.1272119501540265,
+          "top": 2.1272119501540265,
+          "left": 2.127211950154069
+        },
+        "outward_total": 8.508847800616191,
+        "source_integral": 8.000000000039241,
+        "signed_imbalance": 0.5088478005769499
+      }
+    },
+    {
+      "study": "poisson_sin_sin_p2_tri",
+      "n": 8,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 4.752033723604114e-13,
+        "rhs_l2": 0.7062964463894683,
+        "relative_l2": 6.728100853255224e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 2.036769937485214,
+          "right": 2.036769937485466,
+          "top": 2.036769937485466,
+          "left": 2.0367699374852144
+        },
+        "outward_total": 8.14707974994136,
+        "source_integral": 8.00000000000003,
+        "signed_imbalance": 0.1470797499413301
+      }
+    },
+    {
+      "study": "poisson_sin_sin_p2_tri",
+      "n": 16,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 4.607232248709779e-13,
+        "rhs_l2": 0.3553798930939667,
+        "relative_l2": 1.2964245693809052e-12
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 2.0095252724539137,
+          "right": 2.009525272453926,
+          "top": 2.0095252724539265,
+          "left": 2.0095252724539114
+        },
+        "outward_total": 8.038101089815678,
+        "source_integral": 7.999999999999979,
+        "signed_imbalance": 0.03810108981569904
+      }
+    },
+    {
+      "study": "poisson_sin_sin_p2_tri",
+      "n": 32,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 2.4936163558759634e-13,
+        "rhs_l2": 0.17797411567704605,
+        "relative_l2": 1.40111181133829e-12
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 2.002402483377539,
+          "right": 2.0024024833777365,
+          "top": 2.002402483377735,
+          "left": 2.0024024833775407
+        },
+        "outward_total": 8.00960993351055,
+        "source_integral": 7.999999999999988,
+        "signed_imbalance": 0.009609933510562385
+      }
+    },
+    {
+      "study": "fault_early_stop_lie",
+      "n": 8,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 0.011327306268852375,
+        "rhs_l2": 1.202452500953836,
+        "relative_l2": 0.009420169411986817
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": 1.90183747935663,
+          "right": 1.8962857447592358,
+          "top": 1.8962857447592363,
+          "left": 1.9018374793566297
+        },
+        "outward_total": 7.596246448231732,
+        "source_integral": 7.999999999944408,
+        "signed_imbalance": -0.40375355171267646
+      }
+    },
+    {
+      "study": "fault_nan_value",
+      "n": 8,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 7.687311307987422e-13,
+        "rhs_l2": 1.202452500953836,
+        "relative_l2": 6.393027002637961e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": null,
+          "right": null,
+          "top": null,
+          "left": null
+        },
+        "outward_total": null,
+        "source_integral": 7.999999999944408,
+        "signed_imbalance": null
+      }
+    },
+    {
+      "study": "fault_wrong_source",
+      "n": 8,
+      "schema_version": 1,
+      "algebraic_residual": {
+        "absolute_l2": 4.83890075900815e-12,
+        "rhs_l2": 12.553685291722367,
+        "relative_l2": 3.8545659275040283e-13
+      },
+      "boundary_flux": {
+        "outward_by_side": {
+          "bottom": -4.881789417154891e-13,
+          "right": 0.855249818291034,
+          "top": -2.2560425749773572e-13,
+          "left": -0.8552498182955034
+        },
+        "outward_total": -5.183187212765006e-12,
+        "source_integral": -2.949029909160572e-17,
+        "signed_imbalance": -5.183157722465914e-12
+      }
+    }
+  ]
+}

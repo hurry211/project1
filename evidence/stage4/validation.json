@@ -1,0 +1,123 @@
+{
+  "local_date": "2026-11-24",
+  "validated_code_commit": "d8161e23c68b8a2d0d2ce59f8c739ff5179d3bb8",
+  "capture_provenance": "First campaign captured during Stage 4 integration. The repeated live campaign and both independent offline replays used the validated code commit.",
+  "platform": "WSL2 Ubuntu 24.04 with serial and MPI MFEM 4.10.0 and a loopback Ollama daemon.",
+  "full_suite": {
+    "command": "python -m pytest -q --require-mfem --require-mpi",
+    "tests": 319,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "wall_seconds": 87.71,
+    "log_sha256": "efc7f9432189abe9f891657db5a08069317e599cbba72bbf93a2525263459b40",
+    "junit_sha256": "0a073edc04d8ed666f827a515113e3cd7614d5938d46044456d2a8f47c417cf1"
+  },
+  "planner_focused_suite": {
+    "passed": 63,
+    "log_sha256": "79be0da2dcffd6406839a4fd3751a61c74d826ecb51430b985d39e2c25936d88"
+  },
+  "named_mesh_cli_smoke": {
+    "state": "ACCEPTED",
+    "template_id": "diffusion_gmsh_p2_quad",
+    "integrity": true,
+    "manifest_sha256": "611b156c1b367d870a1cec23bc01698da3c38a97ea101aed4292b79e83907036",
+    "child_manifest_sha256": "4ddad9a32970a670947af82a2cf2be0f8cae462d99e9bef33ae0261218d93d5e"
+  },
+  "model_identity_and_settings": {
+    "provider": "ollama_local",
+    "ollama_version": "0.40.17",
+    "model": "qwen2.5:1.5b",
+    "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+    "weight_blob_sha256": "183715c435899236895da3869489cc30ac241476b4971a20285b1a462818a5b4",
+    "options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_predict": 128,
+      "num_ctx": 4096
+    }
+  },
+  "corpus": {
+    "task_corpus_sha256": "37ee1eeab7bea6f17640a9e1f0d6b75316d87072cf510bc389317399286519e0",
+    "gate_controls_sha256": "ad939acbaa41608631721e159e72636670e0be618ccd11191c119adbc1112018"
+  },
+  "campaigns": {
+    "planning-results.json": {
+      "sha256": "da4c3b0612dccf58bf829f51d826c3230d94d64e618dcde28e06bb98f24761b4",
+      "replayed_manifests": 38,
+      "accepted_numerical_studies": 28,
+      "human_review_holds": 10,
+      "supplemental_gate_controls_passed": 4
+    },
+    "replication-results.json": {
+      "sha256": "9ae2734ff586af5c071fca4fd82e977c40bb558211e3c040996ee8afd1f815d3",
+      "replayed_manifests": 38,
+      "accepted_numerical_studies": 28,
+      "human_review_holds": 10,
+      "supplemental_gate_controls_passed": 4
+    }
+  },
+  "offline_replay": {
+    "report_comparison": "Each relocated campaign exactly reproduced its own report. The replay process denied network connections and subprocess launches.",
+    "paired_model_calls_with_identical_prompts_and_settings": 14,
+    "changed_live_template_selections": [
+      "T08",
+      "T12",
+      "T14"
+    ]
+  },
+  "wrong_source_regression": {
+    "native_level_exit_codes": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "numerical_verdict": "REJECTED",
+    "failure_codes": [
+      "CONVERGENCE_ORDER_OUT_OF_BAND",
+      "NON_MONOTONE_CONVERGENCE",
+      "REFERENCE_MISMATCH"
+    ],
+    "child_manifest_sha256": "5191c000a2bfaf22f0bbe1c134df7eb544b102402af9997d0661a26b6f7cf1be"
+  },
+  "original_serial_regression": {
+    "matched_terminal_states": 31,
+    "paired_attempt_replays": 22,
+    "matched_error_values": 158,
+    "matched_native_results": 83,
+    "byte_identical_field_exports": 83,
+    "max_relative_accepted_norm_difference_from_imported_baseline": 1.1793946007066676e-13
+  },
+  "stage1_regression": {
+    "matched_challenge_decisions": 284,
+    "matched_checker_mutation_decisions": 14,
+    "score_tables_match": true,
+    "report_sha256": "136a126f7f539034593755667fa36cd189b3d41d823d5bfe40eded0459b7c2c3"
+  },
+  "stage2_replay": {
+    "byte_identical_to": "evidence/stage2/coverage.json",
+    "report_sha256": "9705089715ca93c64fc973144766ad1c73dcc14bf0b1582393191e79a723c167",
+    "studies": 42,
+    "fields": 126
+  },
+  "stage3_replay": {
+    "state": "ACCEPTED",
+    "ranks": [
+      1,
+      2,
+      4
+    ],
+    "screened_levels": 12,
+    "verified_timing_samples": 32,
+    "manifest_sha256": "68363a4fdb5a0aa4deb487b63c6ab3d55e5c8e47933d985b2f7ae8ff6e2efea1"
+  },
+  "local_portable_archive": {
+    "path": "runs/stage4-20261124/planning-campaigns.tar.gz",
+    "bytes": 15920733,
+    "sha256": "43274ac41159552ffff537f04c5ebc88f05ff11ad93667f6f609dc5c2a8b8797",
+    "contents": "Both campaigns with all planner archives, child numerical fields, reports and preregistration checksums."
+  },
+  "local_scratch_directory": "/root/mfem-stage4-ECdcoU",
+  "hosted_ci_run": null
+}

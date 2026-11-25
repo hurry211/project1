@@ -1,4 +1,4 @@
-# mfem-scientific-agent: a verified MFEM Poisson vertical slice
+# MFEM scientific agent for verified Poisson and scalar diffusion studies
 
 A deterministic workflow that turns a frozen, machine-checked problem specification into **real MFEM computations** and lets an **independent verifier** decide whether the result is accepted. No LLM is used anywhere in the numerical path.
 
@@ -34,11 +34,11 @@ source .venv/bin/activate
 python -m pip install --require-hashes --only-binary=:all: -r requirements-linux-py312.lock
 python -m pip check
 export CC=gcc-13 CXX=g++-13 OPENBLAS_NUM_THREADS=1 JOBS=2
-python -m pytest -q -m 'not mfem'
+python -m pytest -q -m 'not mfem and not mpi'
 
 ./scripts/build_mfem.sh
 ./scripts/build_solver.sh
-python -m pytest -q --require-mfem
+python -m pytest -q -m 'not mpi' --require-mfem
 python -m sciagent quickstart
 ```
 
@@ -88,6 +88,37 @@ The verifier runs in a separate POSIX process with a 300-second wall limit and a
 An accuracy-only retry copies the previous independently verified levels into the new attempt, checks every copied file's digest, and verifies the newly added level. It reevaluates the study-level convergence and accuracy gates over all levels. Archive replay recomputes the independent checks for every level, including copied levels.
 
 The first study covers assembly, retry reuse and the anisotropic case. The follow-up measures the cost of replaying identical archived fields and extends the CPU tests to a localized load and an aligned material interface. [First study](docs/PERFORMANCE_STAGE.md) · [Follow-up protocol and raw data](docs/VERIFIER_SCALING.md) · [导师阶段汇报](docs/导师阶段汇报-第二阶段.md)
+
+`python -m sciagent cases` shows the formulation, boundary traces and manufactured expressions compiled into the binary. Runs that reach case binding save this catalog in `case_registry.json`. Each new native level's `result.json` includes the true algebraic residual of the constrained system and integrated outward flux on all four sides. The generated Markdown report shows their totals for accepted studies. Use these measurements to investigate solver accuracy and flux convergence. The independent reference solve and frozen convergence criteria still determine acceptance. [Field definitions](docs/MVP_SPEC.md#native-diagnostics)
+
+## Select a reviewed study
+
+Use `python -m sciagent plan-catalog` to inspect nine pinned serial templates. A task JSON specifies the authorized physics and discretization constraints. The default rule or an optional local language model nominates a template. With `--execute`, the established controller runs it and the independent verifier checks the numerical evidence. [Planning CLI, review decisions and replay](docs/PLANNER.md) · [Rules versus local-model results](docs/RESULTS.md#stage-4-controlled-planning-2026-11-24)
+
+## Time to an independently verified solution
+
+`python -m sciagent select-solver` uses a pinned calibration campaign to select an authorized serial preconditioner, execute it and verify the result. It can use two-level native pilots when calibration justifies their cost. The paired benchmark includes cold worker startup, solving, exporting, checking and archiving. [Workloads, operating limits and reproduction](docs/VERIFIED_PERFORMANCE.md) · [Experimental results](docs/RESULTS.md#verified-performance-experiments)
+
+## Verified MPI Poisson benchmark
+
+The separate Stage 3 MPI workflow verifies the original P1 triangle Poisson benchmark using 1, 2 and 4 processes. Its timing campaign begins after all ranks pass the matched serial comparison and independent SciPy solve at four resolutions. See the parallel guide for the second MFEM build, the `mpi-study` command and digest-checked offline replay. [MPI setup and experiment](docs/MPI.md) · [Measured single-host scaling](docs/RESULTS.md#stage-3-mpi-poisson-2026-11-24)
+
+## Variable diffusion and named mesh examples
+
+Schema `0.3` adds a reviewed scalar diffusion case with `kappa = 1+x` and an optional, digest-pinned Gmsh 2.2 input. The first command solves the mixed-boundary case on generated triangles. The second imports a named quadrilateral mesh and uses P2 partial assembly. Both run at 8, 16 and 32 cells per side. The matrix command lists the reviewed MFEM revision, build flags, preconditioner and verification coverage for each configuration. [Equation and mesh contract](docs/MVP_SPEC.md#10-stage-2-scalar-diffusion-and-named-meshes)
+
+```bash
+python -m sciagent run specs/stage2/diffusion_mixed_p1_tri.json
+python -m sciagent run specs/stage2/diffusion_gmsh_p2_quad.json
+python -m sciagent matrix --case sin_sin_variable --mesh-source gmsh22
+```
+
+The optional scikit-fem benchmark exercises all three cases on both mesh sources and the seven original Stage 2 solver configurations. The subsequent matched assembly experiment also certifies full-assembly Jacobi on Q1 and Q2 quadrilaterals. Use a fresh capture directory and the locked dependencies from `requirements-challenge.lock`. Replay takes the original manifest digests from the saved report and works with the retained raw archives. [Matched assembly evidence](evidence/e1/assembly.json)
+
+```bash
+python -m benchmarks.stage2 --directory runs/scalar-coverage --report runs/scalar-coverage.json
+python -m benchmarks.stage2 --directory runs/scalar-coverage --replay runs/scalar-coverage.json --report runs/scalar-replay.json
+```
 
 ## Layout
 

@@ -1,0 +1,22 @@
+[
+  {
+    "task_id": "T01",
+    "candidate": {"template_id": "poisson_sin_sin_p1_tri"},
+    "expected_state": "REJECTED"
+  },
+  {
+    "task_id": "T03",
+    "candidate": {"template_id": "diffusion_mixed_p1_tri"},
+    "expected_state": "REJECTED"
+  },
+  {
+    "task_id": "T06",
+    "candidate": {"template_id": "poisson_cos_exp_mixed_p1_quad"},
+    "expected_state": "REJECTED"
+  },
+  {
+    "task_id": "T01",
+    "candidate": {"template_id": "poisson_sin_sin_p2_tri", "validation": {"reference_solve_rel_tol": 0.1}},
+    "expected_state": "REJECTED"
+  }
+]

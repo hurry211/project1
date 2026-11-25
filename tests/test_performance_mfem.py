@@ -1,6 +1,7 @@
 """Numerical and evidence regressions for reviewed performance paths."""
 
 import json
+import shutil
 from pathlib import Path
 
 import pytest
@@ -68,6 +69,32 @@ def test_retry_detects_corruption_before_reusing_verdict(specs_dir, tmp_path, mo
     monkeypatch.setattr(controller.shutil, "copytree", corrupt)
     run = controller.run_study(specs_dir / "retry_demo_sin_sin_p1_tri.json", tmp_path)
     assert (run["final_state"], run["final_code"]) == ("FAILED", "EVIDENCE_INTEGRITY")
+
+
+def test_gmsh_diffusion_retry_replays_from_pinned_mesh(specs_dir, tmp_path):
+    source = specs_dir / "stage2"
+    raw = json.loads((source / "diffusion_gmsh_p2_quad.json").read_bytes())
+    raw["execution"]["mesh_levels"] = [4, 8, 16]
+    raw["validation"]["max_l2_error_finest"] = 1e-4
+    raw["policy"]["max_attempts"] = 3
+    mesh = tmp_path / raw["external_mesh"]["file"]
+    shutil.copyfile(source / mesh.name, mesh)
+    spec = tmp_path / "study.json"
+    spec.write_text(json.dumps(raw))
+    run = controller.run_study(spec, tmp_path / "runs")
+    assert run["final_state"] == "ACCEPTED", run["final_reason"]
+    assert len(run["attempts"]) >= 2
+    last = run["attempts"][-1]
+    assert all("reused_from" in row for row in last["levels"][:-1])
+    assert "reused_from" not in last["levels"][-1]
+    root = Path(run["run_dir"])
+    pin = sha256_file(root / "manifest.json")
+    attempt = root / "attempts" / f"attempt_{last['attempt']:02d}"
+    mesh.unlink()  # Replay depends only on the archive.
+    replay = controller.reverify(attempt, pin)
+    assert replay["verdict"] == "ACCEPTED" and replay["integrity"]["passed"]
+    (root / controller.ARCHIVED_MESH).write_bytes(b"changed mesh")
+    assert "EVIDENCE_INTEGRITY" in controller.reverify(attempt, pin)["failure_codes"]
 
 
 def test_verification_timeout_fails_closed(specs_dir, tmp_path):

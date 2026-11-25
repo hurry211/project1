@@ -1,0 +1,647 @@
+{
+  "campaign_status": "COMPLETE",
+  "minimum_blocks_for_decision": 30,
+  "uncertainty": "per-workload paired percentile bootstrap, 4096 block resamples, 95% marginal intervals",
+  "noise_interpretation": "result uses the original signed A/A median interval. conservative_result adds a post hoc veto when the median absolute A/A difference exceeds the same margin. This sensitivity check can only withhold an equivalence claim or a switch; it cannot establish a new advantage.",
+  "policy": {
+    "version": 1,
+    "enabled": false,
+    "calibration": {
+      "C1": "within_margin",
+      "C2": "within_margin"
+    },
+    "baseline": {
+      "C1": {
+        "n": 64,
+        "seconds": 1.0677076564999908
+      },
+      "C2": {
+        "n": 128,
+        "seconds": 1.9691036080000117
+      }
+    },
+    "calibration_with_absolute_aa_veto": {
+      "C1": "within_margin",
+      "C2": "within_margin"
+    },
+    "reason": "no_material_calibration_advantage",
+    "solve_scale": {
+      "cg_gs": 1.1467471766419843,
+      "cg_jacobi": 0.3372811023079186
+    }
+  },
+  "workloads": {
+    "C1": {
+      "observed_blocks": 30,
+      "qualified_complete_blocks": 30,
+      "missing_arm_blocks": 0,
+      "complete_but_ineligible_blocks": 0,
+      "all_observed_blocks_complete_and_qualified": true,
+      "absolute_aa_sensitivity": {
+        "assessed_blocks": 30,
+        "median_absolute_aa_seconds": 0.042808241500026156,
+        "p90_absolute_aa_seconds": 0.1246994278999722,
+        "absolute_aa_above_margin_count": 10,
+        "absolute_aa_above_margin_fraction": 0.3333333333333333,
+        "median_absolute_aa_within_margin": true
+      },
+      "arms": {
+        "gs": {
+          "submitted": 30,
+          "qualified": 30,
+          "elapsed_seconds_all_attempts": 32.52517901400006,
+          "elapsed_seconds_failed_attempts": 0,
+          "timing_and_memory_on_qualified": {
+            "profiled_trials": 30,
+            "median_phase_seconds": {
+              "archive.finalize": 0.004923980500009861,
+              "controller.attempt": 0.005834836500000051,
+              "controller.environment": 0.43847693499999707,
+              "controller.inputs": 0.00232413049999991,
+              "controller.other": 5.0356000016904545e-05,
+              "native.process": 0.12379290249999997,
+              "verify.field_load": 0.027798679500023127,
+              "verify.geometry_boundary": 0.008101579999959085,
+              "verify.input_hashes": 0.0025601945000204296,
+              "verify.integration": 0.10762804550002159,
+              "verify.reference": 0.0324447484999979,
+              "verify.solver_claims": 0.0009846879999599878,
+              "verify.study": 0.0017282230000006393
+            },
+            "medians": {
+              "verification_share_of_external": 0.16796269338445846,
+              "worker_peak_rss_kib": 113816.0,
+              "external_outside_capture_seconds": 0.3055318599999879,
+              "native_setup_seconds": 0.0180874015,
+              "native_solve_seconds": 0.0054156214999999995,
+              "native_solve_share_of_external": 0.00509880230961947,
+              "native_error_seconds": 0.037524541999999994,
+              "native_export_seconds": 0.033779509,
+              "largest_native_process_peak_rss_kib": 47330.0,
+              "total_cg_iterations": 149.0
+            }
+          }
+        },
+        "jacobi": {
+          "submitted": 30,
+          "qualified": 30,
+          "elapsed_seconds_all_attempts": 32.97545753500003,
+          "elapsed_seconds_failed_attempts": 0,
+          "timing_and_memory_on_qualified": {
+            "profiled_trials": 30,
+            "median_phase_seconds": {
+              "archive.finalize": 0.00517380300000525,
+              "controller.attempt": 0.005453737999985719,
+              "controller.environment": 0.4457143220000148,
+              "controller.inputs": 0.0023690295000022843,
+              "controller.other": 4.8101499984909424e-05,
+              "native.process": 0.119337701500001,
+              "verify.field_load": 0.0270232449999952,
+              "verify.geometry_boundary": 0.00825153250002586,
+              "verify.input_hashes": 0.002534499500001175,
+              "verify.integration": 0.10868444649999276,
+              "verify.reference": 0.03174119649999341,
+              "verify.solver_claims": 0.0009339770000025283,
+              "verify.study": 0.001736790499990093
+            },
+            "medians": {
+              "verification_share_of_external": 0.17053833868012153,
+              "worker_peak_rss_kib": 113812.0,
+              "external_outside_capture_seconds": 0.31521237899998766,
+              "native_setup_seconds": 0.0181540705,
+              "native_solve_seconds": 0.0023575799999999997,
+              "native_solve_share_of_external": 0.00222060951596632,
+              "native_error_seconds": 0.037608305499999994,
+              "native_export_seconds": 0.033608315,
+              "largest_native_process_peak_rss_kib": 47426.0,
+              "total_cg_iterations": 202.0
+            }
+          }
+        },
+        "gs_repeat": {
+          "submitted": 30,
+          "qualified": 30,
+          "elapsed_seconds_all_attempts": 32.85056716499997,
+          "elapsed_seconds_failed_attempts": 0,
+          "timing_and_memory_on_qualified": {
+            "profiled_trials": 30,
+            "median_phase_seconds": {
+              "archive.finalize": 0.0050374249999833864,
+              "controller.attempt": 0.005706799500018178,
+              "controller.environment": 0.4367995850000028,
+              "controller.inputs": 0.002226713000013092,
+              "controller.other": 4.95665000102008e-05,
+              "native.process": 0.12454443799998671,
+              "verify.field_load": 0.027414752999987968,
+              "verify.geometry_boundary": 0.008361463499966248,
+              "verify.input_hashes": 0.002580038000019158,
+              "verify.integration": 0.10717251549998252,
+              "verify.reference": 0.0326507824999851,
+              "verify.solver_claims": 0.0009624190000181443,
+              "verify.study": 0.0017371590000152537
+            },
+            "medians": {
+              "verification_share_of_external": 0.1702628076742158,
+              "worker_peak_rss_kib": 113816.0,
+              "external_outside_capture_seconds": 0.3189703300000275,
+              "native_setup_seconds": 0.0181572865,
+              "native_solve_seconds": 0.0054499205,
+              "native_solve_share_of_external": 0.0049446845192058,
+              "native_error_seconds": 0.037836406,
+              "native_export_seconds": 0.0335727525,
+              "largest_native_process_peak_rss_kib": 47384.0,
+              "total_cg_iterations": 149.0
+            }
+          }
+        }
+      },
+      "result": "within_margin",
+      "conservative_result": "within_margin",
+      "median_baseline_seconds": 1.0677076564999908,
+      "median_jacobi_seconds": 1.0826450535000163,
+      "jacobi_to_gs_ratio_of_medians": 1.013990156302701,
+      "median_paired_jacobi_minus_gs_seconds": -0.0032062225000117905,
+      "paired_bootstrap_95pct_seconds": [
+        -0.028375010499985365,
+        0.0331707625000206
+      ],
+      "median_paired_aa_seconds": 0.006346964000002231,
+      "aa_bootstrap_95pct_seconds": [
+        -0.01977861250000501,
+        0.028206719499976884
+      ],
+      "practical_margin_seconds": 0.05338538282499954
+    },
+    "C2": {
+      "observed_blocks": 30,
+      "qualified_complete_blocks": 30,
+      "missing_arm_blocks": 0,
+      "complete_but_ineligible_blocks": 0,
+      "all_observed_blocks_complete_and_qualified": true,
+      "absolute_aa_sensitivity": {
+        "assessed_blocks": 30,
+        "median_absolute_aa_seconds": 0.07095902150004463,
+        "p90_absolute_aa_seconds": 0.21035085099999842,
+        "absolute_aa_above_margin_count": 12,
+        "absolute_aa_above_margin_fraction": 0.4,
+        "median_absolute_aa_within_margin": true
+      },
+      "arms": {
+        "gs": {
+          "submitted": 30,
+          "qualified": 30,
+          "elapsed_seconds_all_attempts": 60.03303041599992,
+          "elapsed_seconds_failed_attempts": 0,
+          "timing_and_memory_on_qualified": {
+            "profiled_trials": 30,
+            "median_phase_seconds": {
+              "archive.finalize": 0.009600277499970389,
+              "controller.attempt": 0.005939367999928891,
+              "controller.environment": 0.4370206195000321,
+              "controller.inputs": 0.0021788224999852446,
+              "controller.other": 4.7284500027444665e-05,
+              "native.process": 0.4552202570000077,
+              "verify.field_load": 0.10854491699998903,
+              "verify.geometry_boundary": 0.022084269999993467,
+              "verify.input_hashes": 0.0064986209999915445,
+              "verify.integration": 0.46998925750000353,
+              "verify.reference": 0.1459621965000224,
+              "verify.solver_claims": 0.0011734074999765198,
+              "verify.study": 0.0018067140000539439
+            },
+            "medians": {
+              "verification_share_of_external": 0.3801156207917739,
+              "worker_peak_rss_kib": 228622.0,
+              "external_outside_capture_seconds": 0.3230794929999945,
+              "native_setup_seconds": 0.07033333150000001,
+              "native_solve_seconds": 0.042692281,
+              "native_solve_share_of_external": 0.021111835594540596,
+              "native_error_seconds": 0.152513014,
+              "native_export_seconds": 0.13417338550000002,
+              "largest_native_process_peak_rss_kib": 47414.0,
+              "total_cg_iterations": 274.0
+            }
+          }
+        },
+        "jacobi": {
+          "submitted": 30,
+          "qualified": 30,
+          "elapsed_seconds_all_attempts": 60.04974744300006,
+          "elapsed_seconds_failed_attempts": 0,
+          "timing_and_memory_on_qualified": {
+            "profiled_trials": 30,
+            "median_phase_seconds": {
+              "archive.finalize": 0.009461533999996163,
+              "controller.attempt": 0.005979871500016998,
+              "controller.environment": 0.43743406550001396,
+              "controller.inputs": 0.002224286000000575,
+              "controller.other": 4.791550000504685e-05,
+              "native.process": 0.43185536650003087,
+              "verify.field_load": 0.11506371950008543,
+              "verify.geometry_boundary": 0.022110022999981993,
+              "verify.input_hashes": 0.006493937500010816,
+              "verify.integration": 0.47235310650003726,
+              "verify.reference": 0.14233831700002497,
+              "verify.solver_claims": 0.001100093499957211,
+              "verify.study": 0.001753686999961701
+            },
+            "medians": {
+              "verification_share_of_external": 0.38842300930116,
+              "worker_peak_rss_kib": 228690.0,
+              "external_outside_capture_seconds": 0.33809850200000824,
+              "native_setup_seconds": 0.0722736235,
+              "native_solve_seconds": 0.018699705,
+              "native_solve_share_of_external": 0.009445167550938695,
+              "native_error_seconds": 0.15202930199999998,
+              "native_export_seconds": 0.132847348,
+              "largest_native_process_peak_rss_kib": 47410.0,
+              "total_cg_iterations": 419.0
+            }
+          }
+        },
+        "gs_repeat": {
+          "submitted": 30,
+          "qualified": 30,
+          "elapsed_seconds_all_attempts": 60.54732869499992,
+          "elapsed_seconds_failed_attempts": 0,
+          "timing_and_memory_on_qualified": {
+            "profiled_trials": 30,
+            "median_phase_seconds": {
+              "archive.finalize": 0.009842503000015768,
+              "controller.attempt": 0.005875680500054159,
+              "controller.environment": 0.44502776400000243,
+              "controller.inputs": 0.002365412999978389,
+              "controller.other": 4.813099997136305e-05,
+              "native.process": 0.4458588509999686,
+              "verify.field_load": 0.1126441449999902,
+              "verify.geometry_boundary": 0.021711422999999286,
+              "verify.input_hashes": 0.00641954650001253,
+              "verify.integration": 0.47140132600000584,
+              "verify.reference": 0.14004215950001253,
+              "verify.solver_claims": 0.0011238939999316244,
+              "verify.study": 0.0018365839999603395
+            },
+            "medians": {
+              "verification_share_of_external": 0.3831505961296681,
+              "worker_peak_rss_kib": 228554.0,
+              "external_outside_capture_seconds": 0.3191697819999888,
+              "native_setup_seconds": 0.0691644115,
+              "native_solve_seconds": 0.041422573000000004,
+              "native_solve_share_of_external": 0.02088754123808825,
+              "native_error_seconds": 0.1498274415,
+              "native_export_seconds": 0.1345302275,
+              "largest_native_process_peak_rss_kib": 47424.0,
+              "total_cg_iterations": 274.0
+            }
+          }
+        }
+      },
+      "result": "within_margin",
+      "conservative_result": "within_margin",
+      "median_baseline_seconds": 1.9691036080000117,
+      "median_jacobi_seconds": 1.9767695534999916,
+      "jacobi_to_gs_ratio_of_medians": 1.0038931143434175,
+      "median_paired_jacobi_minus_gs_seconds": -0.012699281999999812,
+      "paired_bootstrap_95pct_seconds": [
+        -0.035205234500011784,
+        0.03803816999999299
+      ],
+      "median_paired_aa_seconds": 0.026216945499982103,
+      "aa_bootstrap_95pct_seconds": [
+        -0.018544944500035854,
+        0.05643910199998459
+      ],
+      "practical_margin_seconds": 0.09845518040000059
+    },
+    "H1": {
+      "observed_blocks": 30,
+      "qualified_complete_blocks": 30,
+      "missing_arm_blocks": 0,
+      "complete_but_ineligible_blocks": 0,
+      "all_observed_blocks_complete_and_qualified": true,
+      "absolute_aa_sensitivity": {
+        "assessed_blocks": 30,
+        "median_absolute_aa_seconds": 0.7818745094996302,
+        "p90_absolute_aa_seconds": 5.463048915600236,
+        "absolute_aa_above_margin_count": 10,
+        "absolute_aa_above_margin_fraction": 0.3333333333333333,
+        "median_absolute_aa_within_margin": true
+      },
+      "arms": {
+        "gs": {
+          "submitted": 30,
+          "qualified": 30,
+          "elapsed_seconds_all_attempts": 917.1623050999995,
+          "elapsed_seconds_failed_attempts": 0,
+          "timing_and_memory_on_qualified": {
+            "profiled_trials": 30,
+            "median_phase_seconds": {
+              "archive.finalize": 0.11045060049991662,
+              "controller.attempt": 0.0070985975005442015,
+              "controller.environment": 0.4355469769999445,
+              "controller.inputs": 0.002331511000079445,
+              "controller.other": 5.2946000096198986e-05,
+              "native.process": 9.935398483499966,
+              "verify.field_load": 3.282666364499846,
+              "verify.geometry_boundary": 0.34877768799992737,
+              "verify.input_hashes": 0.09475737649995608,
+              "verify.integration": 8.350802285499867,
+              "verify.reference": 5.701846484999919,
+              "verify.solver_claims": 0.001369065499716271,
+              "verify.study": 0.0021094554997489467
+            },
+            "medians": {
+              "verification_share_of_external": 0.6195623899655568,
+              "worker_peak_rss_kib": 2539066.0,
+              "external_outside_capture_seconds": 0.32631889850006246,
+              "native_setup_seconds": 1.146907047,
+              "native_solve_seconds": 3.8030501459999995,
+              "native_solve_share_of_external": 0.13308542646736055,
+              "native_error_seconds": 2.3808150345,
+              "native_export_seconds": 2.1097968455,
+              "largest_native_process_peak_rss_kib": 163864.0,
+              "total_cg_iterations": 931.0
+            }
+          }
+        },
+        "jacobi": {
+          "submitted": 30,
+          "qualified": 30,
+          "elapsed_seconds_all_attempts": 868.8001360680003,
+          "elapsed_seconds_failed_attempts": 0,
+          "timing_and_memory_on_qualified": {
+            "profiled_trials": 30,
+            "median_phase_seconds": {
+              "archive.finalize": 0.11037884399991071,
+              "controller.attempt": 0.006814629999780664,
+              "controller.environment": 0.4411596979998649,
+              "controller.inputs": 0.0024083490000066377,
+              "controller.other": 5.017950024921447e-05,
+              "native.process": 9.053409233000025,
+              "verify.field_load": 3.232722704999901,
+              "verify.geometry_boundary": 0.33679425599996193,
+              "verify.input_hashes": 0.09574926500010861,
+              "verify.integration": 8.222504327999786,
+              "verify.reference": 5.788189475999957,
+              "verify.solver_claims": 0.0014237629998206103,
+              "verify.study": 0.0019857029998320286
+            },
+            "medians": {
+              "verification_share_of_external": 0.6370002069634326,
+              "worker_peak_rss_kib": 2539150.0,
+              "external_outside_capture_seconds": 0.3289124019999008,
+              "native_setup_seconds": 1.119862522,
+              "native_solve_seconds": 3.0127940895,
+              "native_solve_share_of_external": 0.10750659722458979,
+              "native_error_seconds": 2.384095303,
+              "native_export_seconds": 2.107896906,
+              "largest_native_process_peak_rss_kib": 163864.0,
+              "total_cg_iterations": 1618.0
+            }
+          }
+        },
+        "gs_repeat": {
+          "submitted": 30,
+          "qualified": 30,
+          "elapsed_seconds_all_attempts": 885.1972187599995,
+          "elapsed_seconds_failed_attempts": 0,
+          "timing_and_memory_on_qualified": {
+            "profiled_trials": 30,
+            "median_phase_seconds": {
+              "archive.finalize": 0.10978264649997982,
+              "controller.attempt": 0.006723432999933721,
+              "controller.environment": 0.44051722549966144,
+              "controller.inputs": 0.00228411850014254,
+              "controller.other": 5.542399981095514e-05,
+              "native.process": 10.01581180550022,
+              "verify.field_load": 3.2883592805000035,
+              "verify.geometry_boundary": 0.34259931099961705,
+              "verify.input_hashes": 0.09453283599998485,
+              "verify.integration": 8.3471200030001,
+              "verify.reference": 5.71442695599967,
+              "verify.solver_claims": 0.001353183499759325,
+              "verify.study": 0.0020734605000143347
+            },
+            "medians": {
+              "verification_share_of_external": 0.619481875752306,
+              "worker_peak_rss_kib": 2539136.0,
+              "external_outside_capture_seconds": 0.3180141995003396,
+              "native_setup_seconds": 1.1273140855000001,
+              "native_solve_seconds": 3.8457631235000003,
+              "native_solve_share_of_external": 0.13459067245035547,
+              "native_error_seconds": 2.405634267,
+              "native_export_seconds": 2.1139833675,
+              "largest_native_process_peak_rss_kib": 163864.0,
+              "total_cg_iterations": 931.0
+            }
+          }
+        }
+      },
+      "result": "inconclusive",
+      "conservative_result": "inconclusive",
+      "median_baseline_seconds": 28.473070759999814,
+      "median_jacobi_seconds": 27.80489043900002,
+      "jacobi_to_gs_ratio_of_medians": 0.9765329027335371,
+      "median_paired_jacobi_minus_gs_seconds": -0.850371910999911,
+      "paired_bootstrap_95pct_seconds": [
+        -1.6646177189999207,
+        -0.21692733199995473
+      ],
+      "median_paired_aa_seconds": 0.21629960199993548,
+      "aa_bootstrap_95pct_seconds": [
+        -0.4191769659998954,
+        0.5362857669997538
+      ],
+      "practical_margin_seconds": 1.4236535379999908,
+      "pilot_selection": {
+        "mode": "retrospective prefix replay, native prefix wall times only",
+        "blocks_with_complete_observations": 30,
+        "policy_actions_scored": 30,
+        "blocks_unscored": 0,
+        "verified_selected": 30,
+        "selected_solvers": {
+          "cg_gs": 30
+        },
+        "forecast_solvers": {
+          "cg_jacobi": 30
+        },
+        "workflow_winner_forecast_hits": 22,
+        "workflow_winner_forecast_trials": 30,
+        "elapsed_seconds_including_selected_failures_and_charged_pilots": 917.1623050999995,
+        "pilot_native_wall_seconds_charged": 0.0,
+        "probe_both_native_prefixes_seconds_if_always_probed": 25.405037840998602,
+        "median_excess_seconds_vs_fixed_gs": 0.0,
+        "median_excess_seconds_vs_fixed_jacobi": 0.850371910999911,
+        "median_excess_seconds_vs_fastest_qualified_arm_in_block": 0.850371910999911,
+        "matched_default_comparisons": 30,
+        "matched_oracle_comparisons": 30
+      }
+    },
+    "H2": {
+      "observed_blocks": 30,
+      "qualified_complete_blocks": 30,
+      "missing_arm_blocks": 0,
+      "complete_but_ineligible_blocks": 0,
+      "all_observed_blocks_complete_and_qualified": true,
+      "absolute_aa_sensitivity": {
+        "assessed_blocks": 30,
+        "median_absolute_aa_seconds": 0.1504033915000491,
+        "p90_absolute_aa_seconds": 0.5000974217999556,
+        "absolute_aa_above_margin_count": 17,
+        "absolute_aa_above_margin_fraction": 0.5666666666666667,
+        "median_absolute_aa_within_margin": false
+      },
+      "arms": {
+        "gs": {
+          "submitted": 30,
+          "qualified": 30,
+          "elapsed_seconds_all_attempts": 72.35723876600025,
+          "elapsed_seconds_failed_attempts": 0,
+          "timing_and_memory_on_qualified": {
+            "profiled_trials": 30,
+            "median_phase_seconds": {
+              "archive.finalize": 0.010353183999995963,
+              "controller.attempt": 0.006552829500094504,
+              "controller.environment": 0.4598526329999686,
+              "controller.inputs": 0.002422785500016289,
+              "controller.other": 5.6561000008059636e-05,
+              "native.process": 0.530724059000022,
+              "verify.field_load": 0.13246965600001204,
+              "verify.geometry_boundary": 0.024050338999984433,
+              "verify.input_hashes": 0.007023571999923206,
+              "verify.integration": 0.5060956810000334,
+              "verify.reference": 0.2141968709998423,
+              "verify.solver_claims": 0.0012602534999359705,
+              "verify.study": 0.0019939214999453725
+            },
+            "medians": {
+              "verification_share_of_external": 0.39099765522555396,
+              "worker_peak_rss_kib": 222438.0,
+              "external_outside_capture_seconds": 0.37162947200010876,
+              "native_setup_seconds": 0.0774793285,
+              "native_solve_seconds": 0.068910413,
+              "native_solve_share_of_external": 0.030501798015764234,
+              "native_error_seconds": 0.175909594,
+              "native_export_seconds": 0.153811535,
+              "largest_native_process_peak_rss_kib": 47428.0,
+              "total_cg_iterations": 412.0
+            }
+          }
+        },
+        "jacobi": {
+          "submitted": 30,
+          "qualified": 30,
+          "elapsed_seconds_all_attempts": 71.54525935799995,
+          "elapsed_seconds_failed_attempts": 0,
+          "timing_and_memory_on_qualified": {
+            "profiled_trials": 30,
+            "median_phase_seconds": {
+              "archive.finalize": 0.010142413999972177,
+              "controller.attempt": 0.007022931500159757,
+              "controller.environment": 0.4640831505000165,
+              "controller.inputs": 0.0025186904999827675,
+              "controller.other": 5.404099999850587e-05,
+              "native.process": 0.5088968949999071,
+              "verify.field_load": 0.13040019999999686,
+              "verify.geometry_boundary": 0.02421916050013806,
+              "verify.input_hashes": 0.006833019499993043,
+              "verify.integration": 0.49878325099996346,
+              "verify.reference": 0.21101267000003077,
+              "verify.solver_claims": 0.0012518330000261813,
+              "verify.study": 0.0019462295001630991
+            },
+            "medians": {
+              "verification_share_of_external": 0.3980553597569306,
+              "worker_peak_rss_kib": 222398.0,
+              "external_outside_capture_seconds": 0.35806500249992723,
+              "native_setup_seconds": 0.07750761049999999,
+              "native_solve_seconds": 0.0498302045,
+              "native_solve_share_of_external": 0.022873557861134725,
+              "native_error_seconds": 0.169834578,
+              "native_export_seconds": 0.1493603165,
+              "largest_native_process_peak_rss_kib": 47432.0,
+              "total_cg_iterations": 1030.0
+            }
+          }
+        },
+        "gs_repeat": {
+          "submitted": 30,
+          "qualified": 30,
+          "elapsed_seconds_all_attempts": 75.52651028399998,
+          "elapsed_seconds_failed_attempts": 0,
+          "timing_and_memory_on_qualified": {
+            "profiled_trials": 30,
+            "median_phase_seconds": {
+              "archive.finalize": 0.010226276999958372,
+              "controller.attempt": 0.006234644000073786,
+              "controller.environment": 0.44804124350002894,
+              "controller.inputs": 0.0023233665000361725,
+              "controller.other": 5.649849993005773e-05,
+              "native.process": 0.5056082119999701,
+              "verify.field_load": 0.12225216500002034,
+              "verify.geometry_boundary": 0.024282293999959847,
+              "verify.input_hashes": 0.007261071500010985,
+              "verify.integration": 0.4943043755000076,
+              "verify.reference": 0.21750969850000956,
+              "verify.solver_claims": 0.0012398800000710253,
+              "verify.study": 0.0019724515000234533
+            },
+            "medians": {
+              "verification_share_of_external": 0.3937623795986146,
+              "worker_peak_rss_kib": 222440.0,
+              "external_outside_capture_seconds": 0.3605214559999581,
+              "native_setup_seconds": 0.07500416,
+              "native_solve_seconds": 0.0671901395,
+              "native_solve_share_of_external": 0.03033282603269896,
+              "native_error_seconds": 0.163160965,
+              "native_export_seconds": 0.1453777395,
+              "largest_native_process_peak_rss_kib": 47412.0,
+              "total_cg_iterations": 412.0
+            }
+          }
+        }
+      },
+      "result": "inconclusive",
+      "conservative_result": "absolute_aa_noise_unresolved",
+      "median_baseline_seconds": 2.292097330000047,
+      "median_jacobi_seconds": 2.209278697000002,
+      "jacobi_to_gs_ratio_of_medians": 0.9638677503280181,
+      "median_paired_jacobi_minus_gs_seconds": -0.060949598499973945,
+      "paired_bootstrap_95pct_seconds": [
+        -0.16028801150008576,
+        0.022217929000021286
+      ],
+      "median_paired_aa_seconds": -0.03281488150008727,
+      "aa_bootstrap_95pct_seconds": [
+        -0.11284171425000977,
+        0.008567496000068786
+      ],
+      "practical_margin_seconds": 0.11460486650000234,
+      "pilot_selection": {
+        "mode": "retrospective prefix replay, native prefix wall times only",
+        "blocks_with_complete_observations": 30,
+        "policy_actions_scored": 30,
+        "blocks_unscored": 0,
+        "verified_selected": 30,
+        "selected_solvers": {
+          "cg_gs": 30
+        },
+        "forecast_solvers": {
+          "cg_jacobi": 30
+        },
+        "workflow_winner_forecast_hits": 20,
+        "workflow_winner_forecast_trials": 30,
+        "elapsed_seconds_including_selected_failures_and_charged_pilots": 72.35723876600025,
+        "pilot_native_wall_seconds_charged": 0.0,
+        "probe_both_native_prefixes_seconds_if_always_probed": 2.6213988260005863,
+        "median_excess_seconds_vs_fixed_gs": 0.0,
+        "median_excess_seconds_vs_fixed_jacobi": 0.060949598499973945,
+        "median_excess_seconds_vs_fastest_qualified_arm_in_block": 0.060949598499973945,
+        "matched_default_comparisons": 30,
+        "matched_oracle_comparisons": 30
+      }
+    }
+  },
+  "submitted_elapsed_seconds": 3508.930851098999,
+  "warmup_count": 36
+}

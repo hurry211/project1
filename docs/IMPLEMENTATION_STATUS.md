@@ -1,5 +1,45 @@
 # Implementation Status
 
+## Verified performance on scalar workloads
+
+The agent now offers a calibrated serial solver selector and a paired benchmark from request submission to verified result. Each winner must meet independent L2 and H1 accuracy targets and the original numerical gates. The selector checks the mathematical and hardware envelope, records its decision before execution, and can run four coarse native pilots when calibration warrants their cost. Source or build mismatches disable automatic switching. The benchmark preserves unsuccessful runs and an A/A noise control. [Operation and scope](VERIFIED_PERFORMANCE.md)
+
+The production verifier now shares identical local bases, reuses affine triangle geometry and restricts natural-boundary edge lookup to the requested segments. A separate metadata screen measures early rejection and escalation on the historical numerical corpus. Two additional Jacobi quadrilateral controls isolate assembly effects. An MPI experiment measures empty-launch overhead alongside rank-local numerical phases. [Verified performance results](RESULTS.md#verified-performance-experiments)
+
+## Completed Stage 4, 2026-11-24
+
+The optional local Ollama provider and the deterministic selection rule use the same reviewed catalog. The user's structured constraints determine eligible template IDs before proposal. Model text only nominates one ID or abstains. The controller checks the approved input digest when consuming it, and numerical acceptance requires an intact child archive and independent replay. A change to physics, validation or budgets takes the human review route. The ordinary serial and MPI commands remain available. [Planner contract and examples](PLANNER.md)
+
+Two live paired campaigns ran on a fixed bilingual panel. Both paths completed all 14 eligible numerical studies in each campaign. The review gate held all five review controls, and the post-proposal gate rejected all four supplemental candidates. Live model choices varied on three tasks across captures. The archives preserve the exact prompt, response, model provenance and the outcome of numerical verification for each decision. [Benchmark protocol](PLANNING_BENCHMARK.md) · [Measured results](RESULTS.md#stage-4-controlled-planning-2026-11-24)
+
+The five handoff stages are complete for the measured configurations. Open research questions include preference generalization beyond this panel, additional finite-element families, and larger parallel workloads. The Stage 4 changes and performance measurements are local. Hosted CI has not run this revision.
+
+## Completed Stage 3, 2026-11-24
+
+The `mpi-study` entry point runs a matched serial control and a separate P1 triangle MPI executable against the pinned MFEM 4.10.0 revision. The MPI installation uses Open MPI 4.1.6, hypre 2.28.0 and the METIS 5.1.0 partitioner interface. Toolchain checks cover the installed header, MFEM archive, launcher, linked runtime libraries and package versions. The WSL2 build used private development headers and a separate install prefix. [Build profile](MPI_BUILD.md) · [Numerical and archive contract](MPI.md)
+
+All three rank counts passed at 8, 16, 32 and 64 cells per side. Independent checks cover triangle ownership and orientation, shared nodes, boundary edges, the constrained residual, the SciPy field and error norms. Every timed sample passed the same level checks. The single-host timings and transfer/replay evidence accompany the numerical results. A separate manual Actions workflow defines the clean CI reproduction. Hosted CI remains unmeasured for this local revision. [Measurements](RESULTS.md#stage-3-mpi-poisson-2026-11-24) · [Manual CI workflow](../.github/workflows/parallel.yml)
+
+The measured parallel domain is generated triangles, full assembly, one linear scalar equation and up to four ranks on one host. Data for other parallel problems, GPUs and multi-node performance require additional experiments.
+
+## Completed Stage 2, 2026-11-23
+
+Study schema `0.3` and registry version 2 cover positive scalar diffusion with a mixed-boundary manufactured field and the two original Poisson cases. The controller binds a reviewed native case to a frozen problem. The SciPy verifier independently assembles the diffusion matrix, checks the strong-form product rule and recovers the weighted Neumann term. Separate scikit-fem runs use the exact gradient to form the load. [Mathematical contract](MVP_SPEC.md#10-stage-2-scalar-diffusion-and-named-meshes) · [Verification code](../benchmarks/stage2.py)
+
+Named Gmsh import covers straight-sided Cartesian unit-square meshes, one surface and four physical side groups. The input is copied into the run archive and checked against the request digest. Numerical replay checks the refined grid and its per-cell triangle diagonals. Tests cover a moved archive, changed bytes, an alternate diagonal and a mesh with mixed diagonal orientations. Preflight and replay share the Gmsh parser. Independently regenerated grids in the matrix supply a separate topology check for the two example meshes. [Import contract](../sciagent/gmsh.py) · [Replay tests](../tests/test_gmsh.py)
+
+The native catalog records the linked MFEM version, revision and selected build flags. The capability gate compares them with the installation probe and the reviewed profile. Historical catalogs can still bind the original generated Poisson requests. Their compiler flags are evidenced only by the installation probe. The current matrix records h-refinement results for three cases, seven solver configurations and two mesh sources. [Coverage](../evidence/stage2/coverage.json) · [Regression and challenge results](RESULTS.md#stage-2-scalar-diffusion-and-gmsh-2026-11-23)
+
+This milestone established the serial control used for the matched MPI comparison above. Geometry beyond the Cartesian square and multiple materials each need separate verification.
+
+## Stage 2, first increment, 2026-11-23
+
+The existing C++ function registry now publishes a version-1 formulation descriptor. Python checks that its equation, domain, space, integrator and trace semantics match the supported adapter before binding an expression pair. Case IDs and normalized formula pairs must be unique. Historical binaries can still advertise their original formula-only catalogs. A run saves the catalog used for binding alongside the frozen inputs and inventories its hash. [Native definitions](../cpp/manufactured_cases.hpp) · [Adapter](../sciagent/mfem_runner.py) · [Observed catalog](../evidence/stage2-registry/validation.json)
+
+The real solver records unpreconditioned residual and outward boundary-flux measurements for full and partial assembly. The archived raw record includes per-side fluxes and the generated study report includes totals for accepted studies. The reporting layer also processed the 31 original Stage 1 archives. Both boundary-flux imbalance and the residual are diagnostics. New tolerances would require separate calibration. [Contract and zero-RHS convention](MVP_SPEC.md#native-diagnostics) · [Direct and independent-integral tests](../tests/test_native_diagnostics.py)
+
+This increment established the registry and diagnostics used by the variable-coefficient extension above. [Numerical regression results](RESULTS.md)
+
 ## Stage 1 handoff, 2026-11-20
 
 Verifier 0.3.0 checks the native integration-order fields and the consistency of the CG stopping record. It checks the Cartesian partition in the interior, complementary triangles and the complete P1/P2 node lattice. Native numerical regressions and geometry tests cover the newly rejected inputs. The solver, manufactured functions, validation defaults and seven supported configurations retain their Stage 0 implementation. [Verifier changes](../verifier/verifier.py) · [Mesh implementation](../verifier/fem.py) · [Acceptance contract](MVP_SPEC.md)

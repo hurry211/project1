@@ -1,5 +1,111 @@
 # Numerical results
 
+## Verified performance experiments
+
+The end-to-end paired preconditioner study uses real MFEM and independent accuracy targets on one pinned CPU. It compares the reviewed Gauss–Seidel default with Jacobi and includes an independently executed second Gauss–Seidel arm in each block to measure timing noise. The preregistered workload definitions and digests were recorded before the first timed run. [Protocol and commands](VERIFIED_PERFORMANCE.md) · [Acquisition configuration](../evidence/e1/paired-design.json)
+
+**Preconditioners at matched accuracy.** The campaign completed 396 independently accepted runs. Each of four workloads supplied 30 scored three-arm blocks and three discarded warm-up blocks. Times below are seconds. The difference and interval use within-block subtraction, so subtracting the displayed marginal medians can give a different value. [Paired scores and uncertainty](../evidence/e1/paired-analysis.json) · [Compressed per-run records](../evidence/e1/paired-campaign.json.gz)
+
+| Workload and finest size | GS median | Jacobi median | Median paired difference | 95% paired interval | Practical margin | Primary result |
+|---|---:|---:|---:|---:|---:|---|
+| C1, 64 | 1.068 | 1.083 | -0.003 | [-0.028, +0.033] | 0.053 | Within margin |
+| C2, 128 | 1.969 | 1.977 | -0.013 | [-0.035, +0.038] | 0.098 | Within margin |
+| H1, 512 | 28.473 | 27.805 | -0.850 | [-1.665, -0.217] | 1.424 | Inconclusive |
+| H2, 128 | 2.292 | 2.209 | -0.061 | [-0.160, +0.022] | 0.115 | Inconclusive |
+
+On H1 the paired interval favors Jacobi relative to zero, but it includes savings smaller than the prespecified 1.42 s practical margin. At 263,169 DOFs the finest solves took 467 iterations with GS and 845 with Jacobi. Across all four levels of this workload the median native CG times were 3.80 s and 3.01 s respectively. Full numerical verification occupied a median 62.0% of external wall time. The median peak RSS of the controller/verifier worker was 2.42 GiB. On H2, the median absolute A/A difference was 150 ms and 17/30 A/A differences exceeded the margin. The absolute-noise sensitivity analysis was added after these data were seen.
+
+**Prospective selection.** C1 and C2 supplied no material Jacobi advantage, so the policy retained GS and skipped pilots by default. A separately pinned calibration report contained only the 198 C1/C2 records, including warm-ups. Its source attestation reproduces the implementation and environment used for the measured verifier. Four subsequent full CLI invocations used the two held-out workloads with and without compulsory diagnostic pilots. The decision was recorded before execution. All four results passed an additional independent numerical replay. [Decisions, charged costs and study digests](../evidence/e1/live-selection.json)
+
+| Held-out workload | Default CLI (s) | CLI with forced pilots (s) | Four pilots alone (s) | Selected solver |
+|---|---:|---:|---:|---|
+| H1 | 32.612 | 31.992 | 0.818 | cg_gs |
+| H2 | 3.304 | 3.267 | 0.082 | cg_gs |
+
+Each live cell contains one observation. The CLI clock includes interpreter startup, calibration checks, hardware and binary checks, decision making, pilots when requested, and the final verified run. These observations demonstrate the execution path and expose its overhead. The paired study above supplies the repeated performance comparison.
+
+Using only the archived first two levels, the retrospective forecast picked the faster complete workflow in 22/30 H1 pairs and 20/30 H2 pairs. Against the fastest verified arm in each observed block, the default policy's median excess times were 0.850 and 0.061 s respectively. The hindsight reference includes ordinary timing noise.
+
+**Cost of full numerical verification.** On identical retained 8–64 level fields, the optimized verifier reduced median verification time from 340 to 221 ms on P1 sine triangles and from 367 to 219 ms on mixed-boundary Q1 quadrilaterals. These are 1.54× and 1.67× speedups of the verification step. Each of the 12 paired repetitions per case had an identical complete verdict hash between implementations. The median paired differences (new minus old) were −116 ms and −148 ms, with separate paired 95% bootstrap intervals of [−123, −100] and [−164, −127] ms. [Individual times and verdict hashes](../evidence/e1/verifier-cost.json)
+
+**Low-cost screening.** In a shadow experiment on warm local archives, stopping and quadrature metadata identified 36 of 162 faulty inputs and rejected none of 46 clean controls. The other 126 faults and all 46 clean controls needed full verification. The screen took 0.044 s across all 208 trials. The measured full checks took 9.600 s in total. Charging all screen costs and the full checks for escalated inputs gives a projected 7.882 s for this fault-heavy mix (17.9% lower). A clean candidate pays both costs. All final study acceptances in the solver experiments used full verification. [Per-trial results](../evidence/e1/screen-cost.json)
+
+**Assembly and parallelism.** Full and partial assembly using matched Jacobi actions passed 24 studies with 72 independently checked fields, spanning Q1/Q2, three cases and two mesh sources. The 36 matched levels agreed on CG iteration counts, and the largest relative field difference was `4.59e-14`. With eight timed pairs per order, the end-to-end intervals for partial minus full crossed zero for Q1 and Q2. On the four-core MPI diagnostic, increasing ranks from one to four increased the median empty launch from 402 to 653 ms. At `n=64`, the longest rank-local numerical window fell from 68 to 41 ms while the verified workflow rose from 585 to 794 ms. The empty launch isolates real rank-dependent process cost. Its duration cannot be subtracted from another campaign to assign an exact causal fraction. [Assembly measurements](../evidence/e1/assembly.json) · [MPI samples and independent replay](../evidence/e1/mpi-phases.json)
+
+All **385 tests passed** with real serial and MPI MFEM enabled and zero skips. Fresh builds reproduced both native executable digests. The final audit checked all 396 study inventories and reran full numerical verification for the first eligible scored study in each workload/arm cell (12 replays). All 284 historical challenge decisions, 14 checker calibrations, 31 serial study states, and the Stage 2, 3 and 4 archive regressions reproduced. [Audit of raw study records](../evidence/e1/paired-audit.json) · [Builds, tests and portable archive digest](../evidence/e1/validation.json)
+
+## Stage 4 controlled planning, 2026-11-24
+
+The paired benchmark used 19 fixed English and Chinese requests, a deterministic first-eligible-template rule, and a locally installed Qwen2.5 1.5B model served by Ollama 0.40.17. Five eligible tasks specified a unique template, nine expressed a preference among multiple authorized templates, and five required human review. Only the task text and eligible options were supplied to the model. Each eligible execution went through the real MFEM controller and independent numerical replay. [Corpus and scoring protocol](PLANNING_BENCHMARK.md) · [Local model identity](LOCAL_PLANNER_MODEL.md)
+
+| Outcome | Rule baseline, first / repeat | Local model, first / repeat |
+|---|---:|---:|
+| Authorized, numerically verified studies out of 14 | 14 / 14 | 14 / 14 |
+| Tasks with the intended template out of 14 | 8 / 8 | 10 / 13 |
+| Preference matches out of 9 | 3 / 3 | 5 / 8 |
+| Correctly held review requests out of 5 | 5 / 5 | 5 / 5 |
+| Unauthorized acceptances, count | 0 / 0 | 0 / 0 |
+| Proposal retries and numerical retries, count | 0 in both runs | 0 in both runs |
+| Workflow seconds for all 19 requests | 18.71 / 17.97 | 31.26 / 31.74 |
+| Measured input tokens | 0 / 0 | 3,465 / 3,465 |
+| Measured output tokens | 0 / 0 | 208 / 204 |
+
+The model improved preference matching on this panel, with an additional 12.55 s in the first capture and 13.77 s in the repeat. In the first capture it corrected four rule selections and missed two preferences that the rule satisfied. Across live captures, three model nominations changed despite byte-identical prompts, matching model and weight digests, temperature 0 and seed 42. The model ran locally with zero hosted API charges. Electricity and hardware cost were unmeasured. The five review decisions were made deterministically before any model call. [First capture](../evidence/stage4/planning-results.json) · [Repeat capture](../evidence/stage4/replication-results.json)
+
+The four supplemental controls included conflicting template IDs and an attempted change to a validation parameter. All were rejected. In a separate regression the planner selected an authorized template and the real solver returned success on every level after injecting a wrong source. The independent verifier rejected the solution with `REFERENCE_MISMATCH`. Another regression changed only the selected file's line endings before execution and the controller rejected its byte digest. [Workflow and numerical regressions](../tests/test_planning_run.py)
+
+On WSL2, all **319 tests passed** with real serial and MPI MFEM enabled and zero skips. After relocating both planner campaigns and disabling network connections and subprocesses, the verifier rechecked 76 decision archives, including 56 numerical studies, and regenerated each campaign's own report byte for byte. The first campaign was captured during integration. The repeat and both offline replays used code commit `d8161e2`. The original 31 serial decisions, 158 error values, 284 challenge decisions and 14 verifier calibrations reproduced. The Stage 2 archive reproduced its 42-study, 126-field report exactly. The Stage 3 archive passed replay for all 12 screening solves and 32 timing samples. [Validation record and portable archive digest](../evidence/stage4/validation.json)
+
+## Stage 3 MPI Poisson, 2026-11-24
+
+Code commit `16f6b29` passed **256 tests with zero failures and zero skips** on Ubuntu 24.04 WSL2. The MPI driver used the pinned MFEM 4.10.0 source, Open MPI 4.1.6, hypre 2.28.0 and METIS 5.1.0. A second driver build in a clean Linux directory produced the same binary digest. This campaign ran on one Intel Core Ultra 7 155H host with 22 visible logical CPUs, one numerical thread per process and MPI binding disabled. [Toolchain, test logs and digests](../evidence/stage3/validation.json)
+
+The P1 sine Poisson study passed all 12 screening solves at 8, 16, 32 and 64 cells per side on 1, 2 and 4 MPI ranks. The maximum relative nodal difference across screening solves was `1.875e-13` against serial MFEM and `6.207e-11` against the SciPy direct solve. At 64 cells per side all rank counts gave L2 error `3.379923e-4` and H1 seminorm error `5.451370e-2`. The finest-pair orders were `1.99836` and `0.99931`. On four ranks the finest mesh partition had 2,032, 2,051, 2,053 and 2,056 triangles. [Per-rank numerical results and timing samples](../evidence/stage3/results.json)
+
+**Strong scaling at 8,192 triangles.** Each row gives medians over eight independently verified samples. The speedup denominator is the corresponding median at the current rank count, and the numerator is the one-rank MPI median. Launcher time includes MPI startup, assembly, partitioning, solving and export. Verified workflow time also includes independent numerical checks.
+
+| MPI ranks | CG solve (ms) | Launcher (ms) | Verified workflow (ms) | Solve speedup | Workflow speedup |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 4.592 | 452.5 | 513.9 | 1.00× | 1.00× |
+| 2 | 3.511 | 488.2 | 556.2 | 1.31× | 0.92× |
+| 4 | 2.793 | 634.7 | 696.9 | 1.64× | 0.74× |
+
+**Weak scaling at 2,048 triangles per rank on average.** From one rank at `n=32` to four at `n=64`, median verified workflow time increased from 424.8 ms to 696.9 ms, for **61.0% weak efficiency**. The complete campaign, including serial reproduction, screening, 32 timed solves and final inventory hashing, took **25.48 s**. These measurements establish single-host behavior for the tested resolutions. The solver starts from a replicated serial mesh and the Python verifier runs on one process. [Protocol and measurement boundaries](MPI.md)
+
+The portable archive passed digest-pinned replay after relocation with both native executables unavailable. Process tests detected nonconvergence when CG was limited to one iteration, preserved existing outputs and confirmed that the timeout path terminates both ranks even when the launcher stalls. All 31 original serial decisions, 158 archived error values and 83 sets of native field exports reproduced. The Stage 2 coverage report was byte-identical on replay. The 284 historical challenge decisions and 14 checker calibrations also reproduced. [Archive receipt and regression evidence](../evidence/stage3/validation.json)
+
+## Stage 2 scalar diffusion and Gmsh, 2026-11-23
+
+On WSL2 Ubuntu 24.04, code commit `40873c2` passed **217 tests with zero failures and zero skips**. The two CI selectors ran locally with 141 Python tests and 76 MFEM tests. The pinned serial double MFEM 4.10.0 installation used GCC 13.3.0. A clean out-of-tree driver build on the Linux filesystem and the tested executable had identical SHA-256 digests. The CI workflow now runs the scalar coverage benchmark. This local-only revision has no hosted CI run. [Build, test commands, digests and local archive locations](../evidence/stage2/validation.json)
+
+All **42 studies** in the reviewed matrix passed on their first attempt, spanning three manufactured cases, seven solver configurations and two mesh sources. Each ran at 8, 16 and 32 cells per side. For all 126 fields a separately regenerated scikit-fem mesh agreed on element connectivity, boundary tags and DOF coordinates. The largest relative nodal difference from the scikit-fem solution was `2.273e-9`. The largest relative difference in the independently integrated L2 and H1 errors was `1.436e-10`. A second pass using the saved manifest digests and raw archives reproduced the coverage report byte for byte. [Per-configuration results](../evidence/stage2/coverage.json) · [Generation and replay commands](../README.md#variable-diffusion-and-named-mesh-examples)
+
+| Mixed variable diffusion at 32 cells per side | L2 error | H1 seminorm error | Finest L2 / H1 orders |
+|---|---:|---:|---:|
+| Generated P1 triangles, full assembly | 2.897880e-3 | 2.553787e-1 | 1.986 / 0.994 |
+| Imported P2 quadrilaterals, partial assembly | 2.191353e-5 | 4.547010e-3 | 2.996 / 1.998 |
+
+The full matrix exposed a quadrature defect on P2 triangles. MFEM's default stiffness rule underintegrated the variable coefficient. The first implementation differed from both independent solvers by approximately `2.33e-5` at eight cells per side. Using an explicit rule of order `2p+1` reduced the largest SciPy field difference across all three P2 triangle levels to `1.33e-10`. Separate regressions check the actual solution and reject a missing or inconsistent native quadrature claim. [Before and after measurements](../evidence/stage2/validation.json) · [Native regression](../tests/test_integration_mfem.py)
+
+Both deliberate diffusion faults exited successfully at every level. At 32 cells per side, omitting the coefficient-gradient source term changed the discrete field by **3.57%**, and omitting the top Neumann coefficient changed it by **66.89%**, relative to the SciPy reference. The verifier rejected both by its original `1e-7` threshold. Replaying a Gmsh archive succeeded after removing the input file. Altering the archived mesh failed digest verification, and substituting a geometrically valid mesh with the opposite triangle diagonal also failed the numerical topology check. [Fault measurements](../evidence/stage2/validation.json) · [Gmsh regressions](../tests/test_gmsh.py)
+
+All 31 historical study states and codes matched Stage 1. The comparison replayed 22 historical and 22 fresh attempts, reproduced 158 error values exactly, and found byte-identical mesh and field exports at all 83 levels with native results. The Stage 1 challenge repeated 215 rejected faults and 69 accepted controls with the same per-trial decisions and gates. All 14 separate checker calibrations matched. These challenge denominators cover the original Poisson corpus. The Stage 2 fault cases and scikit-fem comparisons are reported separately. [Paired manifests](../evidence/stage2/parity.json) · [Challenge counts and digests](../evidence/stage2/validation.json)
+
+## Stage 2 registry and native diagnostics, 2026-11-23
+
+The WSL2 Ubuntu 24.04 configuration rebuilt the C++ driver against the pinned double-precision serial MFEM 4.10 installation. **167 tests passed with zero skips** on code commit `eca008f`. The P1 quickstart and its digest-checked replay both returned `ACCEPTED`. The fresh 284-trial verifier challenge matched the previous per-trial decisions and gate results, and all 14 deliberate reference-checker mutations were detected. [Local validation record](../evidence/stage2-registry/validation.json)
+
+Two comparisons used the full 31-request demo. Against the imported results, all study decisions matched and the largest relative difference in the 68 accepted L2/H1 errors was `1.18e-13`. Against the retained Stage 1 WSL2 runs, all final states, codes, frozen hashes, attempt verdicts, failure codes and 158 available L2/H1 error values matched exactly. All 83 native level results preserved their original non-timing fields, and the six mesh/field export files were byte-identical at every such level. The independent verifier replayed 22 historical and 22 fresh attempts with passing archive integrity. [Paired archives and diagnostics](../evidence/stage2-registry/parity.json)
+
+| Measurement | Result |
+|---|---|
+| Native residual on seven positive configurations, four levels each | Three of 28 unpreconditioned ratios exceeded the CG relative tolerance of `1e-12`. The largest was `1.4011e-12`. All seven studies passed the existing criteria. |
+| P1 sine study on 64 cells per side | Outward gradient flux `7.99357660`, integrated volume source `8.00000000`, signed imbalance `−0.00642340`. |
+| Early-stop fault and wrong-source fault at eight cells per side | The true relative residuals were `9.4202e-3` and `3.8546e-13`, respectively. Independent numerical verification rejected both studies. |
+| Nonfinite exported field | Algebraic measurements describe the solved vector before export corruption. Field fluxes and imbalance are JSON `null` and the verifier rejects the field. |
+
+For a fresh run, use the build instructions in the README, then run `python -m pytest -q --require-mfem`, `RUNS_DIR=runs/stage2-demo ./scripts/run_demo.sh` and `python scripts/compare_baseline.py runs/stage2-demo`. Start with an empty output directory. To repeat the exact WSL2 archive comparison, pass the directory of the pinned Stage 1 runs and the fresh directory to [compare_archives.py](../evidence/stage2-registry/compare_archives.py). The validation record includes the binary hash and location of the local raw reports.
+
 ## Stage 1 verifier challenge, 2026-11-20
 
 The baseline verifier accepted 28/98 fixed numerical faults and 17/64 seeded draws. Four fault families accounted for every false accept. After fixing the Cartesian geometry and native CG and quadrature checks, the verifier rejected all 162 numerical fault trials. All 46 independently certified clean numerical trials passed. For the 64 sampled faults the two-sided exact 95% upper bound on the false-accept rate is 5.60% under the declared generator. All 53 archive faults were rejected and all 23 clean archive trials passed. Fourteen additional calibration trials exposed deliberately incorrect reference assemblies. [Per-gate results, uncertainty and fault witnesses](VERIFIER_CHALLENGE.md)
