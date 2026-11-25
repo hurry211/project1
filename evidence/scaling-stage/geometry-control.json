@@ -1,0 +1,28 @@
+{
+  "archive": "20261124T143653643465Z_q2-n256-full",
+  "manifest_sha256": "55c09ed6a3feb67d385a12767520326f4206c49626289e715e5a42553703cbcb",
+  "memory_mb": 3072,
+  "control": "evaluate quadrature separately at physical vertices, retain verified basis coefficients",
+  "verdict": "ACCEPTED",
+  "failure_codes": [],
+  "levels": [
+    {
+      "n": 64,
+      "l2_error": 3.7421956754652206e-06,
+      "h1_semi_error": 0.0015526218728783988,
+      "reference_rel_diff": 1.2057019492394644e-13
+    },
+    {
+      "n": 128,
+      "l2_error": 4.680696290656135e-07,
+      "h1_semi_error": 0.00038831011455175903,
+      "reference_rel_diff": 3.198552491681494e-13
+    },
+    {
+      "n": 256,
+      "l2_error": 5.851792978035048e-08,
+      "h1_semi_error": 9.708719746790954e-05,
+      "reference_rel_diff": 1.334155007593855e-12
+    }
+  ]
+}

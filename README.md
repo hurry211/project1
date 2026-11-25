@@ -26,7 +26,7 @@ Clone this repository inside Ubuntu. For an existing checkout, start at the dire
 sudo apt-get update
 sudo apt-get install -y --no-install-recommends git g++-13 cmake make python3.12-venv
 # New checkout
-git clone https://github.com/hurry211/project1.git
+git clone --branch codex/mfem-performance-validation https://github.com/hurry211/project1.git
 cd project1
 # From the repository root
 python3.12 -m venv .venv
@@ -77,15 +77,17 @@ Run these commands after building the native solver. Each command takes a fresh 
 
 ```bash
 python -m benchmarks.performance --output runs/performance --repeats 5
+python -m benchmarks.performance --gaussian --output runs/gaussian --repeats 3
 python -m sciagent search specs/experiments/strategy_poisson.json --output runs/strategy --repeats 3
 python -m sciagent run specs/extensions/anisotropic_1000_q1.json --runs-dir runs/anisotropic
+python -m sciagent run specs/extensions/layered_unit_drop_10000.json --runs-dir runs/layered
 ```
 
 The verifier runs in a separate POSIX process with a 300-second wall limit and a 3072 MiB address-space limit by default. A study can freeze separate values in `policy.verifier_timeout_seconds` and `policy.verifier_memory_mb`. Live verification also respects the remaining study wall budget. A timed-out or failed verifier cannot accept a run.
 
 An accuracy-only retry copies the previous independently verified levels into the new attempt, checks every copied file's digest, and verifies the newly added level. It reevaluates the study-level convergence and accuracy gates over all levels. Archive replay recomputes the independent checks for every level, including copied levels.
 
-See [experimental protocol and results](docs/PERFORMANCE_STAGE.md) for measurement definitions and the tested scope.
+The first study covers assembly, retry reuse and the anisotropic case. The follow-up measures the cost of replaying identical archived fields and extends the CPU tests to a localized load and an aligned material interface. [First study](docs/PERFORMANCE_STAGE.md) · [Follow-up protocol and raw data](docs/VERIFIER_SCALING.md) · [导师阶段汇报](docs/导师阶段汇报-第二阶段.md)
 
 ## Layout
 
@@ -133,7 +135,7 @@ Empty `validation` / `policy` objects use the frozen defaults documented in `doc
 
 ## What "ACCEPTED" means
 
-"Numerical (code) verification passed for this manufactured-solution benchmark": MFEM's discrete solution matches an independently assembled and solved discrete problem, boundary data and labels are correct, error norms recomputed independently match MFEM's claims, and both norms converge at the theoretical rate on the finest pair. It says nothing about physical validity.
+The reviewed studies check the mesh, boundary data, solver record and independently integrated field errors. Their reference solution comes from a separate SciPy assembly and sparse direct solve. Smooth cases check the finest-pair convergence rates. For layered diffusion, the aligned Q1 space contains the analytic solution. Each level must satisfy frozen limits on nodal error, material flux, the one-sided interface flux jump and energy. The verdict applies to the declared mathematical model and discretization.
 
 ## License note
 

@@ -1,0 +1,183 @@
+{
+  "winner": "q2-full-cg-jacobi",
+  "criterion": "minimum median end-to-end seconds among all-repetition accepted candidates",
+  "l2_target": 1e-06,
+  "repeats": 3,
+  "search_wall_seconds": 28.34526738800014,
+  "environment": {
+    "os": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "cpu_count": 16,
+    "mem_total_mb": 7531,
+    "python": "3.12.3",
+    "python_packages": {
+      "numpy": "2.5.5",
+      "scipy": "1.18.1",
+      "pydantic": "2.14.4",
+      "pytest": "9.2.0"
+    },
+    "cxx": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "cmake": "cmake version 3.28.3",
+    "make": "GNU Make 4.3",
+    "mpirun_path": null,
+    "nvidia_smi_path": "/usr/lib/wsl/lib/nvidia-smi",
+    "mfem": {
+      "install_dir": "/home/fy/project1-stage/mfem-install",
+      "found": true,
+      "config": {
+        "MFEM_USE_MPI": false,
+        "MFEM_USE_METIS": false,
+        "MFEM_USE_METIS_5": false,
+        "MFEM_USE_SUITESPARSE": false,
+        "MFEM_USE_LAPACK": false,
+        "MFEM_USE_OPENMP": false,
+        "MFEM_USE_CUDA": false,
+        "MFEM_USE_HIP": false,
+        "MFEM_USE_RAJA": false,
+        "MFEM_USE_OCCA": false,
+        "MFEM_USE_PETSC": false,
+        "MFEM_USE_ZLIB": false,
+        "MFEM_USE_DOUBLE": true,
+        "MFEM_USE_SINGLE": false
+      },
+      "notes": [],
+      "version": "4.10.0",
+      "git": "(unknown)",
+      "library": "/home/fy/project1-stage/mfem-install/lib/libmfem.a",
+      "library_sha256": "3e1974baaf993e7df5b659a8b9474d444b3bdd52d24d3750dc9e85239a6ae239"
+    },
+    "solver_binary": "/home/fy/project1-stage3/verified/build/cpp/poisson_mms",
+    "solver_binary_sha256": "0fa391d05fd91fe7617cba2cd4a0cae9e7a53fb21fe8a1fe57cb3879e9f87c4f",
+    "notes": [
+      "no mpirun on PATH; MPI path unavailable"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "q1-full-cg-jacobi",
+      "capability": {
+        "status": "not_verified",
+        "code": "NOT_VERIFIED_COMBINATION",
+        "reason": "localized Gaussian is tested with Q2 CG+Jacobi on n=(32, 64, 128, 256)"
+      },
+      "initial_finest_dofs": 16641,
+      "trials": [],
+      "excluded": "NOT_VERIFIED_COMBINATION"
+    },
+    {
+      "id": "q1-partial-cg-jacobi",
+      "capability": {
+        "status": "not_verified",
+        "code": "NOT_VERIFIED_COMBINATION",
+        "reason": "localized Gaussian is tested with Q2 CG+Jacobi on n=(32, 64, 128, 256)"
+      },
+      "initial_finest_dofs": 16641,
+      "trials": [],
+      "excluded": "NOT_VERIFIED_COMBINATION"
+    },
+    {
+      "id": "q2-full-cg-jacobi",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "combination ('quad', 2, 'full', 'cg_jacobi') is covered by integration tests"
+      },
+      "initial_finest_dofs": 66049,
+      "trials": [
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "seconds": 4.736933692000093,
+          "finest_errors": {
+            "n": 128,
+            "l2": 4.6806962902926135e-07,
+            "h1_semi": 0.0003883101145516062,
+            "reference_rel_diff": 1.190825200479191e-12
+          },
+          "run_dir": "runs/20261124T144250955161Z_q2-full-cg-jacobi",
+          "manifest_sha256": "caa326487c897e8a80de2efd06bb55798e9c5246380b29101c54441f8357c585"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "seconds": 3.980224830999987,
+          "finest_errors": {
+            "n": 128,
+            "l2": 4.6806962902926135e-07,
+            "h1_semi": 0.0003883101145516062,
+            "reference_rel_diff": 1.190825200479191e-12
+          },
+          "run_dir": "runs/20261124T144304957180Z_q2-full-cg-jacobi",
+          "manifest_sha256": "850eaf8a11b9f8b9ebd98acda31b665cca5ee523789f1a747b456be9a5117cec"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "seconds": 4.042447955999933,
+          "finest_errors": {
+            "n": 128,
+            "l2": 4.6806962902926135e-07,
+            "h1_semi": 0.0003883101145516062,
+            "reference_rel_diff": 1.190825200479191e-12
+          },
+          "run_dir": "runs/20261124T144308937456Z_q2-full-cg-jacobi",
+          "manifest_sha256": "ba9f28cde9a5476179849e98fe0535cad5735fdb0beb054a184231f549058f6c"
+        }
+      ],
+      "feasible": true,
+      "median_seconds": 4.042447955999933
+    },
+    {
+      "id": "q2-partial-cg-jacobi",
+      "capability": {
+        "status": "tested",
+        "code": "OK",
+        "reason": "combination ('quad', 2, 'partial', 'cg_jacobi') is covered by integration tests"
+      },
+      "initial_finest_dofs": 66049,
+      "trials": [
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "seconds": 5.170043179000004,
+          "finest_errors": {
+            "n": 128,
+            "l2": 4.680696288539017e-07,
+            "h1_semi": 0.000388310114551605,
+            "reference_rel_diff": 1.4063194867117202e-12
+          },
+          "run_dir": "runs/20261124T144254894986Z_q2-partial-cg-jacobi",
+          "manifest_sha256": "81c076c836669954d0fc5d7497757bfa31a4e9fc5acebbb8041c2eee01c93dc7"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "seconds": 4.891956359999995,
+          "finest_errors": {
+            "n": 128,
+            "l2": 4.680696288539017e-07,
+            "h1_semi": 0.000388310114551605,
+            "reference_rel_diff": 1.4063194867117202e-12
+          },
+          "run_dir": "runs/20261124T144300065119Z_q2-partial-cg-jacobi",
+          "manifest_sha256": "a6f3e62d7218cc7eb7dc548863ecbd512ee36b61587a74ec52801178491fb816"
+        },
+        {
+          "state": "ACCEPTED",
+          "code": "OK",
+          "seconds": 5.010548319000009,
+          "finest_errors": {
+            "n": 128,
+            "l2": 4.680696288539017e-07,
+            "h1_semi": 0.000388310114551605,
+            "reference_rel_diff": 1.4063194867117202e-12
+          },
+          "run_dir": "runs/20261124T144312980003Z_q2-partial-cg-jacobi",
+          "manifest_sha256": "f20fcdd7a21631aad434fdb38cfb9f1ede67e63a82cb5c74e490e8b57df680be"
+        }
+      ],
+      "feasible": true,
+      "median_seconds": 5.010548319000009
+    }
+  ]
+}

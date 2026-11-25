@@ -1,0 +1,12 @@
+NAME="Ubuntu"
+VERSION_ID="24.04"
+Linux 6.18.33.2-microsoft-standard-WSL2
+Architecture:                            x86_64
+CPU(s):                                  16
+Model name:                              AMD Ryzen 7 7840H with Radeon 780M Graphics
+MemTotal:        7712416 kB
+Python 3.12.3
+13.3.0
+NVIDIA GeForce RTX 4060 Laptop GPU
+mpirun unavailable on PATH
+nvcc unavailable on PATH

@@ -1,0 +1,79 @@
+[
+  {
+    "package": "replay-inputs.tar.xz",
+    "package_sha256": "518ec460fe56ae0f7390953a7cad7a0b790b049fc820e5deceeb0053757014d4",
+    "package_bytes": 3316412,
+    "archive": "20261124T140228584587Z_memory-1024",
+    "manifest_sha256": "52bbf0750bfa7b5b6b9271ff53b8ee829254f97c9c8c3d8aba2fcc8fb1258361",
+    "replay": "ACCEPTED",
+    "failure_codes": [],
+    "integrity": {
+      "mode": "sha256-inventory",
+      "passed": true
+    }
+  },
+  {
+    "package": "replay-inputs.tar.xz",
+    "package_sha256": "518ec460fe56ae0f7390953a7cad7a0b790b049fc820e5deceeb0053757014d4",
+    "package_bytes": 3316412,
+    "archive": "20261124T143432685471Z_layered_unit_drop_10000",
+    "manifest_sha256": "b5cf3412b136208ba006a0845a1dda7eedee89b24dc0729100bdf0239de51ecb",
+    "replay": "ACCEPTED",
+    "failure_codes": [],
+    "integrity": {
+      "mode": "sha256-inventory",
+      "passed": true
+    }
+  },
+  {
+    "package": "replay-inputs.tar.xz",
+    "package_sha256": "518ec460fe56ae0f7390953a7cad7a0b790b049fc820e5deceeb0053757014d4",
+    "package_bytes": 3316412,
+    "archive": "20261124T143434723012Z_wrong_diffusion",
+    "manifest_sha256": "c46fd9711ff7719e83c397fc53c6e00f29ba2890efb497f2b150dcdcd9778500",
+    "replay": "REJECTED",
+    "failure_codes": [
+      "LAYERED_ENERGY_REL",
+      "LAYERED_FLUX_REL",
+      "LAYERED_JUMP_REL",
+      "LAYERED_NODAL_ABS",
+      "REFERENCE_MISMATCH"
+    ],
+    "integrity": {
+      "mode": "sha256-inventory",
+      "passed": true
+    }
+  },
+  {
+    "package": "replay-inputs.tar.xz",
+    "package_sha256": "518ec460fe56ae0f7390953a7cad7a0b790b049fc820e5deceeb0053757014d4",
+    "package_bytes": 3316412,
+    "archive": "20261124T143435469951Z_wrong_source",
+    "manifest_sha256": "ac06925b48e6984757cf830d29accb661acbc23c0c04715df8f5ebd679e084e5",
+    "replay": "REJECTED",
+    "failure_codes": [
+      "LAYERED_ENERGY_REL",
+      "LAYERED_FLUX_REL",
+      "LAYERED_JUMP_REL",
+      "LAYERED_NODAL_ABS",
+      "REFERENCE_MISMATCH"
+    ],
+    "integrity": {
+      "mode": "sha256-inventory",
+      "passed": true
+    }
+  },
+  {
+    "package": "gaussian-256.tar.xz",
+    "package_sha256": "10ded2be4ac13bd635c64385ea3d4d0abd131cdd30a3a32e861b776d2d7f7222",
+    "package_bytes": 9509748,
+    "archive": "20261124T143653643465Z_q2-n256-full",
+    "manifest_sha256": "55c09ed6a3feb67d385a12767520326f4206c49626289e715e5a42553703cbcb",
+    "replay": "ACCEPTED",
+    "failure_codes": [],
+    "integrity": {
+      "mode": "sha256-inventory",
+      "passed": true
+    }
+  }
+]

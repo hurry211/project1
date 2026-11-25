@@ -1,0 +1,22 @@
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/g++-13 - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (5.4s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/fy/project1-stage3/verified/build/cpp
+[ 50%] Building CXX object CMakeFiles/poisson_mms.dir/poisson_mms.cpp.o
+[100%] Linking CXX executable poisson_mms
+[100%] Built target poisson_mms
+{
+  "mfem_version": "MFEM v4.10.0 (release)",
+  "cases": [
+    {"id": "gaussian_offset", "exact_solution": "exp(-25*((x-0.375)**2+(y-0.625)**2))", "source": "(100-2500*((x-0.375)**2+(y-0.625)**2))*exp(-25*((x-0.375)**2+(y-0.625)**2))", "equation": "-laplacian(u) = f"},
+    {"id": "sin_sin", "exact_solution": "sin(pi*x)*sin(pi*y)", "source": "2*pi**2*sin(pi*x)*sin(pi*y)", "equation": "-laplacian(u) = f"},
+    {"id": "cos_exp", "exact_solution": "cos(pi*x)*exp(y)", "source": "(pi**2 - 1)*cos(pi*x)*exp(y)", "equation": "-laplacian(u) = f"},
+    {"id": "anisotropic_1000_sin_sin", "exact_solution": "sin(pi*x)*sin(pi*y)", "source": "1001*pi**2*sin(pi*x)*sin(pi*y)", "equation": "-div(diag(1000,1)*grad(u)) = f"},
+    {"id": "layered_unit_drop_10000", "exact_solution": "(10001*x-9999*(sqrt((x-0.5)**2)-0.5))/10001", "source": "0", "equation": "-div(a(x)*grad(u)) = f, a(x)=1 (x<0.5), 10000 (x>=0.5)"}
+  ]
+}

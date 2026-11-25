@@ -1,0 +1,584 @@
+[
+  {
+    "control": "none",
+    "run": "20261124T143432685471Z_layered_unit_drop_10000",
+    "manifest_sha256": "b5cf3412b136208ba006a0845a1dda7eedee89b24dc0729100bdf0239de51ecb",
+    "solver_sha256": "0fa391d05fd91fe7617cba2cd4a0cae9e7a53fb21fe8a1fe57cb3879e9f87c4f",
+    "frozen_sha256": {
+      "problem": "4f17df808427557c0eb86d4f982e8086fc830bca0c48491dbd3adabd127d73a5",
+      "validation": "c60f879b0e702e3c2f6b8b55623196ff76c1e3e9580ad2e0b7fc66b3e0209917",
+      "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+    },
+    "state": "ACCEPTED",
+    "code": "OK",
+    "replay": "ACCEPTED",
+    "integrity": {
+      "mode": "sha256-inventory",
+      "passed": true
+    },
+    "convergence": {
+      "mode": "exact_in_q1",
+      "pairs": [],
+      "criterion": "per-level field, flux, interface jump and energy"
+    },
+    "failure_codes": [],
+    "levels": [
+      {
+        "n": 4,
+        "solver_iterations": 9,
+        "l2": 9.714890559321771e-15,
+        "h1_semi": 8.843742186904579e-14,
+        "reference_rel_diff": 3.447242491461111e-14,
+        "checks": {
+          "layered_nodal_abs": {
+            "name": "layered_nodal_abs",
+            "passed": true,
+            "code": "LAYERED_NODAL_ABS",
+            "detail": "from exported physical Q1 corners",
+            "value": 3.3084646133829665e-14,
+            "threshold": 1e-08
+          },
+          "layered_flux_rel": {
+            "name": "layered_flux_rel",
+            "passed": true,
+            "code": "LAYERED_FLUX_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 1.5544676656986667e-11,
+            "threshold": 1e-05
+          },
+          "layered_jump_rel": {
+            "name": "layered_jump_rel",
+            "passed": true,
+            "code": "LAYERED_JUMP_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 1.322030336314839e-11,
+            "threshold": 1e-05
+          },
+          "layered_energy_rel": {
+            "name": "layered_energy_rel",
+            "passed": true,
+            "code": "LAYERED_ENERGY_REL",
+            "detail": "integral a|grad u_h|^2 = 1.999800019998, exact 1.999800019998",
+            "value": 0.0,
+            "threshold": 1e-07
+          }
+        }
+      },
+      {
+        "n": 8,
+        "solver_iterations": 16,
+        "l2": 3.580633601058431e-13,
+        "h1_semi": 3.6254543995028877e-12,
+        "reference_rel_diff": 1.4682144389155383e-12,
+        "checks": {
+          "layered_nodal_abs": {
+            "name": "layered_nodal_abs",
+            "passed": true,
+            "code": "LAYERED_NODAL_ABS",
+            "detail": "from exported physical Q1 corners",
+            "value": 1.4738210651898953e-12,
+            "threshold": 1e-08
+          },
+          "layered_flux_rel": {
+            "name": "layered_flux_rel",
+            "passed": true,
+            "code": "LAYERED_FLUX_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 1.7763683691107702e-09,
+            "threshold": 1e-05
+          },
+          "layered_jump_rel": {
+            "name": "layered_jump_rel",
+            "passed": true,
+            "code": "LAYERED_JUMP_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 1.0051330049165586e-09,
+            "threshold": 1e-05
+          },
+          "layered_energy_rel": {
+            "name": "layered_energy_rel",
+            "passed": true,
+            "code": "LAYERED_ENERGY_REL",
+            "detail": "integral a|grad u_h|^2 = 1.999800019998, exact 1.999800019998",
+            "value": 1.110334046927619e-16,
+            "threshold": 1e-07
+          }
+        }
+      },
+      {
+        "n": 16,
+        "solver_iterations": 29,
+        "l2": 1.4949114312443868e-12,
+        "h1_semi": 1.7196962209986733e-11,
+        "reference_rel_diff": 4.6496140271301556e-12,
+        "checks": {
+          "layered_nodal_abs": {
+            "name": "layered_nodal_abs",
+            "passed": true,
+            "code": "LAYERED_NODAL_ABS",
+            "detail": "from exported physical Q1 corners",
+            "value": 4.625799743251946e-12,
+            "threshold": 1e-08
+          },
+          "layered_flux_rel": {
+            "name": "layered_flux_rel",
+            "passed": true,
+            "code": "LAYERED_FLUX_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 2.8424551601347048e-09,
+            "threshold": 1e-05
+          },
+          "layered_jump_rel": {
+            "name": "layered_jump_rel",
+            "passed": true,
+            "code": "LAYERED_JUMP_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 1.7546866541096052e-09,
+            "threshold": 1e-05
+          },
+          "layered_energy_rel": {
+            "name": "layered_energy_rel",
+            "passed": true,
+            "code": "LAYERED_ENERGY_REL",
+            "detail": "integral a|grad u_h|^2 = 1.999800019998, exact 1.999800019998",
+            "value": 0.0,
+            "threshold": 1e-07
+          }
+        }
+      },
+      {
+        "n": 32,
+        "solver_iterations": 53,
+        "l2": 4.090634616509314e-12,
+        "h1_semi": 4.7614106242100317e-11,
+        "reference_rel_diff": 1.3758549854969715e-11,
+        "checks": {
+          "layered_nodal_abs": {
+            "name": "layered_nodal_abs",
+            "passed": true,
+            "code": "LAYERED_NODAL_ABS",
+            "detail": "from exported physical Q1 corners",
+            "value": 1.3642642571198849e-11,
+            "threshold": 1e-08
+          },
+          "layered_flux_rel": {
+            "name": "layered_flux_rel",
+            "passed": true,
+            "code": "LAYERED_FLUX_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 1.0757082352608194e-08,
+            "threshold": 1e-05
+          },
+          "layered_jump_rel": {
+            "name": "layered_jump_rel",
+            "passed": true,
+            "code": "LAYERED_JUMP_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 3.982862382656549e-09,
+            "threshold": 1e-05
+          },
+          "layered_energy_rel": {
+            "name": "layered_energy_rel",
+            "passed": true,
+            "code": "LAYERED_ENERGY_REL",
+            "detail": "integral a|grad u_h|^2 = 1.999800019998, exact 1.999800019998",
+            "value": 0.0,
+            "threshold": 1e-07
+          }
+        }
+      },
+      {
+        "n": 64,
+        "solver_iterations": 100,
+        "l2": 3.595103424999309e-12,
+        "h1_semi": 4.428576030849754e-11,
+        "reference_rel_diff": 1.24564247805381e-11,
+        "checks": {
+          "layered_nodal_abs": {
+            "name": "layered_nodal_abs",
+            "passed": true,
+            "code": "LAYERED_NODAL_ABS",
+            "detail": "from exported physical Q1 corners",
+            "value": 1.2827350293065365e-11,
+            "threshold": 1e-08
+          },
+          "layered_flux_rel": {
+            "name": "layered_flux_rel",
+            "passed": true,
+            "code": "LAYERED_FLUX_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 1.5597972691239192e-08,
+            "threshold": 1e-05
+          },
+          "layered_jump_rel": {
+            "name": "layered_jump_rel",
+            "passed": true,
+            "code": "LAYERED_JUMP_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 5.815453626567546e-09,
+            "threshold": 1e-05
+          },
+          "layered_energy_rel": {
+            "name": "layered_energy_rel",
+            "passed": true,
+            "code": "LAYERED_ENERGY_REL",
+            "detail": "integral a|grad u_h|^2 = 1.999800019998, exact 1.999800019998",
+            "value": 0.0,
+            "threshold": 1e-07
+          }
+        }
+      },
+      {
+        "n": 128,
+        "solver_iterations": 187,
+        "l2": 1.3304683909854942e-11,
+        "h1_semi": 1.0778186165438136e-10,
+        "reference_rel_diff": 3.764866196576122e-11,
+        "checks": {
+          "layered_nodal_abs": {
+            "name": "layered_nodal_abs",
+            "passed": true,
+            "code": "LAYERED_NODAL_ABS",
+            "detail": "from exported physical Q1 corners",
+            "value": 3.592603992075283e-11,
+            "threshold": 1e-08
+          },
+          "layered_flux_rel": {
+            "name": "layered_flux_rel",
+            "passed": true,
+            "code": "LAYERED_FLUX_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 5.817278749260524e-08,
+            "threshold": 1e-05
+          },
+          "layered_jump_rel": {
+            "name": "layered_jump_rel",
+            "passed": true,
+            "code": "LAYERED_JUMP_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 1.51296639913312e-08,
+            "threshold": 1e-05
+          },
+          "layered_energy_rel": {
+            "name": "layered_energy_rel",
+            "passed": true,
+            "code": "LAYERED_ENERGY_REL",
+            "detail": "integral a|grad u_h|^2 = 1.999800019998, exact 1.999800019998",
+            "value": 1.110334046927619e-16,
+            "threshold": 1e-07
+          }
+        }
+      }
+    ]
+  },
+  {
+    "control": "wrong_diffusion",
+    "run": "20261124T143434723012Z_wrong_diffusion",
+    "manifest_sha256": "c46fd9711ff7719e83c397fc53c6e00f29ba2890efb497f2b150dcdcd9778500",
+    "solver_sha256": "0fa391d05fd91fe7617cba2cd4a0cae9e7a53fb21fe8a1fe57cb3879e9f87c4f",
+    "frozen_sha256": {
+      "problem": "4f17df808427557c0eb86d4f982e8086fc830bca0c48491dbd3adabd127d73a5",
+      "validation": "c60f879b0e702e3c2f6b8b55623196ff76c1e3e9580ad2e0b7fc66b3e0209917",
+      "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+    },
+    "state": "FAILED",
+    "code": "VALIDATION_FAILED",
+    "replay": "REJECTED",
+    "integrity": {
+      "mode": "sha256-inventory",
+      "passed": true
+    },
+    "convergence": {
+      "mode": "exact_in_q1",
+      "pairs": [],
+      "criterion": "per-level field, flux, interface jump and energy"
+    },
+    "failure_codes": [
+      "LAYERED_ENERGY_REL",
+      "LAYERED_FLUX_REL",
+      "LAYERED_JUMP_REL",
+      "LAYERED_NODAL_ABS",
+      "REFERENCE_MISMATCH"
+    ],
+    "levels": [
+      {
+        "n": 4,
+        "solver_iterations": 9,
+        "l2": 0.288617405340819,
+        "h1_semi": 0.9998000199979993,
+        "reference_rel_diff": 0.4999000099990025,
+        "checks": {
+          "layered_nodal_abs": {
+            "name": "layered_nodal_abs",
+            "passed": false,
+            "code": "LAYERED_NODAL_ABS",
+            "detail": "from exported physical Q1 corners",
+            "value": 0.4999000099990003,
+            "threshold": 1e-08
+          },
+          "layered_flux_rel": {
+            "name": "layered_flux_rel",
+            "passed": false,
+            "code": "LAYERED_FLUX_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 4999.500000000082,
+            "threshold": 1e-05
+          },
+          "layered_jump_rel": {
+            "name": "layered_jump_rel",
+            "passed": false,
+            "code": "LAYERED_JUMP_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 4999.999950000082,
+            "threshold": 1e-05
+          },
+          "layered_energy_rel": {
+            "name": "layered_energy_rel",
+            "passed": false,
+            "code": "LAYERED_ENERGY_REL",
+            "detail": "integral a|grad u_h|^2 = 5000.499999999992, exact 1.999800019998",
+            "value": 2499.500024999996,
+            "threshold": 1e-07
+          }
+        }
+      },
+      {
+        "n": 8,
+        "solver_iterations": 17,
+        "l2": 0.2886174053408196,
+        "h1_semi": 0.9998000199980015,
+        "reference_rel_diff": 0.4999000099990107,
+        "checks": {
+          "layered_nodal_abs": {
+            "name": "layered_nodal_abs",
+            "passed": false,
+            "code": "LAYERED_NODAL_ABS",
+            "detail": "from exported physical Q1 corners",
+            "value": 0.4999000099990018,
+            "threshold": 1e-08
+          },
+          "layered_flux_rel": {
+            "name": "layered_flux_rel",
+            "passed": false,
+            "code": "LAYERED_FLUX_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 4999.500000000105,
+            "threshold": 1e-05
+          },
+          "layered_jump_rel": {
+            "name": "layered_jump_rel",
+            "passed": false,
+            "code": "LAYERED_JUMP_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 4999.999950000105,
+            "threshold": 1e-05
+          },
+          "layered_energy_rel": {
+            "name": "layered_energy_rel",
+            "passed": false,
+            "code": "LAYERED_ENERGY_REL",
+            "detail": "integral a|grad u_h|^2 = 5000.500000000015, exact 1.999800019998",
+            "value": 2499.5000250000076,
+            "threshold": 1e-07
+          }
+        }
+      },
+      {
+        "n": 16,
+        "solver_iterations": 30,
+        "l2": 0.28861740534081987,
+        "h1_semi": 0.9998000199980024,
+        "reference_rel_diff": 0.4999000099990508,
+        "checks": {
+          "layered_nodal_abs": {
+            "name": "layered_nodal_abs",
+            "passed": false,
+            "code": "LAYERED_NODAL_ABS",
+            "detail": "from exported physical Q1 corners",
+            "value": 0.49990000999901196,
+            "threshold": 1e-08
+          },
+          "layered_flux_rel": {
+            "name": "layered_flux_rel",
+            "passed": false,
+            "code": "LAYERED_FLUX_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 4999.500000000675,
+            "threshold": 1e-05
+          },
+          "layered_jump_rel": {
+            "name": "layered_jump_rel",
+            "passed": false,
+            "code": "LAYERED_JUMP_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 4999.999950000271,
+            "threshold": 1e-05
+          },
+          "layered_energy_rel": {
+            "name": "layered_energy_rel",
+            "passed": false,
+            "code": "LAYERED_ENERGY_REL",
+            "detail": "integral a|grad u_h|^2 = 5000.500000000024, exact 1.999800019998",
+            "value": 2499.500025000012,
+            "threshold": 1e-07
+          }
+        }
+      }
+    ]
+  },
+  {
+    "control": "wrong_source",
+    "run": "20261124T143435469951Z_wrong_source",
+    "manifest_sha256": "ac06925b48e6984757cf830d29accb661acbc23c0c04715df8f5ebd679e084e5",
+    "solver_sha256": "0fa391d05fd91fe7617cba2cd4a0cae9e7a53fb21fe8a1fe57cb3879e9f87c4f",
+    "frozen_sha256": {
+      "problem": "4f17df808427557c0eb86d4f982e8086fc830bca0c48491dbd3adabd127d73a5",
+      "validation": "c60f879b0e702e3c2f6b8b55623196ff76c1e3e9580ad2e0b7fc66b3e0209917",
+      "policy": "4934b1086f894b1c0db86ac01da4a10181a1040bfdff64339dd2d0e63ff6357f"
+    },
+    "state": "FAILED",
+    "code": "VALIDATION_FAILED",
+    "replay": "REJECTED",
+    "integrity": {
+      "mode": "sha256-inventory",
+      "passed": true
+    },
+    "convergence": {
+      "mode": "exact_in_q1",
+      "pairs": [],
+      "criterion": "per-level field, flux, interface jump and energy"
+    },
+    "failure_codes": [
+      "LAYERED_ENERGY_REL",
+      "LAYERED_FLUX_REL",
+      "LAYERED_JUMP_REL",
+      "LAYERED_NODAL_ABS",
+      "REFERENCE_MISMATCH"
+    ],
+    "levels": [
+      {
+        "n": 4,
+        "solver_iterations": 9,
+        "l2": 0.01276541965960733,
+        "h1_semi": 0.08838836222955075,
+        "reference_rel_diff": 0.03126249875016235,
+        "checks": {
+          "layered_nodal_abs": {
+            "name": "layered_nodal_abs",
+            "passed": false,
+            "code": "LAYERED_NODAL_ABS",
+            "detail": "from exported physical Q1 corners",
+            "value": 0.031262498750163736,
+            "threshold": 1e-08
+          },
+          "layered_flux_rel": {
+            "name": "layered_flux_rel",
+            "passed": false,
+            "code": "LAYERED_FLUX_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 0.31250625000861243,
+            "threshold": 1e-05
+          },
+          "layered_jump_rel": {
+            "name": "layered_jump_rel",
+            "passed": false,
+            "code": "LAYERED_JUMP_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 0.12501250000893085,
+            "threshold": 1e-05
+          },
+          "layered_energy_rel": {
+            "name": "layered_energy_rel",
+            "passed": false,
+            "code": "LAYERED_ENERGY_REL",
+            "detail": "integral a|grad u_h|^2 = 2.007625799998123, exact 1.999800019998",
+            "value": 0.003913281289061348,
+            "threshold": 1e-07
+          }
+        }
+      },
+      {
+        "n": 8,
+        "solver_iterations": 16,
+        "l2": 0.01530400111790453,
+        "h1_semi": 0.09882119002139086,
+        "reference_rel_diff": 0.03126249875157211,
+        "checks": {
+          "layered_nodal_abs": {
+            "name": "layered_nodal_abs",
+            "passed": false,
+            "code": "LAYERED_NODAL_ABS",
+            "detail": "from exported physical Q1 corners",
+            "value": 0.031262498751577716,
+            "threshold": 1e-08
+          },
+          "layered_flux_rel": {
+            "name": "layered_flux_rel",
+            "passed": false,
+            "code": "LAYERED_FLUX_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 0.34375937524504074,
+            "threshold": 1e-05
+          },
+          "layered_jump_rel": {
+            "name": "layered_jump_rel",
+            "passed": false,
+            "code": "LAYERED_JUMP_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 0.06250625101310299,
+            "threshold": 1e-05
+          },
+          "layered_energy_rel": {
+            "name": "layered_energy_rel",
+            "passed": false,
+            "code": "LAYERED_ENERGY_REL",
+            "detail": "integral a|grad u_h|^2 = 2.009579120310712, exact 1.999800019998",
+            "value": 0.004890039111371362,
+            "threshold": 1e-07
+          }
+        }
+      },
+      {
+        "n": 16,
+        "solver_iterations": 29,
+        "l2": 0.015935304410279866,
+        "h1_semi": 0.10126158626066524,
+        "reference_rel_diff": 0.031262498754629775,
+        "checks": {
+          "layered_nodal_abs": {
+            "name": "layered_nodal_abs",
+            "passed": false,
+            "code": "LAYERED_NODAL_ABS",
+            "detail": "from exported physical Q1 corners",
+            "value": 0.03126249875465403,
+            "threshold": 1e-08
+          },
+          "layered_flux_rel": {
+            "name": "layered_flux_rel",
+            "passed": false,
+            "code": "LAYERED_FLUX_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 0.3593859389402789,
+            "threshold": 1e-05
+          },
+          "layered_jump_rel": {
+            "name": "layered_jump_rel",
+            "passed": false,
+            "code": "LAYERED_JUMP_REL",
+            "detail": "from exported physical Q1 corners",
+            "value": 0.031253126731117374,
+            "threshold": 1e-05
+          },
+          "layered_energy_rel": {
+            "name": "layered_energy_rel",
+            "passed": false,
+            "code": "LAYERED_ENERGY_REL",
+            "detail": "integral a|grad u_h|^2 = 2.010067450388737, exact 1.999800019998",
+            "value": 0.005134228566887853,
+            "threshold": 1e-07
+          }
+        }
+      }
+    ]
+  }
+]
