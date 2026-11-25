@@ -1,0 +1,44 @@
+{
+  "protocol": "Stage 4 offline benchmarks.planning replay with externally pinned archived reports",
+  "cpu_affinity": [
+    16
+  ],
+  "python": "3.12.3",
+  "numpy": "2.5.5",
+  "scipy": "1.18.1",
+  "candidate_sources_sha256": {
+    "verifier/fem.py": "4b543771b43d3367e06eb606ba9b414c43bb9e085b2c055730c0437a334da4c4",
+    "verifier/verifier.py": "9d0eef58a16b05b4226aea00979ad547f278e36886d08c231e6f965947e903b7",
+    "verifier/expr.py": "955752968ef00ff57d4a1cce1b81e7edddcce4f0196343e42052f7e4c1d3c183",
+    "benchmarks/planning.py": "94224aa9076aea5640a96f08ec270c3bc386b9e02a9c368a506664959b71458c",
+    "sciagent/planning_run.py": "991f14c8ef14d048414e8e0954f4eae8ea6a515754e133198b40483d1e7e29c2"
+  },
+  "campaigns": {
+    "paired": {
+      "archived_report": "evidence/stage4/planning-results.json",
+      "original_sha256": "da4c3b0612dccf58bf829f51d826c3230d94d64e618dcde28e06bb98f24761b4",
+      "relocated_sha256": "da4c3b0612dccf58bf829f51d826c3230d94d64e618dcde28e06bb98f24761b4",
+      "observed_sha256": "da4c3b0612dccf58bf829f51d826c3230d94d64e618dcde28e06bb98f24761b4",
+      "byte_identical": true,
+      "replayed_manifests": 38,
+      "terminal_states": {
+        "ACCEPTED": 28,
+        "REVIEW_REQUIRED": 10
+      },
+      "supplemental_controls_passed": 4
+    },
+    "replication": {
+      "archived_report": "evidence/stage4/replication-results.json",
+      "original_sha256": "9ae2734ff586af5c071fca4fd82e977c40bb558211e3c040996ee8afd1f815d3",
+      "relocated_sha256": "9ae2734ff586af5c071fca4fd82e977c40bb558211e3c040996ee8afd1f815d3",
+      "observed_sha256": "9ae2734ff586af5c071fca4fd82e977c40bb558211e3c040996ee8afd1f815d3",
+      "byte_identical": true,
+      "replayed_manifests": 38,
+      "terminal_states": {
+        "ACCEPTED": 28,
+        "REVIEW_REQUIRED": 10
+      },
+      "supplemental_controls_passed": 4
+    }
+  }
+}

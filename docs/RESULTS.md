@@ -1,5 +1,29 @@
 # Numerical results
 
+## Verifier revision at 263169 degrees of freedom
+
+On a single WSL2 host (Intel Core Ultra 7 155H), each pair used the same P1 triangle problem, frozen accuracy targets, MFEM binary, preconditioner, thread limits and independently assembled reference solve. H1 used four mesh levels up to 512 cells per side and 263,169 DOFs. H2 used mixed boundary conditions up to 128 cells per side and 16,641 DOFs. [Protocol and commands](VERIFIED_PERFORMANCE.md#measure-a-verifier-change-from-submission-to-acceptance) · [Frozen design](../evidence/e2/live-design.json)
+
+**Fresh MFEM studies.** One warm-up pair and 12 scored pairs per workload yielded 52 independently accepted studies. The numerical fingerprints matched across every run of each workload after normalizing the per-run location and three native timers. The offline audit checked all 52 inventories, replayed the first scored study from each revision and workload, and reproduced every reported score. Times cover submission through the verified worker’s exit. Δ is the median within-block difference (updated minus previous). [Per-study records](../evidence/e2/live-report.json.gz) · [Offline audit](../evidence/e2/live-audit.json)
+
+| Workload | Previous (s) | Updated (s) | Median paired Δ (s) | 95% paired interval (s) | Change in median time |
+|---|---:|---:|---:|---:|---:|
+| H1 | 30.812 | 23.714 | -7.643 | [-8.377, -6.892] | -23.0% |
+| H2 | 2.370 | 2.047 | -0.310 | [-0.516, -0.178] | -13.6% |
+
+**Verifier replay on identical fields.** Each workload supplied 30 scored pairs plus one warm-up pair. The verifier returned a byte-identical serialized verdict within every pair, including every error norm, threshold, check and input hash. Peak RSS is the fresh Python worker’s lifetime high-water mark. The replay clock covers the independent verification call. [All timings, memory readings and hashes](../evidence/e2/replay.json)
+
+| Workload | Previous (s) | Updated (s) | Ratio of medians | 95% paired Δ (s) | Previous peak (GiB) | Updated peak (GiB) |
+|---|---:|---:|---:|---:|---:|---:|
+| H1 | 18.499 | 11.696 | 1.58× | [-7.189, -6.706] | 2.417 | 1.183 |
+| H2 | 0.775 | 0.478 | 1.62× | [-0.300, -0.283] | 0.207 | 0.128 |
+
+The median live H1 phases changed from 3.58 to 1.42 s for field loading, 8.71 to 4.19 s for error integration and 6.17 to 5.47 s for the independent reference. The revision bounds temporary expression arrays, reuses exactly repeated element work and releases assembly buffers before the sparse direct solve. Global quadrature densities and sparse factors still consume memory proportional to the problem or factor size. The timing jobs used separate physical cores and shared the host and memory system with one another and some regression jobs. The intervals describe within-session variability. Cross-host reproducibility of the speedup remains open.
+
+**Prospective solver decisions.** The updated source completed and numerically replayed all 198 calibration trials on C1 and C2. In C1 the A/A timing noise exceeded the calibrated margin, and in C2 the two preconditioners were within the practical margin. Both default holdout runs selected CG with symmetric Gauss–Seidel and independently passed using the ordinary 3,072 MiB process address-space cap. The optional four H2 pilot solves forecast Jacobi. The policy retained GS because calibration did not support an automatic switch. All three final fields passed pinned numerical replay. A fourth mixed-boundary study supplied the older calibration. The selector detected the two changed verifier sources, disabled automatic switching and delivered another accepted field. [Earlier calibration control](../evidence/e2/stale-selection.json) · [Decision receipts](../evidence/e2/selection.json) · [Calibration design](../evidence/e2/calibration-design.json) · [198 observations](../evidence/e2/calibration-campaign.json.gz) · [Calibration audit](../evidence/e2/calibration-audit.json.gz)
+
+**Regression coverage.** The strict Python, serial MFEM and MPI suite passed 421 tests with zero skips. All 31 original study states and retry decisions matched, including 158 error values and 83 sets of byte-identical field exports. The 284 challenge trials and 14 independent reference-checker controls reproduced the preceding revision’s decisions and scores. The 42-row scikit-fem comparison and both Stage 4 replay reports matched their published bytes. The preceding E1 audit checked all 396 inventories and recomputed 12 representative studies, and the MPI replay passed at 1, 2 and 4 ranks. [Validation records](../evidence/e2/validation.json) · [Challenge trials](../evidence/e2/challenge.json.gz) · [Planning replays](../evidence/e2/planning-replay.json)
+
 ## Verified performance experiments
 
 The end-to-end paired preconditioner study uses real MFEM and independent accuracy targets on one pinned CPU. It compares the reviewed Gauss–Seidel default with Jacobi and includes an independently executed second Gauss–Seidel arm in each block to measure timing noise. The preregistered workload definitions and digests were recorded before the first timed run. [Protocol and commands](VERIFIED_PERFORMANCE.md) · [Acquisition configuration](../evidence/e1/paired-design.json)

@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "scale": "memo",
+  "cpu": 10,
+  "seed": 20261125,
+  "warmups": 3,
+  "repetitions": 30,
+  "study_timeout": 900.0,
+  "wall_budget": 14400.0,
+  "max_output_gib": 12.0,
+  "min_free_gib": 1.0,
+  "compact_archives": true,
+  "workloads": {
+    "C1": {
+      "case": "sin_sin",
+      "levels": [
+        8,
+        16,
+        32,
+        64
+      ],
+      "l2_target": 0.00048828125,
+      "h1_target": 0.078125
+    },
+    "C2": {
+      "case": "sin_sin",
+      "levels": [
+        16,
+        32,
+        64,
+        128
+      ],
+      "l2_target": 0.0001220703125,
+      "h1_target": 0.0390625
+    }
+  },
+  "request_sha256": {
+    "C1": {
+      "gs": "1a872a93ea3565a38fb632d93bd384c95cf65d19f69ed63294c376c92099d2ba",
+      "jacobi": "d49e6ddc62dbbab116c0b25720c8c9abf19bcd62c7ebb91306f8d5934c183e79",
+      "gs_repeat": "1a872a93ea3565a38fb632d93bd384c95cf65d19f69ed63294c376c92099d2ba"
+    },
+    "C2": {
+      "gs": "f41a28342d7dbc39d27ba6c03d2499807463f8124e8db81eef030567bbc29408",
+      "jacobi": "80963b317c275e329db17e1c1ef0a1cbcde8d125fc0498d4c99ed8b567848a15",
+      "gs_repeat": "f41a28342d7dbc39d27ba6c03d2499807463f8124e8db81eef030567bbc29408"
+    }
+  },
+  "binary_sha256": "e2a75e0eff6dcbd40ae13515498f7d3a4fe3756b8bdef41aca126397bd8b6438",
+  "host": {
+    "environment": {
+      "os": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "cpu_count": 22,
+      "mem_total_mb": 15794,
+      "python": "3.12.3",
+      "python_packages": {
+        "numpy": "2.5.5",
+        "scipy": "1.18.1",
+        "pydantic": "2.14.4",
+        "pytest": "9.2.0"
+      },
+      "cxx": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "cmake": "cmake version 3.28.3",
+      "make": "GNU Make 4.3",
+      "mpirun_path": "/usr/bin/mpirun",
+      "nvidia_smi_path": null,
+      "mfem": {
+        "install_dir": "/root/mfem-stage0/clean/third_party/mfem-install",
+        "found": true,
+        "config": {
+          "MFEM_USE_MPI": false,
+          "MFEM_USE_METIS": false,
+          "MFEM_USE_METIS_5": false,
+          "MFEM_USE_SUITESPARSE": false,
+          "MFEM_USE_LAPACK": false,
+          "MFEM_USE_OPENMP": false,
+          "MFEM_USE_CUDA": false,
+          "MFEM_USE_HIP": false,
+          "MFEM_USE_RAJA": false,
+          "MFEM_USE_OCCA": false,
+          "MFEM_USE_PETSC": false,
+          "MFEM_USE_ZLIB": false,
+          "MFEM_USE_DOUBLE": true,
+          "MFEM_USE_SINGLE": false
+        },
+        "notes": [],
+        "version": "4.10.0",
+        "git": "tags/v4.10-0-gd964264cdb9a13e94a201b6c236c7721e0c8765f",
+        "library": "/root/mfem-stage0/clean/third_party/mfem-install/lib/libmfem.a",
+        "library_sha256": "a4b8138ccb7eaf2c1f38c4d0434ebbee7bbd0b20318d6f0864779a5f4efd0234"
+      },
+      "solver_binary": "/root/mfem-e1-9OmzkU/native",
+      "solver_binary_sha256": "e2a75e0eff6dcbd40ae13515498f7d3a4fe3756b8bdef41aca126397bd8b6438",
+      "notes": [
+        "mpirun exists but MFEM was built without MPI; MPI path unavailable",
+        "no nvidia-smi on PATH; no CUDA device detected"
+      ]
+    },
+    "lscpu": "Architecture:                         x86_64\nCPU op-mode(s):                       32-bit, 64-bit\nAddress sizes:                        46 bits physical, 48 bits virtual\nByte Order:                           Little Endian\nCPU(s):                               22\nOn-line CPU(s) list:                  0-21\nVendor ID:                            GenuineIntel\nModel name:                           Intel(R) Core(TM) Ultra 7 155H\nCPU family:                           6\nModel:                                170\nThread(s) per core:                   2\nCore(s) per socket:                   11\nSocket(s):                            1\nStepping:                             4\nBogoMIPS:                             5990.39\nFlags:                                fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid tsc_known_freq pni pclmulqdq vmx ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch ssbd ibrs ibpb stibp ibrs_enhanced tpr_shadow ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves avx_vnni vnmi umip waitpkg gfni vaes vpclmulqdq rdpid movdiri movdir64b fsrm md_clear serialize flush_l1d arch_capabilities\nVirtualization:                       VT-x\nHypervisor vendor:                    Microsoft\nVirtualization type:                  full\nL1d cache:                            528 KiB (11 instances)\nL1i cache:                            704 KiB (11 instances)\nL2 cache:                             22 MiB (11 instances)\nL3 cache:                             24 MiB (1 instance)\nNUMA node(s):                         1\nNUMA node0 CPU(s):                    0-21\nVulnerability Gather data sampling:   Not affected\nVulnerability Itlb multihit:          Not affected\nVulnerability L1tf:                   Not affected\nVulnerability Mds:                    Not affected\nVulnerability Meltdown:               Not affected\nVulnerability Mmio stale data:        Not affected\nVulnerability Reg file data sampling: Not affected\nVulnerability Retbleed:               Mitigation; Enhanced IBRS\nVulnerability Spec rstack overflow:   Not affected\nVulnerability Spec store bypass:      Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:             Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:             Mitigation; Enhanced / Automatic IBRS; IBPB conditional; RSB filling; PBRSB-eIBRS SW sequence; BHI BHI_DIS_S\nVulnerability Srbds:                  Not affected\nVulnerability Tsx async abort:        Not affected",
+    "affinity_before_worker": [
+      10
+    ],
+    "logical_cpu": 10,
+    "cpu_governor": null,
+    "kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    },
+    "filesystem": "ext2/ext3",
+    "blas": "/root/mfem-stage1/venv/lib/python3.12/site-packages/numpy/__config__.py:155: UserWarning: Install `pyyaml` for better output\n  warnings.warn(\"Install `pyyaml` for better output\", stacklevel=1)\n{\n  \"Compilers\": {\n    \"c\": {\n      \"name\": \"gcc\",\n      \"linker\": \"ld.bfd\",\n      \"version\": \"14.2.1\",\n      \"commands\": \"cc\"\n    },\n    \"cython\": {\n      \"name\": \"cython\",\n      \"linker\": \"cython\",\n      \"version\": \"3.3.1\",\n      \"commands\": \"cython\"\n    },\n    \"c++\": {\n      \"name\": \"gcc\",\n      \"linker\": \"ld.bfd\",\n      \"version\": \"14.2.1\",\n      \"commands\": \"c++\"\n    }\n  },\n  \"Machine Information\": {\n    \"host\": {\n      \"cpu\": \"x86_64\",\n      \"family\": \"x86_64\",\n      \"endian\": \"little\",\n      \"system\": \"linux\"\n    },\n    \"build\": {\n      \"cpu\": \"x86_64\",\n      \"family\": \"x86_64\",\n      \"endian\": \"little\",\n      \"system\": \"linux\"\n    }\n  },\n  \"Build Dependencies\": {\n    \"blas\": {\n      \"name\": \"scipy-openblas\",\n      \"found\": true,\n      \"version\": \"0.3.34.237.2\",\n      \"detection method\": \"pkgconfig\",\n      \"include directory\": \"/opt/_internal/cpython-3.12.16/lib/python3.12/site-packages/scipy_openblas64/include\",\n      \"lib directory\": \"/opt/_internal/cpython-3.12.16/lib/python3.12/site-packages/scipy_openblas64/lib\",\n      \"openblas configuration\": \"OpenBLAS 0.3.34.237.2  USE64BITINT DYNAMIC_ARCH NO_AFFINITY SkylakeX MAX_THREADS=64\",\n      \"pc file directory\": \"/project/.openblas\"\n    },\n    \"lapack\": {\n      \"name\": \"scipy-openblas\",\n      \"found\": true,\n      \"version\": \"0.3.34.237.2\",\n      \"detection method\": \"pkgconfig\",\n      \"include directory\": \"/opt/_internal/cpython-3.12.16/lib/python3.12/site-packages/scipy_openblas64/include\",\n      \"lib directory\": \"/opt/_internal/cpython-3.12.16/lib/python3.12/site-packages/scipy_openblas64/lib\",\n      \"openblas configuration\": \"OpenBLAS 0.3.34.237.2  USE64BITINT DYNAMIC_ARCH NO_AFFINITY SkylakeX MAX_THREADS=64\",\n      \"pc file directory\": \"/project/.openblas\"\n    }\n  },\n  \"Python Information\": {\n    \"path\": \"/tmp/build-env-zqq_wkgx/bin/python\",\n    \"version\": \"3.12\"\n  },\n  \"SIMD Extensions\": {\n    \"baseline\": [\n      \"X86_V2\"\n    ],\n    \"found\": [\n      \"X86_V3\"\n    ],\n    \"not found\": [\n      \"X86_V4\",\n      \"AVX512_ICL\",\n      \"AVX512_SPR\"\n    ]\n  }\n}"
+  },
+  "source_sha256_normalization": "git-lf",
+  "source_sha256": {
+    "sciagent/controller.py": "9625c973119b349d144cfdd13bd0a7852e08307f8866b3ee41b3480daeb104bd",
+    "sciagent/environment.py": "a2595725bff8c6b900d66487d97ce703587f4838bdcd6e7e24fdfdf94e1c890e",
+    "sciagent/evidence.py": "a4501ad04f03571ee749d18b27429b166ea35257cc8b606e2c96d013627d5982",
+    "sciagent/mfem_runner.py": "13bbc0a7229623fe297ecbb2b1c30b1451a511bb666ec360ad3f042c6ac8af36",
+    "sciagent/profiling.py": "e09eb18e3b6c47e2a67b992e129d1654763f88ba71b77a4e743653c9f36eb4ca",
+    "sciagent/spec.py": "02b0a59a9e7be51cd0a220061d2814a19b7fa8567360993509d063baf238f3d9",
+    "verifier/expr.py": "955752968ef00ff57d4a1cce1b81e7edddcce4f0196343e42052f7e4c1d3c183",
+    "verifier/fem.py": "4b543771b43d3367e06eb606ba9b414c43bb9e085b2c055730c0437a334da4c4",
+    "verifier/verifier.py": "9d0eef58a16b05b4226aea00979ad547f278e36886d08c231e6f965947e903b7",
+    "benchmarks/e1.py": "90202a7a4a4e2cef4e9d47459fca50d7410401eb2a509cbbcc1bb0735457bb36",
+    "cpp/poisson_mms.cpp": "cf82bb0890ac1d0828f935d61613e455d87a40377017067475c34569c0837bf8"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "calibration_sha256": "cb24a68d93fb0e295b126c1c019d121123e60292a2a272370f123fae489b2246",
+  "run": {
+    "workload": "H2",
+    "mode": "default",
+    "cpu": 4,
+    "finest_dofs": 16641,
+    "solver": "cg_gs",
+    "qualification": "OK",
+    "calibration_provenance_matched": false,
+    "provenance_mismatch_fields": [
+      "verifier/fem.py",
+      "verifier/verifier.py"
+    ],
+    "calibration_rows": 198,
+    "automatic_switch_enabled": false,
+    "selection_reason": "calibration_provenance_mismatch",
+    "forecast_solver": null,
+    "projected_solve_seconds": null,
+    "pilots": {},
+    "pilot_calls": 0,
+    "pilot_elapsed_seconds": 0.0,
+    "elapsed_to_decision_seconds": 0.7606751580001401,
+    "selector_elapsed_seconds": 3.759423874000049,
+    "verified_worker_seconds": 2.9263392430000295,
+    "worker_peak_rss_kib": 140808,
+    "worker_address_space_limit_bytes": 3221225472,
+    "wall_budget_seconds": 900.0,
+    "finest_level": {
+      "n": 128,
+      "iterations": 211,
+      "final_norm": 2.034337205161083e-11,
+      "relative_residual": 4.913319241823192e-13,
+      "solve_seconds": 0.09634555400000001,
+      "native_wall_seconds": 0.7036820729999818,
+      "l2_error": 7.214802361562294e-05,
+      "h1_semi_error": 0.033468767976215265
+    },
+    "decision_sha256": "fc499c8ae7bcf104087d52ff3e2c92d6fd6b479c3b9cb32bf632dfe82039af74",
+    "request_sha256": "08682ef3427e72199693ead54fe5dec6db83cc1d26d1bbc45202b116ea3acfa2",
+    "manifest_sha256": "c49d3d9d34de82d58baed80e36208a3c2281ad5142e890267def14c09219d4ad",
+    "receipt_sha256": "3bedfacc08b1006190643f078c165f65096549d292effebec9df4668a942ded0",
+    "offline_replay": "ACCEPTED",
+    "replay_integrity": true,
+    "replay_elapsed_seconds": 0.6319509189997916
+  }
+}

@@ -6,3 +6,5 @@ benchmarks/data/planning*.json text eol=lf
 evidence/stage4/*.json text eol=lf
 evidence/e1/*.json text eol=lf
 evidence/e1/*.json.gz binary
+evidence/e2/*.json text eol=lf
+evidence/e2/*.json.gz binary

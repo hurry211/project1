@@ -1,0 +1,113 @@
+{
+  "local_date": "2026-11-24",
+  "baseline_commit": "6b5761cf4765a8bc7028922348202d6b6cf12076",
+  "candidate_numerical_commit": "375ba1399335bd28687600ce85d32d0087ef67e8",
+  "full_suite": {
+    "tests": 421,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 139.541,
+    "junit_sha256": "bd46bfdc41e184644ab46bb5e4cab966702ad850f5185ed05834dcbae8fe44a5",
+    "standard_output_sha256": "1359b91f9f4e958ea6e6acecfbe3574fda9f71bff8c75ad6520d0c66abbb8c12"
+  },
+  "base_lock_unit_suite": "325 passed, 96 deselected in 7.89s",
+  "acquisition": {
+    "live_full_studies": 52,
+    "live_inventory_checks": 52,
+    "live_full_replays": 4,
+    "replay_scored_pairs_per_workload": 30,
+    "replay_warmup_pairs_per_workload": 1,
+    "replay_workloads": 2,
+    "logical_cpus": {
+      "live": 4,
+      "retained_field_replay": 6,
+      "calibration_and_selection": 10
+    },
+    "source_tree_sha256": {
+      "baseline": "36006c9bd6d9dbf2ab4fb4ba9cdd36950dfdf4066cc941b8a4036e745389c625",
+      "candidate": "b2d36e4129ab0fa26344a93570c215ce3ebd0e54817bf4216a746b97349f3e52"
+    },
+    "replay_harness_file_sha256_at_capture": "dff81041a30cdcd919062e41a0ba8a9d3e730103c1bd0230d15f76fb1e0e23a7",
+    "replay_harness_lf_sha256": "ece7b42bdb7216d9bd3ac275c64b240978444516d5b22b9fd36e3f2484d73826",
+    "harness_line_endings": "The captured script had one CRLF at EOF. The LF-normalized script is in Git. The original bytes are in the local bundle.",
+    "live_and_replay_environment": "One WSL2 host, exact single-CPU affinity per worker, one native/BLAS thread, concurrent jobs on other cores."
+  },
+  "correctness": {
+    "challenge": {
+      "identical_to_preceding_revision_trials_controls_metrics_and_checker_calibration": true,
+      "scored_full_verdicts_equal": 284,
+      "calibration_full_verdicts_equal": 14,
+      "observations": {
+        "archive_clean / ACCEPTED": 23,
+        "archive_fault / REJECTED": 53,
+        "numerical_clean / ACCEPTED": 46,
+        "numerical_fault / REJECTED": 162
+      }
+    },
+    "original_studies": {
+      "study_count": 31,
+      "final_states": {
+        "ACCEPTED": 8,
+        "BLOCKED": 2,
+        "BUDGET_EXHAUSTED": 1,
+        "FAILED": 13,
+        "INVALID_SPEC": 7
+      },
+      "paired_attempt_replays": 22,
+      "matched_error_values": 158,
+      "matched_native_results": 83,
+      "byte_identical_field_exports": 83,
+      "report_sha256": "f8d850ee67fc4a650ea7ce1bf7366e4cea9967525dc687bb5bd3a541f41f318f"
+    },
+    "stage2": {
+      "rows": 42,
+      "report_matches_published_bytes": true,
+      "report_sha256": "9705089715ca93c64fc973144766ad1c73dcc14bf0b1582393191e79a723c167"
+    },
+    "mpi_replay": {
+      "state": "ACCEPTED",
+      "ranks": [
+        1,
+        2,
+        4
+      ],
+      "screened_levels": 12,
+      "verified_timing_samples": 32,
+      "manifest_sha256": "68363a4fdb5a0aa4deb487b63c6ab3d55e5c8e47933d985b2f7ae8ff6e2efea1"
+    },
+    "planning_replays_sha256": "46283961136adc363a1a11ac7f423102a9f9db6b4adff726092c67c2cdc7775a",
+    "previous_performance_campaign": {
+      "inventories": 396,
+      "numerical_replays": 12,
+      "audit_matches_published_bytes": true,
+      "audit_sha256": "25d303eccfbd55a9117c5b8d38ab70acfa71df68488072c160272914ed8bf4cc"
+    }
+  },
+  "calibration": {
+    "all_198_replayed": true,
+    "decision_and_replay_summary_sha256": "061d2f4e837dee5bf75b88b893861f7083789c9b907f2b70e661096378678bae"
+  },
+  "measured_native_binaries": {
+    "serial_sha256": "e2a75e0eff6dcbd40ae13515498f7d3a4fe3756b8bdef41aca126397bd8b6438",
+    "mpi_sha256": "e3524f80ac230556fd7c761921bf166082b6598e96b0eb86efba9cf180bbc2df"
+  },
+  "portable_local_bundle": {
+    "workspace_relative_path": "runs/verifier-revision-20261124/verifier-revision.tar.gz",
+    "bytes": 105166757,
+    "sha256": "4aa47df50d722ff26be02e21bc3b51526a113c32f8edf06513a62010818ae176"
+  },
+  "evidence_files_sha256": {
+    "calibration-audit.json.gz": "1b0f362d5c8875dc244e0a5348c43b93929d9f64fb8a9389c2e4afd064553131",
+    "calibration-campaign.json.gz": "b3607d1cb4de8cf1b54daefdc83dc4ca6e93fd01f4f908b4da91910beb5b27e0",
+    "calibration-design.json": "0e5d1b4392c4a6cbbea7ce5ca59e42cafaac0becd7551c93ecfcdf3a17f6b86e",
+    "challenge.json.gz": "fe09f82730381330768807211f1c9f3d5634652547b6f587e016e4d5db16fd81",
+    "live-audit.json": "3b73a01af43c22e4df923b4ab9c6f02a155dd1fe52428533d17ed44d880f3c7a",
+    "live-design.json": "8ade49e156696eb5ab3b8548cb04af09a7f09e4facbd1fce92fa4b5215869fa9",
+    "live-report.json.gz": "80172613769c39dfae72e95825151a448fabec7dbb262e279e2ac3eb5e3cdac1",
+    "planning-replay.json": "46283961136adc363a1a11ac7f423102a9f9db6b4adff726092c67c2cdc7775a",
+    "replay.json": "10a8bd1a12bfbfdfb6c86ec8fc25f38924e04107c18b8cfc8a5b96e8244309f6",
+    "selection.json": "061d2f4e837dee5bf75b88b893861f7083789c9b907f2b70e661096378678bae",
+    "stale-selection.json": "d0819660212b7e6abd964881e8390b99e9e12e6841bfce91065b8e15ebe2a449"
+  }
+}
