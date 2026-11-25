@@ -16,7 +16,7 @@ The matched small-mesh study now compares a fixed relative residual with a certi
 
 The original comparison found that CFAC spent 84 of 128 actions on inspections on the signed stripes at tolerance 1/9. A second frozen study tested a four-action reserve when the current refined pair is sufficient and progress is slow. It recovered the diagnosed case and retained the original policy's coverage on three new load families. [Original paired comparison](CFAC_STOPPING_RESULTS.md) · [Reserve study](CFAC_RESERVE_RESULTS.md)
 
-The tight checkerboard at tolerance 1/12 exposes a different decision. The refined P1/RT0 pair is futile, the first refined RT1 certificate misses the target, and both CFAC schedules stop with 112 actions remaining. Classical stopping obtains a certificate on that mesh after more primal work. A next comparison should freeze a rule for additional primal work before a refined RT1 check and test its coverage and full cost on new load patterns.
+The refined RT1 stopping study tested a rule for additional primal work after a refined P1/RT0 pair-futility verdict. It recovered the historical strict checkerboard and a held-out edge patch. It matched classical coverage on all 18 physical cases, with higher total cost. The historical sweep diagnostic shows that a valid RT1 field was available four sweeps before algebraic balance. Estimating the value of an earlier expensive RT1 inspection remains an open cost question. [Paired study and exact field diagnostics](CFAC_FUTILE_RESULTS.md)
 
 ## Proofs and representations to extend
 

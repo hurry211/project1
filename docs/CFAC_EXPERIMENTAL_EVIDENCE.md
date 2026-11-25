@@ -1,5 +1,7 @@
 # CFAC experiments and replay
 
+The refined RT1 stopping study archives 360 submissions, including 66 unsuccessful attempts, and an exact per-sweep diagnostic of the earlier checkerboard miss. Its offline supplement archives independently accepted, globally stationary RT1 fields for both physical cases missed by all the timed policies. [Results and reproduction](CFAC_FUTILE_RESULTS.md)
+
 The sufficient-pair reserve study archives 252 submissions. It recovers the previously diagnosed budget failure, and retains the held-out checkerboard case where both CFAC variants stop at action 16 with work still available. [Measurements, raw journals and commands](CFAC_RESERVE_RESULTS.md)
 
 The matched-accuracy stopping study archives 392 timed submissions, including 98 unsuccessful outcomes. Its report gives the digest and commands for replaying the checked fields and regenerating the case-level results. [Matched-accuracy evidence and reproduction](CFAC_STOPPING_RESULTS.md)

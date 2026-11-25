@@ -10,6 +10,8 @@ The stopping study compares fixed residual stopping, certified algebraic error b
 
 An optional CFAC schedule reserves four actions for a checked trial when progress slows on a sufficient refined pair. It recovered the strict signed-stripe case in six of six runs. On three new load families, both CFAC schedules delivered 30 of 36 submissions and classical stopping delivered all 36. [Reserve study, timings and replay](docs/CFAC_RESERVE_RESULTS.md)
 
+The `cfac_retry` policy also checks algebraic error before a refined RT1 trial when the RT0 pair is provably futile. It recovered the historical checkerboard and a new edge patch. It matched classical coverage on 16 of 18 physical problems, with a higher total delivery cost. An offline reference returned checked fields for the remaining two cases on the same meshes. [Results, field bounds and reproduction](docs/CFAC_FUTILE_RESULTS.md)
+
 ```
 StudySpec (JSON) ─► schema + MMS consistency ─► freeze & hash ─► environment probe ─► capability matrix
      ─► bind to compiled C++ case ─► MFEM poisson_mms (per mesh level, time/memory limited)
