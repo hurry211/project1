@@ -70,6 +70,15 @@ jobs:
           python -m benchmarks.e1 --directory runs/e1 --scale compact --workloads C1 H2 --warmups 0 --repetitions 1
           digest="$(sha256sum runs/e1/campaign.json | cut -d' ' -f1)"
           python -m benchmarks.e1_audit --directory runs/e1 --campaign-sha256 "$digest" --all --output runs/e1-audit.json
+      - name: Check the revision timing and offline audit on one real MFEM case
+        run: |
+          cpu="$(python -c 'import os; print(min(os.sched_getaffinity(0)))')"
+          python -m benchmarks.verified_revision --baseline "$PWD" --candidate "$PWD" --directory runs/revision --scale compact --workloads C1 --blocks 2 --cpu "$cpu"
+          design="$(sha256sum runs/revision/design.json | cut -d' ' -f1)"
+          report="$(sha256sum runs/revision/report.json | cut -d' ' -f1)"
+          python -m benchmarks.verified_revision_audit --directory runs/revision --design-sha256 "$design" --report-sha256 "$report" --output runs/revision-audit.json
+          attempt="$(find runs/revision/C1_000_baseline/studies -type d -name attempt_01)"
+          taskset -c "$cpu" python -m benchmarks.verification_cost --baseline "$PWD" --candidate "$PWD" --attempt "$attempt" --blocks 2 --expect-verdict ACCEPTED --output runs/replay-cost.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always() && hashFiles('runs/challenge.json', 'runs/stage2.json') != ''
         with:
@@ -78,3 +87,5 @@ jobs:
             runs/challenge.json
             runs/stage2.json
             runs/e1-audit.json
+            runs/revision-audit.json
+            runs/replay-cost.json
