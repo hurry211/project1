@@ -1,0 +1,63 @@
+name: Paired Gaussian assembly benchmark
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      CC: gcc-13
+      CXX: g++-13
+      JOBS: '4'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-linux-py312.lock
+      - name: Build the pinned MFEM and serial drivers
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-linux-py312.lock
+          ./scripts/build_mfem.sh
+          ./scripts/build_solver.sh
+      - name: Time verified full and partial assembly at two mesh sizes
+        run: |
+          mkdir -p runs
+          cpu="$(python -c 'import os; print(min(os.sched_getaffinity(0)))')"
+          lscpu > runs/cpu.txt
+          echo "$cpu" > runs/affinity.txt
+          taskset -c "$cpu" python -m benchmarks.performance --gaussian --repeats 3 --output "$PWD/runs/gaussian"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          groups = json.loads(Path("runs/gaussian/performance.json").read_bytes())["groups"]
+          for group in groups.values():
+              trials = [*group["warmup"].values(), *sum(group["samples"].values(), [])]
+              assert len(trials) == 8 and all(r["state"] == "ACCEPTED" and r["metrics"]["l2"] <= 1e-6 for r in trials)
+              assert len(group["paired"]) == 3 and all(pair["equivalent"] for pair in group["paired"])
+          PY
+      - name: Preserve full run directories and checksums
+        if: always() && hashFiles('runs/gaussian/**/manifest.json') != ''
+        run: |
+          tar -C runs -cf - gaussian affinity.txt cpu.txt | gzip -1 > gaussian-fields.tar.gz
+          sha256sum gaussian-fields.tar.gz > gaussian-fields.sha256
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always() && hashFiles('gaussian-fields.tar.gz') != ''
+        with:
+          name: verified-gaussian-assembly
+          compression-level: 0
+          path: |
+            gaussian-fields.tar.gz
+            gaussian-fields.sha256
+            runs/gaussian/performance.json
