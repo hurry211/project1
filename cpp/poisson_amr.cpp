@@ -118,6 +118,50 @@ std::string PeakRssKiB()
    return "null";
 }
 
+void PrintFormulation(const mms::Formulation &form, bool include_kappa)
+{
+   std::cout << "{\"equation\": \"" << JsonEscape(form.equation)
+             << "\", \"domain\": \"" << JsonEscape(form.domain)
+             << "\", \"space\": \"" << JsonEscape(form.space)
+             << "\", \"bilinear_integrator\": \"" << JsonEscape(form.bilinear_integrator)
+             << "\", \"dirichlet_trace\": \"" << JsonEscape(form.dirichlet_trace)
+             << "\", \"neumann_trace\": \"" << JsonEscape(form.neumann_trace) << "\"";
+   if (include_kappa) { std::cout << ", \"kappa\": \"" << JsonEscape(form.kappa) << "\""; }
+   std::cout << "}";
+}
+
+void ListCases(bool include_e3 = false)
+{
+   std::cout << "{\n  \"mfem_version\": \"" << GetVersionStr() << "\",\n"
+             << "  \"mfem_git\": \"" << JsonEscape(GetGitStr()) << "\",\n"
+             << "  \"mfem_config\": " << MfemBuildFlags << ",\n"
+             << "  \"mesh_sources\": [\"cartesian\", \"gmsh22\", \"amr\"],\n"
+             << "  \"registry_version\": 2,\n  \"formulation\": ";
+   PrintFormulation(mms::UnitSquarePoisson, false);
+   std::cout << ",\n  \"cases\": [\n";
+   const auto &reg = mms::Registry();
+   std::vector<const mms::ManufacturedCase *> visible;
+   for (const auto &c : reg)
+   {
+      if (include_e3 || !c.e3_only) { visible.push_back(&c); }
+   }
+   for (size_t i = 0; i < visible.size(); i++)
+   {
+      const auto *c = visible[i];
+      std::cout << "    {\"id\": \"" << JsonEscape(c->id) << "\", \"exact_solution\": \""
+                << JsonEscape(c->exact_solution) << "\", \"source\": \""
+                << JsonEscape(c->source) << "\", \"equation\": \""
+                << JsonEscape(c->form.equation) << "\"";
+      if (&c->form != &mms::UnitSquarePoisson)
+      {
+         std::cout << ", \"formulation\": ";
+         PrintFormulation(c->form, true);
+      }
+      std::cout << "}" << (i + 1 < visible.size() ? "," : "") << "\n";
+   }
+   std::cout << "  ]\n}\n";
+}
+
 } // namespace
 
 int main(int argc, char *argv[])
@@ -142,6 +186,8 @@ int main(int argc, char *argv[])
    bool force_nc = false;
    bool anisotropic_zz = true;
    bool ls_zz = false;
+   bool list_cases = false;
+   bool include_e3 = false;
 
    OptionsParser args(argc, argv);
    args.AddOption(&case_id, "-c", "--case", "Manufactured case id.");
@@ -161,19 +207,28 @@ int main(int argc, char *argv[])
    args.AddOption(&theta, "-th", "--theta", "ThresholdRefiner total error fraction (0..1).");
    args.AddOption(&out_dir, "-out", "--out", "Output directory for step_XX artifacts.");
    args.AddOption(&fault, "-fault", "--inject-fault",
-                  "none, wrong_source, drop_dirichlet_attr, self_report_lie, break_hanging_node.");
+                  "none, wrong_source, drop_dirichlet_attr, nan_value, early_stop_lie, "
+                  "self_report_lie, break_hanging_node, wrong_kappa, omit_coefficient_gradient, "
+                  "omit_neumann_coefficient, missing_element, swap_boundary_attr.");
    args.AddOption(&force_nc, "-nc", "--nc-mesh", "-no-nc", "--no-nc-mesh",
                   "Force non-conforming NCMesh on initial mesh.");
    args.AddOption(&anisotropic_zz, "-az", "--anisotropic-zz", "-no-az", "--no-anisotropic-zz",
                   "Enable anisotropic refinement in ZienkiewiczZhuEstimator.");
    args.AddOption(&ls_zz, "-ls", "--ls-zz", "-no-ls", "--no-ls-zz",
                   "Use LSZienkiewiczZhuEstimator instead of ZienkiewiczZhuEstimator.");
+   args.AddOption(&list_cases, "-list", "--list-cases", "-no-list", "--no-list-cases",
+                  "Print compiled cases as JSON and exit.");
+   args.AddOption(&include_e3, "-e3", "--include-e3", "-no-e3", "--no-include-e3",
+                  "Include E3 extension cases in --list-cases output.");
    args.Parse();
    if (!args.Good()) { args.PrintUsage(std::cerr); return 2; }
+   if (list_cases) { ListCases(include_e3); return 0; }
 
    const std::string fault_s(fault);
    const std::set<std::string> known_faults = {
-      "none", "wrong_source", "drop_dirichlet_attr", "self_report_lie", "break_hanging_node"
+      "none", "wrong_source", "drop_dirichlet_attr", "nan_value", "early_stop_lie",
+      "self_report_lie", "break_hanging_node", "wrong_kappa", "omit_coefficient_gradient",
+      "omit_neumann_coefficient", "missing_element", "swap_boundary_attr"
    };
    if (!known_faults.count(fault_s))
    {
@@ -243,7 +298,8 @@ int main(int argc, char *argv[])
    if (mc->diffusivity) { diffusivity = std::make_unique<FunctionCoefficient>(mc->diffusivity); }
    VectorFunctionCoefficient conormal_coef(dim, mc->grad_u, diffusivity.get());
    const double src_scale = (fault_s == "wrong_source") ? 1.1 : 1.0;
-   const auto source = mc->f;
+   const auto source = (fault_s == "omit_coefficient_gradient" && mc->source_without_coefficient_gradient)
+                         ? mc->source_without_coefficient_gradient : mc->f;
    FunctionCoefficient f_coef([source, src_scale](const Vector &p) { return src_scale * source(p); });
 
    const Geometry::Type geom = mesh.GetTypicalElementGeometry();
@@ -257,7 +313,8 @@ int main(int argc, char *argv[])
    b.AddDomainIntegrator(new DomainLFIntegrator(f_coef, &ir_dom));
    if (!nset.empty())
    {
-      auto *bn = new BoundaryNormalLFIntegrator(conormal_coef);
+      auto &natural_flux = (fault_s == "omit_neumann_coefficient") ? grad_coef : conormal_coef;
+      auto *bn = new BoundaryNormalLFIntegrator(natural_flux);
       bn->SetIntRule(&ir_bdr);
       b.AddBoundaryIntegrator(bn, neu_bdr);
    }
@@ -269,12 +326,12 @@ int main(int argc, char *argv[])
       a.SetDiagonalPolicy(Operator::DIAG_ONE);
    }
    BilinearFormIntegrator *integ = nullptr;
-   if (mc->source_without_coefficient_gradient && diffusivity)
+   if (mc->source_without_coefficient_gradient && diffusivity && fault_s != "wrong_kappa")
    {
       integ = new DiffusionIntegrator(*diffusivity);
       integ->SetIntRule(&IntRules.Get(geom, stiffness_q));
    }
-   else if (diffusivity)
+   else if (diffusivity && fault_s != "wrong_kappa")
    {
       integ = new DiffusionIntegrator(*diffusivity);
    }
@@ -345,7 +402,8 @@ int main(int argc, char *argv[])
       CGSolver cg;
       cg.SetRelTol(rel_tol);
       cg.SetAbsTol(abs_tol);
-      cg.SetMaxIter(max_iter);
+      const int it_cap = (fault_s == "early_stop_lie") ? 2 : max_iter;
+      cg.SetMaxIter(it_cap);
       cg.SetPrintLevel(IterativeSolver::PrintLevel().Errors().Warnings());
       std::unique_ptr<Solver> prec;
       if (sol_s == "cg_gs") { prec.reset(new GSSmoother(*A.As<SparseMatrix>())); }
@@ -358,11 +416,13 @@ int main(int argc, char *argv[])
       if (prec) { cg.SetPreconditioner(*prec); }
       cg.Mult(B, X);
 
-      const bool converged = cg.GetConverged();
+      bool converged = cg.GetConverged();
       const int iters = cg.GetNumIterations();
       const double init_norm = cg.GetInitialNorm();
       const double final_norm = cg.GetFinalNorm();
+      if (fault_s == "early_stop_lie") { converged = true; }
       a.RecoverFEMSolution(X, b, x);
+      if (fault_s == "nan_value" && x.Size() > 0) { x(x.Size() / 2) = std::numeric_limits<double>::quiet_NaN(); }
 
       if (fault_s == "break_hanging_node" && !mesh.Conforming())
       {
@@ -387,12 +447,37 @@ int main(int argc, char *argv[])
       const std::string sd = std::string(out_dir) + "/" + sname.str();
       fs::create_directories(sd);
 
+      const bool drop_elem = (fault_s == "missing_element" && mesh.GetNE() > 1);
+      const int export_ne = drop_elem ? (mesh.GetNE() - 1) : mesh.GetNE();
+      std::vector<int> dof_remap(x.Size(), -1);
+      std::vector<double> compact_vals;
+      if (drop_elem)
+      {
+         Array<int> dofs;
+         for (int e = 0; e < export_ne; e++)
+         {
+            fespace.GetElementDofs(e, dofs);
+            for (int k = 0; k < dofs.Size(); k++)
+            {
+               const int gd = dofs[k] >= 0 ? dofs[k] : -1 - dofs[k];
+               if (dof_remap[gd] < 0)
+               {
+                  dof_remap[gd] = static_cast<int>(compact_vals.size());
+                  compact_vals.push_back(x(gd));
+               }
+            }
+         }
+      }
+      else
+      {
+         for (int i = 0; i < x.Size(); i++) { dof_remap[i] = i; compact_vals.push_back(x(i)); }
+      }
       {
          std::ofstream f(sd + "/elements.txt");
          f << std::setprecision(17);
          f << "# elem geom nverts v0x v0y ...\n";
          Array<int> v;
-         for (int e = 0; e < mesh.GetNE(); e++)
+         for (int e = 0; e < export_ne; e++)
          {
             mesh.GetElementVertices(e, v);
             f << e << " " << (mesh.GetElementType(e) == Element::TRIANGLE ? "tri" : "quad") << " " << v.Size();
@@ -411,7 +496,7 @@ int main(int argc, char *argv[])
          f << "# elem local_index global_dof x y\n";
          Array<int> dofs;
          Vector xp;
-         for (int e = 0; e < mesh.GetNE(); e++)
+         for (int e = 0; e < export_ne; e++)
          {
             fespace.GetElementDofs(e, dofs);
             const FiniteElement *fe = fespace.GetFE(e);
@@ -422,7 +507,7 @@ int main(int argc, char *argv[])
                T->SetIntPoint(&nodes.IntPoint(k));
                T->Transform(nodes.IntPoint(k), xp);
                const int gd = dofs[k] >= 0 ? dofs[k] : -1 - dofs[k];
-               f << e << " " << k << " " << gd << " " << xp(0) << " " << xp(1) << "\n";
+               f << e << " " << k << " " << dof_remap[gd] << " " << xp(0) << " " << xp(1) << "\n";
             }
          }
          if (!FinishExport(f, "element_dofs.txt")) { return 7; }
@@ -431,7 +516,7 @@ int main(int argc, char *argv[])
          std::ofstream f(sd + "/dof_values.txt");
          f << std::setprecision(17);
          f << "# global_dof value\n";
-         for (int i = 0; i < x.Size(); i++) { f << i << " " << x(i) << "\n"; }
+         for (size_t i = 0; i < compact_vals.size(); i++) { f << i << " " << compact_vals[i] << "\n"; }
          if (!FinishExport(f, "dof_values.txt")) { return 7; }
       }
       {
@@ -444,7 +529,13 @@ int main(int argc, char *argv[])
             mesh.GetBdrElementVertices(be, v);
             const real_t *c0 = mesh.GetVertex(v[0]);
             const real_t *c1 = mesh.GetVertex(v[1]);
-            f << be << " " << mesh.GetBdrAttribute(be) << " " << c0[0] << " "
+            int attr = mesh.GetBdrAttribute(be);
+            if (fault_s == "swap_boundary_attr")
+            {
+               if (attr == 1) { attr = (max_attr >= 3) ? 3 : (attr + 1); }
+               else if (attr == 3) { attr = 1; }
+            }
+            f << be << " " << attr << " " << c0[0] << " "
               << c0[1] << " " << c1[0] << " " << c1[1] << "\n";
          }
          if (!FinishExport(f, "boundary.txt")) { return 7; }
@@ -479,12 +570,13 @@ int main(int argc, char *argv[])
          }
          f << "  \"mesh_type\": \"" << mt << "\",\n"
            << "  \"mesh_topology\": \"amr\",\n"
+           << "  \"case_domain\": \"" << JsonEscape(mc->form.domain) << "\",\n"
            << "  \"conforming\": " << (mesh.Conforming() ? "true" : "false") << ",\n"
            << "  \"amr_step\": " << it << ",\n"
            << "  \"order\": " << order << ",\n"
-           << "  \"num_elements\": " << mesh.GetNE() << ",\n"
+           << "  \"num_elements\": " << export_ne << ",\n"
            << "  \"num_boundary_elements\": " << mesh.GetNBE() << ",\n"
-           << "  \"num_dofs\": " << v_dofs << ",\n"
+           << "  \"num_dofs\": " << compact_vals.size() << ",\n"
            << "  \"num_true_dofs\": " << t_dofs << ",\n"
            << "  \"num_essential_dofs\": " << ess_tdof_list.Size() << ",\n"
            << "  \"dirichlet_attributes\": " << JsonIntList(dir_attrs) << ",\n"

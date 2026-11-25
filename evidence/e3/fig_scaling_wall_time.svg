@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="440" viewBox="0 0 760 440">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="380.0" y="28" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="16" font-weight="600" fill="#111">End-to-End Verify_Attempt Scaling: Frozen E2 vs E3 Streaming Direct, SA-AMG-PCG, PyAMG</text>
+<rect x="84" y="48" width="644" height="326" fill="#fafafa" stroke="#cbd5e1" stroke-width="1"/>
+<line x1="196.5" y1="48" x2="196.5" y2="374" stroke="#e2e8f0" stroke-dasharray="3,3"/>
+<text x="196.5" y="394" text-anchor="middle" font-family="monospace" font-size="11" fill="#475569">1e4</text>
+<line x1="424.1" y1="48" x2="424.1" y2="374" stroke="#e2e8f0" stroke-dasharray="3,3"/>
+<text x="424.1" y="394" text-anchor="middle" font-family="monospace" font-size="11" fill="#475569">1e5</text>
+<line x1="651.7" y1="48" x2="651.7" y2="374" stroke="#e2e8f0" stroke-dasharray="3,3"/>
+<text x="651.7" y="394" text-anchor="middle" font-family="monospace" font-size="11" fill="#475569">1e6</text>
+<line x1="84" y1="292.8" x2="728" y2="292.8" stroke="#e2e8f0" stroke-dasharray="3,3"/>
+<text x="76" y="296.8" text-anchor="end" font-family="monospace" font-size="11" fill="#475569">1</text>
+<line x1="84" y1="186.0" x2="728" y2="186.0" stroke="#e2e8f0" stroke-dasharray="3,3"/>
+<text x="76" y="190.0" text-anchor="end" font-family="monospace" font-size="11" fill="#475569">10</text>
+<line x1="84" y1="79.3" x2="728" y2="79.3" stroke="#e2e8f0" stroke-dasharray="3,3"/>
+<text x="76" y="83.3" text-anchor="end" font-family="monospace" font-size="11" fill="#475569">100</text>
+<text x="406.0" y="424" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="13" fill="#1e293b">Finest Mesh Degrees of Freedom (N)</text>
+<text x="20" y="211.0" transform="rotate(-90 20 211.0)" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="13" fill="#1e293b">Median Wall Time per 3-Level Verify_Attempt (s)</text>
+<polyline fill="none" stroke="#d62728" stroke-width="2.3" stroke-dasharray="6,4" points="111.3,358.0 246.8,299.9 383.1,234.8 519.8,164.9"/>
+<circle cx="111.3" cy="358.0" r="4" fill="#d62728" stroke="#fff" stroke-width="1"/>
+<circle cx="246.8" cy="299.9" r="4" fill="#d62728" stroke="#fff" stroke-width="1"/>
+<circle cx="383.1" cy="234.8" r="4" fill="#d62728" stroke="#fff" stroke-width="1"/>
+<circle cx="519.8" cy="164.9" r="4" fill="#d62728" stroke="#fff" stroke-width="1"/>
+<polyline fill="none" stroke="#ff7f0e" stroke-width="2.3" stroke-dasharray="6,4" points="111.3,357.6 246.8,301.2 383.1,225.7 519.8,156.4 599.8,109.4"/>
+<circle cx="111.3" cy="357.6" r="4" fill="#ff7f0e" stroke="#fff" stroke-width="1"/>
+<circle cx="246.8" cy="301.2" r="4" fill="#ff7f0e" stroke="#fff" stroke-width="1"/>
+<circle cx="383.1" cy="225.7" r="4" fill="#ff7f0e" stroke="#fff" stroke-width="1"/>
+<circle cx="519.8" cy="156.4" r="4" fill="#ff7f0e" stroke="#fff" stroke-width="1"/>
+<circle cx="599.8" cy="109.4" r="4" fill="#ff7f0e" stroke="#fff" stroke-width="1"/>
+<polyline fill="none" stroke="#1f77b4" stroke-width="2.3" points="111.3,344.9 246.8,288.5 383.1,223.0 519.8,160.2 599.8,113.9 656.6,95.6 700.7,67.2"/>
+<circle cx="111.3" cy="344.9" r="4" fill="#1f77b4" stroke="#fff" stroke-width="1"/>
+<circle cx="246.8" cy="288.5" r="4" fill="#1f77b4" stroke="#fff" stroke-width="1"/>
+<circle cx="383.1" cy="223.0" r="4" fill="#1f77b4" stroke="#fff" stroke-width="1"/>
+<circle cx="519.8" cy="160.2" r="4" fill="#1f77b4" stroke="#fff" stroke-width="1"/>
+<circle cx="599.8" cy="113.9" r="4" fill="#1f77b4" stroke="#fff" stroke-width="1"/>
+<circle cx="656.6" cy="95.6" r="4" fill="#1f77b4" stroke="#fff" stroke-width="1"/>
+<circle cx="700.7" cy="67.2" r="4" fill="#1f77b4" stroke="#fff" stroke-width="1"/>
+<polyline fill="none" stroke="#2ca02c" stroke-width="2.3" points="111.3,349.5 246.8,299.5 383.1,228.7 519.8,162.5 599.8,115.1 656.6,98.2 700.7,69.9"/>
+<circle cx="111.3" cy="349.5" r="4" fill="#2ca02c" stroke="#fff" stroke-width="1"/>
+<circle cx="246.8" cy="299.5" r="4" fill="#2ca02c" stroke="#fff" stroke-width="1"/>
+<circle cx="383.1" cy="228.7" r="4" fill="#2ca02c" stroke="#fff" stroke-width="1"/>
+<circle cx="519.8" cy="162.5" r="4" fill="#2ca02c" stroke="#fff" stroke-width="1"/>
+<circle cx="599.8" cy="115.1" r="4" fill="#2ca02c" stroke="#fff" stroke-width="1"/>
+<circle cx="656.6" cy="98.2" r="4" fill="#2ca02c" stroke="#fff" stroke-width="1"/>
+<circle cx="700.7" cy="69.9" r="4" fill="#2ca02c" stroke="#fff" stroke-width="1"/>
+<rect x="98" y="60" width="250" height="94" rx="4" fill="#ffffff" fill-opacity="0.92" stroke="#e2e8f0"/>
+<line x1="108" y1="76" x2="132" y2="76" stroke="#d62728" stroke-width="2.5" stroke-dasharray="5,3"/>
+<text x="140" y="80" font-family="system-ui,Segoe UI,Arial" font-size="11.5" fill="#0f172a">E2 Frozen Direct LU (ceb485c)</text>
+<line x1="108" y1="96" x2="132" y2="96" stroke="#ff7f0e" stroke-width="2.5" stroke-dasharray="5,3"/>
+<text x="140" y="100" font-family="system-ui,Segoe UI,Arial" font-size="11.5" fill="#0f172a">E3 Streaming Direct LU</text>
+<line x1="108" y1="116" x2="132" y2="116" stroke="#1f77b4" stroke-width="2.5"/>
+<text x="140" y="120" font-family="system-ui,Segoe UI,Arial" font-size="11.5" fill="#0f172a">E3 Self-Written SA-AMG-PCG</text>
+<line x1="108" y1="136" x2="132" y2="136" stroke="#2ca02c" stroke-width="2.5"/>
+<text x="140" y="140" font-family="system-ui,Segoe UI,Arial" font-size="11.5" fill="#0f172a">E3 Mature PyAMG-PCG (v5.4.1)</text>
+</svg>

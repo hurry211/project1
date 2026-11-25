@@ -10,11 +10,26 @@ from __future__ import annotations
 
 import math
 import time
+from contextlib import contextmanager
 from dataclasses import dataclass
 
 import numpy as np
 import scipy.sparse as sp
 import scipy.sparse.linalg as spla
+
+
+_CAPTURE_STACK: list[list["ReferenceSolveMetrics"]] = []
+
+
+@contextmanager
+def capture_metrics():
+    """Capture ReferenceSolveMetrics records emitted by solve_reference_system in this scope."""
+    records: list[ReferenceSolveMetrics] = []
+    _CAPTURE_STACK.append(records)
+    try:
+        yield records
+    finally:
+        _CAPTURE_STACK.pop()
 
 
 class ReferenceSolverError(RuntimeError):
@@ -31,6 +46,8 @@ class ReferenceSolveMetrics:
     setup_seconds: float
     solve_seconds: float
     relative_residual: float
+    backward_error: float = 0.0
+    residual_norm: float = 0.0
 
 
 def _pairwise_aggregates(A: sp.csr_matrix, theta: float = 0.25) -> sp.csr_matrix:
@@ -213,7 +230,7 @@ def solve_reference_direct(K_free: sp.csr_matrix | sp.csc_matrix, rhs: np.ndarra
     """Exact sparse LU reference solve (SuperLU)."""
     N = rhs.size
     if N == 0:
-        return np.empty(0, dtype=np.float64), ReferenceSolveMetrics("direct", 0, 0, 1, (), 0.0, 0.0, 0.0)
+        return np.empty(0, dtype=np.float64), ReferenceSolveMetrics("direct", 0, 0, 1, (), 0.0, 0.0, 0.0, 0.0)
     t0 = time.perf_counter()
     u = spla.spsolve(K_free.tocsc(), rhs)
     dt = time.perf_counter() - t0
@@ -222,7 +239,9 @@ def solve_reference_direct(K_free: sp.csr_matrix | sp.csc_matrix, rhs: np.ndarra
     rhs_norm = float(np.linalg.norm(rhs))
     res = float(np.linalg.norm(K_free @ u - rhs))
     rel = res / max(rhs_norm, 1e-300)
-    return u, ReferenceSolveMetrics("direct", N, int(K_free.nnz), 1, (N,), 0.0, dt, rel)
+    ku_abs = np.abs(K_free) @ np.abs(u)
+    bwd = res / max(float(np.linalg.norm(ku_abs)) + rhs_norm, 1e-300)
+    return u, ReferenceSolveMetrics("direct", N, int(K_free.nnz), 1, (N,), 0.0, dt, rel, bwd, res)
 
 
 def solve_reference_amg_pcg(
@@ -288,7 +307,72 @@ def solve_reference_amg_pcg(
             f"amg_pcg failed residual verification (info={info}, rel_res={rel_res:.3e} > {effective_tol:.3e}, "
             f"bwd_err={bwd_err:.3e})"
         )
-    return u, ReferenceSolveMetrics("amg_pcg", N, int(K_free.nnz), iters, level_sizes, t_setup, t_solve, rel_res)
+    return u, ReferenceSolveMetrics("amg_pcg", N, int(K_free.nnz), iters, level_sizes, t_setup, t_solve, rel_res, bwd_err, res_norm)
+
+
+def solve_reference_pyamg(
+    K_free: sp.csr_matrix,
+    rhs: np.ndarray,
+    *,
+    rtol: float = 1e-14,
+    verify_residual_tol: float = 1e-11,
+    maxiter: int = 300,
+) -> tuple[np.ndarray, ReferenceSolveMetrics]:
+    """Mature third-party Smoothed-Aggregation AMG (pyamg) + PCG with identical residual verification."""
+    try:
+        import pyamg
+    except ImportError as exc:
+        raise ReferenceSolverError(f"pyamg is not installed in the active Python environment: {exc}") from exc
+
+    N = rhs.size
+    if N == 0:
+        return np.empty(0, dtype=np.float64), ReferenceSolveMetrics("pyamg", 0, 0, 0, (), 0.0, 0.0, 0.0, 0.0)
+    rhs_norm = float(np.linalg.norm(rhs))
+    if rhs_norm == 0.0:
+        return np.zeros(N, dtype=np.float64), ReferenceSolveMetrics("pyamg", N, int(K_free.nnz), 0, (N,), 0.0, 0.0, 0.0, 0.0)
+
+    t_setup0 = time.perf_counter()
+    ml = pyamg.smoothed_aggregation_solver(K_free)
+    t_setup = time.perf_counter() - t_setup0
+    level_sizes = tuple(int(lv.A.shape[0]) for lv in ml.levels)
+    M = ml.aspreconditioner(cycle="V")
+
+    iters = 0
+
+    def _count(_):
+        nonlocal iters
+        iters += 1
+
+    t_solve0 = time.perf_counter()
+    u, info = spla.cg(K_free, rhs, M=M, rtol=rtol, atol=0.0, maxiter=maxiter, callback=_count)
+    res_vec = rhs - K_free @ u
+    res_norm = float(np.linalg.norm(res_vec))
+    rel_res = res_norm / rhs_norm
+    refine_round = 0
+    while (not math.isfinite(rel_res) or rel_res > verify_residual_tol) and refine_round < 2 and np.all(np.isfinite(res_vec)):
+        du, info2 = spla.cg(K_free, res_vec, M=M, rtol=rtol, atol=0.0, maxiter=maxiter, callback=_count)
+        u = u + du
+        info = info2
+        res_vec = rhs - K_free @ u
+        res_norm = float(np.linalg.norm(res_vec))
+        rel_res = res_norm / rhs_norm
+        refine_round += 1
+    t_solve = time.perf_counter() - t_solve0
+
+    finite = bool(np.all(np.isfinite(u)) and math.isfinite(rel_res))
+    if not finite or info != 0:
+        raise ReferenceSolverError(f"pyamg_pcg failed convergence (info={info}, rel_res={rel_res:.3e})")
+    ku_abs = np.abs(K_free) @ np.abs(u)
+    ku_abs_norm = float(np.linalg.norm(ku_abs))
+    bwd_err = res_norm / max(ku_abs_norm + rhs_norm, 1e-300)
+    fl_floor = 256.0 * float(np.finfo(np.float64).eps) * (ku_abs_norm + rhs_norm) / rhs_norm
+    effective_tol = min(1e-10, max(verify_residual_tol, fl_floor))
+    if rel_res > effective_tol or bwd_err > 1e-13:
+        raise ReferenceSolverError(
+            f"pyamg_pcg failed residual verification (info={info}, rel_res={rel_res:.3e} > {effective_tol:.3e}, "
+            f"bwd_err={bwd_err:.3e})"
+        )
+    return u, ReferenceSolveMetrics("pyamg", N, int(K_free.nnz), iters, level_sizes, t_setup, t_solve, rel_res, bwd_err, res_norm)
 
 
 def solve_reference_system(
@@ -300,10 +384,17 @@ def solve_reference_system(
     rtol: float = 1e-14,
     verify_residual_tol: float = 1e-11,
 ) -> tuple[np.ndarray, ReferenceSolveMetrics]:
-    """Dispatch to direct LU or residual-verified AMG-PCG without relaxing accuracy."""
-    if method not in ("auto", "direct", "amg_pcg"):
+    """Dispatch to direct LU, residual-verified SA-AMG-PCG, or mature pyamg without relaxing accuracy."""
+    if method not in ("auto", "direct", "amg_pcg", "pyamg"):
         raise ValueError(f"unknown reference solver method: {method!r}")
-    use_amg = method == "amg_pcg" or (method == "auto" and rhs.size > amg_threshold_dofs)
-    if use_amg:
-        return solve_reference_amg_pcg(K_free, rhs, rtol=rtol, verify_residual_tol=verify_residual_tol)
-    return solve_reference_direct(K_free, rhs)
+    if method == "pyamg":
+        sol, metrics = solve_reference_pyamg(K_free, rhs, rtol=rtol, verify_residual_tol=verify_residual_tol)
+    else:
+        use_amg = method == "amg_pcg" or (method == "auto" and rhs.size > amg_threshold_dofs)
+        if use_amg:
+            sol, metrics = solve_reference_amg_pcg(K_free, rhs, rtol=rtol, verify_residual_tol=verify_residual_tol)
+        else:
+            sol, metrics = solve_reference_direct(K_free, rhs)
+    if _CAPTURE_STACK:
+        _CAPTURE_STACK[-1].append(metrics)
+    return sol, metrics

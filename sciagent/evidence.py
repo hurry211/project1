@@ -24,7 +24,7 @@ import json
 from pathlib import Path
 
 from .spec import StudySpec, sha256_of
-from .gmsh import ARCHIVED_MESH
+from .gmsh import ARCHIVED_MESH, ARCHIVED_MFEM_MESH, archived_mesh_path
 
 
 def utc_now() -> str:
@@ -98,8 +98,11 @@ def check_archive(attempt: Path, expected_digest: str | None) -> tuple[str, dict
     if mode == "legacy-input-hashes" and stored.get("verifier_version") != "0.1.0":
         raise ValueError("missing evidence inventory")
     request = StudySpec.model_validate_json((run / "request/study_spec.json").read_text())
-    if actual.get(ARCHIVED_MESH) != (request.external_mesh.sha256 if request.external_mesh else None):
-        changed.add(ARCHIVED_MESH)
+    expected_mesh = archived_mesh_path(request.external_mesh)
+    for mesh_rel in (ARCHIVED_MESH, ARCHIVED_MFEM_MESH):
+        exp_sha = request.external_mesh.sha256 if mesh_rel == expected_mesh else None
+        if actual.get(mesh_rel) != exp_sha:
+            changed.add(mesh_rel)
     for name in ("problem", "validation", "policy"):
         path = f"frozen/{name}.json"
         if actual.get(path) != manifest["frozen_sha256"][name] or actual.get(path) != sha256_of(getattr(request, name)):
@@ -107,10 +110,18 @@ def check_archive(attempt: Path, expected_digest: str | None) -> tuple[str, dict
     index = names.index(attempt.name)
     if len(summaries) > request.policy.max_attempts or any(a["verdict"] != "RETRY_ELIGIBLE" for a in summaries[:index]):
         raise ValueError("attempt exceeds the original retry policy")
-    levels = list(request.execution.mesh_levels)
-    for _ in range(index):
-        levels.append(2 * levels[-1])
-    expected_execution = request.execution.model_copy(update={"mesh_levels": tuple(levels)})
+    if request.execution.mesh_topology == "amr":
+        steps = request.execution.amr_max_steps
+        dofs = request.execution.amr_max_dofs
+        for _ in range(index):
+            steps = min(20, steps + 2)
+            dofs = min(request.policy.max_dofs_per_level, dofs * 2)
+        expected_execution = request.execution.model_copy(update={"amr_max_steps": steps, "amr_max_dofs": dofs})
+    else:
+        levels = list(request.execution.mesh_levels)
+        for _ in range(index):
+            levels.append(2 * levels[-1])
+        expected_execution = request.execution.model_copy(update={"mesh_levels": tuple(levels)})
     execution_path = f"attempts/{attempt.name}/execution.json"
     if actual.get(execution_path) != sha256_of(expected_execution):
         changed.add(execution_path)

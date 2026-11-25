@@ -103,12 +103,15 @@ def _validate_registry(catalog):
         signatures.add(signature)
 
 
-def list_cases(binary: Path | None = None) -> dict:
+def list_cases(binary: Path | None = None, *, include_e3: bool = False) -> dict:
     binary = binary or solver_binary()
     if not binary.is_file():
         raise BuildError(f"solver binary not found: {binary}")
+    cmd = [str(binary), "--list-cases"]
+    if include_e3:
+        cmd.append("--include-e3")
     try:
-        p = subprocess.run([str(binary), "--list-cases"], capture_output=True, text=True, timeout=30)
+        p = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
     except (OSError, subprocess.TimeoutExpired) as exc:
         raise BuildError(f"cannot execute {binary}: {exc}") from exc
     if p.returncode != 0:
@@ -220,7 +223,7 @@ def run_level(problem: ProblemSpec, execution: ExecutionSpec, case_id: str, n: i
 
 
 def amr_binary() -> Path:
-    return solver_binary().parent / "poisson_amr"
+    return Path(os.environ.get("POISSON_AMR_BIN", solver_binary().parent / "poisson_amr"))
 
 
 def run_amr(
@@ -260,15 +263,39 @@ def run_amr(
     ]
     if mesh_path is not None:
         cmd.extend(["--mesh", str(mesh_path)])
+    (out_dir / "command.json").write_text(json.dumps({"argv": cmd, "shell": shlex.join(cmd)}, indent=2))
     t0 = time.monotonic()
-    p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout_s, preexec_fn=_limits(mem_mb))
+    timed_out = False
+    try:
+        p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout_s, preexec_fn=_limits(mem_mb))
+        code, out, err = p.returncode, p.stdout, p.stderr
+    except subprocess.TimeoutExpired as exc:
+        timed_out = True
+        code = None
+        out = exc.stdout.decode() if isinstance(exc.stdout, bytes) else (exc.stdout or "")
+        err = exc.stderr.decode() if isinstance(exc.stderr, bytes) else (exc.stderr or "")
     wall = time.monotonic() - t0
-    (out_dir / "stdout.txt").write_text(p.stdout)
-    (out_dir / "stderr.txt").write_text(p.stderr)
+    (out_dir / "stdout.txt").write_text(out)
+    (out_dir / "stderr.txt").write_text(err)
+    meaning = "TIMEOUT" if timed_out else EXIT_CODES.get(code, f"UNKNOWN_EXIT_{code}")
+    run_record = {
+        "n": n,
+        "level_dir": str(out_dir),
+        "command": cmd,
+        "exit_code": code,
+        "exit_meaning": meaning,
+        "wall_seconds": round(wall, 4),
+        "timed_out": timed_out,
+        "stdout_file": str(out_dir / "stdout.txt"),
+        "stderr_file": str(out_dir / "stderr.txt"),
+    }
+    (out_dir / "run_record.json").write_text(json.dumps(run_record, indent=2))
     summary_path = out_dir / "amr_summary.json"
     summary = json.loads(summary_path.read_text()) if summary_path.is_file() else {}
     return {
-        "exit_code": p.returncode,
+        "exit_code": code,
+        "exit_meaning": meaning,
+        "timed_out": timed_out,
         "wall_seconds": round(wall, 4),
         "summary": summary,
     }

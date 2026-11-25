@@ -29,7 +29,7 @@ Clone this repository inside Ubuntu. For an existing checkout, start at the dire
 sudo apt-get update
 sudo apt-get install -y --no-install-recommends git g++-13 cmake make python3.12-venv
 # New checkout
-git clone --branch codex/mfem-performance-validation https://github.com/hurry211/project1.git
+git clone --branch research/e3-scaling-adaptive https://github.com/hurry211/project1.git
 cd project1
 # From the repository root
 python3.12 -m venv .venv
@@ -174,13 +174,13 @@ Empty `validation` / `policy` objects use the frozen defaults documented in `doc
 
 The reviewed studies check the mesh, boundary data, solver record and independently integrated field errors. Their reference solution comes from a separate SciPy assembly and sparse direct solve (or residual-verified SA-AMG-PCG at large scale in E3). Smooth cases check the finest-pair convergence rates. For layered diffusion, the aligned Q1 space contains the analytic solution. Each level must satisfy frozen limits on nodal error, material flux, the one-sided interface flux jump and energy. The verdict applies to the declared mathematical model and discretization.
 
-## E3 Deep Performance Optimization & Adaptive Decision Research
+## E3.1 Deep Performance Optimization & Risk-Aware Adaptive Research
 
-Branch `research/e3-scaling-adaptive` extends E2 across three validated pillars documented in [`docs/E3_PERFORMANCE_ADAPTIVE.md`](docs/E3_PERFORMANCE_ADAPTIVE.md) with raw archives and SVG plots in [`evidence/e3/`](evidence/e3/):
+Branch `research/e3-scaling-adaptive` extends E2 cleanly with all metrics generated strictly from raw JSON archives in [`evidence/e3/`](evidence/e3/) (see [`docs/E3_PERFORMANCE_ADAPTIVE.md`](docs/E3_PERFORMANCE_ADAPTIVE.md) and [`docs/导师阶段汇报-第三阶段-E3.1.md`](docs/导师阶段汇报-第三阶段-E3.1.md)):
 
-- **Verifier Scalability to 1.05M DOFs** (`verifier/reference_solver.py`, `verifier/fem.py`, `verifier/verifier.py`, `benchmarks/e3_scaling.py`): Chunked ASCII I/O, bounded-slice quadrature/assembly, and Oettli–Prager backward-stability verified SA-AMG-PCG verify `1,050,625` DOFs (`5.44e-14` relative agreement vs MFEM) within `1,081.4 MiB` peak RSS (`38.36 s`), eliminating SuperLU direct OOM above ~500k DOFs under a 3 GiB cap.
-- **Unstructured Gmsh, High-Order P3/Q3–P4/Q4 & MFEM Example 6 AMR** (`cpp/poisson_amr.cpp`, `sciagent/gmsh.py`, `verifier/amr.py`, `benchmarks/e3_complex_meshes.py`): Validates unstructured Delaunay triangles and distorted quads (`P1–P4`, `Q1–Q4`), Zienkiewicz–Zhu AMR with independent geometric hanging-node $C^T K C$ constraint verification on `gaussian_steep` and `lshape_singularity`, and empirical `repeated_element_period` speedup (`95x–1,087x`) vs degradation (`period == E`).
-- **Separated Adaptive Strategy Search** (`sciagent/adaptive.py`, `benchmarks/e3_adaptive.py`): Predictive cost/accuracy surrogates trained on a calibration corpus generalize to a disjoint 5-task held-out benchmark suite (`11.22x` median task speedup and `4.01x` campaign speedup over `fixed_baseline` with decision, pilot, and retry costs fully charged).
+- **Paired Scalability (4k to 1.64M DOFs)**: Chunked streaming I/O/assembly paired with `SA-AMG-PCG` and third-party `pyamg==5.4.1` scales verification through `1,050,625` DOFs (`e3_pyamg`: `66.41 s`, `1182.2 MiB`; `e3_sa_amg_pcg`: `70.30 s`, `1507.5 MiB`) and `1,640,961` DOFs (`n=1280`: `122.26 s`, `1833.8 MiB`), while frozen E2 direct exceeds `4096 MiB` above ~590k DOFs.
+- **Controller-Integrated AMR & Unstructured High-Order (`P1–P4`/`Q1–Q4`)**: Unstructured Delaunay/curved quad meshes, Ex6 `ZienkiewiczZhuEstimator` AMR with independent T-junction $C^T K C$ and non-zero Neumann verification strictly from frozen specs (`verifier/amr.py`, `sciagent/controller.py`).
+- **Risk-Aware Adaptive Search**: `hybrid_guardrail_predictor` uses observable PDE features + logistic failure-risk guardrails across a disjoint 6-task calibration / 6-task held-out suite (`30/30` completion vs strong Q2 `fixed_baseline` `15/30`, `2.435x` median paired speedup on `15` mutually accepted pairs).
 
 ## License note
 

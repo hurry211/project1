@@ -1,13 +1,12 @@
 # Numerical results
 
-## E3: 1M-DOF verifier scaling, unstructured/AMR & adaptive strategy optimization
+## E3.1: Strict Paired Scaling to >1M DOFs, AMR Hardening & Risk-Aware Decision
 
-Branch `research/e3-scaling-adaptive` extends the verified pipeline across three empirical campaigns with zero relaxation of numerical gates ([Full E3 report and curves](E3_PERFORMANCE_ADAPTIVE.md) · [Raw archives and SVGs](../evidence/e3/)):
+Branch `research/e3-scaling-adaptive` (`07dca409`) extends E2 (`ceb485cb`) cleanly ([Full E3.1 Report](E3_PERFORMANCE_ADAPTIVE.md) · [Advisor Report](导师阶段汇报-第三阶段-E3.1.md) · [Raw Evidence](../evidence/e3/)):
 
-- **Verifier scaling to 1,050,625 DOFs** (`RLIMIT_AS = 3072 MiB`): chunked streaming I/O and Oettli–Prager backward-stability verified SA-AMG-PCG (`verifier/reference_solver.py`) cut `n=512` (263k DOFs) peak RSS by **4.14x** (`1,334.1 -> 322.2 MiB`), and pass full verification at `n=1024` (**1,050,625 DOFs**) in `38.36 s` and `1,081.4 MiB` peak RSS (`reference_rel_diff = 5.44e-14`) where both direct baselines OOM ([Scaling data](../evidence/e3/scaling_4k_to_1m.json)).
-- **Unstructured Gmsh (`P1–P4`/`Q1–Q4`), MFEM Example 6 AMR & period degradation**: all 8/8 `sin_sin_variable` (`kappa = 1+x`) unstructured sweeps converge at optimal rates (`tri` L2 `1.97–4.97`, `quad` L2 `2.00–5.01`); independent geometric hanging-node $C^T K C$ verification accepts all 5 Example 6 AMR runs (`gaussian_steep` `Q2` AMR reaches `H1_semi = 0.0443` in 557 true DOFs vs 16,641 DOFs uniform `Q1`); `repeated_element_period` speedup (95x–1,087x) degrades immediately to `period == E` on variable-coefficient and unstructured meshes ([Complex mesh & AMR data](../evidence/e3/complex_meshes_and_amr.json)).
-- **Separated adaptive decision benchmark** (4-task calibration -> 5 unseen held-out tasks × 3 paired repeats): charging 100% of decision, pilot, and retry overheads, `ai_assisted` and `predictive_model` achieve 12/15 accepted runs vs 0/15 (`fixed_baseline`) and 9/15 (`expert_rules`), with `ai_assisted` delivering **`11.22x`** `[2.73x, 11.55x]` per-task median speedup over `fixed_baseline` and **`2.06x`** `[1.93x, 2.13x]` over `pilot_autotuner` ([Adaptive comparison data](../evidence/e3/adaptive_comparison.json)).
-- **Non-MPI regression gate**: `python -m pytest -q -m "not mpi" --require-mfem` passes **454 tests** (with 9 MPI tests deselected where OpenMPI/HYPRE is absent).
+- **Strict 4k -> 1.64M DOF Paired Scaling** (`scaling_4k_to_1m.json`, 5 randomized blocks under `RLIMIT_AS=4096 MiB`): Frozen E2 direct hits OOM above `~590k` DOFs, whereas E3 `e3_sa_amg_pcg` verifies `1,050,625` DOFs in `70.30 s` (`1507.5 MiB`) and mature `e3_pyamg` (`pyamg==5.4.1`) verifies `1,050,625` DOFs in `66.41 s` (`1182.2 MiB`) and reaches `1,640,961` DOFs (`n=1280`, `5/5` accepted, `122.26 s`, `1833.8 MiB`).
+- **Independent AMR & Complex Meshes** (`complex_meshes_and_amr.json`): Unstructured Delaunay/quad variable-`kappa` `P1–P4`/`Q1–Q4`, strict non-zero Neumann Ex6 AMR & `lshape_2d` verified from frozen specs (`1e-6` self-report tol).
+- **Separated Risk-Aware Adaptive Search** (`adaptive_comparison.json`, 6 calibration -> 6 held-out × 5 repeats): `hybrid_guardrail_predictor` achieves `30/30` completion rate (`100.0%`, failed cost `0.00 s`) vs strong `fixed_baseline` Q2 (`15/30`), with accepted-only paired speedup `2.435x` across `15` mutually accepted pairs.
 
 ## Verifier revision at 263169 degrees of freedom
 

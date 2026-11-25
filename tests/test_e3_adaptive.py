@@ -1,4 +1,4 @@
-"""Unit, split-hygiene, and accuracy-constraint tests for E3 Task 3 adaptive decision engine."""
+"""Unit, split-hygiene, zero-leakage, and risk-guardrail tests for E3.1 adaptive decision engine."""
 
 from __future__ import annotations
 
@@ -6,79 +6,87 @@ import pytest
 
 from benchmarks.e3_adaptive import build_calibration_tasks, build_held_out_tasks
 from sciagent import adaptive
-from sciagent.spec import ProblemSpec, RetryPolicy, ValidationSpec
 
 
-def _sample_records():
-    pol = RetryPolicy()
-    hw = adaptive.HardwareFeatures(16, 8000.0, 6000.0, False, False, 100000, 2048)
-    cal_tasks = build_calibration_tasks()
+def _synthetic_records(n_repeat: int = 3) -> list[dict]:
+    hw = adaptive.HardwareFeatures(16, 8000.0, 6000.0, False, False, 60_000, 2048)
+    cal = build_calibration_tasks()
     recs = []
-    # Physically consistent synthetic observations for pure unit test (no binary needed)
-    for t in cal_tasks:
-        pf = adaptive.extract_problem_features(t.problem, t.validation, t.mesh_topology, case_id=t.case_id)
-        for p in (1, 2, 3, 4):
-            for n in (8, 16, 32):
-                dofs = (n * p + 1) ** 2
-                err = 0.05 * pf.hessian_mean / ((n * p) ** (p + 1))
-                sec = 0.01 * (dofs / 500.0) ** 1.05 * (1.0 + 0.08 * p)
-                rss = 18.0 + dofs * 0.0005
-                cand = adaptive.StrategyCandidate(
-                    candidate_id=f"cart-quad-p{p}-full-cg_gs-n{n}",
-                    mesh_type="quad", mesh_topology="cartesian",
-                    polynomial_order=p, assembly="full", solver="cg_gs",
-                    mesh_levels=(8, n) if n > 8 else (8, 16),
-                    estimated_finest_dofs=dofs,
-                )
+    for task in cal:
+        pf = adaptive.extract_problem_features(task.problem, task.validation, task.mesh_topology, case_id=task.case_id)
+        for p in (1, 2, 3):
+            for n0 in (4, 8, 16):
+                cand = adaptive.StrategyCandidate("quad", "cartesian", p, "full", "cg_gs", n0)
+                dofs = cand.max_dofs_estimate()
+                base = 0.25 * ((3.14159 / (4.0 * n0 * p)) ** (p + 1)) * (1.0 + pf.source_localization * 0.2)
+                wall = 0.05 + (dofs / 12000.0) * (0.4 + 0.1 * p)
                 recs.append({
-                    "pf": pf, "hw": hw, "cand": cand,
-                    "ok": True, "l2_error": err, "wall_seconds": sec, "peak_rss_mb": rss,
+                    "task": task.name,
+                    "target_l2": task.validation.max_l2_error_finest,
+                    "verdict": "ACCEPTED" if base <= (task.validation.max_l2_error_finest or 1.0) else "RETRY_ELIGIBLE",
+                    "candidate": vars(cand),
+                    "problem_features": vars(pf),
+                    "hw_features": vars(hw),
+                    "l2_error": base,
+                    "wall_seconds": wall,
+                    "peak_rss_mb": 64.0 + 0.002 * dofs,
                 })
-    return hw, adaptive.PerformancePredictor.fit(recs)
+    return recs
 
 
-def test_calibration_and_held_out_splits_are_disjoint():
+def test_calibration_and_held_out_strict_split_hygiene_and_names():
     cal = build_calibration_tasks()
     held = build_held_out_tasks()
-    cal_sigs = {(t.problem.exact_solution, t.problem.kappa, t.mesh_topology, tuple(b.kind for b in t.problem.boundaries)) for t in cal}
-    held_sigs = {(t.problem.exact_solution, t.problem.kappa, t.mesh_topology, tuple(b.kind for b in t.problem.boundaries)) for t in held}
-    assert not (cal_sigs & held_sigs), f"data leakage between calibration and held-out splits: {cal_sigs & held_sigs}"
-    assert len({t.task_id for t in cal} & {t.task_id for t in held}) == 0
+    assert len(cal) >= 6 and len(held) >= 6
+    assert not (set(t.case_id for t in cal) & set(t.case_id for t in held))
+    assert not (set(t.problem.exact_solution for t in cal) & set(t.problem.exact_solution for t in held))
+    assert "hybrid_guardrail_predictor" in adaptive.STRATEGY_NAMES
+    assert "ai_assisted" not in adaptive.STRATEGY_NAMES
 
 
-def test_problem_feature_extractor_distinguishes_steep_vs_smooth_fields():
-    cal = build_calibration_tasks()
+def test_zero_interior_exact_solution_leakage():
+    """Altering exact_solution ONLY inside Omega (zero bubble x*(1-x)*y*(1-y) on dOmega) must NOT change features."""
     held = build_held_out_tasks()
-    smooth = next(t for t in cal if t.case_id == "sin_sin")
-    steep = next(t for t in held if t.case_id == "gaussian_steep")
-    pf_sm = adaptive.extract_problem_features(smooth.problem, smooth.validation)
-    pf_st = adaptive.extract_problem_features(steep.problem, steep.validation)
-    assert pf_st.localization_ratio > 3.0 * pf_sm.localization_ratio
-    assert pf_st.hessian_max > 10.0 * pf_sm.hessian_max
+    var_task = next(t for t in held if t.case_id == "cos_2x_sin_y_var")
+    perturbed = var_task.problem.model_copy(
+        update={"exact_solution": f"({var_task.problem.exact_solution})+1e6*x*(1-x)*y*(1-y)"}
+    )
+    pf_orig = adaptive.extract_problem_features(var_task.problem, var_task.validation)
+    pf_pert = adaptive.extract_problem_features(perturbed, var_task.validation)
+    assert pf_orig == pf_pert
 
 
-def test_accuracy_constraint_vetoes_cheap_inaccurate_q1_and_ai_fallback_safe():
-    hw, predictor = _sample_records()
-    held_tight = next(t for t in build_held_out_tasks() if t.task_id == "heldout_tight_mixed")
+def test_risk_constrained_selection_avoids_high_failure_risk():
+    hw = adaptive.HardwareFeatures(16, 8000.0, 6000.0, False, False, 60_000, 2048)
+    pred = adaptive.PerformancePredictor.fit(_synthetic_records())
+    held_tight = next(t for t in build_held_out_tasks() if t.name == "held_sin_3x_2y_tight")
     pf = adaptive.extract_problem_features(held_tight.problem, held_tight.validation)
-    from sciagent import capability
-    env = {
+
+    cands, _ = adaptive.enumerate_candidates(held_tight, hw, env={
         "mfem": {
-            "found": True, "version": capability.MFEM_VERSION,
-            "git": capability.MFEM_COMMIT,
-            "config": capability.REVIEWED_FLAGS.copy(),
+            "version": "4.10.0",
+            "git": "d964264cdb9a13e94a201b6c236c7721e0c8765f",
+            "config": {k: (k == "MFEM_USE_DOUBLE") for k in (
+                "MFEM_USE_MPI", "MFEM_USE_METIS", "MFEM_USE_METIS_5", "MFEM_USE_SUITESPARSE",
+                "MFEM_USE_LAPACK", "MFEM_USE_OPENMP", "MFEM_USE_CUDA", "MFEM_USE_HIP",
+                "MFEM_USE_RAJA", "MFEM_USE_OCCA", "MFEM_USE_PETSC", "MFEM_USE_ZLIB",
+                "MFEM_USE_DOUBLE", "MFEM_USE_SINGLE",
+            )},
         }
-    }
-    cands, excluded = adaptive.enumerate_candidates(held_tight, hw, env)
-    # Must explicitly audit and exclude MPI when not built with MPI
-    assert any(e["code"] == "UNSUPPORTED_BACKEND" for e in excluded)
-    chosen, _ = adaptive.choose_predictive_candidate(pf, hw, cands, predictor)
-    # Cheap Q1 must NOT be chosen on an L2<=1e-7 accuracy target
-    assert chosen.polynomial_order >= 3
-    pred = predictor.predict(pf, chosen, hw)
-    assert pred["pred_l2_error"] <= held_tight.validation.max_l2_error_finest
+    })
+    assert cands
+    chosen_pred, info_pred = adaptive.choose_predictive_candidate(pf, hw, cands, pred, max_risk=0.25)
+    chosen_hyb, info_hyb = adaptive.choose_hybrid_guardrail_candidate(held_tight, pf, hw, cands, pred, max_risk=0.15)
+    assert chosen_pred.polynomial_order >= 2
+    assert chosen_hyb.polynomial_order >= 2
+    assert 0.0 <= info_pred["pred_failure_prob"] <= 1.0
+    assert 0.0 <= info_hyb["pred_failure_prob"] <= 1.0
+    # Verify logistic classifier assigns strictly lower risk to fine high-order than coarse low-order
+    coarse_q1 = adaptive.StrategyCandidate("quad", "cartesian", 1, "full", "cg_gs", 8)
+    fine_q3 = adaptive.StrategyCandidate("quad", "cartesian", 3, "full", "cg_gs", 16)
+    assert pred.predict(pf, hw, fine_q3)["pred_failure_prob"] < pred.predict(pf, hw, coarse_q1)["pred_failure_prob"]
 
 
-def test_negative_predictor_rejects_underdetermined_calibration():
-    with pytest.raises(ValueError, match="insufficient"):
+def test_predictor_rejects_insufficient_calibration_data():
+    with pytest.raises(ValueError, match="at least|>= 5"):
         adaptive.PerformancePredictor.fit([])

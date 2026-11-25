@@ -82,6 +82,19 @@ def _problem_steep() -> ProblemSpec:
     })
 
 
+def _problem_lshape() -> ProblemSpec:
+    return ProblemSpec.model_validate({
+        "id": "lshape_singularity",
+        "equation": "-laplacian(u) = f",
+        "domain": "lshape_2d",
+        "exact_solution": "((x-0.5)**2+(y-0.5)**2)**(1/3)*sin((2/3)*theta_lshape)",
+        "source": "0",
+        "boundaries": [
+            {"attribute": 1, "label": "lshape_outer", "kind": "dirichlet", "value": "from_exact_solution"}
+        ],
+    })
+
+
 def run_unstructured_and_high_order(work_root: Path, mms_bin: Path) -> list[dict]:
     """Benchmark unstructured Delaunay tri and distorted quad across orders p=1..4 with variable kappa."""
     results = []
@@ -206,6 +219,7 @@ def run_ex6_amr_vs_uniform(work_root: Path, mms_bin: Path, amr_bin: Path) -> dic
         records[uname] = {"case": "gaussian_steep", "mesh_type": "quad", "order": p, "steps": u_steps}
 
     # 2. Classic Example 6 L-shape re-entrant corner singularity: Q1 & Q2 AMR vs Uniform refinement
+    lshape_prob = _problem_lshape()
     lshape_msh = _find_lshape_mesh()
     for lname, p, steps in (("lshape_amr_q1", 1, 9), ("lshape_amr_q2", 2, 8)):
         amr_dir = work_root / lname
@@ -214,7 +228,7 @@ def run_ex6_amr_vs_uniform(work_root: Path, mms_bin: Path, amr_bin: Path) -> dic
             mesh_path=lshape_msh, assembly="full", solver="cg_gs", max_steps=steps,
             max_dofs=20000, theta=0.7, binary=amr_bin,
         )
-        ver = verify_amr_run(amr_dir, None, ValidationSpec())
+        ver = verify_amr_run(amr_dir, lshape_prob, ValidationSpec())
         assert run_info["exit_code"] == 0 and ver["verdict"] == "ACCEPTED", f"{lname}: {ver}"
         records[lname] = {
             "case": "lshape_singularity", "mesh_type": "quad", "order": p,
@@ -247,7 +261,7 @@ def run_ex6_amr_vs_uniform(work_root: Path, mms_bin: Path, amr_bin: Path) -> dic
             mesh_path=lshape_msh, assembly="full", solver="cg_gs", max_steps=steps,
             max_dofs=60000, theta=0.999999, binary=amr_bin,
         )
-        ver = verify_amr_run(u_dir, None, ValidationSpec())
+        ver = verify_amr_run(u_dir, lshape_prob, ValidationSpec())
         records[ulname] = {
             "case": "lshape_singularity", "mesh_type": "quad", "order": p,
             "verdict": ver["verdict"],

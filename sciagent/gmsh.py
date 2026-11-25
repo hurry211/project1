@@ -11,6 +11,25 @@ from pathlib import Path
 from .spec import ExecutionSpec, ExternalMeshSpec, ProblemSpec
 
 ARCHIVED_MESH = "frozen/mesh.msh"
+ARCHIVED_MFEM_MESH = "frozen/mesh.mesh"
+
+
+def archived_mesh_path(ext: ExternalMeshSpec | None) -> str | None:
+    if ext is None:
+        return None
+    return ARCHIVED_MFEM_MESH if ext.file.endswith(".mesh") else ARCHIVED_MESH
+
+
+@dataclass(frozen=True)
+class MfemExternalMesh:
+    geom: str
+    node_count: int
+    element_count: int
+    total_area: float
+    subdivisions_hint: int
+
+    def refinements(self, n: int) -> int:
+        return 0
 MAX_INPUT_BYTES = 8 * 1024 * 1024
 _INTEGER = re.compile(r"[0-9]+")
 _FLOAT = re.compile(r"[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?")
@@ -344,6 +363,123 @@ def inspect_gmsh_unstructured(data: bytes, problem: ProblemSpec, execution: Exec
         element_count=elem_count,
         total_area=total_area,
         boundary_lengths=side_lengths,
+        subdivisions_hint=sub_hint,
+    )
+
+
+def inspect_mfem_mesh_file(data: bytes, problem: ProblemSpec, execution: ExecutionSpec) -> MfemExternalMesh:
+    """Validate an ASCII MFEM v1.x 2D external mesh file against frozen ProblemSpec/ExecutionSpec."""
+    try:
+        text = data.decode("ascii").replace("\r\n", "\n")
+    except UnicodeDecodeError as exc:
+        raise ValueError("MFEM mesh input must be ASCII") from exc
+    lines = [ln.strip() for ln in text.split("\n") if ln.strip() and not ln.strip().startswith("#")]
+    if not lines or not lines[0].startswith("MFEM mesh v1."):
+        raise ValueError("expected an MFEM mesh v1.x ASCII header")
+
+    idx = 1
+    sections: dict[str, list[str]] = {}
+    while idx < len(lines):
+        key = lines[idx]
+        idx += 1
+        if key == "dimension":
+            if idx >= len(lines):
+                raise ValueError("truncated MFEM dimension section")
+            sections["dimension"] = [lines[idx]]
+            idx += 1
+        elif key in ("elements", "boundary"):
+            if idx >= len(lines):
+                raise ValueError(f"truncated MFEM {key} section")
+            cnt = _integer(lines[idx])
+            idx += 1
+            if idx + cnt > len(lines):
+                raise ValueError(f"truncated MFEM {key} entries")
+            sections[key] = lines[idx:idx + cnt]
+            idx += cnt
+        elif key == "vertices":
+            if idx + 1 >= len(lines):
+                raise ValueError("truncated MFEM vertices section")
+            cnt = _integer(lines[idx])
+            sdim = _integer(lines[idx + 1])
+            if sdim != 2:
+                raise ValueError(f"expected 2D vertex coordinates, got space dimension {sdim}")
+            idx += 2
+            if idx + cnt > len(lines):
+                raise ValueError("truncated MFEM vertex coordinates")
+            sections["vertices"] = lines[idx:idx + cnt]
+            idx += cnt
+        else:
+            raise ValueError(f"unsupported MFEM mesh section: {key!r}")
+
+    for req in ("dimension", "elements", "boundary", "vertices"):
+        if req not in sections:
+            raise ValueError(f"missing MFEM mesh section: {req}")
+    if _integer(sections["dimension"][0]) != 2:
+        raise ValueError("MFEM external mesh must be 2D")
+    if not sections["elements"] or not sections["boundary"]:
+        raise ValueError("MFEM external mesh must contain elements and boundary edges")
+
+    def _parse_float(token: str) -> float:
+        if not _FLOAT.fullmatch(token):
+            raise ValueError(f"invalid float coordinate {token!r}")
+        val = float(token)
+        if not math.isfinite(val):
+            raise ValueError("non-finite vertex coordinate")
+        return val
+
+    coords: list[tuple[float, float]] = []
+    for row in sections["vertices"]:
+        toks = row.split()
+        if len(toks) != 2:
+            raise ValueError("invalid 2D vertex coordinate row in MFEM mesh")
+        x, y = _parse_float(toks[0]), _parse_float(toks[1])
+        if x < -1e-12 or x > 1.0 + 1e-12 or y < -1e-12 or y > 1.0 + 1e-12:
+            raise ValueError("MFEM mesh vertex outside unit bounding box [0,1]^2")
+        if problem.domain == "lshape_2d" and x > 0.5 + 1e-9 and y > 0.5 + 1e-9:
+            raise ValueError("MFEM lshape_2d mesh vertex lies inside omitted (0.5,1]^2 quadrant")
+        coords.append((x, y))
+
+    expected_geom = 2 if execution.mesh_type == "tri" else 3
+    nv_expected = 3 if expected_geom == 2 else 4
+    total_area = 0.0
+    for row in sections["elements"]:
+        fields = [_integer(t) for t in row.split()]
+        if len(fields) != 2 + nv_expected:
+            raise ValueError("unexpected MFEM element arity")
+        _, geom, *vids = fields
+        if geom != expected_geom or len(set(vids)) != nv_expected or any(v >= len(coords) for v in vids):
+            raise ValueError(f"expected valid {execution.mesh_type} MFEM elements")
+        pts = [coords[v] for v in vids]
+        signed2 = sum(pts[k - 1][0] * pts[k][1] - pts[k][0] * pts[k - 1][1] for k in range(len(pts)))
+        if signed2 <= 1e-13:
+            raise ValueError("inverted or degenerate element in MFEM mesh")
+        total_area += 0.5 * signed2
+
+    expected_area = 0.75 if problem.domain == "lshape_2d" else 1.0
+    if abs(total_area - expected_area) > 1e-10:
+        raise ValueError(f"MFEM mesh total area {total_area} differs from {expected_area}")
+
+    declared_attrs = {b.attribute for b in problem.boundaries}
+    seen_attrs: set[int] = set()
+    for row in sections["boundary"]:
+        fields = [_integer(t) for t in row.split()]
+        if len(fields) != 4:
+            raise ValueError("unexpected MFEM boundary segment row")
+        attr, geom, v0, v1 = fields
+        if geom != 1 or v0 == v1 or max(v0, v1) >= len(coords):
+            raise ValueError("invalid MFEM boundary segment")
+        if attr not in declared_attrs:
+            raise ValueError(f"undeclared MFEM boundary attribute {attr}")
+        seen_attrs.add(attr)
+    if seen_attrs != declared_attrs:
+        raise ValueError(f"MFEM mesh missing declared boundary attributes {sorted(declared_attrs - seen_attrs)}")
+
+    sub_hint = max(1, round(math.sqrt(len(sections["elements"]) / (2 if execution.mesh_type == "tri" else 1))))
+    return MfemExternalMesh(
+        geom=execution.mesh_type,
+        node_count=len(coords),
+        element_count=len(sections["elements"]),
+        total_area=total_area,
         subdivisions_hint=sub_hint,
     )
 

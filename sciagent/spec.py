@@ -26,7 +26,8 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 SCHEMA_VERSION = "0.3"
 
-SideLabel = Literal["bottom", "right", "top", "left"]
+SideLabel = Literal["bottom", "right", "top", "left", "lshape_outer"]
+UNIT_SQUARE_SIDES = ("bottom", "right", "top", "left")
 
 # Geometric definition of side labels on the unit square. This is the single
 # place where a *physical label* is tied to *geometry*; mesh attribute numbers
@@ -75,7 +76,7 @@ class ProblemSpec(_Frozen):
     equation: Literal[POISSON, ANISOTROPIC, LAYERED, "-div(kappa*grad(u)) = f"]
     # Preserve canonical JSON (and archive hashes) for the original Poisson equation.
     kappa: Literal["1", "1+x"] = Field(default="1", exclude_if=lambda k: k == "1")
-    domain: Literal["unit_square_2d"]
+    domain: Literal["unit_square_2d", "lshape_2d"]
     exact_solution: str = Field(min_length=1, max_length=400)
     source: str = Field(min_length=1, max_length=400)
     boundaries: tuple[BoundaryCondition, ...] = Field(min_length=1)
@@ -92,6 +93,14 @@ class ProblemSpec(_Frozen):
         if len(set(attrs)) != len(attrs):
             raise ValueError("duplicate boundary attribute in ProblemSpec")
         labels = [b.label for b in self.boundaries]
+        if self.domain == "lshape_2d":
+            if any(lbl != "lshape_outer" for lbl in labels):
+                raise ValueError("lshape_2d boundaries must use label 'lshape_outer'")
+            if not any(b.kind == "dirichlet" for b in self.boundaries):
+                raise ValueError("pure Neumann problem (constant nullspace) is not supported")
+            return self
+        if any(lbl not in UNIT_SQUARE_SIDES for lbl in labels):
+            raise ValueError("unit_square_2d boundaries must use unit-square side labels")
         if len(set(labels)) != len(labels):
             raise ValueError("duplicate boundary label in ProblemSpec")
         if set(labels) != set(SIDE_GEOMETRY):
@@ -143,7 +152,7 @@ class ValidationSpec(_Frozen):
     require_reference_solve: bool = True
     reference_solve_rel_tol: float = Field(default=1e-7, gt=0.0)
     reference_solve_max_dofs: int = Field(default=300_000, ge=1)
-    reference_solve_method: Literal["auto", "direct", "amg_pcg"] = Field(
+    reference_solve_method: Literal["auto", "direct", "amg_pcg", "pyamg"] = Field(
         default="auto", exclude_if=lambda value: value == "auto"
     )
     reference_solve_amg_threshold_dofs: int = Field(
@@ -186,8 +195,12 @@ class ExecutionSpec(_Frozen):
     max_iter: int = Field(default=20_000, ge=1)
     inject_fault: Literal[
         "none", "wrong_source", "drop_dirichlet_attr", "nan_value",
-        "early_stop_lie", "self_report_lie", "wrong_diffusion", "omit_coefficient_gradient", "omit_neumann_coefficient",
+        "early_stop_lie", "self_report_lie", "wrong_diffusion", "omit_coefficient_gradient",
+        "omit_neumann_coefficient", "break_hanging_node", "wrong_kappa", "missing_element", "swap_boundary_attr",
     ] = "none"
+    amr_max_steps: int = Field(default=8, ge=1, le=20, exclude_if=lambda value: value == 8)
+    amr_max_dofs: int = Field(default=40_000, ge=1, exclude_if=lambda value: value == 40_000)
+    amr_theta: float = Field(default=0.7, gt=0.0, lt=1.0, exclude_if=lambda value: value == 0.7)
 
     @field_validator("mesh_levels")
     @classmethod
@@ -207,9 +220,9 @@ class ExecutionSpec(_Frozen):
 
 
 class ExternalMeshSpec(_Frozen):
-    """A pinned Gmsh MSH 2.2 ASCII file alongside the study request."""
+    """A pinned Gmsh MSH 2.2 or MFEM mesh file alongside the study request."""
 
-    file: str = Field(max_length=150, pattern=r"^[A-Za-z0-9_-][A-Za-z0-9_.-]*\.msh$")
+    file: str = Field(max_length=150, pattern=r"^[A-Za-z0-9_-][A-Za-z0-9_.-]*\.(?:msh|mesh)$")
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
 
@@ -226,13 +239,21 @@ class StudySpec(_Frozen):
     @model_validator(mode="after")
     def _check_stage2_features(self) -> "StudySpec":
         if self.schema_version == "0.2":
-            if self.problem.kappa != "1" or "external_mesh" in self.model_fields_set:
+            if self.problem.kappa != "1" or "external_mesh" in self.model_fields_set or self.problem.domain != "unit_square_2d":
                 raise ValueError("variable diffusivity and external_mesh require schema_version 0.3")
             if self.execution.mesh_topology != "cartesian":
                 raise ValueError("non-cartesian mesh_topology requires schema_version 0.3 or 0.4")
-        if self.execution.mesh_topology == "unstructured" and self.external_mesh is None:
-            raise ValueError("mesh_topology='unstructured' requires an external_mesh input")
-        if self.execution.inject_fault in ("omit_coefficient_gradient", "omit_neumann_coefficient"):
+        if self.execution.mesh_topology == "unstructured":
+            if self.external_mesh is None or not self.external_mesh.file.endswith(".msh"):
+                raise ValueError("mesh_topology='unstructured' requires a Gmsh .msh external_mesh input")
+        if self.problem.domain == "lshape_2d":
+            if self.execution.mesh_topology != "amr":
+                raise ValueError("lshape_2d domain currently requires mesh_topology='amr'")
+            if self.external_mesh is None or not self.external_mesh.file.endswith(".mesh"):
+                raise ValueError("lshape_2d domain requires an MFEM .mesh external_mesh input")
+        if self.execution.mesh_topology == "amr" and len(self.execution.mesh_levels) != 1:
+            raise ValueError("mesh_topology='amr' expects a single initial subdivision level in mesh_levels")
+        if self.execution.inject_fault in ("omit_coefficient_gradient", "omit_neumann_coefficient", "wrong_kappa"):
             if self.problem.kappa == "1":
                 raise ValueError("this fault requires a variable diffusion problem")
             if self.execution.inject_fault == "omit_neumann_coefficient" and not self.problem.neumann_attributes():
