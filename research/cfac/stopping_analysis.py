@@ -19,7 +19,7 @@ def spread(values):
     return {"min": min(values), "median": median(values), "max": max(values)}
 
 
-def summarize(trials, design):
+def summarize(trials, design, *, comparisons=CONTRASTS):
     policies = design["policies"]
     expected_cases = {case["id"] for case in design["cases"]}
     grouped = {(case, policy): {} for case in expected_cases for policy in policies}
@@ -59,7 +59,7 @@ def summarize(trials, design):
                 "action_counts": dict(counts), "action_total_ns": dict(costs),
             }
         contrasts = {}
-        for left, right in CONTRASTS:
+        for left, right in comparisons:
             ratios = []
             for block in blocks:
                 a, b = groups[left][block], groups[right][block]

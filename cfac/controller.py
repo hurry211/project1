@@ -1,5 +1,7 @@
 """Budgeted, deterministic CFAC demonstration for small rational CPU problems."""
 
+from dataclasses import dataclass
+from fractions import Fraction
 from time import perf_counter_ns
 
 from .checker import check, edges, validate_problem
@@ -9,6 +11,39 @@ from .prototype import ReferenceSystem
 from .rt1_checker import RT1Checker
 from .rt1_reconstruction import RT1Reconstructor
 from .spec import Mesh, Problem, digest_parts
+
+
+RESERVE_REMAINING_EXCESS = Fraction(9, 10)
+RESERVE_SLOW_INTERVALS = 2
+RESERVE_ACTIONS = 4
+
+
+@dataclass
+class _ProgressReserve:
+    """Track consecutive slow intervals between tight probes on the refined mesh."""
+    last_digest: str | None = None
+    last_excess: Fraction | None = None
+    slow_intervals: int = 0
+    attempted: bool = False
+    active: bool = False
+
+    def observe(self, report, threshold, remaining):
+        excess = report.certificate.upper_sq - threshold
+        previous = self.last_excess
+        if report.verdict != "PAIR_SUFFICIENT" or excess <= 0:
+            self.last_digest, self.last_excess, self.slow_intervals = None, None, 0
+        elif self.last_digest != report.state_digest:
+            if previous is not None and excess >= RESERVE_REMAINING_EXCESS * previous:
+                self.slow_intervals += 1
+            else:
+                self.slow_intervals = 0
+            self.last_digest, self.last_excess = report.state_digest, excess
+        triggered = self.slow_intervals >= RESERVE_SLOW_INTERVALS and remaining >= RESERVE_ACTIONS
+        if triggered:
+            self.attempted = self.active = True
+        return {"previous_excess_sq": None if previous is None else str(previous),
+                "excess_sq": str(excess), "slow_intervals": self.slow_intervals,
+                "remaining_actions": remaining, "triggered": triggered}
 
 
 def _problem_record(problem):
@@ -93,7 +128,8 @@ def run(problem, trusted_digest, *, allow_rt1=False, ablation=None, refine_piece
                 refine_piecewise=refine_piecewise)
 
 
-def _run(problem, trusted_digest, *, allow_rt1, ablation=None, refine_piecewise=False, stopping=None):
+def _run(problem, trusted_digest, *, allow_rt1, ablation=None, refine_piecewise=False, stopping=None,
+         progress_reserve=False):
     """Common numerical actions and independent acceptance for all scheduling policies."""
     start = perf_counter_ns()
     if ablation not in (None, "no_coarse", "no_witness", "no_floor"):
@@ -105,6 +141,7 @@ def _run(problem, trusted_digest, *, allow_rt1, ablation=None, refine_piecewise=
     state = previous_gap = None
     refined, dual_steps = False, 0
     prepared_rt1 = False
+    reserve = _ProgressReserve() if progress_reserve else None
     scheduled_sweeps = ("primal_sweep", "dual_coarse", "dual_local")
     next_sweep = 0
     for index in range(problem.max_actions):
@@ -146,13 +183,18 @@ def _run(problem, trusted_digest, *, allow_rt1, ablation=None, refine_piecewise=
             observation = _observation(report)
             if report.certificate.state_digest != state["state_digest"]:
                 next_action, next_reason = "INVALID_INPUT", "checker could not bind the inspected state"
+            elif reserve and (report.certificate.status != "CERTIFIED" or
+                              report.certificate.upper_sq is None or report.certificate.gap_sq is None):
+                next_action, next_reason = "INVALID_INPUT", "the reserve policy requires a certified current-field bound"
             else:
                 gap = report.certificate.gap_sq
                 gain = None if previous_gap is None else str(previous_gap - gap)
                 previous_gap = gap
                 can_refine = problem.original_affine is None and (refine_piecewise or len(set(problem.loads)) == 1)
                 next_action, next_reason = _choose(report, action, refined, can_refine, dual_steps)
-                if stopping and not report.certificate.accepted:
+                if reserve and reserve.active and action == "inspect" and not report.certificate.accepted:
+                    next_action, next_reason = "rt1_reconstruct", "try the reserved RT1 reconstruction on the swept field"
+                elif stopping and not report.certificate.accepted:
                     next_action, next_reason = "rt1_reconstruct", "try patch RT1 after the stopped field missed the RT0 target"
                 elif ablation == "no_floor" and not report.certificate.accepted:
                     if next_sweep < len(scheduled_sweeps):
@@ -176,6 +218,12 @@ def _run(problem, trusted_digest, *, allow_rt1, ablation=None, refine_piecewise=
                     else:
                         next_action = "rt1_reconstruct"
                         next_reason = "try RT1 on this field after the certified P1/RT0 pair-futility test"
+                if reserve and refined and action == "witness_probe" and not reserve.attempted:
+                    progress = reserve.observe(report, problem.epsilon**2, problem.max_actions - index - 1)
+                    observation["progress_reserve"] = progress
+                    if progress["triggered"]:
+                        next_action = "primal_sweep"
+                        next_reason = "reserve a primal sweep, RT0 check, RT1 construction and RT1 check after slow progress"
         elif action == "rt1_reconstruct":
             request = EnrichmentRequest(problem, trusted_digest, state["state_digest"], primal, flux, 1)
             try:
@@ -183,6 +231,10 @@ def _run(problem, trusted_digest, *, allow_rt1, ablation=None, refine_piecewise=
             except (ArithmeticError, ValueError) as exc:
                 next_action = "refine" if can_refine and not refined else "NO_ELIGIBLE_ACTION"
                 next_reason = f"RT1 construction failed on the current field: {exc}"
+                if reserve and reserve.active:
+                    reserve.active = False
+                    next_action = "inspect"
+                    next_reason = f"resume from the retained RT0 field after the reserved construction failed: {exc}"
             else:
                 candidate_digest = candidate.digest()
                 state = {"space": "P1/RT1", "problem_digest": trusted_digest,
@@ -203,10 +255,17 @@ def _run(problem, trusted_digest, *, allow_rt1, ablation=None, refine_piecewise=
                 gain = str(previous_gap - cert.gap_sq)
                 if cert.accepted:
                     next_action, next_reason = "ACCEPTED", "the RT1 checker accepted this P1 field"
+                elif reserve and reserve.active:
+                    next_action, next_reason = "restore_rt0", "restore the swept RT0 parent after the reserved RT1 trial missed"
                 elif can_refine and not refined:
                     next_action, next_reason = "refine", "try the allowed refinement after the RT1 trial missed the target"
                 else:
                     next_action, next_reason = "NO_ELIGIBLE_ACTION", "the RT1 trial missed the target and no refinement remains"
+        elif action == "restore_rt0":
+            # The reserved trial changed only the retained certificate representation.
+            # The primal coefficients and RT0 flux still match this candidate's parent.
+            state = before["parent"]
+            reserve.active = False
         elif action == "refine":
             problem, primal = _refine(problem, primal)
             trusted_digest = problem.digest()

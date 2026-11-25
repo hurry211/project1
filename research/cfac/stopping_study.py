@@ -1,6 +1,7 @@
 """Paired Linux fresh-process measurements and platform-independent proof replay."""
 import argparse
 from collections import Counter
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from fractions import Fraction
 import gzip
@@ -31,14 +32,26 @@ SCHEMA = "cfac-stopping-measurements-v1"
 TERMINAL = {"ACCEPTED", "NO_ELIGIBLE_ACTION", "INVALID_INPUT", "UNDETERMINED", "BUDGET_EXHAUSTED"}
 
 
+@dataclass(frozen=True)
+class StudyProtocol:
+    design_path: Path
+    design_sha: str
+    design_commit: str
+    schema: str
+    worker_module: str
+
+
+STOPPING = StudyProtocol(DESIGN_PATH, DESIGN_SHA, DESIGN_COMMIT, SCHEMA, "research.cfac.stopping_study")
+
+
 def require(condition, message):
     if not condition:
         raise ValueError(message)
 
 
-def design():
-    raw = DESIGN_PATH.read_bytes()
-    require(hashlib.sha256(raw).hexdigest() == DESIGN_SHA, "frozen design digest differs")
+def design(protocol=STOPPING):
+    raw = protocol.design_path.read_bytes()
+    require(hashlib.sha256(raw).hexdigest() == protocol.design_sha, "frozen design digest differs")
     return json.loads(raw)
 
 
@@ -67,9 +80,9 @@ def delivery(journal):
     return packet
 
 
-def worker(case_id, policy, destination):
+def worker(case_id, policy, destination, protocol=STOPPING):
     from cfac.baselines import BALANCE_FRACTION, RELATIVE_TOLERANCE, run_policy
-    spec = design()
+    spec = design(protocol)
     require(BALANCE_FRACTION == Fraction(spec["classical_fraction"])
             and RELATIVE_TOLERANCE == Fraction(spec["fixed_relative"]), "stopping parameters differ from protocol")
     case = next(c for c in spec["cases"] if c["id"] == case_id)
@@ -120,9 +133,9 @@ def _receive(pipe, deadline):
             return packet, peak, len(data)
 
 
-def collect(case, block, position, policy, timeout, journals, directory):
+def collect(case, block, position, policy, timeout, journals, directory, protocol=STOPPING):
     destination = directory / "worker.json"
-    command = [sys.executable, "-m", "research.cfac.stopping_study", "--worker", case["id"], policy,
+    command = [sys.executable, "-m", protocol.worker_module, "--worker", case["id"], policy,
                "--journal", str(destination)]
     row = dict(case=case["id"], block=block, position=position, policy=policy,
                accepted=False, status="WORKER_ERROR", controller_ns=None, peak_rss_kib=None,
@@ -236,6 +249,11 @@ def validate_journal(case, journal):
         require(event["step"] == i+1 and event["before"] == before and event["action"] == next_action,
                 "disconnected action trace")
         after = event["after"]
+        if event["action"] == "rt1_reconstruct" and after and after.get("space") == "P1/RT1":
+            require(after["parent"] == before, "RT1 reconstruction changed its parent field")
+        if event["action"] == "restore_rt0":
+            require(before and before.get("space") == "P1/RT1" and after == before["parent"],
+                    "RT0 restoration differs from the enriched field's parent")
         if after:
             label = after["problem_digest"]
             require(label in problems, "unknown state problem")
@@ -264,10 +282,10 @@ def validate_journal(case, journal):
                 and trace[-1]["observation"]["accepted"] is True, "missing independently accepted final field")
 
 
-def _replay_trials(receipt, spec):
+def _replay_trials(receipt, spec, protocol=STOPPING):
     from cfac.baselines import run_policy
-    require(receipt["schema"] == SCHEMA and receipt["design_sha256"] == DESIGN_SHA and
-            receipt["design_commit"] == DESIGN_COMMIT, "receipt or design identity mismatch")
+    require(receipt["schema"] == protocol.schema and receipt["design_sha256"] == protocol.design_sha and
+            receipt["design_commit"] == protocol.design_commit, "receipt or design identity mismatch")
     require(re.fullmatch("[0-9a-f]{40}", receipt["revision"]), "invalid code revision")
     checked = set()
     for (case, block, pos, policy), row in zip(schedule(spec), receipt["trials"], strict=True):
@@ -307,8 +325,8 @@ def _replay_trials(receipt, spec):
     require({key for _, _, key in checked} == set(receipt["journals"]), "unreferenced journal")
 
 
-def replay(receipt):
-    _replay_trials(receipt, design())
+def replay(receipt, protocol=STOPPING):
+    _replay_trials(receipt, design(protocol), protocol)
 
 
 def verify_checkout(revision, root):
@@ -326,15 +344,15 @@ def verify_checkout(revision, root):
         raise ValueError(hint) from exc
 
 
-def measure(revision):
+def measure(revision, protocol=STOPPING):
     require(sys.platform == "linux" and hasattr(os, "pidfd_open"), "fresh-worker measurement requires Linux pidfds")
     require(len(os.sched_getaffinity(0)) == 1, "pin the experiment to one available CPU using taskset -c")
     require(re.fullmatch("[0-9a-f]{40}", revision), "supply the full implementation commit")
-    verify_checkout(revision, DESIGN_PATH.parents[2])
-    spec = design()
+    verify_checkout(revision, protocol.design_path.parents[2])
+    spec = design(protocol)
     cpu = next((l.partition(":")[2].strip() for l in Path("/proc/cpuinfo").read_text().splitlines()
                 if l.startswith("model name")), platform.machine())
-    data = {"schema": SCHEMA, "design_sha256": DESIGN_SHA, "design_commit": DESIGN_COMMIT,
+    data = {"schema": protocol.schema, "design_sha256": protocol.design_sha, "design_commit": protocol.design_commit,
             "revision": revision, "environment": {"started_utc": datetime.now(timezone.utc).isoformat(),
             "platform": platform.platform(), "python": platform.python_version(), "cpu": cpu,
             "affinity": sorted(os.sched_getaffinity(0)),
@@ -344,13 +362,14 @@ def measure(revision):
             "journals": {}, "trials": []}
     with tempfile.TemporaryDirectory() as td:
         for case, block, pos, policy in schedule(spec):
-            data["trials"].append(collect(case, block, pos, policy, spec["timeout_s"], data["journals"], Path(td)))
+            row = collect(case, block, pos, policy, spec["timeout_s"], data["journals"], Path(td), protocol)
+            data["trials"].append(row)
     data["environment"]["completed_utc"] = datetime.now(timezone.utc).isoformat()
-    replay(data)
+    replay(data, protocol)
     return data
 
 
-def main():
+def main(protocol=STOPPING, *, summarize_receipt=None):
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--output", type=Path)
@@ -359,20 +378,31 @@ def main():
     parser.add_argument("--revision")
     parser.add_argument("--sha256", help="externally retained digest of the compressed receipt")
     parser.add_argument("--journal", type=Path, help=argparse.SUPPRESS)
+    if summarize_receipt:
+        parser.add_argument("--summary", type=Path, help="write paired contrasts after replaying the entire receipt")
     args = parser.parse_args()
+    if getattr(args, "summary", None) and not args.replay:
+        parser.error("--summary requires --replay and --sha256")
     if args.worker:
-        worker(*args.worker, args.journal)
+        worker(*args.worker, args.journal, protocol)
     elif args.replay:
+        if summarize_receipt and not args.sha256:
+            parser.error("--replay requires the externally retained --sha256")
         raw = args.replay.read_bytes()
         if args.sha256:
             require(hashlib.sha256(raw).hexdigest() == args.sha256, "receipt digest mismatch")
         data = json.loads(gzip.decompress(raw))
-        replay(data)
+        replay(data, protocol)
         print("Replayed", len(data["trials"]), "scheduled trials")
+        if getattr(args, "summary", None):
+            result = summarize_receipt(data, args.sha256)
+            with args.summary.open("x", encoding="utf-8", newline="\n") as output:
+                json.dump(result, output, indent=2, sort_keys=True, allow_nan=False)
+                output.write("\n")
     else:
         if not args.revision or args.output.exists():
             parser.error("supply --revision and a new output path")
-        data = measure(args.revision)
+        data = measure(args.revision, protocol)
         with tempfile.TemporaryDirectory(dir=args.output.parent) as td:
             complete = Path(td) / "receipt.gz"
             with gzip.open(complete, "wt", encoding="utf-8", compresslevel=6) as out:

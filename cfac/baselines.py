@@ -37,6 +37,8 @@ def run_policy(problem, trusted_digest, *, policy):
     """Dispatch a frozen benchmark policy without changing the foundation defaults."""
     if policy in ("fixed", "classical"):
         return run_baseline(problem, trusted_digest, policy=policy)
+    if policy == "cfac_reserve":
+        return _run(problem, trusted_digest, allow_rt1=True, refine_piecewise=True, progress_reserve=True)
     if policy not in ("cfac", "cfac_rt0", "no_coarse", "no_witness", "no_floor"):
         raise ValueError(f"unknown benchmark policy {policy}")
     ablation = None if policy in ("cfac", "cfac_rt0") else policy
