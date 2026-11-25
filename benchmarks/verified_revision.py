@@ -35,7 +35,7 @@ def numerical_digest(attempt):
         raw = json.loads((attempt / result).read_bytes())
         for key in ("time_setup_ms", "time_solve_ms", "time_error_ms"):
             del raw[key]
-        for key in ("time_rhs_ms", "time_assembly_ms", "time_preconditioner_ms", "time_export_ms", "peak_rss_kib"):
+        for key in ("time_rhs_ms", "time_assembly_ms", "time_preconditioner_ms", "time_cg_ms", "time_export_ms", "peak_rss_kib"):
             raw.pop(key, None)
         verdict["input_sha256"][result.as_posix()] = digest_json(raw)
     return digest_json(verdict)

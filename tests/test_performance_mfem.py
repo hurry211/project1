@@ -74,8 +74,8 @@ def test_retry_detects_corruption_before_reusing_verdict(specs_dir, tmp_path, mo
 def test_gmsh_diffusion_retry_replays_from_pinned_mesh(specs_dir, tmp_path):
     source = specs_dir / "stage2"
     raw = json.loads((source / "diffusion_gmsh_p2_quad.json").read_bytes())
-    raw["execution"]["mesh_levels"] = [4, 8, 16]
-    raw["validation"]["max_l2_error_finest"] = 1e-4
+    raw["execution"]["mesh_levels"] = [8, 16, 32]
+    raw["validation"]["max_l2_error_finest"] = 1e-5
     raw["policy"]["max_attempts"] = 3
     mesh = tmp_path / raw["external_mesh"]["file"]
     shutil.copyfile(source / mesh.name, mesh)

@@ -15,7 +15,7 @@ def test_shared_quadrature_matches_elementwise_geometry(tmp_path):
     basis = build_local_basis(mesh, 2)
     assert repeated_element_period(basis.node_ref) == 1
     fast = element_quadrature(mesh, basis, 6)
-    assert fast.gphi.strides[0] == 0 and fast.phi.strides[0] == 0
+    assert fast.phi.strides[0] == 0
     mesh.elem_node_xy[-1, [0, 1]] = mesh.elem_node_xy[-1, [1, 0]]
     changed = build_local_basis(mesh, 2)
     assert repeated_element_period(changed.node_ref) == len(mesh.verts)

@@ -87,6 +87,8 @@ def _science(archive, manifest, actual, saved, worker, replay):
                "native/field receipt differs")
         for kind in ("setup", "solve", "error"):
             _check(raw.pop(f"time_{kind}_ms") / 1000 == native[f"{kind}_seconds"], "native timer differs")
+        for key in ("time_rhs_ms", "time_assembly_ms", "time_preconditioner_ms", "time_cg_ms", "time_export_ms", "peak_rss_kib"):
+            raw.pop(key, None)
         pins[result_key] = digest_json(raw)
     _check(set(pins) == expected_inputs and
            all(pins[k] == actual[k] for k in ("frozen/problem.json", "frozen/validation.json")) and
