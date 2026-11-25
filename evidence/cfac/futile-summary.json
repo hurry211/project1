@@ -1,0 +1,5077 @@
+{
+  "cases": {
+    "budget": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac_retry/classical": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "setup": 6
+          },
+          "action_total_ns": {
+            "setup": 4709512
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 0.854375,
+            "median": 0.7852185,
+            "min": 0.727121
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.3125,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 35.03125
+          },
+          "statuses": {
+            "BUDGET_EXHAUSTED": 6
+          },
+          "submitted_ms": {
+            "max": 68.004379,
+            "median": 59.581714500000004,
+            "min": 56.870474
+          },
+          "submitted_total_ns": 368166330,
+          "unsuccessful_total_ns": 368166330
+        },
+        "cfac_retry": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "setup": 6
+          },
+          "action_total_ns": {
+            "setup": 4682023
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 1.041876,
+            "median": 0.7331825000000001,
+            "min": 0.717272
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 35.03125
+          },
+          "statuses": {
+            "BUDGET_EXHAUSTED": 6
+          },
+          "submitted_ms": {
+            "max": 64.751891,
+            "median": 58.5963335,
+            "min": 54.773901
+          },
+          "submitted_total_ns": 355100440,
+          "unsuccessful_total_ns": 355100440
+        },
+        "classical": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "setup": 6
+          },
+          "action_total_ns": {
+            "setup": 5050358
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 1.459055,
+            "median": 0.7212000000000001,
+            "min": 0.689861
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 35.03125
+          },
+          "statuses": {
+            "BUDGET_EXHAUSTED": 6
+          },
+          "submitted_ms": {
+            "max": 59.137717,
+            "median": 58.400287500000005,
+            "min": 57.257114
+          },
+          "submitted_total_ns": 349735536,
+          "unsuccessful_total_ns": 349735536
+        }
+      }
+    },
+    "checker_loose": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 0.8658879702929866,
+            "median": 0.8307446726077595,
+            "min": 0.7672862408274117
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.8658879702929866
+            },
+            {
+              "block": 1,
+              "ratio": 0.7932260676660252
+            },
+            {
+              "block": 2,
+              "ratio": 0.8389453632470402
+            },
+            {
+              "block": 3,
+              "ratio": 0.8640430699748938
+            },
+            {
+              "block": 4,
+              "ratio": 0.7672862408274117
+            },
+            {
+              "block": 5,
+              "ratio": 0.8225439819684789
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.0106346043134997,
+            "median": 0.9684397199149561,
+            "min": 0.937621634470849
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.9611699574440701
+            },
+            {
+              "block": 1,
+              "ratio": 0.9551901430406734
+            },
+            {
+              "block": 2,
+              "ratio": 1.0106346043134997
+            },
+            {
+              "block": 3,
+              "ratio": 0.937621634470849
+            },
+            {
+              "block": 4,
+              "ratio": 0.9757094823858422
+            },
+            {
+              "block": 5,
+              "ratio": 0.976467985221616
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 0.8478672152258178,
+            "median": 0.8066666701759979,
+            "min": 0.7486484608794925
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.8322655035578421
+            },
+            {
+              "block": 1,
+              "ratio": 0.7576817210375014
+            },
+            {
+              "block": 2,
+              "ratio": 0.8478672152258178
+            },
+            {
+              "block": 3,
+              "ratio": 0.81014547552307
+            },
+            {
+              "block": 4,
+              "ratio": 0.7486484608794925
+            },
+            {
+              "block": 5,
+              "ratio": 0.8031878648289259
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 87.181287,
+            "median": 81.1813995,
+            "min": 77.502926
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 6,
+            "inspect": 24,
+            "primal_sweep": 6,
+            "setup": 6,
+            "witness_probe": 6
+          },
+          "action_total_ns": {
+            "dual_coarse": 8077313,
+            "dual_local": 4882622,
+            "inspect": 68793543,
+            "primal_sweep": 537075,
+            "setup": 8466647,
+            "witness_probe": 41916282
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 22.909529,
+            "median": 22.384406,
+            "min": 20.751335
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.484375,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 25.75
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 87.181287,
+            "median": 81.1813995,
+            "min": 77.502926
+          },
+          "submitted_total_ns": 489228698,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 83.777456,
+            "median": 77.236277,
+            "min": 75.679126
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 6,
+            "inspect": 24,
+            "primal_sweep": 6,
+            "setup": 6,
+            "witness_probe": 6
+          },
+          "action_total_ns": {
+            "dual_coarse": 8042889,
+            "dual_local": 4759439,
+            "inspect": 66448596,
+            "primal_sweep": 486479,
+            "setup": 8713715,
+            "witness_probe": 42092039
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 24.593407,
+            "median": 21.002884,
+            "min": 20.417475
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 25.75
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 83.777456,
+            "median": 77.236277,
+            "min": 75.679126
+          },
+          "submitted_total_ns": 474212754,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 109.907239,
+            "median": 96.99667600000001,
+            "min": 92.529261
+          },
+          "action_counts": {
+            "inspect": 6,
+            "primal_sweep": 12,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "stopping_check": 18
+          },
+          "action_total_ns": {
+            "inspect": 8266543,
+            "primal_sweep": 969080,
+            "rt1_inspect": 20605393,
+            "rt1_reconstruct": 175994007,
+            "setup": 9031419,
+            "stopping_check": 18197866
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 42.930919,
+            "median": 38.2524665,
+            "min": 36.709432
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 25.75
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 109.907239,
+            "median": 96.99667600000001,
+            "min": 92.529261
+          },
+          "submitted_total_ns": 593986042,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "checker_tight": {
+      "futile_gate": {
+        "charged_action_counts": {
+          "futile_stopping_check": 48,
+          "primal_sweep": 42,
+          "rt1_inspect": 6,
+          "rt1_reconstruct": 6
+        },
+        "charged_action_total_ns": {
+          "futile_stopping_check": 233004890,
+          "primal_sweep": 42798408,
+          "rt1_inspect": 103136089,
+          "rt1_reconstruct": 794084237
+        },
+        "counts": {
+          "eligible": 6,
+          "entered": 6,
+          "gate_satisfied": 6,
+          "rt1_accepted": 6
+        },
+        "eligible_probe_total_ns": 202081787,
+        "eligible_terminal_statuses": {
+          "ACCEPTED": 6
+        }
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 1.4452626640353536,
+            "median": 1.383803933951103,
+            "min": 1.3342055422350376
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.4024380732007056
+            },
+            {
+              "block": 1,
+              "ratio": 1.4452626640353536
+            },
+            {
+              "block": 2,
+              "ratio": 1.3733908229317162
+            },
+            {
+              "block": 3,
+              "ratio": 1.3786898672698134
+            },
+            {
+              "block": 4,
+              "ratio": 1.3342055422350376
+            },
+            {
+              "block": 5,
+              "ratio": 1.3889180006323927
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "inspect": 24,
+            "primal_sweep": 12,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "witness_probe": 24
+          },
+          "action_total_ns": {
+            "inspect": 175257001,
+            "primal_sweep": 6397592,
+            "refine": 39985397,
+            "rt1_inspect": 108416515,
+            "rt1_reconstruct": 905874873,
+            "setup": 10434805,
+            "witness_probe": 493752241
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 309.548009,
+            "median": 289.7705075,
+            "min": 270.823665
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.0,
+            "min": 22.0
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 26.4375
+          },
+          "statuses": {
+            "NO_ELIGIBLE_ACTION": 6
+          },
+          "submitted_ms": {
+            "max": 373.422776,
+            "median": 351.08216649999997,
+            "min": 328.704771
+          },
+          "submitted_total_ns": 2111971699,
+          "unsuccessful_total_ns": 2111971699
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 448.793575,
+            "median": 403.3876075,
+            "min": 394.28246
+          },
+          "action_counts": {
+            "futile_stopping_check": 48,
+            "inspect": 24,
+            "primal_sweep": 54,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "witness_probe": 24
+          },
+          "action_total_ns": {
+            "futile_stopping_check": 233004890,
+            "inspect": 176877659,
+            "primal_sweep": 49174703,
+            "refine": 38919436,
+            "rt1_inspect": 124531131,
+            "rt1_reconstruct": 971555528,
+            "setup": 9106596,
+            "witness_probe": 495816723
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 377.653431,
+            "median": 343.15527399999996,
+            "min": 334.363385
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.171875,
+            "min": 22.171875
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 25.75
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 448.793575,
+            "median": 403.3876075,
+            "min": 394.28246
+          },
+          "submitted_total_ns": 2477390028,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 310.884992,
+            "median": 296.734109,
+            "min": 283.877421
+          },
+          "action_counts": {
+            "inspect": 12,
+            "primal_sweep": 48,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "stopping_check": 60
+          },
+          "action_total_ns": {
+            "inspect": 44928412,
+            "primal_sweep": 35660523,
+            "refine": 37571506,
+            "rt1_inspect": 118365631,
+            "rt1_reconstruct": 957260256,
+            "setup": 8893989,
+            "stopping_check": 220667819
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 246.946329,
+            "median": 236.807443,
+            "min": 228.212858
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.34375,
+            "median": 22.171875,
+            "min": 22.171875
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 26.09375
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 310.884992,
+            "median": 296.734109,
+            "min": 283.877421
+          },
+          "submitted_total_ns": 1785754197,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "diagonal_loose": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 1.094106848898445,
+            "median": 1.040465663715837,
+            "min": 0.9518896786963069
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.022877207392049
+            },
+            {
+              "block": 1,
+              "ratio": 1.0872092564401727
+            },
+            {
+              "block": 2,
+              "ratio": 0.9518896786963069
+            },
+            {
+              "block": 3,
+              "ratio": 1.094106848898445
+            },
+            {
+              "block": 4,
+              "ratio": 1.058054120039625
+            },
+            {
+              "block": 5,
+              "ratio": 1.0028086414890998
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.0272441486944448,
+            "median": 0.974349018576941,
+            "min": 0.9486301446117921
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0064995719908492
+            },
+            {
+              "block": 1,
+              "ratio": 0.9486301446117921
+            },
+            {
+              "block": 2,
+              "ratio": 0.9840957911591093
+            },
+            {
+              "block": 3,
+              "ratio": 0.960900987144961
+            },
+            {
+              "block": 4,
+              "ratio": 1.0272441486944448
+            },
+            {
+              "block": 5,
+              "ratio": 0.9646022459947727
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 1.0868799038127543,
+            "median": 1.0304424727997064,
+            "min": 0.9367506264528325
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0295254714392925
+            },
+            {
+              "block": 1,
+              "ratio": 1.0313594741601202
+            },
+            {
+              "block": 2,
+              "ratio": 0.9367506264528325
+            },
+            {
+              "block": 3,
+              "ratio": 1.0513283511485783
+            },
+            {
+              "block": 4,
+              "ratio": 1.0868799038127543
+            },
+            {
+              "block": 5,
+              "ratio": 0.9673114678833525
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 110.480202,
+            "median": 102.7545815,
+            "min": 98.796579
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 12,
+            "inspect": 36,
+            "primal_sweep": 12,
+            "setup": 6,
+            "witness_probe": 18
+          },
+          "action_total_ns": {
+            "dual_coarse": 8340042,
+            "dual_local": 10280741,
+            "inspect": 108716953,
+            "primal_sweep": 1343299,
+            "setup": 8752505,
+            "witness_probe": 130928471
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 48.735706,
+            "median": 44.093013,
+            "min": 42.363275
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.3125,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 26.78125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 110.480202,
+            "median": 102.7545815,
+            "min": 98.796579
+          },
+          "submitted_total_ns": 620510099,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 104.80485,
+            "median": 102.788315,
+            "min": 95.299402
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 12,
+            "inspect": 36,
+            "primal_sweep": 12,
+            "setup": 6,
+            "witness_probe": 18
+          },
+          "action_total_ns": {
+            "dual_coarse": 9005864,
+            "dual_local": 10467188,
+            "inspect": 105449134,
+            "primal_sweep": 1154458,
+            "setup": 8566999,
+            "witness_probe": 126496045
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 45.599977,
+            "median": 43.9123245,
+            "min": 39.758813
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.3125,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 26.953125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 104.80485,
+            "median": 102.788315,
+            "min": 95.299402
+          },
+          "submitted_total_ns": 609004625,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 110.966854,
+            "median": 99.16333900000001,
+            "min": 94.523726
+          },
+          "action_counts": {
+            "inspect": 6,
+            "primal_sweep": 18,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "stopping_check": 24
+          },
+          "action_total_ns": {
+            "inspect": 8006602,
+            "primal_sweep": 1528393,
+            "rt1_inspect": 20158775,
+            "rt1_reconstruct": 172928223,
+            "setup": 9845944,
+            "stopping_check": 25168185
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 42.16664,
+            "median": 39.8475255,
+            "min": 37.421475
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.3984375,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 26.78125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 110.966854,
+            "median": 99.16333900000001,
+            "min": 94.523726
+          },
+          "submitted_total_ns": 600039227,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "diagonal_tight": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 1.7587188796314455,
+            "median": 1.7104934580122835,
+            "min": 1.6311310403330634
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.7125683642733596
+            },
+            {
+              "block": 1,
+              "ratio": 1.6311310403330634
+            },
+            {
+              "block": 2,
+              "ratio": 1.7179229262718243
+            },
+            {
+              "block": 3,
+              "ratio": 1.7587188796314455
+            },
+            {
+              "block": 4,
+              "ratio": 1.6558322983784792
+            },
+            {
+              "block": 5,
+              "ratio": 1.7084185517512074
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.0526080854186852,
+            "median": 1.0276407182299296,
+            "min": 0.967035806482879
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0259450871937068
+            },
+            {
+              "block": 1,
+              "ratio": 1.0288704847244239
+            },
+            {
+              "block": 2,
+              "ratio": 1.0264109517354356
+            },
+            {
+              "block": 3,
+              "ratio": 0.967035806482879
+            },
+            {
+              "block": 4,
+              "ratio": 1.0526080854186852
+            },
+            {
+              "block": 5,
+              "ratio": 1.0449676162933597
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 1.785242061654813,
+            "median": 1.749971782590104,
+            "min": 1.6782225841165328
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.757001099809616
+            },
+            {
+              "block": 1,
+              "ratio": 1.6782225841165328
+            },
+            {
+              "block": 2,
+              "ratio": 1.7632949057627876
+            },
+            {
+              "block": 3,
+              "ratio": 1.7007441301410602
+            },
+            {
+              "block": 4,
+              "ratio": 1.742942465370592
+            },
+            {
+              "block": 5,
+              "ratio": 1.785242061654813
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 583.203994,
+            "median": 552.3392195,
+            "min": 533.277589
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 24,
+            "inspect": 72,
+            "primal_sweep": 30,
+            "refine": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 60
+          },
+          "action_total_ns": {
+            "dual_coarse": 44808822,
+            "dual_local": 108567467,
+            "inspect": 800162022,
+            "primal_sweep": 24835949,
+            "refine": 39375723,
+            "rt1_inspect": 23901856,
+            "rt1_reconstruct": 176380621,
+            "setup": 8681503,
+            "witness_probe": 1741905023
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 521.824101,
+            "median": 490.311189,
+            "min": 475.756605
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.0,
+            "min": 22.0
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 26.953125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 583.203994,
+            "median": 552.3392195,
+            "min": 533.277589
+          },
+          "submitted_total_ns": 3325713226,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 600.041376,
+            "median": 565.892011,
+            "min": 536.201808
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 24,
+            "inspect": 72,
+            "primal_sweep": 30,
+            "refine": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 60
+          },
+          "action_total_ns": {
+            "dual_coarse": 46406723,
+            "dual_local": 105410396,
+            "inspect": 817189437,
+            "primal_sweep": 27903946,
+            "refine": 41843660,
+            "rt1_inspect": 22759203,
+            "rt1_reconstruct": 187294586,
+            "setup": 9055304,
+            "witness_probe": 1777436449
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 532.322925,
+            "median": 503.8902165,
+            "min": 478.837363
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.0,
+            "min": 22.0
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 27.640625
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 600.041376,
+            "median": 565.892011,
+            "min": 536.201808
+          },
+          "submitted_total_ns": 3405819231,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 357.545764,
+            "median": 323.38055099999997,
+            "min": 312.14692
+          },
+          "action_counts": {
+            "inspect": 12,
+            "primal_sweep": 72,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "stopping_check": 84
+          },
+          "action_total_ns": {
+            "inspect": 44638326,
+            "primal_sweep": 58981567,
+            "refine": 40878704,
+            "rt1_inspect": 127567204,
+            "rt1_reconstruct": 986357693,
+            "setup": 8669351,
+            "stopping_check": 327520804
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 286.52505,
+            "median": 263.8733305,
+            "min": 254.777043
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.171875,
+            "min": 22.171875
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 28.328125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 357.545764,
+            "median": 323.38055099999997,
+            "min": 312.14692
+          },
+          "submitted_total_ns": 1960961238,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "dipole_loose": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 0.9984274472427239,
+            "median": 0.8650961327551943,
+            "min": 0.7778161469599005
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.9984274472427239
+            },
+            {
+              "block": 1,
+              "ratio": 0.8646855108327492
+            },
+            {
+              "block": 2,
+              "ratio": 0.7778161469599005
+            },
+            {
+              "block": 3,
+              "ratio": 0.9042083766846245
+            },
+            {
+              "block": 4,
+              "ratio": 0.8474401181519113
+            },
+            {
+              "block": 5,
+              "ratio": 0.8655067546776394
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.0192877525290036,
+            "median": 0.9375418593718895,
+            "min": 0.8844876932366819
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.8844876932366819
+            },
+            {
+              "block": 1,
+              "ratio": 0.8941751099397437
+            },
+            {
+              "block": 2,
+              "ratio": 0.9113875274697295
+            },
+            {
+              "block": 3,
+              "ratio": 0.9693813370477316
+            },
+            {
+              "block": 4,
+              "ratio": 0.9636961912740495
+            },
+            {
+              "block": 5,
+              "ratio": 1.0192877525290036
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 0.8830967896759057,
+            "median": 0.8465987696780639,
+            "min": 0.7088919350038155
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.8830967896759057
+            },
+            {
+              "block": 1,
+              "ratio": 0.7731802617121769
+            },
+            {
+              "block": 2,
+              "ratio": 0.7088919350038155
+            },
+            {
+              "block": 3,
+              "ratio": 0.8765227251603003
+            },
+            {
+              "block": 4,
+              "ratio": 0.8166748141958275
+            },
+            {
+              "block": 5,
+              "ratio": 0.8822004347740429
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 96.941967,
+            "median": 88.14745450000001,
+            "min": 85.041876
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 12,
+            "inspect": 30,
+            "primal_sweep": 6,
+            "setup": 6,
+            "witness_probe": 6
+          },
+          "action_total_ns": {
+            "dual_coarse": 8036531,
+            "dual_local": 9703106,
+            "inspect": 87830240,
+            "primal_sweep": 562051,
+            "setup": 8706212,
+            "witness_probe": 44498243
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 28.105766,
+            "median": 26.9736885,
+            "min": 24.662195
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 28.5
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 96.941967,
+            "median": 88.14745450000001,
+            "min": 85.041876
+          },
+          "submitted_total_ns": 538198264,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 86.869871,
+            "median": 84.39914350000001,
+            "min": 80.717647
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 12,
+            "inspect": 30,
+            "primal_sweep": 6,
+            "setup": 6,
+            "witness_probe": 6
+          },
+          "action_total_ns": {
+            "dual_coarse": 7881042,
+            "dual_local": 9871737,
+            "inspect": 85251379,
+            "primal_sweep": 670611,
+            "setup": 8765596,
+            "witness_probe": 41312593
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 26.548568,
+            "median": 25.824948499999998,
+            "min": 24.30653
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 28.5
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 86.869871,
+            "median": 84.39914350000001,
+            "min": 80.717647
+          },
+          "submitted_total_ns": 505023431,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 113.86453,
+            "median": 99.41051350000001,
+            "min": 94.842605
+          },
+          "action_counts": {
+            "inspect": 6,
+            "primal_sweep": 12,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "stopping_check": 18
+          },
+          "action_total_ns": {
+            "inspect": 8338693,
+            "primal_sweep": 947233,
+            "rt1_inspect": 19980324,
+            "rt1_reconstruct": 181795388,
+            "setup": 9053919,
+            "stopping_check": 18717206
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 44.516045,
+            "median": 38.643011,
+            "min": 36.740984
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.3125,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 28.5
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 113.86453,
+            "median": 99.41051350000001,
+            "min": 94.842605
+          },
+          "submitted_total_ns": 616663815,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "dipole_tight": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 1.4537229646723577,
+            "median": 1.43343962319812,
+            "min": 1.3772339714107988
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.3772339714107988
+            },
+            {
+              "block": 1,
+              "ratio": 1.4480253611835832
+            },
+            {
+              "block": 2,
+              "ratio": 1.4537229646723577
+            },
+            {
+              "block": 3,
+              "ratio": 1.4384517210808991
+            },
+            {
+              "block": 4,
+              "ratio": 1.4284275253153407
+            },
+            {
+              "block": 5,
+              "ratio": 1.3776022741943448
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.0625737047705324,
+            "median": 1.0200913622466676,
+            "min": 0.9808750882989561
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0625737047705324
+            },
+            {
+              "block": 1,
+              "ratio": 1.0278408371466727
+            },
+            {
+              "block": 2,
+              "ratio": 0.9808750882989561
+            },
+            {
+              "block": 3,
+              "ratio": 0.9951927926139773
+            },
+            {
+              "block": 4,
+              "ratio": 1.0123418873466627
+            },
+            {
+              "block": 5,
+              "ratio": 1.043177999809902
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 1.488339599448547,
+            "median": 1.4415707009216416,
+            "min": 1.4259206413352192
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.4634126033378059
+            },
+            {
+              "block": 1,
+              "ratio": 1.488339599448547
+            },
+            {
+              "block": 2,
+              "ratio": 1.4259206413352192
+            },
+            {
+              "block": 3,
+              "ratio": 1.431536785342882
+            },
+            {
+              "block": 4,
+              "ratio": 1.4460570169156548
+            },
+            {
+              "block": 5,
+              "ratio": 1.4370843849276287
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 414.746724,
+            "median": 401.598714,
+            "min": 377.121105
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 18,
+            "inspect": 54,
+            "primal_sweep": 18,
+            "refine": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 42
+          },
+          "action_total_ns": {
+            "dual_coarse": 44532619,
+            "dual_local": 77716977,
+            "inspect": 540622881,
+            "primal_sweep": 12815027,
+            "refine": 38494714,
+            "rt1_inspect": 19582012,
+            "rt1_reconstruct": 170574345,
+            "setup": 8627063,
+            "witness_probe": 1100103143
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 354.381734,
+            "median": 334.7380355,
+            "min": 319.420199
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.0,
+            "min": 22.0
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 28.84375
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 414.746724,
+            "median": 401.598714,
+            "min": 377.121105
+          },
+          "submitted_total_ns": 2384021585,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 426.29362,
+            "median": 400.206651,
+            "min": 388.241661
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 18,
+            "inspect": 54,
+            "primal_sweep": 18,
+            "refine": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 42
+          },
+          "action_total_ns": {
+            "dual_coarse": 49357831,
+            "dual_local": 78000016,
+            "inspect": 548445811,
+            "primal_sweep": 12402984,
+            "refine": 40169358,
+            "rt1_inspect": 21149555,
+            "rt1_reconstruct": 191625961,
+            "setup": 9395707,
+            "witness_probe": 1116923761
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 364.280752,
+            "median": 339.929343,
+            "min": 327.451716
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.0,
+            "min": 22.0
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 29.1875
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 426.29362,
+            "median": 400.206651,
+            "min": 388.241661
+          },
+          "submitted_total_ns": 2431823229,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 289.371709,
+            "median": 280.11144049999996,
+            "min": 268.482955
+          },
+          "action_counts": {
+            "inspect": 12,
+            "primal_sweep": 36,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "stopping_check": 48
+          },
+          "action_total_ns": {
+            "inspect": 43779301,
+            "primal_sweep": 25079749,
+            "refine": 40481338,
+            "rt1_inspect": 116438469,
+            "rt1_reconstruct": 916611063,
+            "setup": 8662745,
+            "stopping_check": 160476837
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 227.342953,
+            "median": 218.798068,
+            "min": 208.610183
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.0,
+            "min": 22.0
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 28.5
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 289.371709,
+            "median": 280.11144049999996,
+            "min": 268.482955
+          },
+          "submitted_total_ns": 1678251626,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "edge_loose": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 1.000356067058608,
+            "median": 0.94114908104337,
+            "min": 0.9122858331187985
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.000356067058608
+            },
+            {
+              "block": 1,
+              "ratio": 0.9396387314237938
+            },
+            {
+              "block": 2,
+              "ratio": 0.9122858331187985
+            },
+            {
+              "block": 3,
+              "ratio": 0.9426594306629461
+            },
+            {
+              "block": 4,
+              "ratio": 0.9667199184156019
+            },
+            {
+              "block": 5,
+              "ratio": 0.938383599151099
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.0774129381996465,
+            "median": 1.0125296111540718,
+            "min": 0.9884187797003761
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0774129381996465
+            },
+            {
+              "block": 1,
+              "ratio": 1.019204038125341
+            },
+            {
+              "block": 2,
+              "ratio": 1.0390724834809777
+            },
+            {
+              "block": 3,
+              "ratio": 1.0058551841828025
+            },
+            {
+              "block": 4,
+              "ratio": 0.9952084701829741
+            },
+            {
+              "block": 5,
+              "ratio": 0.9884187797003761
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 1.0777965694554574,
+            "median": 0.9529312323486185,
+            "min": 0.9275159719637762
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0777965694554574
+            },
+            {
+              "block": 1,
+              "ratio": 0.9576835894461034
+            },
+            {
+              "block": 2,
+              "ratio": 0.9479311062632627
+            },
+            {
+              "block": 3,
+              "ratio": 0.9481788752511335
+            },
+            {
+              "block": 4,
+              "ratio": 0.9620878511018006
+            },
+            {
+              "block": 5,
+              "ratio": 0.9275159719637762
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 277.723524,
+            "median": 260.165472,
+            "min": 255.182474
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 12,
+            "inspect": 42,
+            "primal_sweep": 12,
+            "refine": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 24
+          },
+          "action_total_ns": {
+            "dual_coarse": 44547795,
+            "dual_local": 50017750,
+            "inspect": 400105800,
+            "primal_sweep": 6444916,
+            "refine": 38113328,
+            "rt1_inspect": 20057418,
+            "rt1_reconstruct": 177404294,
+            "setup": 8515916,
+            "witness_probe": 484595699
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 215.370446,
+            "median": 202.48598900000002,
+            "min": 196.858183
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.828125,
+            "median": 21.828125,
+            "min": 21.828125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 31.25
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 277.723524,
+            "median": 260.165472,
+            "min": 255.182474
+          },
+          "submitted_total_ns": 1583644862,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 299.222918,
+            "median": 263.697367,
+            "min": 256.002422
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 12,
+            "inspect": 42,
+            "primal_sweep": 12,
+            "refine": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 24
+          },
+          "action_total_ns": {
+            "dual_coarse": 44996340,
+            "dual_local": 49528531,
+            "inspect": 396966191,
+            "primal_sweep": 6277671,
+            "refine": 37684586,
+            "rt1_inspect": 21042553,
+            "rt1_reconstruct": 181430189,
+            "setup": 8552809,
+            "witness_probe": 495751496
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 220.414677,
+            "median": 203.898097,
+            "min": 198.23797
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.0,
+            "median": 21.828125,
+            "min": 21.828125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 31.421875
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 299.222918,
+            "median": 263.697367,
+            "min": 256.002422
+          },
+          "submitted_total_ns": 1617609978,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 288.840732,
+            "median": 277.0993475,
+            "min": 268.553308
+          },
+          "action_counts": {
+            "inspect": 12,
+            "primal_sweep": 36,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "stopping_check": 48
+          },
+          "action_total_ns": {
+            "inspect": 41949156,
+            "primal_sweep": 24612491,
+            "refine": 37611212,
+            "rt1_inspect": 116580023,
+            "rt1_reconstruct": 917615117,
+            "setup": 9481409,
+            "stopping_check": 162206316
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 229.55394,
+            "median": 216.26179050000002,
+            "min": 213.811667
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.34375,
+            "median": 22.171875,
+            "min": 22.171875
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 30.734375
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 288.840732,
+            "median": 277.0993475,
+            "min": 268.553308
+          },
+          "submitted_total_ns": 1667319052,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "edge_tight": {
+      "futile_gate": {
+        "charged_action_counts": {
+          "futile_stopping_check": 24,
+          "primal_sweep": 18,
+          "rt1_inspect": 6,
+          "rt1_reconstruct": 6
+        },
+        "charged_action_total_ns": {
+          "futile_stopping_check": 114095729,
+          "primal_sweep": 18200079,
+          "rt1_inspect": 98063456,
+          "rt1_reconstruct": 745088484
+        },
+        "counts": {
+          "eligible": 6,
+          "entered": 6,
+          "gate_satisfied": 6,
+          "rt1_accepted": 6
+        },
+        "eligible_probe_total_ns": 202318929,
+        "eligible_terminal_statuses": {
+          "ACCEPTED": 6
+        }
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 1.3739719899196436,
+            "median": 1.3530663186509293,
+            "min": 1.275102448720926
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.290202823042368
+            },
+            {
+              "block": 1,
+              "ratio": 1.3520430773966725
+            },
+            {
+              "block": 2,
+              "ratio": 1.3739719899196436
+            },
+            {
+              "block": 3,
+              "ratio": 1.275102448720926
+            },
+            {
+              "block": 4,
+              "ratio": 1.354089559905186
+            },
+            {
+              "block": 5,
+              "ratio": 1.3694604478270447
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "inspect": 24,
+            "primal_sweep": 12,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "witness_probe": 24
+          },
+          "action_total_ns": {
+            "inspect": 167791394,
+            "primal_sweep": 7175985,
+            "refine": 37589981,
+            "rt1_inspect": 105373511,
+            "rt1_reconstruct": 896644925,
+            "setup": 9072256,
+            "witness_probe": 489455928
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 306.420363,
+            "median": 281.9800815,
+            "min": 275.356079
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.0,
+            "min": 22.0
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 31.765625
+          },
+          "statuses": {
+            "NO_ELIGIBLE_ACTION": 6
+          },
+          "submitted_ms": {
+            "max": 370.376425,
+            "median": 343.1763985,
+            "min": 330.465416
+          },
+          "submitted_total_ns": 2090579112,
+          "unsuccessful_total_ns": 2090579112
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 392.317563,
+            "median": 371.59638,
+            "min": 363.55809
+          },
+          "action_counts": {
+            "futile_stopping_check": 24,
+            "inspect": 24,
+            "primal_sweep": 30,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "witness_probe": 24
+          },
+          "action_total_ns": {
+            "futile_stopping_check": 114095729,
+            "inspect": 169706385,
+            "primal_sweep": 24458696,
+            "refine": 41324932,
+            "rt1_inspect": 118186083,
+            "rt1_reconstruct": 919437742,
+            "setup": 9266583,
+            "witness_probe": 480042015
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 325.26033,
+            "median": 308.82573149999996,
+            "min": 305.015727
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.34375,
+            "median": 22.171875,
+            "min": 22.171875
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 31.765625
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 392.317563,
+            "median": 371.59638,
+            "min": 363.55809
+          },
+          "submitted_total_ns": 2249021730,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 296.952256,
+            "median": 280.117726,
+            "min": 267.860732
+          },
+          "action_counts": {
+            "inspect": 12,
+            "primal_sweep": 36,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "stopping_check": 48
+          },
+          "action_total_ns": {
+            "inspect": 43768575,
+            "primal_sweep": 23839398,
+            "refine": 37310948,
+            "rt1_inspect": 113676901,
+            "rt1_reconstruct": 924677965,
+            "setup": 10507126,
+            "stopping_check": 157720699
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 231.446955,
+            "median": 215.704015,
+            "min": 211.794257
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.34375,
+            "median": 22.171875,
+            "min": 22.171875
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 32.28125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 296.952256,
+            "median": 280.117726,
+            "min": 267.860732
+          },
+          "submitted_total_ns": 1684989499,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "elbow_loose": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 0.8061517887490901,
+            "median": 0.797196800904162,
+            "min": 0.7647839194910689
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.7647839194910689
+            },
+            {
+              "block": 1,
+              "ratio": 0.7947756447503277
+            },
+            {
+              "block": 2,
+              "ratio": 0.7977951134519397
+            },
+            {
+              "block": 3,
+              "ratio": 0.8061517887490901
+            },
+            {
+              "block": 4,
+              "ratio": 0.7974350475418603
+            },
+            {
+              "block": 5,
+              "ratio": 0.7969585542664637
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.070258092658267,
+            "median": 0.9973424974147953,
+            "min": 0.9838496263050036
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0292667040277697
+            },
+            {
+              "block": 1,
+              "ratio": 0.9865873003511567
+            },
+            {
+              "block": 2,
+              "ratio": 1.00651596367108
+            },
+            {
+              "block": 3,
+              "ratio": 1.070258092658267
+            },
+            {
+              "block": 4,
+              "ratio": 0.9881690311585105
+            },
+            {
+              "block": 5,
+              "ratio": 0.9838496263050036
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 0.8627904758196513,
+            "median": 0.7875836212246463,
+            "min": 0.7840873757956363
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.7871666241080117
+            },
+            {
+              "block": 1,
+              "ratio": 0.7841155577390758
+            },
+            {
+              "block": 2,
+              "ratio": 0.8029935174281578
+            },
+            {
+              "block": 3,
+              "ratio": 0.8627904758196513
+            },
+            {
+              "block": 4,
+              "ratio": 0.7880006183412809
+            },
+            {
+              "block": 5,
+              "ratio": 0.7840873757956363
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 258.163091,
+            "median": 242.7737205,
+            "min": 239.899695
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 6,
+            "inspect": 36,
+            "primal_sweep": 12,
+            "refine": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 24
+          },
+          "action_total_ns": {
+            "dual_coarse": 45479505,
+            "dual_local": 24918650,
+            "inspect": 309513971,
+            "primal_sweep": 6104668,
+            "refine": 38526334,
+            "rt1_inspect": 19606302,
+            "rt1_reconstruct": 174246874,
+            "setup": 8684439,
+            "witness_probe": 487248975
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 193.851219,
+            "median": 184.035937,
+            "min": 181.098446
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.0,
+            "median": 21.828125,
+            "min": 21.828125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 33.65625
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 258.163091,
+            "median": 242.7737205,
+            "min": 239.899695
+          },
+          "submitted_total_ns": 1474423258,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 256.897678,
+            "median": 249.9861245,
+            "min": 237.32432
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 6,
+            "inspect": 36,
+            "primal_sweep": 12,
+            "refine": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 24
+          },
+          "action_total_ns": {
+            "dual_coarse": 45720937,
+            "dual_local": 23827522,
+            "inspect": 311782742,
+            "primal_sweep": 6080374,
+            "refine": 38414446,
+            "rt1_inspect": 20355305,
+            "rt1_reconstruct": 177570037,
+            "setup": 10215370,
+            "witness_probe": 483289682
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 193.522389,
+            "median": 186.539255,
+            "min": 178.262816
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.0,
+            "median": 22.0,
+            "min": 21.828125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 32.625
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 256.897678,
+            "median": 249.9861245,
+            "min": 237.32432
+          },
+          "submitted_total_ns": 1489950813,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 326.357432,
+            "median": 304.3742945,
+            "min": 297.586259
+          },
+          "action_counts": {
+            "inspect": 12,
+            "primal_sweep": 60,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "stopping_check": 72
+          },
+          "action_total_ns": {
+            "inspect": 45733076,
+            "primal_sweep": 49182272,
+            "refine": 40532535,
+            "rt1_inspect": 129902025,
+            "rt1_reconstruct": 949678442,
+            "setup": 8784975,
+            "stopping_check": 277575531
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 263.433905,
+            "median": 244.6789665,
+            "min": 241.929293
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.34375,
+            "median": 22.171875,
+            "min": 22.171875
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 32.96875
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 326.357432,
+            "median": 304.3742945,
+            "min": 297.586259
+          },
+          "submitted_total_ns": 1860193255,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "elbow_tight": {
+      "futile_gate": {
+        "charged_action_counts": {
+          "futile_stopping_check": 60,
+          "primal_sweep": 54,
+          "rt1_inspect": 6,
+          "rt1_reconstruct": 6
+        },
+        "charged_action_total_ns": {
+          "futile_stopping_check": 302759774,
+          "primal_sweep": 57385379,
+          "rt1_inspect": 103875706,
+          "rt1_reconstruct": 807232235
+        },
+        "counts": {
+          "eligible": 6,
+          "entered": 6,
+          "gate_satisfied": 6,
+          "rt1_checked_miss": 6
+        },
+        "eligible_probe_total_ns": 203419626,
+        "eligible_terminal_statuses": {
+          "NO_ELIGIBLE_ACTION": 6
+        }
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac_retry/classical": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "inspect": 24,
+            "primal_sweep": 12,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "witness_probe": 24
+          },
+          "action_total_ns": {
+            "inspect": 176449385,
+            "primal_sweep": 6177507,
+            "refine": 38493503,
+            "rt1_inspect": 112891667,
+            "rt1_reconstruct": 903004339,
+            "setup": 8948567,
+            "witness_probe": 506323446
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 345.923809,
+            "median": 282.64749,
+            "min": 272.834575
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.0,
+            "min": 22.0
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 34.0
+          },
+          "statuses": {
+            "NO_ELIGIBLE_ACTION": 6
+          },
+          "submitted_ms": {
+            "max": 412.680895,
+            "median": 344.47379850000004,
+            "min": 327.234371
+          },
+          "submitted_total_ns": 2119101001,
+          "unsuccessful_total_ns": 2119101001
+        },
+        "cfac_retry": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "futile_stopping_check": 60,
+            "inspect": 24,
+            "primal_sweep": 66,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "witness_probe": 24
+          },
+          "action_total_ns": {
+            "futile_stopping_check": 302759774,
+            "inspect": 170354567,
+            "primal_sweep": 63394013,
+            "refine": 40233019,
+            "rt1_inspect": 124392140,
+            "rt1_reconstruct": 989168240,
+            "setup": 10000579,
+            "witness_probe": 485212484
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 394.960338,
+            "median": 356.5683865,
+            "min": 351.54935
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.34375,
+            "median": 22.2578125,
+            "min": 22.171875
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 34.34375
+          },
+          "statuses": {
+            "NO_ELIGIBLE_ACTION": 6
+          },
+          "submitted_ms": {
+            "max": 473.614986,
+            "median": 420.436292,
+            "min": 407.667782
+          },
+          "submitted_total_ns": 2569276400,
+          "unsuccessful_total_ns": 2569276400
+        },
+        "classical": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "inspect": 12,
+            "primal_sweep": 60,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "stopping_check": 72
+          },
+          "action_total_ns": {
+            "inspect": 46311834,
+            "primal_sweep": 49754721,
+            "refine": 38157179,
+            "rt1_inspect": 120640505,
+            "rt1_reconstruct": 960498759,
+            "setup": 8796985,
+            "stopping_check": 279701521
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 265.428394,
+            "median": 248.8450635,
+            "min": 240.146473
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.171875,
+            "min": 22.171875
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 33.828125
+          },
+          "statuses": {
+            "NO_ELIGIBLE_ACTION": 6
+          },
+          "submitted_ms": {
+            "max": 326.19741,
+            "median": 309.066773,
+            "min": 295.040943
+          },
+          "submitted_total_ns": 1857926301,
+          "unsuccessful_total_ns": 1857926301
+        }
+      }
+    },
+    "hot_loose": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 1.19833013430996,
+            "median": 1.1124530083712334,
+            "min": 1.0628351555350886
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.19833013430996
+            },
+            {
+              "block": 1,
+              "ratio": 1.074051202032946
+            },
+            {
+              "block": 2,
+              "ratio": 1.1284453063710853
+            },
+            {
+              "block": 3,
+              "ratio": 1.0964607103713815
+            },
+            {
+              "block": 4,
+              "ratio": 1.1844299285358644
+            },
+            {
+              "block": 5,
+              "ratio": 1.0628351555350886
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.067871815056528,
+            "median": 1.022781982731117,
+            "min": 0.941293517073799
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.038836512484293
+            },
+            {
+              "block": 1,
+              "ratio": 0.941293517073799
+            },
+            {
+              "block": 2,
+              "ratio": 1.067871815056528
+            },
+            {
+              "block": 3,
+              "ratio": 1.0226476978335906
+            },
+            {
+              "block": 4,
+              "ratio": 0.9710476278214539
+            },
+            {
+              "block": 5,
+              "ratio": 1.0229162676286436
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 1.2448690975313932,
+            "median": 1.1357154468258808,
+            "min": 1.0109974334789331
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.2448690975313932
+            },
+            {
+              "block": 1,
+              "ratio": 1.0109974334789331
+            },
+            {
+              "block": 2,
+              "ratio": 1.2050349375065108
+            },
+            {
+              "block": 3,
+              "ratio": 1.1212930212262764
+            },
+            {
+              "block": 4,
+              "ratio": 1.1501378724254852
+            },
+            {
+              "block": 5,
+              "ratio": 1.0871913704044618
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 119.745787,
+            "median": 111.359203,
+            "min": 110.140952
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 12,
+            "inspect": 42,
+            "primal_sweep": 18,
+            "setup": 6,
+            "witness_probe": 24
+          },
+          "action_total_ns": {
+            "dual_coarse": 8642064,
+            "dual_local": 10426871,
+            "inspect": 123566350,
+            "primal_sweep": 1571759,
+            "setup": 8900615,
+            "witness_probe": 171574658
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 56.660067,
+            "median": 53.85123900000001,
+            "min": 52.003277
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.3984375,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.80859375,
+            "median": 37.18359375,
+            "min": 24.67578125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 119.745787,
+            "median": 111.359203,
+            "min": 110.140952
+          },
+          "submitted_total_ns": 675802832,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 118.673888,
+            "median": 113.75267,
+            "min": 108.356481
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 12,
+            "inspect": 42,
+            "primal_sweep": 18,
+            "setup": 6,
+            "witness_probe": 24
+          },
+          "action_total_ns": {
+            "dual_coarse": 8148285,
+            "dual_local": 9924834,
+            "inspect": 122931106,
+            "primal_sweep": 1654412,
+            "setup": 10154762,
+            "witness_probe": 171311821
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 58.884462,
+            "median": 54.2356865,
+            "min": 50.451747
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.484375,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.80859375,
+            "median": 37.18359375,
+            "min": 24.67578125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 118.673888,
+            "median": 113.75267,
+            "min": 108.356481
+          },
+          "submitted_total_ns": 682461065,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 111.489831,
+            "median": 99.4665215,
+            "min": 92.612119
+          },
+          "action_counts": {
+            "inspect": 6,
+            "primal_sweep": 18,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "stopping_check": 24
+          },
+          "action_total_ns": {
+            "inspect": 9495253,
+            "primal_sweep": 1448701,
+            "rt1_inspect": 21362499,
+            "rt1_reconstruct": 185572892,
+            "setup": 8874916,
+            "stopping_check": 26292393
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 51.941271,
+            "median": 40.7666315,
+            "min": 37.365366
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.3125,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.80859375,
+            "median": 37.18359375,
+            "min": 24.67578125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 111.489831,
+            "median": 99.4665215,
+            "min": 92.612119
+          },
+          "submitted_total_ns": 602830167,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "hot_tight": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 1.3909397532160879,
+            "median": 1.3845029677960703,
+            "min": 1.3301452628414843
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.3909397532160879
+            },
+            {
+              "block": 1,
+              "ratio": 1.382960272846813
+            },
+            {
+              "block": 2,
+              "ratio": 1.386884251571652
+            },
+            {
+              "block": 3,
+              "ratio": 1.3301452628414843
+            },
+            {
+              "block": 4,
+              "ratio": 1.3767910380792205
+            },
+            {
+              "block": 5,
+              "ratio": 1.3860456627453275
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.0060099892403283,
+            "median": 0.9924536281115587,
+            "min": 0.9791619893417182
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.9791619893417182
+            },
+            {
+              "block": 1,
+              "ratio": 0.9853062101550447
+            },
+            {
+              "block": 2,
+              "ratio": 1.0060099892403283
+            },
+            {
+              "block": 3,
+              "ratio": 1.0042740324421244
+            },
+            {
+              "block": 4,
+              "ratio": 0.9888935262353716
+            },
+            {
+              "block": 5,
+              "ratio": 0.9960137299877457
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 1.3952194110011782,
+            "median": 1.3622973405236114,
+            "min": 1.3358303468476067
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.361955335813543
+            },
+            {
+              "block": 1,
+              "ratio": 1.36263934523368
+            },
+            {
+              "block": 2,
+              "ratio": 1.3952194110011782
+            },
+            {
+              "block": 3,
+              "ratio": 1.3358303468476067
+            },
+            {
+              "block": 4,
+              "ratio": 1.3614997445354184
+            },
+            {
+              "block": 5,
+              "ratio": 1.3805205104843108
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 472.831657,
+            "median": 446.585488,
+            "min": 432.301624
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 18,
+            "inspect": 60,
+            "primal_sweep": 24,
+            "refine": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 48
+          },
+          "action_total_ns": {
+            "dual_coarse": 46874418,
+            "dual_local": 79355317,
+            "inspect": 631691344,
+            "primal_sweep": 17843514,
+            "refine": 38574693,
+            "rt1_inspect": 20511337,
+            "rt1_reconstruct": 175858485,
+            "setup": 8916933,
+            "witness_probe": 1316352222
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 408.21356,
+            "median": 383.550319,
+            "min": 376.781231
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.0,
+            "min": 22.0
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 24.71875
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 472.831657,
+            "median": 446.585488,
+            "min": 432.301624
+          },
+          "submitted_total_ns": 2699555486,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 465.883968,
+            "median": 442.84205399999996,
+            "min": 430.578353
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 18,
+            "inspect": 60,
+            "primal_sweep": 24,
+            "refine": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 48
+          },
+          "action_total_ns": {
+            "dual_coarse": 45061203,
+            "dual_local": 78944122,
+            "inspect": 627002078,
+            "primal_sweep": 18070265,
+            "refine": 38212245,
+            "rt1_inspect": 19763902,
+            "rt1_reconstruct": 172732102,
+            "setup": 8564547,
+            "witness_probe": 1313753729
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 403.725796,
+            "median": 383.2400705,
+            "min": 371.684772
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.0,
+            "min": 22.0
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 25.234375
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 465.883968,
+            "median": 442.84205399999996,
+            "min": 430.578353
+          },
+          "submitted_total_ns": 2681256387,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 341.898221,
+            "median": 327.5483315,
+            "min": 311.895658
+          },
+          "action_counts": {
+            "inspect": 12,
+            "primal_sweep": 78,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "stopping_check": 90
+          },
+          "action_total_ns": {
+            "inspect": 47704039,
+            "primal_sweep": 64620406,
+            "refine": 39145129,
+            "rt1_inspect": 129890080,
+            "rt1_reconstruct": 976376219,
+            "setup": 8952371,
+            "stopping_check": 345677875
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 281.417944,
+            "median": 268.81806500000005,
+            "min": 256.379696
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.34375,
+            "median": 22.171875,
+            "min": 22.171875
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 24.67578125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 341.898221,
+            "median": 327.5483315,
+            "min": 311.895658
+          },
+          "submitted_total_ns": 1962658765,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "null": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 1.0908133706835441,
+            "median": 1.017401276745821,
+            "min": 0.8478430127313278
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0908133706835441
+            },
+            {
+              "block": 1,
+              "ratio": 1.0189718321888996
+            },
+            {
+              "block": 2,
+              "ratio": 1.0158307213027422
+            },
+            {
+              "block": 3,
+              "ratio": 0.8478430127313278
+            },
+            {
+              "block": 4,
+              "ratio": 1.0067025332917605
+            },
+            {
+              "block": 5,
+              "ratio": 1.0380898281598985
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.2007726465228619,
+            "median": 1.0339959232756302,
+            "min": 0.9820788211571854
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0002319471408483
+            },
+            {
+              "block": 1,
+              "ratio": 1.2007726465228619
+            },
+            {
+              "block": 2,
+              "ratio": 1.1241327910135195
+            },
+            {
+              "block": 3,
+              "ratio": 1.0677598994104118
+            },
+            {
+              "block": 4,
+              "ratio": 0.9820788211571854
+            },
+            {
+              "block": 5,
+              "ratio": 0.9883973867115624
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 1.2235535036697143,
+            "median": 1.058555827525586,
+            "min": 0.9052927699898232
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0910663817260733
+            },
+            {
+              "block": 1,
+              "ratio": 1.2235535036697143
+            },
+            {
+              "block": 2,
+              "ratio": 1.1419286239353283
+            },
+            {
+              "block": 3,
+              "ratio": 0.9052927699898232
+            },
+            {
+              "block": 4,
+              "ratio": 0.9886612371511243
+            },
+            {
+              "block": 5,
+              "ratio": 1.0260452733250987
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 71.300728,
+            "median": 61.566116,
+            "min": 58.36787
+          },
+          "action_counts": {
+            "inspect": 6,
+            "setup": 6
+          },
+          "action_total_ns": {
+            "inspect": 7265348,
+            "setup": 4410794
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 2.092597,
+            "median": 1.929494,
+            "min": 1.878162
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 35.03125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 71.300728,
+            "median": 61.566116,
+            "min": 58.36787
+          },
+          "submitted_total_ns": 375851805,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 75.551808,
+            "median": 65.511976,
+            "min": 59.054017
+          },
+          "action_counts": {
+            "inspect": 6,
+            "setup": 6
+          },
+          "action_total_ns": {
+            "inspect": 7135283,
+            "setup": 4817615
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 2.362645,
+            "median": 1.8819124999999999,
+            "min": 1.837397
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 35.03125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 75.551808,
+            "median": 65.511976,
+            "min": 59.054017
+          },
+          "submitted_total_ns": 398244972,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 68.84278,
+            "median": 60.9550915,
+            "min": 59.731296
+          },
+          "action_counts": {
+            "inspect": 6,
+            "setup": 6,
+            "stopping_check": 6
+          },
+          "action_total_ns": {
+            "inspect": 3812583,
+            "setup": 4659198,
+            "stopping_check": 1748103
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 2.355878,
+            "median": 1.599488,
+            "min": 1.494502
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.3125,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 35.03125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 68.84278,
+            "median": 60.9550915,
+            "min": 59.731296
+          },
+          "submitted_total_ns": 375590929,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "signed_loose": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 0.7503086304134724,
+            "median": 0.6785063524858721,
+            "min": 0.6665948012039831
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.6700536511266489
+            },
+            {
+              "block": 1,
+              "ratio": 0.6665948012039831
+            },
+            {
+              "block": 2,
+              "ratio": 0.6885481044359614
+            },
+            {
+              "block": 3,
+              "ratio": 0.6736984944261034
+            },
+            {
+              "block": 4,
+              "ratio": 0.7503086304134724
+            },
+            {
+              "block": 5,
+              "ratio": 0.6833142105456407
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.025682001070526,
+            "median": 1.0110542234169988,
+            "min": 0.9805718985779449
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0242491509080582
+            },
+            {
+              "block": 1,
+              "ratio": 1.0154400513658435
+            },
+            {
+              "block": 2,
+              "ratio": 0.9805718985779449
+            },
+            {
+              "block": 3,
+              "ratio": 1.025682001070526
+            },
+            {
+              "block": 4,
+              "ratio": 0.9885390662642567
+            },
+            {
+              "block": 5,
+              "ratio": 1.006668395468154
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 0.7417093929189473,
+            "median": 0.6870863515799414,
+            "min": 0.6751709220290156
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.6863018832293144
+            },
+            {
+              "block": 1,
+              "ratio": 0.6768870591747768
+            },
+            {
+              "block": 2,
+              "ratio": 0.6751709220290156
+            },
+            {
+              "block": 3,
+              "ratio": 0.6910004198811663
+            },
+            {
+              "block": 4,
+              "ratio": 0.7417093929189473
+            },
+            {
+              "block": 5,
+              "ratio": 0.6878708199305683
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 230.532974,
+            "median": 215.1326285,
+            "min": 208.456381
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 6,
+            "inspect": 36,
+            "primal_sweep": 12,
+            "refine": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 18
+          },
+          "action_total_ns": {
+            "dual_coarse": 46239115,
+            "dual_local": 26082981,
+            "inspect": 324019387,
+            "primal_sweep": 6472792,
+            "refine": 38207808,
+            "rt1_inspect": 20766152,
+            "rt1_reconstruct": 174596570,
+            "setup": 8983107,
+            "witness_probe": 289103195
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 165.669697,
+            "median": 153.5623845,
+            "min": 151.407481
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.828125,
+            "median": 21.828125,
+            "min": 21.828125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.02734375,
+            "min": 22.0
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 230.532974,
+            "median": 215.1326285,
+            "min": 208.456381
+          },
+          "submitted_total_ns": 1306154704,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 226.054156,
+            "median": 219.145785,
+            "min": 210.591959
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 6,
+            "inspect": 36,
+            "primal_sweep": 12,
+            "refine": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 18
+          },
+          "action_total_ns": {
+            "dual_coarse": 50403818,
+            "dual_local": 25064808,
+            "inspect": 335847280,
+            "primal_sweep": 7681337,
+            "refine": 39905193,
+            "rt1_inspect": 20984204,
+            "rt1_reconstruct": 177875363,
+            "setup": 9215020,
+            "witness_probe": 286043748
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 163.759377,
+            "median": 159.4389535,
+            "min": 153.131114
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.0,
+            "median": 21.828125,
+            "min": 21.828125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.02734375,
+            "min": 22.0
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 226.054156,
+            "median": 219.145785,
+            "min": 210.591959
+          },
+          "submitted_total_ns": 1314281223,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 334.810266,
+            "median": 310.403163,
+            "min": 304.214996
+          },
+          "action_counts": {
+            "inspect": 12,
+            "primal_sweep": 60,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "stopping_check": 72
+          },
+          "action_total_ns": {
+            "inspect": 44934662,
+            "primal_sweep": 51778404,
+            "refine": 39184770,
+            "rt1_inspect": 129919356,
+            "rt1_reconstruct": 973617502,
+            "setup": 8666766,
+            "stopping_check": 288233836
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 271.300286,
+            "median": 252.615417,
+            "min": 245.690812
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.34375,
+            "median": 22.171875,
+            "min": 22.171875
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.02734375,
+            "min": 22.34375
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 334.810266,
+            "median": 310.403163,
+            "min": 304.214996
+          },
+          "submitted_total_ns": 1897620244,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "signed_tight": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 2.8420471457470753,
+            "median": 2.749174487353026,
+            "min": 2.618779395540616
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 2.8420471457470753
+            },
+            {
+              "block": 1,
+              "ratio": 2.742529447837946
+            },
+            {
+              "block": 2,
+              "ratio": 2.783701427534771
+            },
+            {
+              "block": 3,
+              "ratio": 2.618779395540616
+            },
+            {
+              "block": 4,
+              "ratio": 2.7294296014065145
+            },
+            {
+              "block": 5,
+              "ratio": 2.755819526868106
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.0254661325256544,
+            "median": 0.9952894417246174,
+            "min": 0.9710638455817491
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.993007046601304
+            },
+            {
+              "block": 1,
+              "ratio": 1.0244350392612949
+            },
+            {
+              "block": 2,
+              "ratio": 0.9710638455817491
+            },
+            {
+              "block": 3,
+              "ratio": 1.0254661325256544
+            },
+            {
+              "block": 4,
+              "ratio": 0.9975718368479307
+            },
+            {
+              "block": 5,
+              "ratio": 0.9723814896255215
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 2.822172842499969,
+            "median": 2.7129769570977658,
+            "min": 2.6797078966751084
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 2.822172842499969
+            },
+            {
+              "block": 1,
+              "ratio": 2.8095432625711236
+            },
+            {
+              "block": 2,
+              "ratio": 2.703151813173319
+            },
+            {
+              "block": 3,
+              "ratio": 2.6854695786829064
+            },
+            {
+              "block": 4,
+              "ratio": 2.722802101022212
+            },
+            {
+              "block": 5,
+              "ratio": 2.6797078966751084
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 908.260359,
+            "median": 852.9482935000001,
+            "min": 809.552765
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 36,
+            "inspect": 84,
+            "primal_sweep": 30,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "witness_probe": 78
+          },
+          "action_total_ns": {
+            "dual_coarse": 44068158,
+            "dual_local": 161172349,
+            "inspect": 977823825,
+            "primal_sweep": 25334604,
+            "refine": 39523673,
+            "rt1_inspect": 121884525,
+            "rt1_reconstruct": 949164628,
+            "setup": 9488902,
+            "witness_probe": 2418247661
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 830.364584,
+            "median": 793.5020489999999,
+            "min": 751.77163
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.515625,
+            "median": 22.4296875,
+            "min": 22.34375
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 36.91015625,
+            "min": 22.515625
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 908.260359,
+            "median": 852.9482935000001,
+            "min": 809.552765
+          },
+          "submitted_total_ns": 5124373488,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 906.698305,
+            "median": 838.178001,
+            "min": 813.611839
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 36,
+            "inspect": 84,
+            "primal_sweep": 30,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "witness_probe": 78
+          },
+          "action_total_ns": {
+            "dual_coarse": 47811151,
+            "dual_local": 167249524,
+            "inspect": 985848099,
+            "primal_sweep": 24814359,
+            "refine": 38683638,
+            "rt1_inspect": 120965690,
+            "rt1_reconstruct": 923485189,
+            "setup": 8777650,
+            "witness_probe": 2429880151
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 843.825668,
+            "median": 779.55642,
+            "min": 750.623544
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.515625,
+            "median": 22.4296875,
+            "min": 22.34375
+          },
+          "peak_rss_mib": {
+            "max": 37.75390625,
+            "median": 37.130859375,
+            "min": 23.58984375
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 906.698305,
+            "median": 838.178001,
+            "min": 813.611839
+          },
+          "submitted_total_ns": 5108813886,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 326.277937,
+            "median": 309.4861715,
+            "min": 298.814166
+          },
+          "action_counts": {
+            "inspect": 12,
+            "primal_sweep": 60,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "stopping_check": 72
+          },
+          "action_total_ns": {
+            "inspect": 43850296,
+            "primal_sweep": 53446150,
+            "refine": 40593085,
+            "rt1_inspect": 124678457,
+            "rt1_reconstruct": 962520397,
+            "setup": 8983629,
+            "stopping_check": 283967121
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 266.937049,
+            "median": 249.71110299999998,
+            "min": 244.40658
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.34375,
+            "median": 22.171875,
+            "min": 22.171875
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.02734375,
+            "min": 24.67578125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 326.277937,
+            "median": 309.4861715,
+            "min": 298.814166
+          },
+          "submitted_total_ns": 1866582262,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "split_loose": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 0.9282399745403789,
+            "median": 0.8819288208954549,
+            "min": 0.7914404248250084
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.9282399745403789
+            },
+            {
+              "block": 1,
+              "ratio": 0.7914404248250084
+            },
+            {
+              "block": 2,
+              "ratio": 0.9113277181960272
+            },
+            {
+              "block": 3,
+              "ratio": 0.8224761747438708
+            },
+            {
+              "block": 4,
+              "ratio": 0.8927333265098693
+            },
+            {
+              "block": 5,
+              "ratio": 0.8711243152810405
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.1955899767491496,
+            "median": 1.031080024719534,
+            "min": 0.967919045670623
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.1889453454501038
+            },
+            {
+              "block": 1,
+              "ratio": 0.967919045670623
+            },
+            {
+              "block": 2,
+              "ratio": 0.9685686162806055
+            },
+            {
+              "block": 3,
+              "ratio": 1.1955899767491496
+            },
+            {
+              "block": 4,
+              "ratio": 1.0634859988617165
+            },
+            {
+              "block": 5,
+              "ratio": 0.9986740505773514
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 1.1036265971905064,
+            "median": 0.9160464102258894,
+            "min": 0.7660502607017746
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.1036265971905064
+            },
+            {
+              "block": 1,
+              "ratio": 0.7660502607017746
+            },
+            {
+              "block": 2,
+              "ratio": 0.8826834269912877
+            },
+            {
+              "block": 3,
+              "ratio": 0.9833442706387538
+            },
+            {
+              "block": 4,
+              "ratio": 0.9494093934604911
+            },
+            {
+              "block": 5,
+              "ratio": 0.8699692484981384
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 91.708266,
+            "median": 87.4093775,
+            "min": 81.535942
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 12,
+            "inspect": 30,
+            "primal_sweep": 6,
+            "setup": 6,
+            "witness_probe": 6
+          },
+          "action_total_ns": {
+            "dual_coarse": 8182656,
+            "dual_local": 9953678,
+            "inspect": 92750102,
+            "primal_sweep": 678324,
+            "setup": 9096799,
+            "witness_probe": 41369271
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 29.12695,
+            "median": 27.1598445,
+            "min": 25.425938
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 29.53125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 91.708266,
+            "median": 87.4093775,
+            "min": 81.535942
+          },
+          "submitted_total_ns": 522535240,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 109.036116,
+            "median": 88.47922249999999,
+            "min": 85.13693
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 12,
+            "inspect": 30,
+            "primal_sweep": 6,
+            "setup": 6,
+            "witness_probe": 6
+          },
+          "action_total_ns": {
+            "dual_coarse": 8667037,
+            "dual_local": 10568551,
+            "inspect": 95524733,
+            "primal_sweep": 554665,
+            "setup": 8597411,
+            "witness_probe": 45771777
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 33.10975,
+            "median": 27.8322495,
+            "min": 25.415393
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.3125,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 29.53125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 109.036116,
+            "median": 88.47922249999999,
+            "min": 85.13693
+          },
+          "submitted_total_ns": 555359899,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 111.137525,
+            "median": 99.22224349999999,
+            "min": 94.057797
+          },
+          "action_counts": {
+            "inspect": 6,
+            "primal_sweep": 12,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "stopping_check": 18
+          },
+          "action_total_ns": {
+            "inspect": 8146992,
+            "primal_sweep": 1018779,
+            "rt1_inspect": 23879503,
+            "rt1_reconstruct": 182333389,
+            "setup": 8729207,
+            "stopping_check": 18746422
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 44.2504,
+            "median": 39.992363,
+            "min": 38.275807
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 29.53125
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 111.137525,
+            "median": 99.22224349999999,
+            "min": 94.057797
+          },
+          "submitted_total_ns": 602148075,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "split_tight": {
+      "futile_gate": {
+        "charged_action_counts": {
+          "futile_stopping_check": 48,
+          "primal_sweep": 42,
+          "rt1_inspect": 6,
+          "rt1_reconstruct": 6
+        },
+        "charged_action_total_ns": {
+          "futile_stopping_check": 232843251,
+          "primal_sweep": 43811297,
+          "rt1_inspect": 104849895,
+          "rt1_reconstruct": 794251692
+        },
+        "counts": {
+          "eligible": 6,
+          "entered": 6,
+          "gate_satisfied": 6,
+          "rt1_checked_miss": 6
+        },
+        "eligible_probe_total_ns": 207045593,
+        "eligible_terminal_statuses": {
+          "NO_ELIGIBLE_ACTION": 6
+        }
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        },
+        "cfac_retry/classical": {
+          "distribution": null,
+          "paired_accepted": 0,
+          "ratios": []
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "inspect": 24,
+            "primal_sweep": 12,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "witness_probe": 24
+          },
+          "action_total_ns": {
+            "inspect": 174801732,
+            "primal_sweep": 6457854,
+            "refine": 39055907,
+            "rt1_inspect": 105879433,
+            "rt1_reconstruct": 906862500,
+            "setup": 9135539,
+            "witness_probe": 492380843
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 302.59507,
+            "median": 286.726002,
+            "min": 281.104639
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.0,
+            "min": 22.0
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 30.390625
+          },
+          "statuses": {
+            "NO_ELIGIBLE_ACTION": 6
+          },
+          "submitted_ms": {
+            "max": 391.082027,
+            "median": 347.1723565,
+            "min": 337.818617
+          },
+          "submitted_total_ns": 2132851210,
+          "unsuccessful_total_ns": 2132851210
+        },
+        "cfac_retry": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "futile_stopping_check": 48,
+            "inspect": 24,
+            "primal_sweep": 54,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "witness_probe": 24
+          },
+          "action_total_ns": {
+            "futile_stopping_check": 232843251,
+            "inspect": 176460081,
+            "primal_sweep": 50181830,
+            "refine": 40177324,
+            "rt1_inspect": 126265671,
+            "rt1_reconstruct": 970242257,
+            "setup": 8763614,
+            "witness_probe": 496818489
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 366.184783,
+            "median": 348.156509,
+            "min": 338.853703
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.34375,
+            "median": 22.171875,
+            "min": 22.171875
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 29.53125
+          },
+          "statuses": {
+            "NO_ELIGIBLE_ACTION": 6
+          },
+          "submitted_ms": {
+            "max": 424.909798,
+            "median": 411.60997299999997,
+            "min": 395.282468
+          },
+          "submitted_total_ns": 2459030754,
+          "unsuccessful_total_ns": 2459030754
+        },
+        "classical": {
+          "accepted": 0,
+          "accepted_ms": null,
+          "action_counts": {
+            "inspect": 12,
+            "primal_sweep": 48,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "stopping_check": 60
+          },
+          "action_total_ns": {
+            "inspect": 44491625,
+            "primal_sweep": 38150572,
+            "refine": 40220043,
+            "rt1_inspect": 124349280,
+            "rt1_reconstruct": 990581528,
+            "setup": 10127944,
+            "stopping_check": 223925417
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 264.152102,
+            "median": 240.0114525,
+            "min": 232.731441
+          },
+          "decision_peak_rss_mib": {
+            "max": 22.171875,
+            "median": 22.171875,
+            "min": 22.171875
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 30.046875
+          },
+          "statuses": {
+            "NO_ELIGIBLE_ACTION": 6
+          },
+          "submitted_ms": {
+            "max": 328.093313,
+            "median": 299.8110415,
+            "min": 290.095072
+          },
+          "submitted_total_ns": 1832047404,
+          "unsuccessful_total_ns": 1832047404
+        }
+      }
+    },
+    "unit_separating": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 1.2320842129922462,
+            "median": 1.097979082643382,
+            "min": 1.0343809037931748
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.2320842129922462
+            },
+            {
+              "block": 1,
+              "ratio": 1.083771263039431
+            },
+            {
+              "block": 2,
+              "ratio": 1.2103027936392254
+            },
+            {
+              "block": 3,
+              "ratio": 1.0343809037931748
+            },
+            {
+              "block": 4,
+              "ratio": 1.112186902247333
+            },
+            {
+              "block": 5,
+              "ratio": 1.0571985109998212
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.0537003901548927,
+            "median": 0.9755369878731333,
+            "min": 0.9148923709275747
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.9433538507758972
+            },
+            {
+              "block": 1,
+              "ratio": 0.9894330245516159
+            },
+            {
+              "block": 2,
+              "ratio": 0.9148923709275747
+            },
+            {
+              "block": 3,
+              "ratio": 0.9695184526955717
+            },
+            {
+              "block": 4,
+              "ratio": 1.0537003901548927
+            },
+            {
+              "block": 5,
+              "ratio": 0.9815555230506947
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 1.1719117728231763,
+            "median": 1.0898079355620438,
+            "min": 1.002851373343406
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.1622913868064262
+            },
+            {
+              "block": 1,
+              "ratio": 1.0723190787112291
+            },
+            {
+              "block": 2,
+              "ratio": 1.1072967924128583
+            },
+            {
+              "block": 3,
+              "ratio": 1.002851373343406
+            },
+            {
+              "block": 4,
+              "ratio": 1.1719117728231763
+            },
+            {
+              "block": 5,
+              "ratio": 1.0376990374328452
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 98.624215,
+            "median": 82.14619300000001,
+            "min": 79.045273
+          },
+          "action_counts": {
+            "inspect": 12,
+            "primal_sweep": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 12
+          },
+          "action_total_ns": {
+            "inspect": 15489021,
+            "primal_sweep": 222544,
+            "rt1_inspect": 8832789,
+            "rt1_reconstruct": 76277059,
+            "setup": 5029372,
+            "witness_probe": 36578283
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 25.763344,
+            "median": 23.668588,
+            "min": 22.480856
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.3125,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 21.484375
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 98.624215,
+            "median": 82.14619300000001,
+            "min": 79.045273
+          },
+          "submitted_total_ns": 507095386,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 93.037533,
+            "median": 80.95631750000001,
+            "min": 76.326423
+          },
+          "action_counts": {
+            "inspect": 12,
+            "primal_sweep": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 12
+          },
+          "action_total_ns": {
+            "inspect": 15756434,
+            "primal_sweep": 200382,
+            "rt1_inspect": 9358376,
+            "rt1_reconstruct": 75813227,
+            "setup": 4449729,
+            "witness_probe": 35559287
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 24.785924,
+            "median": 23.566159,
+            "min": 21.981293
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.3125,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 21.484375
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 93.037533,
+            "median": 80.95631750000001,
+            "min": 76.326423
+          },
+          "submitted_total_ns": 493782918,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 80.046651,
+            "median": 76.74414300000001,
+            "min": 68.930411
+          },
+          "action_counts": {
+            "inspect": 6,
+            "primal_sweep": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "stopping_check": 12
+          },
+          "action_total_ns": {
+            "inspect": 3755321,
+            "primal_sweep": 168664,
+            "rt1_inspect": 10519210,
+            "rt1_reconstruct": 77228571,
+            "setup": 4486007,
+            "stopping_check": 3705042
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 17.781577,
+            "median": 16.7081285,
+            "min": 15.439489
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.3984375,
+            "min": 21.3125
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 21.484375
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 80.046651,
+            "median": 76.74414300000001,
+            "min": 68.930411
+          },
+          "submitted_total_ns": 452528340,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    },
+    "unit_tighter": {
+      "futile_gate": {
+        "charged_action_counts": {},
+        "charged_action_total_ns": {},
+        "counts": {
+          "no_opportunity": 6
+        },
+        "eligible_probe_total_ns": 0,
+        "eligible_terminal_statuses": {}
+      },
+      "paired": {
+        "cfac_reserve/classical": {
+          "distribution": {
+            "max": 0.8809717936479576,
+            "median": 0.8360965500387881,
+            "min": 0.8273166381858549
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.8273166381858549
+            },
+            {
+              "block": 1,
+              "ratio": 0.8615052744967
+            },
+            {
+              "block": 2,
+              "ratio": 0.8809717936479576
+            },
+            {
+              "block": 3,
+              "ratio": 0.8392867065038299
+            },
+            {
+              "block": 4,
+              "ratio": 0.8316517772448386
+            },
+            {
+              "block": 5,
+              "ratio": 0.8329063935737464
+            }
+          ]
+        },
+        "cfac_retry/cfac_reserve": {
+          "distribution": {
+            "max": 1.0428652079793461,
+            "median": 1.0090722717154303,
+            "min": 0.9643462122819237
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 1.0204093781228225
+            },
+            {
+              "block": 1,
+              "ratio": 0.9704131839508033
+            },
+            {
+              "block": 2,
+              "ratio": 0.9643462122819237
+            },
+            {
+              "block": 3,
+              "ratio": 0.9977351653080383
+            },
+            {
+              "block": 4,
+              "ratio": 1.0428652079793461
+            },
+            {
+              "block": 5,
+              "ratio": 1.0352338855035614
+            }
+          ]
+        },
+        "cfac_retry/classical": {
+          "distribution": {
+            "max": 0.8673007036428315,
+            "median": 0.8468817343067563,
+            "min": 0.8360160764147534
+          },
+          "paired_accepted": 6,
+          "ratios": [
+            {
+              "block": 0,
+              "ratio": 0.8442016562818923
+            },
+            {
+              "block": 1,
+              "ratio": 0.8360160764147534
+            },
+            {
+              "block": 2,
+              "ratio": 0.8495618123316204
+            },
+            {
+              "block": 3,
+              "ratio": 0.8373858608544377
+            },
+            {
+              "block": 4,
+              "ratio": 0.8673007036428315
+            },
+            {
+              "block": 5,
+              "ratio": 0.8622529220801081
+            }
+          ]
+        }
+      },
+      "policies": {
+        "cfac_reserve": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 137.669021,
+            "median": 126.3253735,
+            "min": 121.186721
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 12,
+            "inspect": 42,
+            "primal_sweep": 12,
+            "refine": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 18
+          },
+          "action_total_ns": {
+            "dual_coarse": 15221893,
+            "dual_local": 18407310,
+            "inspect": 168091978,
+            "primal_sweep": 1426322,
+            "refine": 19147987,
+            "rt1_inspect": 9054992,
+            "rt1_reconstruct": 73655871,
+            "setup": 4372733,
+            "witness_probe": 109868788
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 76.239744,
+            "median": 69.429978,
+            "min": 66.590339
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.65625,
+            "median": 21.484375,
+            "min": 21.484375
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 21.65625
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 137.669021,
+            "median": 126.3253735,
+            "min": 121.186721
+          },
+          "submitted_total_ns": 764201447,
+          "unsuccessful_total_ns": 0
+        },
+        "cfac_retry": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 133.595833,
+            "median": 127.75784949999999,
+            "min": 122.273358
+          },
+          "action_counts": {
+            "dual_coarse": 6,
+            "dual_local": 12,
+            "inspect": 42,
+            "primal_sweep": 12,
+            "refine": 6,
+            "rt1_inspect": 6,
+            "rt1_reconstruct": 6,
+            "setup": 6,
+            "witness_probe": 18
+          },
+          "action_total_ns": {
+            "dual_coarse": 15365393,
+            "dual_local": 19355078,
+            "inspect": 167176770,
+            "primal_sweep": 1452798,
+            "refine": 18570696,
+            "rt1_inspect": 10184764,
+            "rt1_reconstruct": 72154118,
+            "setup": 4403870,
+            "witness_probe": 114082829
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 72.356344,
+            "median": 70.393736,
+            "min": 68.090368
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.484375,
+            "median": 21.484375,
+            "min": 21.484375
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 21.65625
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 133.595833,
+            "median": 127.75784949999999,
+            "min": 122.273358
+          },
+          "submitted_total_ns": 767497804,
+          "unsuccessful_total_ns": 0
+        },
+        "classical": {
+          "accepted": 6,
+          "accepted_ms": {
+            "max": 159.800555,
+            "median": 151.11338899999998,
+            "min": 143.925205
+          },
+          "action_counts": {
+            "inspect": 12,
+            "primal_sweep": 30,
+            "refine": 6,
+            "rt1_inspect": 12,
+            "rt1_reconstruct": 12,
+            "setup": 6,
+            "stopping_check": 42
+          },
+          "action_total_ns": {
+            "inspect": 17937510,
+            "primal_sweep": 5167310,
+            "refine": 18775045,
+            "rt1_inspect": 51662920,
+            "rt1_reconstruct": 391139326,
+            "setup": 4363871,
+            "stopping_check": 63341835
+          },
+          "attempts": 6,
+          "controller_ms": {
+            "max": 98.182089,
+            "median": 89.964541,
+            "min": 88.662925
+          },
+          "decision_peak_rss_mib": {
+            "max": 21.65625,
+            "median": 21.484375,
+            "min": 21.484375
+          },
+          "peak_rss_mib": {
+            "max": 37.65234375,
+            "median": 37.18359375,
+            "min": 21.65625
+          },
+          "statuses": {
+            "ACCEPTED": 6
+          },
+          "submitted_ms": {
+            "max": 159.800555,
+            "median": 151.11338899999998,
+            "min": 143.925205
+          },
+          "submitted_total_ns": 903797042,
+          "unsuccessful_total_ns": 0
+        }
+      }
+    }
+  },
+  "design_sha256": "dc9dcf98a5bff71c82e0c96d4d5f0a8f3e5032010458a08b745f35aaab7352c1",
+  "receipt_sha256": "7e4145dec3fc8dfaac14846e7ae0179d873caf7eb31202d1bdd9ccdf533222a7"
+}
