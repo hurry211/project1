@@ -1,5 +1,9 @@
 # Implementation Status
 
+## E3 Deep Performance Optimization & Adaptive Decision Research
+
+Branch `research/e3-scaling-adaptive` adds: (1) chunked 65k-row streaming I/O/assembly ([`verifier/fem.py`](../verifier/fem.py), [`verifier/verifier.py`](../verifier/verifier.py)) paired with Oettli–Prager residual-verified SA-AMG-PCG ([`verifier/reference_solver.py`](../verifier/reference_solver.py)) scaling independent verification to **1,050,625 DOFs** under a 3 GiB cap; (2) unstructured Gmsh MSH 2.2 `P1–P4`/`Q1–Q4` support ([`sciagent/gmsh.py`](../sciagent/gmsh.py)), MFEM Example 6 `ZienkiewiczZhuEstimator` AMR ([`cpp/poisson_amr.cpp`](../cpp/poisson_amr.cpp)), and independent T-junction hanging-node $C^T K C$ verification ([`verifier/amr.py`](../verifier/amr.py)); and (3) accuracy/memory-constrained adaptive solver/mesh selection evaluated across a disjoint 4-task calibration / 5-task held-out campaign ([`sciagent/adaptive.py`](../sciagent/adaptive.py)). Full report and curves: [`E3_PERFORMANCE_ADAPTIVE.md`](E3_PERFORMANCE_ADAPTIVE.md) · [`../evidence/e3/`](../evidence/e3/).
+
 ## Independent verification on the large P1 benchmark
 
 The production verifier now processes element records in typed arrays and batches finite-element error integration and reference assembly. Reuse depends on exact equality of the contributing local data. Both the original full-array norm reduction and the independent sparse direct reference solve remain in the acceptance path. The revision benchmark measures complete fresh MFEM studies and repeated verification of identical archived fields. CI runs a compact paired study, a relocated numerical replay test and a complete evidence audit. [Reproduction instructions](VERIFIED_PERFORMANCE.md#measure-a-verifier-change-from-submission-to-acceptance) · [Measured results](RESULTS.md#verifier-revision-at-263169-degrees-of-freedom)

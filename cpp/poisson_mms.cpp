@@ -142,7 +142,7 @@ void PrintFormulation(const mms::Formulation &form, bool include_kappa)
    std::cout << "}";
 }
 
-void ListCases()
+void ListCases(bool include_e3 = false)
 {
    std::cout << "{\n  \"mfem_version\": \"" << GetVersionStr() << "\",\n"
              << "  \"mfem_git\": \"" << JsonEscape(GetGitStr()) << "\",\n"
@@ -152,18 +152,24 @@ void ListCases()
    PrintFormulation(mms::UnitSquarePoisson, false);
    std::cout << ",\n  \"cases\": [\n";
    const auto &reg = mms::Registry();
-   for (size_t i = 0; i < reg.size(); i++)
+   std::vector<const mms::ManufacturedCase *> visible;
+   for (const auto &c : reg)
    {
-      std::cout << "    {\"id\": \"" << JsonEscape(reg[i].id) << "\", \"exact_solution\": \""
-                << JsonEscape(reg[i].exact_solution) << "\", \"source\": \""
-                << JsonEscape(reg[i].source) << "\", \"equation\": \""
-                << JsonEscape(reg[i].form.equation) << "\"";
-      if (&reg[i].form != &mms::UnitSquarePoisson)
+      if (include_e3 || !c.e3_only) { visible.push_back(&c); }
+   }
+   for (size_t i = 0; i < visible.size(); i++)
+   {
+      const auto *c = visible[i];
+      std::cout << "    {\"id\": \"" << JsonEscape(c->id) << "\", \"exact_solution\": \""
+                << JsonEscape(c->exact_solution) << "\", \"source\": \""
+                << JsonEscape(c->source) << "\", \"equation\": \""
+                << JsonEscape(c->form.equation) << "\"";
+      if (&c->form != &mms::UnitSquarePoisson)
       {
          std::cout << ", \"formulation\": ";
-         PrintFormulation(reg[i].form, true);
+         PrintFormulation(c->form, true);
       }
-      std::cout << "}" << (i + 1 < reg.size() ? "," : "") << "\n";
+      std::cout << "}" << (i + 1 < visible.size() ? "," : "") << "\n";
    }
    std::cout << "  ]\n}\n";
 }
@@ -174,6 +180,7 @@ int main(int argc, char *argv[])
 {
    const char *case_id = "sin_sin";
    const char *mesh_type = "tri";
+   const char *mesh_topology = "cartesian";
    const char *mesh_file = "";
    int mesh_refinements = 0;
    int n = 8;
@@ -188,10 +195,12 @@ int main(int argc, char *argv[])
    const char *out_dir = ".";
    const char *fault = "none";
    bool list_cases = false;
+   bool include_e3 = false;
 
    OptionsParser args(argc, argv);
    args.AddOption(&case_id, "-c", "--case", "Manufactured case id.");
    args.AddOption(&mesh_type, "-mt", "--mesh-type", "tri or quad.");
+   args.AddOption(&mesh_topology, "-topo", "--mesh-topology", "cartesian or unstructured.");
    args.AddOption(&mesh_file, "-m", "--mesh", "Preflighted unit-square Gmsh input.");
    args.AddOption(&mesh_refinements, "-mr", "--mesh-refinements", "Uniform refinements of imported mesh.");
    args.AddOption(&n, "-n", "--n", "Elements per side of the unit square.");
@@ -213,9 +222,11 @@ int main(int argc, char *argv[])
                   "omit_neumann_coefficient (testing only).");
    args.AddOption(&list_cases, "-list", "--list-cases", "-no-list",
                   "--no-list-cases", "Print compiled cases as JSON and exit.");
+   args.AddOption(&include_e3, "-e3", "--include-e3", "-no-e3",
+                  "--no-include-e3", "Include E3 extension cases in --list-cases output.");
    args.Parse();
    if (!args.Good()) { args.PrintUsage(std::cerr); return 2; }
-   if (list_cases) { ListCases(); return 0; }
+   if (list_cases) { ListCases(include_e3); return 0; }
 
    const std::string fault_s(fault);
    const std::set<std::string> known_faults =
@@ -241,6 +252,11 @@ int main(int argc, char *argv[])
    if (mt != "tri" && mt != "quad")
    {
       std::cerr << "ERROR: mesh-type must be tri or quad\n"; return 2;
+   }
+   const std::string topo_s(mesh_topology);
+   if (topo_s != "cartesian" && topo_s != "unstructured")
+   {
+      std::cerr << "ERROR: mesh-topology must be cartesian or unstructured\n"; return 2;
    }
    if (n < 1 || n > 4096) { std::cerr << "ERROR: n out of range\n"; return 2; }
    if (order < 1 || order > 8) { std::cerr << "ERROR: order out of range\n"; return 2; }
@@ -286,16 +302,26 @@ int main(int argc, char *argv[])
    {
       std::cerr << "ERROR: invalid mesh refinement count\n"; return 2;
    }
+   if (topo_s == "unstructured" && !imported)
+   {
+      std::cerr << "ERROR: unstructured topology requires an imported --mesh\n"; return 2;
+   }
    Mesh mesh = imported ? Mesh(mesh_file, 1, 1) : Mesh::MakeCartesian2D(n, n, etype, true, 1.0, 1.0);
    if (imported)
    {
-      const int factor = 1 << mesh_refinements;
-      const int base = n / factor;
-      if (n % factor || mesh.Dimension() != 2 || mesh.SpaceDimension() != 2 ||
-          mesh.GetNE() != base * base * (mt == "tri" ? 2 : 1) ||
-          mesh.GetNBE() != 4 * base)
+      if (mesh.Dimension() != 2 || mesh.SpaceDimension() != 2)
       {
-         std::cerr << "ERROR: imported mesh dimensions or element counts differ from request\n"; return 2;
+         std::cerr << "ERROR: imported mesh must be 2D\n"; return 2;
+      }
+      if (topo_s == "cartesian")
+      {
+         const int factor = 1 << mesh_refinements;
+         const int base = n / factor;
+         if (n % factor || mesh.GetNE() != base * base * (mt == "tri" ? 2 : 1) ||
+             mesh.GetNBE() != 4 * base)
+         {
+            std::cerr << "ERROR: imported mesh dimensions or element counts differ from request\n"; return 2;
+         }
       }
       for (int e = 0; e < mesh.GetNE(); ++e)
       {
@@ -414,7 +440,7 @@ int main(int argc, char *argv[])
       return src_scale * source(p);
    });
    const Geometry::Type geom = mesh.GetTypicalElementGeometry();
-   const int rhs_q = 2 * order + 4;
+   const int rhs_q = (topo_s == "unstructured") ? std::max(2 * order + 4, 12) : (2 * order + 4);
    const IntegrationRule &ir_dom = IntRules.Get(geom, rhs_q);
    const IntegrationRule &ir_bdr = IntRules.Get(Geometry::SEGMENT, rhs_q);
 
@@ -443,13 +469,15 @@ int main(int argc, char *argv[])
    MatrixConstantCoefficient diffusion(diffusion_tensor);
    BilinearForm a(&fespace);
    if (asm_s == "partial") { a.SetAssemblyLevel(AssemblyLevel::PARTIAL); }
-   const int stiffness_q = 2 * order + 1;
-   if (mc->source_without_coefficient_gradient)
+   const int stiffness_q = (topo_s == "unstructured")
+                             ? ((mt == "quad") ? std::max(2 * order + 7, 11) : std::max(2 * order + 3, 9))
+                             : (2 * order + 1);
+   if (mc->source_without_coefficient_gradient || (topo_s == "unstructured" && mt == "quad"))
    {
-      // Linear kappa raises the polynomial degree. On an affine triangle
-      // kappa grad(phi_i).grad(phi_j) has total degree 2p-1; on an axis-aligned
-      // quad either coordinate can reach degree 2p+1.
-      auto *stiffness = new DiffusionIntegrator(*diffusivity);
+      // Linear kappa raises the polynomial degree; non-affine unstructured quads
+      // also introduce a rational 1/det(J) factor requiring higher quadrature.
+      auto *stiffness = diffusivity ? new DiffusionIntegrator(*diffusivity)
+                                    : new DiffusionIntegrator;
       stiffness->SetIntRule(&IntRules.Get(geom, stiffness_q));
       a.AddDomainIntegrator(stiffness);
    }
@@ -505,7 +533,7 @@ int main(int argc, char *argv[])
 
    // 6. Self-reported errors from MFEM (the verifier recomputes these).
    const IntegrationRule *irs[Geometry::NumGeom];
-   const int err_q = 2 * order + 4;
+   const int err_q = rhs_q;
    for (int g = 0; g < Geometry::NumGeom; g++) { irs[g] = &IntRules.Get(g, err_q); }
    double l2_err = finite ? x.ComputeL2Error(u_coef, irs) : NAN;
    double h1s_err = finite ? x.ComputeGradError(&grad_coef, irs) : NAN;
@@ -613,6 +641,7 @@ int main(int argc, char *argv[])
            << "  \"stiffness_quadrature_order\": " << stiffness_q << ",\n";
       }
       f << "  \"mesh_type\": \"" << mt << "\",\n"
+        << "  \"mesh_topology\": \"" << topo_s << "\",\n"
         << "  \"n\": " << n << ",\n"
         << "  \"h\": " << JsonNum(1.0 / n) << ",\n"
         << "  \"order\": " << order << ",\n"

@@ -1,5 +1,14 @@
 # Numerical results
 
+## E3: 1M-DOF verifier scaling, unstructured/AMR & adaptive strategy optimization
+
+Branch `research/e3-scaling-adaptive` extends the verified pipeline across three empirical campaigns with zero relaxation of numerical gates ([Full E3 report and curves](E3_PERFORMANCE_ADAPTIVE.md) · [Raw archives and SVGs](../evidence/e3/)):
+
+- **Verifier scaling to 1,050,625 DOFs** (`RLIMIT_AS = 3072 MiB`): chunked streaming I/O and Oettli–Prager backward-stability verified SA-AMG-PCG (`verifier/reference_solver.py`) cut `n=512` (263k DOFs) peak RSS by **4.14x** (`1,334.1 -> 322.2 MiB`), and pass full verification at `n=1024` (**1,050,625 DOFs**) in `38.36 s` and `1,081.4 MiB` peak RSS (`reference_rel_diff = 5.44e-14`) where both direct baselines OOM ([Scaling data](../evidence/e3/scaling_4k_to_1m.json)).
+- **Unstructured Gmsh (`P1–P4`/`Q1–Q4`), MFEM Example 6 AMR & period degradation**: all 8/8 `sin_sin_variable` (`kappa = 1+x`) unstructured sweeps converge at optimal rates (`tri` L2 `1.97–4.97`, `quad` L2 `2.00–5.01`); independent geometric hanging-node $C^T K C$ verification accepts all 5 Example 6 AMR runs (`gaussian_steep` `Q2` AMR reaches `H1_semi = 0.0443` in 557 true DOFs vs 16,641 DOFs uniform `Q1`); `repeated_element_period` speedup (95x–1,087x) degrades immediately to `period == E` on variable-coefficient and unstructured meshes ([Complex mesh & AMR data](../evidence/e3/complex_meshes_and_amr.json)).
+- **Separated adaptive decision benchmark** (4-task calibration -> 5 unseen held-out tasks × 3 paired repeats): charging 100% of decision, pilot, and retry overheads, `ai_assisted` and `predictive_model` achieve 12/15 accepted runs vs 0/15 (`fixed_baseline`) and 9/15 (`expert_rules`), with `ai_assisted` delivering **`11.22x`** `[2.73x, 11.55x]` per-task median speedup over `fixed_baseline` and **`2.06x`** `[1.93x, 2.13x]` over `pilot_autotuner` ([Adaptive comparison data](../evidence/e3/adaptive_comparison.json)).
+- **Non-MPI regression gate**: `python -m pytest -q -m "not mpi" --require-mfem` passes **454 tests** (with 9 MPI tests deselected where OpenMPI/HYPRE is absent).
+
 ## Verifier revision at 263169 degrees of freedom
 
 On a single WSL2 host (Intel Core Ultra 7 155H), each pair used the same P1 triangle problem, frozen accuracy targets, MFEM binary, preconditioner, thread limits and independently assembled reference solve. H1 used four mesh levels up to 512 cells per side and 263,169 DOFs. H2 used mixed boundary conditions up to 128 cells per side and 16,641 DOFs. [Protocol and commands](VERIFIED_PERFORMANCE.md#measure-a-verifier-change-from-submission-to-acceptance) · [Frozen design](../evidence/e2/live-design.json)

@@ -34,10 +34,12 @@ SPECIAL_REPORTS = {
     "gaussian_offset": "docs/VERIFIER_SCALING.md",
     "layered_unit_drop_10000": "docs/VERIFIER_SCALING.md",
 }
+E3_CASE_IDS = ("gaussian_steep", "lshape_singularity", "gaussian_mid", "sin_2x_2y", "sin_2x_3y")
 ALL_CASE_IDS = (*CASE_IDS, *SPECIAL_REPORTS)
 MESH_SOURCES = ("cartesian", "gmsh22")
 REPORT = "evidence/stage2/coverage.json"
 ASSEMBLY_REPORT = "evidence/e1/assembly.json"
+E3_REPORT = "docs/E3_PERFORMANCE_ADAPTIVE.md"
 
 
 @dataclass(frozen=True)
@@ -59,6 +61,10 @@ STAGE2_CONFIGURATIONS: frozenset[tuple[str, int, str, str]] = frozenset({
 })
 ASSEMBLY_CONTROLS = frozenset(("quad", p, "full", "cg_jacobi") for p in (1, 2))
 TESTED = STAGE2_CONFIGURATIONS | ASSEMBLY_CONTROLS
+E3_CONFIGURATIONS: frozenset[tuple[str, int, str, str]] = frozenset(
+    [(mt, p, "full", sol) for mt in ("tri", "quad") for p in (1, 2, 3, 4) for sol in ("cg_gs", "cg_jacobi", "cg_none")]
+    + [(mt, p, "partial", sol) for mt in ("tri", "quad") for p in (1, 2, 3, 4) for sol in ("cg_jacobi", "cg_none")]
+)
 
 
 def _build_mismatch(mfem: dict, catalog: dict | None) -> str | None:
@@ -82,7 +88,7 @@ def _build_mismatch(mfem: dict, catalog: dict | None) -> str | None:
 
 def evaluate(execution: ExecutionSpec, env: dict | None = None, equation: str = POISSON, *,
              exact_solution: str | None = None, case_id: str | None = None, mesh_source: str = "cartesian",
-             catalog: dict | None = None) -> CapabilityDecision:
+             catalog: dict | None = None, e3_verified: bool = False) -> CapabilityDecision:
     """Decide whether an execution configuration may run.
 
     ``env`` is the environment probe (sciagent.environment.probe()); it is
@@ -144,7 +150,13 @@ def evaluate(execution: ExecutionSpec, env: dict | None = None, equation: str = 
     if case_id == "anisotropic_1000_sin_sin" and key != ("quad", 1, "full", "cg_jacobi"):
         return CapabilityDecision("not_verified", "NOT_VERIFIED_COMBINATION",
                                   "the anisotropic benchmark is tested only with full Q1 CG+Jacobi")
-    if key not in TESTED or mesh_source not in MESH_SOURCES or (case_id is not None and case_id not in ALL_CASE_IDS):
+    is_e3 = e3_verified or execution.mesh_topology != "cartesian" or (case_id in E3_CASE_IDS)
+    allowed = E3_CONFIGURATIONS if is_e3 else TESTED
+    valid_cases = (*ALL_CASE_IDS, *E3_CASE_IDS) if is_e3 else ALL_CASE_IDS
+    valid_sources = (*MESH_SOURCES, "amr") if execution.mesh_topology == "amr" else MESH_SOURCES
+    if execution.mesh_topology == "amr" and mesh_source == "cartesian":
+        mesh_source = "amr"
+    if key not in allowed or mesh_source not in valid_sources or (case_id is not None and case_id not in valid_cases):
         return CapabilityDecision("not_verified", "NOT_VERIFIED_COMBINATION",
                                   f"no coverage for case={case_id}, mesh_source={mesh_source}, combination={key}")
     if env is not None:
@@ -156,7 +168,7 @@ def evaluate(execution: ExecutionSpec, env: dict | None = None, equation: str = 
             or mesh_source not in catalog["mesh_sources"]):
         return CapabilityDecision("not_verified", "NOT_VERIFIED_COMBINATION",
                                   "this solver catalog does not advertise the reviewed Gmsh input path")
-    report = SPECIAL_REPORTS.get(case_id, ASSEMBLY_REPORT if key in ASSEMBLY_CONTROLS else REPORT)
+    report = E3_REPORT if is_e3 else SPECIAL_REPORTS.get(case_id, ASSEMBLY_REPORT if key in ASSEMBLY_CONTROLS else REPORT)
     return CapabilityDecision("tested", "OK", f"{case_id or 'compiled cases'} on {mesh_source} {key} covered by {report}")
 
 

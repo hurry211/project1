@@ -72,6 +72,7 @@ struct ManufacturedCase
    mfem::real_t (*source_without_coefficient_gradient)(const mfem::Vector &) = nullptr;
    double diffusion_x = 1.0;
    bool layered = false;
+   bool e3_only = false;
 };
 
 // ---------------------------------------------------------------------------
@@ -149,6 +150,90 @@ inline mfem::real_t gaussian_f(const mfem::Vector &p)
    return (100.0 - 2500.0 * gaussian_r2(p)) * gaussian_u(p);
 }
 
+inline mfem::real_t gaussian_steep_u(const mfem::Vector &p) { return std::exp(-120.0 * gaussian_r2(p)); }
+inline void gaussian_steep_grad(const mfem::Vector &p, mfem::Vector &g)
+{
+   g.SetSize(2);
+   const double scale = -240.0 * gaussian_steep_u(p);
+   g(0) = scale * (p(0) - 0.375);
+   g(1) = scale * (p(1) - 0.625);
+}
+inline mfem::real_t gaussian_steep_f(const mfem::Vector &p)
+{
+   return (480.0 - 57600.0 * gaussian_r2(p)) * gaussian_steep_u(p);
+}
+
+inline double gaussian_mid_r2(const mfem::Vector &p)
+{
+   const double x = p(0) - 0.45, y = p(1) - 0.55;
+   return x * x + y * y;
+}
+inline mfem::real_t gaussian_mid_u(const mfem::Vector &p) { return std::exp(-40.0 * gaussian_mid_r2(p)); }
+inline void gaussian_mid_grad(const mfem::Vector &p, mfem::Vector &g)
+{
+   g.SetSize(2);
+   const double scale = -80.0 * gaussian_mid_u(p);
+   g(0) = scale * (p(0) - 0.45);
+   g(1) = scale * (p(1) - 0.55);
+}
+inline mfem::real_t gaussian_mid_f(const mfem::Vector &p)
+{
+   return (160.0 - 6400.0 * gaussian_mid_r2(p)) * gaussian_mid_u(p);
+}
+
+inline mfem::real_t sin_2x_2y_u(const mfem::Vector &p)
+{
+   return std::sin(2.0 * M_PI * p(0)) * std::sin(2.0 * M_PI * p(1));
+}
+inline void sin_2x_2y_grad(const mfem::Vector &p, mfem::Vector &g)
+{
+   g.SetSize(2);
+   g(0) = 2.0 * M_PI * std::cos(2.0 * M_PI * p(0)) * std::sin(2.0 * M_PI * p(1));
+   g(1) = 2.0 * M_PI * std::sin(2.0 * M_PI * p(0)) * std::cos(2.0 * M_PI * p(1));
+}
+inline mfem::real_t sin_2x_2y_f(const mfem::Vector &p) { return 8.0 * M_PI * M_PI * sin_2x_2y_u(p); }
+
+inline mfem::real_t sin_2x_3y_u(const mfem::Vector &p)
+{
+   return std::sin(2.0 * M_PI * p(0)) * std::sin(3.0 * M_PI * p(1));
+}
+inline void sin_2x_3y_grad(const mfem::Vector &p, mfem::Vector &g)
+{
+   g.SetSize(2);
+   g(0) = 2.0 * M_PI * std::cos(2.0 * M_PI * p(0)) * std::sin(3.0 * M_PI * p(1));
+   g(1) = 3.0 * M_PI * std::sin(2.0 * M_PI * p(0)) * std::cos(3.0 * M_PI * p(1));
+}
+inline mfem::real_t sin_2x_3y_f(const mfem::Vector &p) { return 13.0 * M_PI * M_PI * sin_2x_3y_u(p); }
+
+inline mfem::real_t lshape_u(const mfem::Vector &p)
+{
+   const double dx = p(0) - 0.5, dy = p(1) - 0.5;
+   const double r2 = dx * dx + dy * dy;
+   if (r2 == 0.0) { return 0.0; }
+   double phi = std::atan2(dy, dx);
+   if (phi < M_PI_2 - 1e-12) { phi += 2.0 * M_PI; }
+   const double theta = phi - M_PI_2;
+   return std::pow(r2, 1.0 / 3.0) * std::sin((2.0 / 3.0) * theta);
+}
+inline void lshape_grad(const mfem::Vector &p, mfem::Vector &g)
+{
+   g.SetSize(2);
+   const double dx = p(0) - 0.5, dy = p(1) - 0.5;
+   const double r2 = dx * dx + dy * dy;
+   if (r2 < 1e-30) { g(0) = 0.0; g(1) = 0.0; return; }
+   double phi = std::atan2(dy, dx);
+   if (phi < M_PI_2 - 1e-12) { phi += 2.0 * M_PI; }
+   const double theta = phi - M_PI_2;
+   const double r = std::sqrt(r2);
+   const double coef = (2.0 / 3.0) * std::pow(r, -1.0 / 3.0);
+   const double ur = coef * std::sin((2.0 / 3.0) * theta);
+   const double uth_over_r = coef * std::cos((2.0 / 3.0) * theta);
+   const double ux = ur * (dx / r) - uth_over_r * (dy / r);
+   const double uy = ur * (dy / r) + uth_over_r * (dx / r);
+   g(0) = ux;
+   g(1) = uy;
+}
+
 inline mfem::real_t one_plus_x(const mfem::Vector &p)
 {
    return 1.0 + p(0);
@@ -183,6 +268,37 @@ inline const std::vector<ManufacturedCase> &Registry()
          "gaussian_offset", "exp(-25*((x-0.375)**2+(y-0.625)**2))",
          "(100-2500*((x-0.375)**2+(y-0.625)**2))*exp(-25*((x-0.375)**2+(y-0.625)**2))",
          gaussian_u, gaussian_grad, gaussian_f
+      },
+      {
+         "gaussian_steep", "exp(-120*((x-0.375)**2+(y-0.625)**2))",
+         "(480-57600*((x-0.375)**2+(y-0.625)**2))*exp(-120*((x-0.375)**2+(y-0.625)**2))",
+         gaussian_steep_u, gaussian_steep_grad, gaussian_steep_f,
+         UnitSquarePoisson, nullptr, nullptr, 1.0, false, true
+      },
+      {
+         "gaussian_mid", "exp(-40*((x-0.45)**2+(y-0.55)**2))",
+         "(160-6400*((x-0.45)**2+(y-0.55)**2))*exp(-40*((x-0.45)**2+(y-0.55)**2))",
+         gaussian_mid_u, gaussian_mid_grad, gaussian_mid_f,
+         UnitSquarePoisson, nullptr, nullptr, 1.0, false, true
+      },
+      {
+         "sin_2x_2y", "sin(2*pi*x)*sin(2*pi*y)",
+         "8*pi**2*sin(2*pi*x)*sin(2*pi*y)",
+         sin_2x_2y_u, sin_2x_2y_grad, sin_2x_2y_f,
+         UnitSquarePoisson, nullptr, nullptr, 1.0, false, true
+      },
+      {
+         "sin_2x_3y", "sin(2*pi*x)*sin(3*pi*y)",
+         "13*pi**2*sin(2*pi*x)*sin(3*pi*y)",
+         sin_2x_3y_u, sin_2x_3y_grad, sin_2x_3y_f,
+         UnitSquarePoisson, nullptr, nullptr, 1.0, false, true
+      },
+      {
+         "lshape_singularity",
+         "((x-0.5)**2+(y-0.5)**2)**(1/3)*sin((2/3)*theta_lshape)",
+         "0",
+         lshape_u, lshape_grad, zero_source,
+         UnitSquarePoisson, nullptr, nullptr, 1.0, false, true
       },
       {
          "sin_sin",

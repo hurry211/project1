@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build cpp/poisson_mms against the pinned MFEM install.
+# Build cpp/poisson_mms and cpp/poisson_amr against the pinned MFEM install.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 INST="${MFEM_INSTALL:-${THIRD_PARTY:-$ROOT/third_party}/mfem-install}"

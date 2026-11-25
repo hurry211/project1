@@ -28,7 +28,7 @@ from . import capability, environment, mfem_runner, profiling
 from .evidence import EvidenceStore, artifact_hashes, check_archive, sha256_file, utc_now
 from .spec import ExecutionSpec, RetryPolicy, StudySpec, canonical_json, sha256_of
 from .verification_process import verify_bounded
-from .gmsh import ARCHIVED_MESH, inspect_gmsh, read_mesh
+from .gmsh import ARCHIVED_MESH, inspect_gmsh, inspect_gmsh_unstructured, read_mesh
 
 TERMINAL = {"ACCEPTED", "FAILED", "BLOCKED", "BUDGET_EXHAUSTED", "INVALID_SPEC"}
 STRUCTURAL_EXITS = {"INVALID_ARGUMENTS", "BOUNDARY_COVERAGE", "UNSUPPORTED_COMBINATION", "ARTIFACT_WRITE_ERROR", "TIMEOUT"}
@@ -83,11 +83,16 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
     if study.external_mesh is not None:
         try:
             data = read_mesh(spec_path.parent / study.external_mesh.file, study.external_mesh)
-            mesh = inspect_gmsh(data, study.problem, study.execution)
+            mesh = (
+                inspect_gmsh_unstructured(data, study.problem, study.execution)
+                if study.execution.mesh_topology == "unstructured"
+                else inspect_gmsh(data, study.problem, study.execution)
+            )
         except (OSError, ValueError) as exc:
             return finish("INVALID_SPEC", "INVALID_EXTERNAL_MESH", str(exc))
         store.write_bytes_once(ARCHIVED_MESH, data)
-        manifest["external_mesh"] = {"sha256": study.external_mesh.sha256, "base_n": mesh.subdivisions}
+        base_n = getattr(mesh, "subdivisions_hint", None) or mesh.subdivisions
+        manifest["external_mesh"] = {"sha256": study.external_mesh.sha256, "base_n": base_n}
 
     frozen = {"problem": study.problem, "validation": study.validation, "policy": study.policy}
     hashes = {}
@@ -119,7 +124,8 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
     case_id = mfem_runner.bind_case(study.problem, cases)
     mesh_source = "gmsh22" if study.external_mesh is not None else "cartesian"
     decision = capability.evaluate(study.execution, env, study.problem.equation, exact_solution=study.problem.exact_solution,
-                                   case_id=case_id, mesh_source=mesh_source, catalog=cases)
+                                   case_id=case_id, mesh_source=mesh_source, catalog=cases,
+                                   e3_verified=(study.schema_version == "0.4"))
     manifest["capability"] = decision.__dict__
     if decision.status != "tested":
         state = "BLOCKED" if decision.code in {"UNSUPPORTED_BACKEND", "NOT_VERIFIED_BUILD"} else "FAILED"
@@ -238,7 +244,8 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
                           f"> max_dofs_per_level={pol.max_dofs_per_level}")
         new_exec = ExecutionSpec.model_validate({**execution.model_dump(), "mesh_levels": [*execution.mesh_levels, n_next]})
         decision = capability.evaluate(new_exec, env, study.problem.equation, exact_solution=study.problem.exact_solution,
-                                       case_id=case_id, mesh_source=mesh_source, catalog=cases)
+                                       case_id=case_id, mesh_source=mesh_source, catalog=cases,
+                                       e3_verified=(study.schema_version == "0.4"))
         if decision.status != "tested":
             return finish("BLOCKED", decision.code, decision.reason)
         store.event("RETRY_ALLOWED", attempt=attempt, action=pol.action, old_levels=list(execution.mesh_levels),

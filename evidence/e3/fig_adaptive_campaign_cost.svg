@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="420" viewBox="0 0 760 420">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="380.0" y="28" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="16" font-weight="600" fill="#111">Held-Out Campaign End-to-End Trusted Cost (Median &amp; 95% Bootstrap CI)</text>
+<rect x="78" y="48" width="652" height="286" fill="#fafafa" stroke="#cbd5e1"/>
+<line x1="78" y1="334.0" x2="730" y2="334.0" stroke="#e2e8f0" stroke-dasharray="3,3"/>
+<text x="70" y="338.0" text-anchor="end" font-family="monospace" font-size="11" fill="#475569">0</text>
+<line x1="78" y1="262.7" x2="730" y2="262.7" stroke="#e2e8f0" stroke-dasharray="3,3"/>
+<text x="70" y="266.7" text-anchor="end" font-family="monospace" font-size="11" fill="#475569">10</text>
+<line x1="78" y1="191.4" x2="730" y2="191.4" stroke="#e2e8f0" stroke-dasharray="3,3"/>
+<text x="70" y="195.4" text-anchor="end" font-family="monospace" font-size="11" fill="#475569">20</text>
+<line x1="78" y1="120.1" x2="730" y2="120.1" stroke="#e2e8f0" stroke-dasharray="3,3"/>
+<text x="70" y="124.1" text-anchor="end" font-family="monospace" font-size="11" fill="#475569">30</text>
+<line x1="78" y1="48.9" x2="730" y2="48.9" stroke="#e2e8f0" stroke-dasharray="3,3"/>
+<text x="70" y="52.9" text-anchor="end" font-family="monospace" font-size="11" fill="#475569">40</text>
+<text x="20" y="191.0" transform="rotate(-90 20 191.0)" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="13" fill="#1e293b">Campaign Wall Time across 5 Held-Out Tasks (s)</text>
+<rect x="111.2" y="92.1" width="64.0" height="241.9" fill="#1f77b4" fill-opacity="0.88" rx="3"/>
+<line x1="143.2" y1="97.5" x2="143.2" y2="91.6" stroke="#0f172a" stroke-width="1.6"/>
+<line x1="137.2" y1="97.5" x2="149.2" y2="97.5" stroke="#0f172a" stroke-width="1.6"/>
+<line x1="137.2" y1="91.6" x2="149.2" y2="91.6" stroke="#0f172a" stroke-width="1.6"/>
+<text x="143.2" y="85.6" text-anchor="middle" font-family="monospace" font-size="11" fill="#0f172a">33.9</text>
+<text x="143.2" y="354" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="11.5" fill="#1e293b">Fixed Baseline</text>
+<text x="143.2" y="370" text-anchor="middle" font-family="monospace" font-size="10" fill="#64748b">acc=0/15</text>
+<rect x="241.6" y="179.6" width="64.0" height="154.4" fill="#d62728" fill-opacity="0.88" rx="3"/>
+<line x1="273.6" y1="181.4" x2="273.6" y2="177.0" stroke="#0f172a" stroke-width="1.6"/>
+<line x1="267.6" y1="181.4" x2="279.6" y2="181.4" stroke="#0f172a" stroke-width="1.6"/>
+<line x1="267.6" y1="177.0" x2="279.6" y2="177.0" stroke="#0f172a" stroke-width="1.6"/>
+<text x="273.6" y="171.0" text-anchor="middle" font-family="monospace" font-size="11" fill="#0f172a">21.7</text>
+<text x="273.6" y="354" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="11.5" fill="#1e293b">Expert Rules</text>
+<text x="273.6" y="370" text-anchor="middle" font-family="monospace" font-size="10" fill="#64748b">acc=9/15</text>
+<rect x="372.0" y="187.6" width="64.0" height="146.4" fill="#2ca02c" fill-opacity="0.88" rx="3"/>
+<line x1="404.0" y1="190.1" x2="404.0" y2="186.1" stroke="#0f172a" stroke-width="1.6"/>
+<line x1="398.0" y1="190.1" x2="410.0" y2="190.1" stroke="#0f172a" stroke-width="1.6"/>
+<line x1="398.0" y1="186.1" x2="410.0" y2="186.1" stroke="#0f172a" stroke-width="1.6"/>
+<text x="404.0" y="180.1" text-anchor="middle" font-family="monospace" font-size="11" fill="#0f172a">20.5</text>
+<text x="404.0" y="354" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="11.5" fill="#1e293b">Predictive Model</text>
+<text x="404.0" y="370" text-anchor="middle" font-family="monospace" font-size="10" fill="#64748b">acc=12/15</text>
+<rect x="502.4" y="229.7" width="64.0" height="104.3" fill="#9467bd" fill-opacity="0.88" rx="3"/>
+<line x1="534.4" y1="231.6" x2="534.4" y2="228.5" stroke="#0f172a" stroke-width="1.6"/>
+<line x1="528.4" y1="231.6" x2="540.4" y2="231.6" stroke="#0f172a" stroke-width="1.6"/>
+<line x1="528.4" y1="228.5" x2="540.4" y2="228.5" stroke="#0f172a" stroke-width="1.6"/>
+<text x="534.4" y="222.5" text-anchor="middle" font-family="monospace" font-size="11" fill="#0f172a">14.6</text>
+<text x="534.4" y="354" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="11.5" fill="#1e293b">Pilot Autotuner</text>
+<text x="534.4" y="370" text-anchor="middle" font-family="monospace" font-size="10" fill="#64748b">acc=12/15</text>
+<rect x="632.8" y="273.8" width="64.0" height="60.2" fill="#ff7f0e" fill-opacity="0.88" rx="3"/>
+<line x1="664.8" y1="274.0" x2="664.8" y2="273.1" stroke="#0f172a" stroke-width="1.6"/>
+<line x1="658.8" y1="274.0" x2="670.8" y2="274.0" stroke="#0f172a" stroke-width="1.6"/>
+<line x1="658.8" y1="273.1" x2="670.8" y2="273.1" stroke="#0f172a" stroke-width="1.6"/>
+<text x="664.8" y="267.1" text-anchor="middle" font-family="monospace" font-size="11" fill="#0f172a">8.45</text>
+<text x="664.8" y="354" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="11.5" fill="#1e293b">Ai Assisted</text>
+<text x="664.8" y="370" text-anchor="middle" font-family="monospace" font-size="10" fill="#64748b">acc=12/15</text>
+</svg>

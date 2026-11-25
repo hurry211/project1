@@ -143,6 +143,12 @@ class ValidationSpec(_Frozen):
     require_reference_solve: bool = True
     reference_solve_rel_tol: float = Field(default=1e-7, gt=0.0)
     reference_solve_max_dofs: int = Field(default=300_000, ge=1)
+    reference_solve_method: Literal["auto", "direct", "amg_pcg"] = Field(
+        default="auto", exclude_if=lambda value: value == "auto"
+    )
+    reference_solve_amg_threshold_dofs: int = Field(
+        default=300_000, ge=1, exclude_if=lambda value: value == 300_000
+    )
     mms_consistency_rel_tol: float = Field(default=1e-6, gt=0.0)
     verifier_quadrature_extra_points: int = Field(default=3, ge=1, le=10)
     layered_q1: LayeredCriteria | None = Field(default=None, exclude_if=lambda value: value is None)
@@ -168,6 +174,9 @@ class RetryPolicy(_Frozen):
 
 class ExecutionSpec(_Frozen):
     mesh_type: Literal["tri", "quad"] = "tri"
+    mesh_topology: Literal["cartesian", "unstructured", "amr"] = Field(
+        default="cartesian", exclude_if=lambda value: value == "cartesian"
+    )
     polynomial_order: int = Field(default=1, ge=1, le=8)
     mesh_levels: tuple[int, ...] = Field(default=(8, 16, 32), min_length=1)
     backend: Literal["serial_cpu", "mpi_cpu", "cuda", "hip"] = "serial_cpu"
@@ -207,7 +216,7 @@ class ExternalMeshSpec(_Frozen):
 class StudySpec(_Frozen):
     """A complete user-facing specification file."""
 
-    schema_version: Literal["0.2", "0.3"]
+    schema_version: Literal["0.2", "0.3", "0.4"]
     problem: ProblemSpec
     execution: ExecutionSpec
     validation: ValidationSpec = ValidationSpec()
@@ -216,10 +225,13 @@ class StudySpec(_Frozen):
 
     @model_validator(mode="after")
     def _check_stage2_features(self) -> "StudySpec":
-        if self.schema_version == "0.2" and (
-            self.problem.kappa != "1" or "external_mesh" in self.model_fields_set
-        ):
-            raise ValueError("variable diffusivity and external_mesh require schema_version 0.3")
+        if self.schema_version == "0.2":
+            if self.problem.kappa != "1" or "external_mesh" in self.model_fields_set:
+                raise ValueError("variable diffusivity and external_mesh require schema_version 0.3")
+            if self.execution.mesh_topology != "cartesian":
+                raise ValueError("non-cartesian mesh_topology requires schema_version 0.3 or 0.4")
+        if self.execution.mesh_topology == "unstructured" and self.external_mesh is None:
+            raise ValueError("mesh_topology='unstructured' requires an external_mesh input")
         if self.execution.inject_fault in ("omit_coefficient_gradient", "omit_neumann_coefficient"):
             if self.problem.kappa == "1":
                 raise ValueError("this fault requires a variable diffusion problem")

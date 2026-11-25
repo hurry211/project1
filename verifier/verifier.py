@@ -25,12 +25,14 @@ from sciagent.spec import (ANISOTROPIC, GAUSSIAN_EXACT, LAYERED, LAYERED_EXACT, 
                            ValidationSpec, compact_expression)
 from sciagent.evidence import artifact_hashes, sha256_file
 from sciagent.profiling import mark, phase
-from sciagent.gmsh import ARCHIVED_MESH, CartesianGmsh, inspect_gmsh, read_mesh
+from sciagent.gmsh import ARCHIVED_MESH, CartesianGmsh, UnstructuredGmsh, inspect_gmsh, inspect_gmsh_unstructured, read_mesh
 
 from . import expr, layered
 from .fem import (ArtifactError, MeshData, build_local_basis, cartesian_partition,
-                  element_quadrature, gauss_01, inverse_map, lattice_indices, load_mesh_data,
+                  element_quadrature, eval_monomials, evaluate_quadrature_slice, gauss_01,
+                  inverse_map, lattice_indices, load_mesh_data, reference_quadrature,
                   repeated_element_period)
+from .reference_solver import ReferenceSolverError, solve_reference_system
 
 VERIFIER_VERSION = "0.6.0"
 GEOM_TOL = 1e-12
@@ -149,7 +151,8 @@ def _attributes(value):
 
 
 def _native_claims(res, execution, rep):
-    degree = 2 * execution.polynomial_order + 4
+    p = execution.polynomial_order
+    degree = max(2 * p + 4, 12) if execution.mesh_topology == "unstructured" else (2 * p + 4)
     orders = [res.get(key) for key in ("rhs_quadrature_order", "error_quadrature_order")]
     rep.add(Check("quadrature_orders", all(type(q) is int and q == degree for q in orders),
                   "QUADRATURE_CLAIM_MISMATCH", f"reported RHS/error orders {orders}, expected {degree}"))
@@ -165,6 +168,39 @@ def _native_claims(res, execution, rep):
         valid = final <= limit and (iterations != 0 or final == initial)
     rep.add(Check("cg_stopping_record", valid, "CG_RECORD_INCONSISTENT",
                   f"iterations={iterations}, initial={initial}, final={final}, abs_tol={absolute}"))
+
+
+def _unstructured_partition_check(mesh: MeshData, rep: LevelReport) -> None:
+    """Verify positive element areas, exact unit-square area sum, and conforming edge ownership."""
+    v = mesh.verts
+    x = v[..., 0]
+    y = v[..., 1]
+    areas = 0.5 * np.sum(np.roll(x, 1, axis=1) * y - x * np.roll(y, 1, axis=1), axis=1)
+    min_area = float(np.min(areas)) if areas.size else 0.0
+    total_area = float(np.sum(areas)) if areas.size else 0.0
+    area_ok = min_area > 1e-14 and abs(total_area - 1.0) <= 1e-10
+    rep.add(Check("unstructured_element_area_partition", area_ok, "MESH_MISMATCH",
+                  f"min_area={min_area:.3e}, total_area={total_area:.12f}", total_area, 1.0))
+
+    # Conforming edge topology check: boundary edges belong to 1 element, interior to 2 elements.
+    nv = v.shape[1]
+    edge_counts: dict[frozenset, int] = {}
+    pts_rounded = np.round(v, 11)
+    for e_pts in pts_rounded:
+        for k in range(nv):
+            a = tuple(map(float, e_pts[k]))
+            b = tuple(map(float, e_pts[(k + 1) % nv]))
+            key = frozenset((a, b))
+            edge_counts[key] = edge_counts.get(key, 0) + 1
+    bdr_keys = set()
+    for seg in np.round(mesh.bdr_xy, 11):
+        key = frozenset((tuple(map(float, seg[0])), tuple(map(float, seg[1]))))
+        bdr_keys.add(key)
+    topo_ok = (len(bdr_keys) == mesh.bdr_xy.shape[0]) and all(
+        edge_counts.get(k, 0) == 1 for k in bdr_keys
+    ) and all(cnt == 2 for k, cnt in edge_counts.items() if k not in bdr_keys)
+    rep.add(Check("unstructured_edge_incidence", topo_ok, "MESH_MISMATCH",
+                  "conforming 1-manifold boundary & 2-element interior edges"))
 
 
 def _refined_diagonals(mesh: MeshData, n: int, source: CartesianGmsh) -> bool:
@@ -186,7 +222,7 @@ def _refined_diagonals(mesh: MeshData, n: int, source: CartesianGmsh) -> bool:
 @phase("verify.solver_claims")
 def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec,
                  validation: ValidationSpec, n: int, *, require_run_record: bool = False,
-                 external_grid: CartesianGmsh | None = None) -> LevelReport:
+                 external_grid: CartesianGmsh | UnstructuredGmsh | None = None) -> LevelReport:
     rep = LevelReport(n=n, level_dir=str(level_dir))
     level_dir = Path(level_dir)
 
@@ -232,7 +268,10 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
 
     if problem.kappa != "1":
         order = res.get("stiffness_quadrature_order")
-        expected = 2 * execution.polynomial_order + 1
+        if execution.mesh_topology == "unstructured":
+            expected = max(2 * execution.polynomial_order + 7, 11) if execution.mesh_type == "quad" else max(2 * execution.polynomial_order + 3, 9)
+        else:
+            expected = 2 * execution.polynomial_order + 1
         rep.add(Check("variable_stiffness_quadrature_order", type(order) is int and order == expected,
                       "QUADRATURE_CLAIM_MISMATCH", f"reported weighted stiffness order {order}, expected {expected}"))
 
@@ -276,24 +315,40 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
     rep.add(Check("dof_coordinate_consistency", spread <= GEOM_TOL, "MALFORMED_ARTIFACT",
                   "max coordinate disagreement of a global dof across elements", spread, GEOM_TOL))
 
-    expected_E = n * n * (2 if execution.mesh_type == "tri" else 1)
-    rep.add(Check("element_count", mesh.geom == execution.mesh_type and mesh.verts.shape[0] == expected_E, "MESH_MISMATCH",
-                  f"{mesh.verts.shape[0]} elements, expected {expected_E}"))
-    rep.add(Check("dof_count", type(rep.num_dofs) is int and rep.num_dofs == N == execution.estimated_dofs(n),
-                  "MESH_MISMATCH", f"claimed {rep.num_dofs}, exported {N}, expected {execution.estimated_dofs(n)}"))
-    partition_ok = cartesian_partition(mesh, n, GEOM_TOL)
-    rep.add(Check("cartesian_cell_partition", partition_ok, "MESH_MISMATCH",
-                  "each unit-grid cell has one cyclic quadrilateral or two complementary triangles"))
-    if external_grid is not None:
-        rep.add(Check("external_mesh_refinement", partition_ok and _refined_diagonals(mesh, n, external_grid),
-                      "MESH_MISMATCH", "exported elements follow uniform refinement of the archived input"))
-    p = execution.polynomial_order
-    if p in (1, 2):
-        grid = lattice_indices(coords, n * p, GEOM_TOL)
-        complete = (grid is not None and len(coords) == (n * p + 1) ** 2
-                    and len(np.unique(grid[:, 0] + (n * p + 1) * grid[:, 1])) == len(coords))
-        rep.add(Check("cartesian_node_lattice", complete, "MESH_MISMATCH",
-                      f"bijective coordinates on the {n*p + 1} by {n*p + 1} nodal lattice"))
+    unstructured = execution.mesh_topology == "unstructured" or isinstance(external_grid, UnstructuredGmsh)
+    if unstructured:
+        expected_e = (
+            external_grid.element_count * (4 ** external_grid.refinements(n))
+            if isinstance(external_grid, UnstructuredGmsh)
+            else None
+        )
+        elem_ok = mesh.geom == execution.mesh_type and mesh.verts.shape[0] > 0 and (
+            expected_e is None or mesh.verts.shape[0] == expected_e
+        )
+        rep.add(Check("element_count", elem_ok, "MESH_MISMATCH",
+                      f"{mesh.verts.shape[0]} elements" + (f", expected {expected_e}" if expected_e else "")))
+        rep.add(Check("dof_count", type(rep.num_dofs) is int and rep.num_dofs == N >= 4,
+                      "MESH_MISMATCH", f"claimed {rep.num_dofs}, exported {N}"))
+        _unstructured_partition_check(mesh, rep)
+    else:
+        expected_E = n * n * (2 if execution.mesh_type == "tri" else 1)
+        rep.add(Check("element_count", mesh.geom == execution.mesh_type and mesh.verts.shape[0] == expected_E, "MESH_MISMATCH",
+                      f"{mesh.verts.shape[0]} elements, expected {expected_E}"))
+        rep.add(Check("dof_count", type(rep.num_dofs) is int and rep.num_dofs == N == execution.estimated_dofs(n),
+                      "MESH_MISMATCH", f"claimed {rep.num_dofs}, exported {N}, expected {execution.estimated_dofs(n)}"))
+        partition_ok = cartesian_partition(mesh, n, GEOM_TOL)
+        rep.add(Check("cartesian_cell_partition", partition_ok, "MESH_MISMATCH",
+                      "each unit-grid cell has one cyclic quadrilateral or two complementary triangles"))
+        if isinstance(external_grid, CartesianGmsh):
+            rep.add(Check("external_mesh_refinement", partition_ok and _refined_diagonals(mesh, n, external_grid),
+                          "MESH_MISMATCH", "exported elements follow uniform refinement of the archived input"))
+        p = execution.polynomial_order
+        if p in (1, 2):
+            grid = lattice_indices(coords, n * p, GEOM_TOL)
+            complete = (grid is not None and len(coords) == (n * p + 1) ** 2
+                        and len(np.unique(grid[:, 0] + (n * p + 1) * grid[:, 1])) == len(coords))
+            rep.add(Check("cartesian_node_lattice", complete, "MESH_MISMATCH",
+                          f"bijective coordinates on the {n*p + 1} by {n*p + 1} nodal lattice"))
 
     # ---- Gate A (mesh side): boundary attribute <-> label <-> geometry ---
     by_attr = {b.attribute: b for b in problem.boundaries}
@@ -321,13 +376,29 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
     len_err = max(abs(v - 1.0) for v in side_len.values())
     rep.add(Check("boundary_side_length", len_err <= 1e-10, "BOUNDARY_COVERAGE",
                   "max |declared side length - 1|", len_err, 1e-10))
-    knots = np.arange(n + 1) / n
-    expected_intervals = np.column_stack((knots[:-1], knots[1:]))
-    bad_sides = [label for label, segments in intervals.items()
-                 if len(segments) != n or not np.allclose(sorted(segments), expected_intervals,
-                                                          rtol=0, atol=GEOM_TOL)]
-    rep.add(Check("boundary_partition", not bad_sides, "BOUNDARY_COVERAGE",
-                  f"sides with missing, overlapping or misplaced Cartesian segments: {bad_sides}"))
+    if unstructured:
+        bad_sides = []
+        for label, segments in intervals.items():
+            segs = sorted(segments)
+            cur = 0.0
+            for a0, a1 in segs:
+                if abs(a0 - cur) > 1e-10:
+                    bad_sides.append(label)
+                    break
+                cur = a1
+            else:
+                if abs(cur - 1.0) > 1e-10:
+                    bad_sides.append(label)
+        rep.add(Check("boundary_partition", not bad_sides, "BOUNDARY_COVERAGE",
+                      f"sides with missing or overlapping unstructured segments: {bad_sides}"))
+    else:
+        knots = np.arange(n + 1) / n
+        expected_intervals = np.column_stack((knots[:-1], knots[1:]))
+        bad_sides = [label for label, segments in intervals.items()
+                     if len(segments) != n or not np.allclose(sorted(segments), expected_intervals,
+                                                              rtol=0, atol=GEOM_TOL)]
+        rep.add(Check("boundary_partition", not bad_sides, "BOUNDARY_COVERAGE",
+                      f"sides with missing, overlapping or misplaced Cartesian segments: {bad_sides}"))
 
     u_fn = expr.compile_expr(problem.exact_solution)
     f_fn = expr.compile_expr(problem.source)
@@ -346,16 +417,25 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
 
     # ---- Gate C: independent error integration ---------------------------
     mark("verify.integration")
+    p = execution.polynomial_order
+    m = p + 1 + validation.verifier_quadrature_extra_points
+    if unstructured:
+        m = max(m, 2 * p + 6)
+    streaming = mesh.verts.shape[0] > 32768 or validation.reference_solve_method == "amg_pcg"
+    q = None
     try:
         basis = build_local_basis(mesh, p)
-        m = p + 1 + validation.verifier_quadrature_extra_points
-        q = element_quadrature(mesh, basis, m)
+        if streaming:
+            min_detJ, l2, h1 = _streaming_errors(mesh, basis, m, u_fn, problem.equation)
+        else:
+            q = element_quadrature(mesh, basis, m)
+            min_detJ = float(np.min(q.detJ))
+            l2, h1 = _integrated_errors(mesh, q, u_fn, problem.equation)
     except (ArtifactError, np.linalg.LinAlgError) as exc:
         rep.add(Check("local_basis", False, "MALFORMED_ARTIFACT", str(exc)))
         return rep
-    rep.add(Check("mesh_jacobian_positive", bool(np.all(q.detJ > 0)), "INVALID_MESH",
-                  "min det J over quadrature points", float(np.min(q.detJ)), 0.0))
-    l2, h1 = _integrated_errors(mesh, q, u_fn, problem.equation)
+    rep.add(Check("mesh_jacobian_positive", min_detJ > 0.0, "INVALID_MESH",
+                  "min det J over quadrature points", min_detJ, 0.0))
     rep.l2_error, rep.h1_semi_error = l2, h1
     rep.add(Check("independent_errors_finite", math.isfinite(l2) and math.isfinite(h1),
                   "NON_FINITE_SOLUTION", f"L2={l2:.6e}, H1semi={h1:.6e}"))
@@ -374,7 +454,11 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
                           f"absolute difference between verifier and native {name}", abs(mine - theirs), tol))
             continue
         rel = abs(mine - theirs) / max(abs(mine), 1e-300)
-        rep.add(Check(f"self_report_{name}", rel <= validation.self_report_rel_tol,
+        # Near ~1e-10 discrete L2/H1 errors (e.g. Q4 n=32), u_h - u_exact subtraction
+        # leaves O(1e-14) L2 and O(h^{-1}*1e-15 ~ 2e-13) gradient roundoff noise.
+        abs_floor = 1e-14 if name == "l2" else 2e-13
+        tol = max(validation.self_report_rel_tol * abs(mine), abs_floor)
+        rep.add(Check(f"self_report_{name}", abs(mine - theirs) <= tol,
                       "SELF_REPORT_MISMATCH",
                       f"|verifier - solver| / verifier for {name} error "
                       f"(verifier {mine:.10e}, solver {theirs:.10e})",
@@ -401,7 +485,19 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
                           f"{N} dofs > reference_solve_max_dofs"))
         else:
             try:
-                u_ref = reference_solve(mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m)
+                if streaming:
+                    u_ref = _streaming_reference_solve(
+                        mesh, basis, m, problem, coords, on_dir, u_fn, f_fn, validation
+                    )
+                else:
+                    u_ref = reference_solve(
+                        mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m,
+                        method=validation.reference_solve_method,
+                        amg_threshold_dofs=validation.reference_solve_amg_threshold_dofs,
+                    )
+            except ReferenceSolverError as exc:
+                rep.add(Check("reference_solve", False, "REFERENCE_SOLVER_FAILED", str(exc)))
+                return rep
             except (ArtifactError, np.linalg.LinAlgError) as exc:
                 rep.add(Check("reference_solve", False, "INVALID_MESH", str(exc)))
                 return rep
@@ -410,7 +506,7 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
             rep.add(Check("reference_solve_agreement", rel <= validation.reference_solve_rel_tol,
                           "REFERENCE_MISMATCH",
                           "max|u_mfem - u_ref| / max|u_ref| (independent scipy assembly + "
-                          "sparse direct solve)", rel, validation.reference_solve_rel_tol))
+                          "reference solve)", rel, validation.reference_solve_rel_tol))
     return rep
 
 
@@ -441,6 +537,180 @@ def _integrated_errors(mesh, q, u_fn, equation=POISSON):
     return float(np.sqrt(np.sum(l2_density))), float(np.sqrt(np.sum(h1_density)))
 
 
+def _stiffness_block(gphi, wdet, sx, sy, variable_kappa, equation):
+    weights = wdet
+    if variable_kappa is not None:
+        weights = weights * variable_kappa(sx, sy)
+    if equation == LAYERED:
+        material = layered.coefficient(sx)
+        if not np.all(material == material[:, :1]):
+            raise ArtifactError("layered interface cuts an element")
+        weights = weights * material
+    if equation == ANISOTROPIC:
+        return np.einsum("eq,eqid,d,eqjd->eij", weights, gphi, [1000.0, 1.0], gphi)
+    return np.einsum("eq,eqid,eqjd->eij", weights, gphi, gphi)
+
+
+def _streaming_errors(mesh, basis, m: int, u_fn, equation=POISSON) -> tuple[float, float, float]:
+    """Compute min detJ, L2 error, and H1 seminorm error over bounded element slices."""
+    xi, eta, w = reference_quadrature(mesh.geom, m)
+    monom = eval_monomials(basis.exps, xi, eta)
+    E = mesh.verts.shape[0]
+    batch = max(1, 32768 // xi.size)
+    min_det = math.inf
+    l2_parts, h1_parts = [], []
+    for start in range(0, E, batch):
+        stop = min(start + batch, E)
+        qb = evaluate_quadrature_slice(mesh, basis, xi, eta, w, start, stop, monom_cache=monom)
+        det_b = float(np.min(qb.detJ))
+        if det_b < min_det:
+            min_det = det_b
+        U = mesh.values[mesh.elem_dofs[start:stop]]
+        uh = np.einsum("eqk,ek->eq", qb.phi, U)
+        guh = np.einsum("eqki,ek->eqi", qb.gphi, U)
+        x, y = qb.X[..., 0], qb.X[..., 1]
+        ue = u_fn(x, y)
+        if equation == LAYERED:
+            gx, gy = layered.FLUX / layered.coefficient(x), 0.0
+        else:
+            gx, gy = expr.gradient(u_fn, x, y)
+        l2_parts.append(float(np.sum(qb.wdet * (uh - ue) ** 2)))
+        h1_parts.append(float(np.sum(qb.wdet * ((guh[..., 0] - gx) ** 2 + (guh[..., 1] - gy) ** 2))))
+    return min_det, math.sqrt(math.fsum(l2_parts)), math.sqrt(math.fsum(h1_parts))
+
+
+def _assemble_neumann_load(mesh, basis, problem, u_fn, kappa, m: int, F: np.ndarray) -> None:
+    """Accumulate outward Neumann boundary flux contributions into F."""
+    neu = {b.attribute: b.label for b in problem.boundaries if b.kind == "neumann"}
+    if not neu:
+        return
+    from .fem import boundary_edge_owners
+
+    edge_owner = boundary_edge_owners(mesh, neu)
+    g1, w1 = gauss_01(m)
+    for attr, seg in zip(mesh.bdr_attr, mesh.bdr_xy):
+        lbl = neu.get(int(attr))
+        if lbl is None:
+            continue
+        key = frozenset((tuple(np.round(seg[0], 12)), tuple(np.round(seg[1], 12))))
+        e = edge_owner.get(key)
+        if e is None:
+            raise ArtifactError("boundary segment not found among element edges")
+        pts = seg[0][None, :] + g1[:, None] * (seg[1] - seg[0])[None, :]
+        L = float(np.linalg.norm(seg[1] - seg[0]))
+        ref = inverse_map(mesh.geom, mesh.verts[e:e + 1], pts[None, :, :])[0]
+        M, _, _ = eval_monomials(basis.exps, ref[:, 0], ref[:, 1])
+        phi = M @ basis.coeffs[e]
+        if problem.equation == LAYERED:
+            gx, gy = layered.FLUX, 0.0  # a*grad(u_exact) on either material
+        else:
+            gx, gy = expr.gradient(u_fn, pts[:, 0], pts[:, 1])
+        nx, ny = SIDE_NORMAL[lbl]
+        gn = kappa(pts[:, 0], pts[:, 1]) * (gx * nx + gy * ny)
+        F[mesh.elem_dofs[e]] += (w1 * L * gn) @ phi
+
+
+def _reduce_csr_sum(parts: list[sp.csr_matrix], N: int) -> sp.csr_matrix:
+    if not parts:
+        return sp.csr_matrix((N, N), dtype=np.float64)
+    while len(parts) > 1:
+        nxt = []
+        for i in range(0, len(parts), 2):
+            if i + 1 < len(parts):
+                s = (parts[i] + parts[i + 1]).tocsr()
+                s.sum_duplicates()
+                nxt.append(s)
+            else:
+                nxt.append(parts[i])
+        parts = nxt
+    return parts[0]
+
+
+def _streaming_reference_solve(
+    mesh, basis, m: int, problem, coords, on_dir, u_fn, f_fn, validation
+) -> np.ndarray:
+    """Assemble K and F in bounded element slices and solve using direct LU or AMG-PCG."""
+    N = coords.shape[0]
+    E = mesh.verts.shape[0]
+    nloc = mesh.elem_dofs.shape[1]
+    kappa = expr.compile_expr(problem.kappa)
+    var_kappa = None if problem.kappa == "1" else kappa
+    xi, eta, w = reference_quadrature(mesh.geom, m)
+    monom = eval_monomials(basis.exps, xi, eta)
+
+    # Check if affine constant-coefficient element stiffness repeats with small period.
+    Ke_shared = None
+    period = E
+    if var_kappa is None and problem.equation != LAYERED and basis.coeffs.strides[0] == 0:
+        cand = repeated_element_period(mesh.verts[:, 1:] - mesh.verts[:, :1])
+        if cand <= 8:
+            period = cand
+            qp = evaluate_quadrature_slice(mesh, basis, xi, eta, w, 0, period, monom_cache=monom)
+            Ke_shared = _stiffness_block(qp.gphi, qp.wdet, qp.X[..., 0], qp.X[..., 1], None, problem.equation)
+
+    F = np.zeros(N, dtype=np.float64)
+    sub_batch = max(1, 32768 // xi.size)
+    csr_flush = max(sub_batch, 65536)
+    k_parts: list[sp.csr_matrix] = []
+    acc_rows, acc_cols, acc_vals = [], [], []
+    acc_elems = 0
+
+    def _flush_csr():
+        nonlocal acc_elems
+        if not acc_vals:
+            return
+        vals = np.concatenate(acc_vals)
+        rows = np.concatenate(acc_rows)
+        cols = np.concatenate(acc_cols)
+        acc_vals.clear(); acc_rows.clear(); acc_cols.clear()
+        part = sp.coo_matrix((vals, (rows, cols)), shape=(N, N)).tocsr()
+        part.sum_duplicates()
+        del vals, rows, cols
+        k_parts.append(part)
+        acc_elems = 0
+        if len(k_parts) >= 8:
+            reduced = _reduce_csr_sum(k_parts, N)
+            k_parts.clear()
+            k_parts.append(reduced)
+
+    for start in range(0, E, sub_batch):
+        stop = min(start + sub_batch, E)
+        dofs_b = mesh.elem_dofs[start:stop]
+        qb = evaluate_quadrature_slice(mesh, basis, xi, eta, w, start, stop, monom_cache=monom)
+        x_b, y_b = qb.X[..., 0], qb.X[..., 1]
+        fe_b = np.einsum("eq,eq,eqi->ei", qb.wdet, f_fn(x_b, y_b), qb.phi)
+        F += np.bincount(dofs_b.ravel(), weights=fe_b.ravel(), minlength=N)
+        if Ke_shared is not None:
+            idx = np.arange(start, stop) % period
+            ke_b = Ke_shared[idx]
+        else:
+            ke_b = _stiffness_block(qb.gphi, qb.wdet, x_b, y_b, var_kappa, problem.equation)
+        acc_vals.append(ke_b.ravel())
+        acc_rows.append(np.repeat(dofs_b, nloc, axis=1).ravel())
+        acc_cols.append(np.tile(dofs_b, (1, nloc)).ravel())
+        acc_elems += stop - start
+        if acc_elems >= csr_flush:
+            _flush_csr()
+    _flush_csr()
+    K = _reduce_csr_sum(k_parts, N)
+    k_parts.clear()
+
+    _assemble_neumann_load(mesh, basis, problem, u_fn, kappa, m, F)
+    u = np.zeros(N, dtype=np.float64)
+    u[on_dir] = u_fn(coords[on_dir, 0], coords[on_dir, 1])
+    free = ~on_dir
+    rhs = F[free] - K[free][:, on_dir] @ u[on_dir]
+    K_free = K[free][:, free].tocsr()
+    del K, F
+    u_free, _ = solve_reference_system(
+        K_free, rhs,
+        method=validation.reference_solve_method,
+        amg_threshold_dofs=validation.reference_solve_amg_threshold_dofs,
+    )
+    u[free] = u_free
+    return u
+
+
 def _volume_forms(q, variable_kappa, f_fn, equation=POISSON):
     E, _, nloc = q.phi.shape
     # For affine linear triangles, gradients are stored once per element.
@@ -457,26 +727,18 @@ def _volume_forms(q, variable_kappa, f_fn, equation=POISSON):
         if block.start < period:
             stiffness = slice(block.start, min(block.stop, period))
             sx, sy = q.X[stiffness, :, 0], q.X[stiffness, :, 1]
-            gphi = q.gphi[stiffness]
-            weights = q.wdet[stiffness]
-            if variable_kappa is not None:
-                weights = weights * variable_kappa(sx, sy)
-            if equation == LAYERED:
-                # The reviewed grid places the material interface on whole element faces.
-                material = layered.coefficient(sx)
-                if not np.all(material == material[:, :1]):
-                    raise ArtifactError("layered interface cuts an element")
-                weights = weights * material
-            if equation == ANISOTROPIC:
-                Ke[stiffness] = np.einsum("eq,eqid,d,eqjd->eij", weights, gphi, [1000.0, 1.0], gphi)
-            else:
-                Ke[stiffness] = np.einsum("eq,eqid,eqjd->eij", weights, gphi, gphi)
+            Ke[stiffness] = _stiffness_block(
+                q.gphi[stiffness], q.wdet[stiffness], sx, sy, variable_kappa, equation
+            )
     if period < E:
         Ke = Ke[np.arange(E) % period]
     return Ke, Fe
 
 
-def reference_solve(mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m) -> np.ndarray:
+def reference_solve(
+    mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m,
+    *, method: str = "auto", amg_threshold_dofs: int = 300_000,
+) -> np.ndarray:
     N = coords.shape[0]
     nloc = mesh.elem_dofs.shape[1]
     kappa = expr.compile_expr(problem.kappa)
@@ -487,39 +749,16 @@ def reference_solve(mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m) -> n
     F = np.bincount(mesh.elem_dofs.ravel(), weights=Fe.ravel(), minlength=N)
     del Ke, Fe, rows, cols
 
-    # Prescribed outward flux is kappa * grad(u_exact) . n.
-    neu = {b.attribute: b.label for b in problem.boundaries if b.kind == "neumann"}
-    if neu:
-        from .fem import boundary_edge_owners
-        edge_owner = boundary_edge_owners(mesh, neu)
-        g1, w1 = gauss_01(m)
-        for attr, seg in zip(mesh.bdr_attr, mesh.bdr_xy):
-            lbl = neu.get(int(attr))
-            if lbl is None:
-                continue
-            key = frozenset((tuple(np.round(seg[0], 12)), tuple(np.round(seg[1], 12))))
-            e = edge_owner.get(key)
-            if e is None:
-                raise ArtifactError("boundary segment not found among element edges")
-            pts = seg[0][None, :] + g1[:, None] * (seg[1] - seg[0])[None, :]
-            L = float(np.linalg.norm(seg[1] - seg[0]))
-            ref = inverse_map(mesh.geom, mesh.verts[e:e + 1], pts[None, :, :])[0]
-            from .fem import eval_monomials
-            M, _, _ = eval_monomials(basis.exps, ref[:, 0], ref[:, 1])
-            phi = M @ basis.coeffs[e]
-            if problem.equation == LAYERED:
-                gx, gy = layered.FLUX, 0.0  # a*grad(u_exact) on either material
-            else:
-                gx, gy = expr.gradient(u_fn, pts[:, 0], pts[:, 1])
-            nx, ny = SIDE_NORMAL[lbl]
-            gn = kappa(pts[:, 0], pts[:, 1]) * (gx * nx + gy * ny)
-            F[mesh.elem_dofs[e]] += (w1 * L * gn) @ phi
+    _assemble_neumann_load(mesh, basis, problem, u_fn, kappa, m, F)
 
     u = np.zeros(N)
     u[on_dir] = u_fn(coords[on_dir, 0], coords[on_dir, 1])
     free = ~on_dir
     rhs = F[free] - K[free][:, on_dir] @ u[on_dir]
-    u[free] = spla.spsolve(K[free][:, free].tocsc(), rhs)
+    K_free = K[free][:, free].tocsr()
+    del K, F
+    u_free, _ = solve_reference_system(K_free, rhs, method=method, amg_threshold_dofs=amg_threshold_dofs)
+    u[free] = u_free
     return u
 
 
@@ -560,7 +799,11 @@ def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False,
                 if problem.equation in (LAYERED, ANISOTROPIC) or compact_expression(problem.exact_solution) == GAUSSIAN_EXACT:
                     raise ValueError("this reviewed case requires a generated mesh")
                 data = read_mesh(run_dir / ARCHIVED_MESH, request.external_mesh)
-                external_grid = inspect_gmsh(data, problem, execution)
+                external_grid = (
+                    inspect_gmsh_unstructured(data, problem, execution)
+                    if execution.mesh_topology == "unstructured"
+                    else inspect_gmsh(data, problem, execution)
+                )
             elif (run_dir / ARCHIVED_MESH).exists():
                 raise ValueError("the request did not declare the archived external mesh")
         mms = check_mms_consistency(problem, validation.mms_consistency_rel_tol)

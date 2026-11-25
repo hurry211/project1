@@ -1,0 +1,1004 @@
+{
+  "schema": "e3_complex_meshes_v1",
+  "unstructured_high_order": [
+    {
+      "geom": "tri",
+      "order": 1,
+      "all_ok": true,
+      "observed_l2_order": 1.974,
+      "observed_h1_order": 0.99,
+      "levels": [
+        {
+          "refinement": 0,
+          "n": 8,
+          "dofs": 81,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 0.04624093153215718,
+          "h1_semi_error": 1.0374012123684486,
+          "reference_rel_diff": 1.0508391429512718e-10,
+          "wall_seconds": 0.0324
+        },
+        {
+          "refinement": 1,
+          "n": 16,
+          "dofs": 289,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 0.012219092950677612,
+          "h1_semi_error": 0.5313204349418438,
+          "reference_rel_diff": 1.0434633164677923e-10,
+          "wall_seconds": 0.0259
+        },
+        {
+          "refinement": 2,
+          "n": 32,
+          "dofs": 1089,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 0.0031093234393145953,
+          "h1_semi_error": 0.2675823922551154,
+          "reference_rel_diff": 1.0429882373444982e-10,
+          "wall_seconds": 0.0583
+        }
+      ]
+    },
+    {
+      "geom": "tri",
+      "order": 2,
+      "all_ok": true,
+      "observed_l2_order": 2.994,
+      "observed_h1_order": 1.977,
+      "levels": [
+        {
+          "refinement": 0,
+          "n": 8,
+          "dofs": 289,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 0.002674626702286529,
+          "h1_semi_error": 0.1237321263940986,
+          "reference_rel_diff": 1.0493869230648848e-10,
+          "wall_seconds": 0.0204
+        },
+        {
+          "refinement": 1,
+          "n": 16,
+          "dofs": 1089,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 0.0003373972654118023,
+          "h1_semi_error": 0.031998316135105884,
+          "reference_rel_diff": 1.0450221543507466e-10,
+          "wall_seconds": 0.0377
+        },
+        {
+          "refinement": 2,
+          "n": 32,
+          "dofs": 4225,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 4.2359214820354084e-05,
+          "h1_semi_error": 0.00812918165914576,
+          "reference_rel_diff": 1.0432158456772676e-10,
+          "wall_seconds": 0.1018
+        }
+      ]
+    },
+    {
+      "geom": "tri",
+      "order": 3,
+      "all_ok": true,
+      "observed_l2_order": 4.032,
+      "observed_h1_order": 2.986,
+      "levels": [
+        {
+          "refinement": 0,
+          "n": 8,
+          "dofs": 625,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 0.00018067221763834227,
+          "h1_semi_error": 0.011749371862850196,
+          "reference_rel_diff": 1.0461060659237161e-10,
+          "wall_seconds": 0.0156
+        },
+        {
+          "refinement": 1,
+          "n": 16,
+          "dofs": 2401,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 1.1043942962650906e-05,
+          "h1_semi_error": 0.0014832336939825197,
+          "reference_rel_diff": 1.043888206001649e-10,
+          "wall_seconds": 0.0446
+        }
+      ]
+    },
+    {
+      "geom": "tri",
+      "order": 4,
+      "all_ok": true,
+      "observed_l2_order": 4.972,
+      "observed_h1_order": 3.963,
+      "levels": [
+        {
+          "refinement": 0,
+          "n": 8,
+          "dofs": 1089,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 1.0534321332119698e-05,
+          "h1_semi_error": 0.0008169111273654444,
+          "reference_rel_diff": 1.0436145085446659e-10,
+          "wall_seconds": 0.0235
+        },
+        {
+          "refinement": 1,
+          "n": 16,
+          "dofs": 4225,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 3.356166528925937e-07,
+          "h1_semi_error": 5.2389776794736807e-05,
+          "reference_rel_diff": 1.0434794734428365e-10,
+          "wall_seconds": 0.0917
+        }
+      ]
+    },
+    {
+      "geom": "quad",
+      "order": 1,
+      "all_ok": true,
+      "observed_l2_order": 1.997,
+      "observed_h1_order": 0.999,
+      "levels": [
+        {
+          "refinement": 0,
+          "n": 8,
+          "dofs": 81,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 0.029026913375006274,
+          "h1_semi_error": 0.7903390366984556,
+          "reference_rel_diff": 1.0215777717554986e-10,
+          "wall_seconds": 0.0128
+        },
+        {
+          "refinement": 1,
+          "n": 16,
+          "dofs": 289,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 0.007321814028621414,
+          "h1_semi_error": 0.3955524913017659,
+          "reference_rel_diff": 1.0364212420426367e-10,
+          "wall_seconds": 0.0196
+        },
+        {
+          "refinement": 2,
+          "n": 32,
+          "dofs": 1089,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 0.001834381442478778,
+          "h1_semi_error": 0.19787207535786178,
+          "reference_rel_diff": 1.0441509994588007e-10,
+          "wall_seconds": 0.0465
+        }
+      ]
+    },
+    {
+      "geom": "quad",
+      "order": 2,
+      "all_ok": true,
+      "observed_l2_order": 2.995,
+      "observed_h1_order": 2.0,
+      "levels": [
+        {
+          "refinement": 0,
+          "n": 8,
+          "dofs": 289,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 0.002272354156716506,
+          "h1_semi_error": 0.09823845954954213,
+          "reference_rel_diff": 2.1413782521700404e-10,
+          "wall_seconds": 0.0148
+        },
+        {
+          "refinement": 1,
+          "n": 16,
+          "dofs": 1089,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 0.0002860955391797262,
+          "h1_semi_error": 0.024512048846469642,
+          "reference_rel_diff": 1.0452547567312014e-10,
+          "wall_seconds": 0.0249
+        },
+        {
+          "refinement": 2,
+          "n": 32,
+          "dofs": 4225,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 3.5884316595801906e-05,
+          "h1_semi_error": 0.006127256012018541,
+          "reference_rel_diff": 1.0452038424009497e-10,
+          "wall_seconds": 0.0681
+        }
+      ]
+    },
+    {
+      "geom": "quad",
+      "order": 3,
+      "all_ok": true,
+      "observed_l2_order": 3.96,
+      "observed_h1_order": 2.967,
+      "levels": [
+        {
+          "refinement": 0,
+          "n": 8,
+          "dofs": 625,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 0.00010380284237242468,
+          "h1_semi_error": 0.00665111458050451,
+          "reference_rel_diff": 1.0481819637340486e-10,
+          "wall_seconds": 0.0151
+        },
+        {
+          "refinement": 1,
+          "n": 16,
+          "dofs": 2401,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 6.6679741312995e-06,
+          "h1_semi_error": 0.0008508095228277719,
+          "reference_rel_diff": 1.0436415509171607e-10,
+          "wall_seconds": 0.0359
+        }
+      ]
+    },
+    {
+      "geom": "quad",
+      "order": 4,
+      "all_ok": true,
+      "observed_l2_order": 5.01,
+      "observed_h1_order": 4.015,
+      "levels": [
+        {
+          "refinement": 0,
+          "n": 8,
+          "dofs": 1089,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 6.898621957721516e-06,
+          "h1_semi_error": 0.0005344649752069313,
+          "reference_rel_diff": 1.0465124819819764e-10,
+          "wall_seconds": 0.0203
+        },
+        {
+          "refinement": 1,
+          "n": 16,
+          "dofs": 4225,
+          "ok": true,
+          "failed_codes": [],
+          "l2_error": 2.140250128651079e-07,
+          "h1_semi_error": 3.304960566433773e-05,
+          "reference_rel_diff": 1.0520850971956764e-10,
+          "wall_seconds": 0.0798
+        }
+      ]
+    }
+  ],
+  "ex6_amr_vs_uniform": {
+    "steep_amr_quad_q1": {
+      "case": "gaussian_steep",
+      "mesh_type": "quad",
+      "order": 1,
+      "wall_seconds": 0.0802,
+      "verdict": "ACCEPTED",
+      "steps": [
+        {
+          "step": 0,
+          "true_dofs": 25,
+          "full_dofs": 25,
+          "hanging_dofs": 0,
+          "max_hanging_err": 0.0,
+          "elements": 16,
+          "l2_error": 0.1032724485456701,
+          "h1_semi_error": 1.7657596500673232,
+          "reference_rel_diff": 5.864959244856057e-09
+        },
+        {
+          "step": 1,
+          "true_dofs": 29,
+          "full_dofs": 37,
+          "hanging_dofs": 8,
+          "max_hanging_err": 0.0,
+          "elements": 24,
+          "l2_error": 0.025295433359383272,
+          "h1_semi_error": 0.7263266269147385,
+          "reference_rel_diff": 2.7490624338680444e-11
+        },
+        {
+          "step": 2,
+          "true_dofs": 37,
+          "full_dofs": 53,
+          "hanging_dofs": 16,
+          "max_hanging_err": 0.0,
+          "elements": 36,
+          "l2_error": 0.021727470310879043,
+          "h1_semi_error": 0.6934959598682576,
+          "reference_rel_diff": 2.8902693535838998e-11
+        },
+        {
+          "step": 3,
+          "true_dofs": 45,
+          "full_dofs": 69,
+          "hanging_dofs": 24,
+          "max_hanging_err": 0.0,
+          "elements": 48,
+          "l2_error": 0.019314253361064897,
+          "h1_semi_error": 0.5911603372764026,
+          "reference_rel_diff": 3.0419701043388084e-11
+        },
+        {
+          "step": 4,
+          "true_dofs": 81,
+          "full_dofs": 121,
+          "hanging_dofs": 40,
+          "max_hanging_err": 0.0,
+          "elements": 92,
+          "l2_error": 0.01813571719102699,
+          "h1_semi_error": 0.5266584593858198,
+          "reference_rel_diff": 3.0585576533501154e-11
+        },
+        {
+          "step": 5,
+          "true_dofs": 100,
+          "full_dofs": 144,
+          "hanging_dofs": 44,
+          "max_hanging_err": 0.0,
+          "elements": 113,
+          "l2_error": 0.014880671415556379,
+          "h1_semi_error": 0.4696860993425619,
+          "reference_rel_diff": 2.722781645890104e-11
+        },
+        {
+          "step": 6,
+          "true_dofs": 110,
+          "full_dofs": 158,
+          "hanging_dofs": 48,
+          "max_hanging_err": 3.469446951953614e-18,
+          "elements": 125,
+          "l2_error": 0.014714839692804243,
+          "h1_semi_error": 0.45561477138947337,
+          "reference_rel_diff": 2.716710368486742e-11
+        },
+        {
+          "step": 7,
+          "true_dofs": 131,
+          "full_dofs": 191,
+          "hanging_dofs": 60,
+          "max_hanging_err": 3.469446951953614e-18,
+          "elements": 152,
+          "l2_error": 0.014535583789418388,
+          "h1_semi_error": 0.4373058890767711,
+          "reference_rel_diff": 2.7074805724789467e-11
+        }
+      ]
+    },
+    "steep_amr_quad_q2": {
+      "case": "gaussian_steep",
+      "mesh_type": "quad",
+      "order": 2,
+      "wall_seconds": 0.0493,
+      "verdict": "ACCEPTED",
+      "steps": [
+        {
+          "step": 0,
+          "true_dofs": 81,
+          "full_dofs": 81,
+          "hanging_dofs": 0,
+          "max_hanging_err": 0.0,
+          "elements": 16,
+          "l2_error": 0.022447753525663743,
+          "h1_semi_error": 0.859079013692709,
+          "reference_rel_diff": 2.32593294205829e-09
+        },
+        {
+          "step": 1,
+          "true_dofs": 89,
+          "full_dofs": 101,
+          "hanging_dofs": 12,
+          "max_hanging_err": 0.0,
+          "elements": 19,
+          "l2_error": 0.012492178368240016,
+          "h1_semi_error": 0.5943689596684945,
+          "reference_rel_diff": 6.472965101266062e-11
+        },
+        {
+          "step": 2,
+          "true_dofs": 129,
+          "full_dofs": 157,
+          "hanging_dofs": 28,
+          "max_hanging_err": 0.0,
+          "elements": 31,
+          "l2_error": 0.008247424431007268,
+          "h1_semi_error": 0.2999467247678502,
+          "reference_rel_diff": 6.65530242323414e-11
+        },
+        {
+          "step": 3,
+          "true_dofs": 173,
+          "full_dofs": 227,
+          "hanging_dofs": 54,
+          "max_hanging_err": 0.0,
+          "elements": 43,
+          "l2_error": 0.002685351974771244,
+          "h1_semi_error": 0.17889002734525788,
+          "reference_rel_diff": 1.2102220568210564e-12
+        },
+        {
+          "step": 4,
+          "true_dofs": 357,
+          "full_dofs": 447,
+          "hanging_dofs": 90,
+          "max_hanging_err": 0.0,
+          "elements": 91,
+          "l2_error": 0.000696520020644631,
+          "h1_semi_error": 0.0778321366244983,
+          "reference_rel_diff": 2.5042392008805832e-14
+        },
+        {
+          "step": 5,
+          "true_dofs": 445,
+          "full_dofs": 559,
+          "hanging_dofs": 114,
+          "max_hanging_err": 0.0,
+          "elements": 115,
+          "l2_error": 0.000449927219440637,
+          "h1_semi_error": 0.05120236676101702,
+          "reference_rel_diff": 2.975460541294588e-14
+        },
+        {
+          "step": 6,
+          "true_dofs": 557,
+          "full_dofs": 719,
+          "hanging_dofs": 162,
+          "max_hanging_err": 0.0,
+          "elements": 147,
+          "l2_error": 0.00033988439060626477,
+          "h1_semi_error": 0.0442850318678032,
+          "reference_rel_diff": 2.1316258644348986e-14
+        }
+      ]
+    },
+    "steep_amr_tri_p2": {
+      "case": "gaussian_steep",
+      "mesh_type": "tri",
+      "order": 2,
+      "wall_seconds": 0.1205,
+      "verdict": "ACCEPTED",
+      "steps": [
+        {
+          "step": 0,
+          "true_dofs": 289,
+          "full_dofs": 289,
+          "hanging_dofs": 0,
+          "max_hanging_err": 0.0,
+          "elements": 128,
+          "l2_error": 0.01059668917821017,
+          "h1_semi_error": 0.5543915182477211,
+          "reference_rel_diff": 1.6073918728614712e-13
+        },
+        {
+          "step": 1,
+          "true_dofs": 353,
+          "full_dofs": 353,
+          "hanging_dofs": 0,
+          "max_hanging_err": 0.0,
+          "elements": 160,
+          "l2_error": 0.0020411704009380017,
+          "h1_semi_error": 0.19345404182577133,
+          "reference_rel_diff": 6.715894505584958e-14
+        },
+        {
+          "step": 2,
+          "true_dofs": 489,
+          "full_dofs": 489,
+          "hanging_dofs": 0,
+          "max_hanging_err": 0.0,
+          "elements": 228,
+          "l2_error": 0.0007129609599035902,
+          "h1_semi_error": 0.08225279064571203,
+          "reference_rel_diff": 6.483500097928598e-14
+        },
+        {
+          "step": 3,
+          "true_dofs": 625,
+          "full_dofs": 625,
+          "hanging_dofs": 0,
+          "max_hanging_err": 0.0,
+          "elements": 296,
+          "l2_error": 0.0004886793592931459,
+          "h1_semi_error": 0.0651622806880619,
+          "reference_rel_diff": 8.033232033311658e-14
+        },
+        {
+          "step": 4,
+          "true_dofs": 809,
+          "full_dofs": 809,
+          "hanging_dofs": 0,
+          "max_hanging_err": 0.0,
+          "elements": 388,
+          "l2_error": 0.0002851651701764,
+          "h1_semi_error": 0.049831831839817466,
+          "reference_rel_diff": 7.476915388793401e-14
+        },
+        {
+          "step": 5,
+          "true_dofs": 1145,
+          "full_dofs": 1145,
+          "hanging_dofs": 0,
+          "max_hanging_err": 0.0,
+          "elements": 556,
+          "l2_error": 0.00019097876486110594,
+          "h1_semi_error": 0.03448391323355949,
+          "reference_rel_diff": 1.8573907059012117e-13
+        }
+      ]
+    },
+    "steep_uniform_quad_q1": {
+      "case": "gaussian_steep",
+      "mesh_type": "quad",
+      "order": 1,
+      "steps": [
+        {
+          "n": 8,
+          "true_dofs": 81,
+          "l2_error": 0.01605400520346834,
+          "h1_semi_error": 0.6655952155881241,
+          "wall_seconds": 0.0114,
+          "ok": false
+        },
+        {
+          "n": 16,
+          "true_dofs": 289,
+          "l2_error": 0.01051207880157404,
+          "h1_semi_error": 0.5884887173683461,
+          "wall_seconds": 0.0141,
+          "ok": false
+        },
+        {
+          "n": 32,
+          "true_dofs": 1089,
+          "l2_error": 0.002701748780553455,
+          "h1_semi_error": 0.30112313328659635,
+          "wall_seconds": 0.0225,
+          "ok": true
+        },
+        {
+          "n": 64,
+          "true_dofs": 4225,
+          "l2_error": 0.0006797031302417472,
+          "h1_semi_error": 0.15140381549054,
+          "wall_seconds": 0.0663,
+          "ok": true
+        },
+        {
+          "n": 128,
+          "true_dofs": 16641,
+          "l2_error": 0.00017019475595949306,
+          "h1_semi_error": 0.07580893103834495,
+          "wall_seconds": 0.2794,
+          "ok": true
+        }
+      ]
+    },
+    "steep_uniform_quad_q2": {
+      "case": "gaussian_steep",
+      "mesh_type": "quad",
+      "order": 2,
+      "steps": [
+        {
+          "n": 4,
+          "true_dofs": 81,
+          "l2_error": 0.02201693754594208,
+          "h1_semi_error": 0.8679798549350336,
+          "wall_seconds": 0.0088,
+          "ok": false
+        },
+        {
+          "n": 8,
+          "true_dofs": 289,
+          "l2_error": 0.009971341920338612,
+          "h1_semi_error": 0.5488303710832535,
+          "wall_seconds": 0.0109,
+          "ok": false
+        },
+        {
+          "n": 16,
+          "true_dofs": 1089,
+          "l2_error": 0.0010951211472677305,
+          "h1_semi_error": 0.11624637278258262,
+          "wall_seconds": 0.018,
+          "ok": false
+        },
+        {
+          "n": 32,
+          "true_dofs": 4225,
+          "l2_error": 0.00014224735592529802,
+          "h1_semi_error": 0.02967241803686446,
+          "wall_seconds": 0.0491,
+          "ok": true
+        },
+        {
+          "n": 64,
+          "true_dofs": 16641,
+          "l2_error": 1.7997995821517312e-05,
+          "h1_semi_error": 0.007475750232488461,
+          "wall_seconds": 0.2324,
+          "ok": true
+        }
+      ]
+    },
+    "lshape_amr_q1": {
+      "case": "lshape_singularity",
+      "mesh_type": "quad",
+      "order": 1,
+      "wall_seconds": 0.0414,
+      "verdict": "ACCEPTED",
+      "steps": [
+        {
+          "step": 0,
+          "true_dofs": 8,
+          "hanging_dofs": 0,
+          "max_hanging_err": 0.0,
+          "elements": 3,
+          "l2_error": 0.024338547275637844,
+          "h1_semi_error": 0.20510385281326596,
+          "reference_rel_diff": 0.0
+        },
+        {
+          "step": 1,
+          "true_dofs": 12,
+          "hanging_dofs": 0,
+          "max_hanging_err": 0.0,
+          "elements": 5,
+          "l2_error": 0.025150809928432903,
+          "h1_semi_error": 0.19988505051694286,
+          "reference_rel_diff": 0.0
+        },
+        {
+          "step": 2,
+          "true_dofs": 23,
+          "hanging_dofs": 2,
+          "max_hanging_err": 0.0,
+          "elements": 14,
+          "l2_error": 0.01122782888142946,
+          "h1_semi_error": 0.13356559168813303,
+          "reference_rel_diff": 5.595173435212755e-16
+        },
+        {
+          "step": 3,
+          "true_dofs": 30,
+          "hanging_dofs": 8,
+          "max_hanging_err": 0.0,
+          "elements": 23,
+          "l2_error": 0.00794840315534802,
+          "h1_semi_error": 0.10061981561454747,
+          "reference_rel_diff": 9.79155351162232e-16
+        },
+        {
+          "step": 4,
+          "true_dofs": 37,
+          "hanging_dofs": 14,
+          "max_hanging_err": 0.0,
+          "elements": 32,
+          "l2_error": 0.007266722419233345,
+          "h1_semi_error": 0.08483732131807636,
+          "reference_rel_diff": 4.89577675581116e-15
+        },
+        {
+          "step": 5,
+          "true_dofs": 44,
+          "hanging_dofs": 20,
+          "max_hanging_err": 0.0,
+          "elements": 41,
+          "l2_error": 0.007098973695317987,
+          "h1_semi_error": 0.07789511417197013,
+          "reference_rel_diff": 6.469419284464748e-15
+        },
+        {
+          "step": 6,
+          "true_dofs": 51,
+          "hanging_dofs": 30,
+          "max_hanging_err": 0.0,
+          "elements": 52,
+          "l2_error": 0.0070465841716573245,
+          "h1_semi_error": 0.07503866187013895,
+          "reference_rel_diff": 1.3288536908630292e-15
+        },
+        {
+          "step": 7,
+          "true_dofs": 70,
+          "hanging_dofs": 42,
+          "max_hanging_err": 0.0,
+          "elements": 75,
+          "l2_error": 0.006605014590772426,
+          "h1_semi_error": 0.0675242178547907,
+          "reference_rel_diff": 1.5386726946835075e-15
+        },
+        {
+          "step": 8,
+          "true_dofs": 91,
+          "hanging_dofs": 56,
+          "max_hanging_err": 0.0,
+          "elements": 102,
+          "l2_error": 0.006485028921081561,
+          "h1_semi_error": 0.06351611508630628,
+          "reference_rel_diff": 2.342978875995341e-15
+        }
+      ]
+    },
+    "lshape_amr_q2": {
+      "case": "lshape_singularity",
+      "mesh_type": "quad",
+      "order": 2,
+      "wall_seconds": 0.0312,
+      "verdict": "ACCEPTED",
+      "steps": [
+        {
+          "step": 0,
+          "true_dofs": 21,
+          "hanging_dofs": 0,
+          "max_hanging_err": 0.0,
+          "elements": 3,
+          "l2_error": 0.005455277148182956,
+          "h1_semi_error": 0.09920524659373808,
+          "reference_rel_diff": 4.1963800764095664e-16
+        },
+        {
+          "step": 1,
+          "true_dofs": 33,
+          "hanging_dofs": 0,
+          "max_hanging_err": 0.0,
+          "elements": 5,
+          "l2_error": 0.005330856564775602,
+          "h1_semi_error": 0.09702399038389505,
+          "reference_rel_diff": 5.595173435212755e-16
+        },
+        {
+          "step": 2,
+          "true_dofs": 73,
+          "hanging_dofs": 6,
+          "max_hanging_err": 0.0,
+          "elements": 14,
+          "l2_error": 0.0017907455149145958,
+          "h1_semi_error": 0.060457002022276336,
+          "reference_rel_diff": 2.1471478057628947e-14
+        },
+        {
+          "step": 3,
+          "true_dofs": 105,
+          "hanging_dofs": 24,
+          "max_hanging_err": 0.0,
+          "elements": 23,
+          "l2_error": 0.0007002581289976303,
+          "h1_semi_error": 0.038445682188955325,
+          "reference_rel_diff": 1.1575015044096387e-14
+        },
+        {
+          "step": 4,
+          "true_dofs": 137,
+          "hanging_dofs": 42,
+          "max_hanging_err": 0.0,
+          "elements": 32,
+          "l2_error": 0.0003688860012494191,
+          "h1_semi_error": 0.024837673130696673,
+          "reference_rel_diff": 4.685957751990682e-15
+        },
+        {
+          "step": 5,
+          "true_dofs": 169,
+          "hanging_dofs": 60,
+          "max_hanging_err": 0.0,
+          "elements": 41,
+          "l2_error": 0.0002922776930634925,
+          "h1_semi_error": 0.016596751614684782,
+          "reference_rel_diff": 4.546078416110364e-15
+        },
+        {
+          "step": 6,
+          "true_dofs": 201,
+          "hanging_dofs": 78,
+          "max_hanging_err": 0.0,
+          "elements": 50,
+          "l2_error": 0.0002779420449428167,
+          "h1_semi_error": 0.011831362507907726,
+          "reference_rel_diff": 5.350384597422197e-15
+        },
+        {
+          "step": 7,
+          "true_dofs": 233,
+          "hanging_dofs": 96,
+          "max_hanging_err": 0.0,
+          "elements": 59,
+          "l2_error": 0.00027508100491853334,
+          "h1_semi_error": 0.009285605048005017,
+          "reference_rel_diff": 5.874932106973393e-15
+        }
+      ]
+    },
+    "lshape_uniform_q1": {
+      "case": "lshape_singularity",
+      "mesh_type": "quad",
+      "order": 1,
+      "verdict": "ACCEPTED",
+      "steps": [
+        {
+          "step": 0,
+          "true_dofs": 8,
+          "elements": 3,
+          "l2_error": 0.024338547275637844,
+          "h1_semi_error": 0.20510385281326596
+        },
+        {
+          "step": 1,
+          "true_dofs": 12,
+          "elements": 5,
+          "l2_error": 0.025150809928432903,
+          "h1_semi_error": 0.19988505051694286
+        },
+        {
+          "step": 2,
+          "true_dofs": 18,
+          "elements": 11,
+          "l2_error": 0.025195646441185864,
+          "h1_semi_error": 0.19878677331718972
+        },
+        {
+          "step": 3,
+          "true_dofs": 23,
+          "elements": 14,
+          "l2_error": 0.011227828881429466,
+          "h1_semi_error": 0.13356559168813303
+        },
+        {
+          "step": 4,
+          "true_dofs": 24,
+          "elements": 17,
+          "l2_error": 0.011227829467936608,
+          "h1_semi_error": 0.1335784962400389
+        },
+        {
+          "step": 5,
+          "true_dofs": 30,
+          "elements": 23,
+          "l2_error": 0.007948403155348022,
+          "h1_semi_error": 0.10061981561454747
+        }
+      ]
+    },
+    "lshape_uniform_q2": {
+      "case": "lshape_singularity",
+      "mesh_type": "quad",
+      "order": 2,
+      "verdict": "ACCEPTED",
+      "steps": [
+        {
+          "step": 0,
+          "true_dofs": 21,
+          "elements": 3,
+          "l2_error": 0.005455277148182956,
+          "h1_semi_error": 0.09920524659373808
+        },
+        {
+          "step": 1,
+          "true_dofs": 33,
+          "elements": 5,
+          "l2_error": 0.005330856564775602,
+          "h1_semi_error": 0.09702399038389505
+        },
+        {
+          "step": 2,
+          "true_dofs": 57,
+          "elements": 11,
+          "l2_error": 0.00539483227513074,
+          "h1_semi_error": 0.09677401919644471
+        },
+        {
+          "step": 3,
+          "true_dofs": 73,
+          "elements": 14,
+          "l2_error": 0.0017907455149147862,
+          "h1_semi_error": 0.060457002022276336
+        },
+        {
+          "step": 4,
+          "true_dofs": 93,
+          "elements": 20,
+          "l2_error": 0.0017957823239319944,
+          "h1_semi_error": 0.0602863187128884
+        }
+      ]
+    }
+  },
+  "repeated_element_period_degradation": [
+    {
+      "scenario": "cartesian_tri_p1_const",
+      "geom": "tri",
+      "topology": "cartesian",
+      "kappa": "1",
+      "elements": 32768,
+      "detected_period": 2,
+      "cache_hit": true,
+      "basis_shared_stride0": true,
+      "period_scan_s": 0.00092,
+      "ke_assembly_with_policy_s": 0.00055,
+      "ke_assembly_no_cache_s": 0.05642,
+      "ke_speedup_vs_nocache": 102.48
+    },
+    {
+      "scenario": "cartesian_quad_q1_const",
+      "geom": "quad",
+      "topology": "cartesian",
+      "kappa": "1",
+      "elements": 16384,
+      "detected_period": 1,
+      "cache_hit": true,
+      "basis_shared_stride0": true,
+      "period_scan_s": 0.00061,
+      "ke_assembly_with_policy_s": 0.00079,
+      "ke_assembly_no_cache_s": 0.40726,
+      "ke_speedup_vs_nocache": 515.11
+    },
+    {
+      "scenario": "cartesian_tri_p1_var_kappa",
+      "geom": "tri",
+      "topology": "cartesian",
+      "kappa": "1+x",
+      "elements": 32768,
+      "detected_period": 2,
+      "cache_hit": false,
+      "basis_shared_stride0": true,
+      "period_scan_s": 0.00118,
+      "ke_assembly_with_policy_s": 0.05296,
+      "ke_assembly_no_cache_s": 0.05482,
+      "ke_speedup_vs_nocache": 1.04
+    },
+    {
+      "scenario": "unstructured_tri_p1_const",
+      "geom": "tri",
+      "topology": "unstructured",
+      "kappa": "1",
+      "elements": 8192,
+      "detected_period": 8192,
+      "cache_hit": false,
+      "basis_shared_stride0": false,
+      "period_scan_s": 0.00029,
+      "ke_assembly_with_policy_s": 0.02902,
+      "ke_assembly_no_cache_s": 0.02853,
+      "ke_speedup_vs_nocache": 0.98
+    },
+    {
+      "scenario": "unstructured_quad_q1_const",
+      "geom": "quad",
+      "topology": "unstructured",
+      "kappa": "1",
+      "elements": 4096,
+      "detected_period": 4096,
+      "cache_hit": false,
+      "basis_shared_stride0": false,
+      "period_scan_s": 0.00015,
+      "ke_assembly_with_policy_s": 0.12433,
+      "ke_assembly_no_cache_s": 0.12041,
+      "ke_speedup_vs_nocache": 0.97
+    }
+  ]
+}

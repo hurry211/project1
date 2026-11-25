@@ -13,6 +13,7 @@ StudySpec (JSON) ─► schema + MMS consistency ─► freeze & hash ─► env
 * `docs/MVP_SPEC.md`: supported problem, data contracts, state machine, frozen acceptance criteria
 * `docs/IMPLEMENTATION_STATUS.md`: inventory, environment, verified results, blockers, next actions
 * `docs/RESULTS.md`: generated from `runs/`, with error tables, retry history and the fault × gate detection matrix
+* `docs/E3_PERFORMANCE_ADAPTIVE.md`: E3 1.05M-DOF streaming+AMG verifier, unstructured/Example 6 AMR, and separated adaptive strategy research
 
 The performance benchmark measures time from a submitted request to an independently accepted solution. The latest comparison includes fresh MFEM studies, verifier-only timings and peak memory at 263,169 degrees of freedom. [Results](docs/RESULTS.md#verifier-revision-at-263169-degrees-of-freedom) · [Reproduction commands](docs/VERIFIED_PERFORMANCE.md#measure-a-verifier-change-from-submission-to-acceptance)
 
@@ -125,16 +126,19 @@ python -m benchmarks.stage2 --directory runs/scalar-coverage --replay runs/scala
 ## Layout
 
 ```
-cpp/                  MFEM C++ solver (poisson_mms.cpp) and manufactured-case registry
-sciagent/             spec.py (contracts), capability.py, environment.py, mfem_runner.py,
-                      controller.py (state machine + bounded retry), evidence.py, __main__.py (CLI)
+cpp/                  MFEM C++ solvers (poisson_mms.cpp, poisson_amr.cpp) and manufactured-case registry
+sciagent/             spec.py (contracts), capability.py, environment.py, mfem_runner.py, gmsh.py,
+                      adaptive.py, controller.py (state machine + bounded retry), evidence.py, __main__.py (CLI)
 verifier/             independent verifier: expr.py (whitelisted expressions, FD derivatives),
-                      fem.py (own Lagrange basis/quadrature/geometry), verifier.py (gates, verdict)
+                      fem.py (chunked Lagrange basis/quadrature/geometry), reference_solver.py (direct & SA-AMG-PCG),
+                      amr.py (independent hanging-node C^T K C verifier), verifier.py (gates, verdict)
+benchmarks/           performance, challenge, stage2/stage3/stage4 and E3 scalability/AMR/adaptive suites
 specs/                example studies; specs/negative/ = invalid, unsupported and fault-injection studies
 tests/                unit tests (schema, capability, verifier on synthetic data), workflow tests,
-                      integration tests against the real MFEM binary
+                      integration tests against the real MFEM binaries
 scripts/              build_mfem.sh, build_solver.sh, run_ex1_baseline.sh, run_demo.sh,
                       make_specs.py, summarize_runs.py
+evidence/             published benchmark archives and SVG figures (e1/, e2/, e3/, stage1..stage4/)
 runs/                 evidence: baseline_ex1/, mfem_build/, one directory per study run
 third_party/          MFEM source/build/install (not part of this project; BSD-3-Clause, see its LICENSE)
 ```
@@ -168,7 +172,15 @@ Empty `validation` / `policy` objects use the frozen defaults documented in `doc
 
 ## What "ACCEPTED" means
 
-The reviewed studies check the mesh, boundary data, solver record and independently integrated field errors. Their reference solution comes from a separate SciPy assembly and sparse direct solve. Smooth cases check the finest-pair convergence rates. For layered diffusion, the aligned Q1 space contains the analytic solution. Each level must satisfy frozen limits on nodal error, material flux, the one-sided interface flux jump and energy. The verdict applies to the declared mathematical model and discretization.
+The reviewed studies check the mesh, boundary data, solver record and independently integrated field errors. Their reference solution comes from a separate SciPy assembly and sparse direct solve (or residual-verified SA-AMG-PCG at large scale in E3). Smooth cases check the finest-pair convergence rates. For layered diffusion, the aligned Q1 space contains the analytic solution. Each level must satisfy frozen limits on nodal error, material flux, the one-sided interface flux jump and energy. The verdict applies to the declared mathematical model and discretization.
+
+## E3 Deep Performance Optimization & Adaptive Decision Research
+
+Branch `research/e3-scaling-adaptive` extends E2 across three validated pillars documented in [`docs/E3_PERFORMANCE_ADAPTIVE.md`](docs/E3_PERFORMANCE_ADAPTIVE.md) with raw archives and SVG plots in [`evidence/e3/`](evidence/e3/):
+
+- **Verifier Scalability to 1.05M DOFs** (`verifier/reference_solver.py`, `verifier/fem.py`, `verifier/verifier.py`, `benchmarks/e3_scaling.py`): Chunked ASCII I/O, bounded-slice quadrature/assembly, and Oettli–Prager backward-stability verified SA-AMG-PCG verify `1,050,625` DOFs (`5.44e-14` relative agreement vs MFEM) within `1,081.4 MiB` peak RSS (`38.36 s`), eliminating SuperLU direct OOM above ~500k DOFs under a 3 GiB cap.
+- **Unstructured Gmsh, High-Order P3/Q3–P4/Q4 & MFEM Example 6 AMR** (`cpp/poisson_amr.cpp`, `sciagent/gmsh.py`, `verifier/amr.py`, `benchmarks/e3_complex_meshes.py`): Validates unstructured Delaunay triangles and distorted quads (`P1–P4`, `Q1–Q4`), Zienkiewicz–Zhu AMR with independent geometric hanging-node $C^T K C$ constraint verification on `gaussian_steep` and `lshape_singularity`, and empirical `repeated_element_period` speedup (`95x–1,087x`) vs degradation (`period == E`).
+- **Separated Adaptive Strategy Search** (`sciagent/adaptive.py`, `benchmarks/e3_adaptive.py`): Predictive cost/accuracy surrogates trained on a calibration corpus generalize to a disjoint 5-task held-out benchmark suite (`11.22x` median task speedup and `4.01x` campaign speedup over `fixed_baseline` with decision, pilot, and retry costs fully charged).
 
 ## License note
 

@@ -189,6 +189,8 @@ def run_level(problem: ProblemSpec, execution: ExecutionSpec, case_id: str, n: i
         "--rel-tol", repr(execution.rel_tol), "--max-iter", str(execution.max_iter),
         "--inject-fault", execution.inject_fault, "--out", str(level_dir),
     ]
+    if execution.mesh_topology != "cartesian":
+        cmd.extend(["--mesh-topology", execution.mesh_topology])
     if mesh_path is not None:
         cmd.extend(["--mesh", str(mesh_path), "--mesh-refinements", str(refinements)])
     (level_dir / "command.json").write_text(json.dumps({"argv": cmd, "shell": shlex.join(cmd)}, indent=2))
@@ -215,3 +217,58 @@ def run_level(problem: ProblemSpec, execution: ExecutionSpec, case_id: str, n: i
                   stdout_file=str(level_dir / "stdout.txt"), stderr_file=str(level_dir / "stderr.txt"))
     (level_dir / "run_record.json").write_text(json.dumps(asdict(lr), indent=2))
     return lr
+
+
+def amr_binary() -> Path:
+    return solver_binary().parent / "poisson_amr"
+
+
+def run_amr(
+    case_id: str,
+    mesh_type: str,
+    order: int,
+    out_dir: Path,
+    *,
+    n: int = 4,
+    assembly: str = "full",
+    solver: str = "cg_gs",
+    dirichlet: str = "1,2,3,4",
+    neumann: str = "none",
+    mesh_path: Path | None = None,
+    max_steps: int = 7,
+    max_dofs: int = 40_000,
+    theta: float = 0.7,
+    rel_tol: float = 1e-12,
+    max_iter: int = 20_000,
+    inject_fault: str = "none",
+    timeout_s: float = 300.0,
+    mem_mb: int = 3072,
+    binary: Path | None = None,
+) -> dict:
+    binary = binary or amr_binary()
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=False)
+    cmd = [
+        str(binary), "--case", case_id, "--mesh-type", mesh_type,
+        "--n", str(n), "--order", str(order),
+        "--dirichlet", dirichlet, "--neumann", neumann,
+        "--assembly", assembly, "--solver", solver,
+        "--rel-tol", repr(rel_tol), "--max-iter", str(max_iter),
+        "--max-steps", str(max_steps), "--max-dofs", str(max_dofs),
+        "--theta", repr(theta), "--inject-fault", inject_fault,
+        "--out", str(out_dir),
+    ]
+    if mesh_path is not None:
+        cmd.extend(["--mesh", str(mesh_path)])
+    t0 = time.monotonic()
+    p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout_s, preexec_fn=_limits(mem_mb))
+    wall = time.monotonic() - t0
+    (out_dir / "stdout.txt").write_text(p.stdout)
+    (out_dir / "stderr.txt").write_text(p.stderr)
+    summary_path = out_dir / "amr_summary.json"
+    summary = json.loads(summary_path.read_text()) if summary_path.is_file() else {}
+    return {
+        "exit_code": p.returncode,
+        "wall_seconds": round(wall, 4),
+        "summary": summary,
+    }

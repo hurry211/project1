@@ -14,7 +14,7 @@ Nothing here is shared with, or derived from, the MFEM solver code:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from itertools import chain
+from itertools import chain, islice
 from pathlib import Path
 
 import numpy as np
@@ -95,22 +95,40 @@ def cartesian_partition(mesh, n, tol):
     return bool(np.all(np.abs(edges).sum(axis=2) == 1))
 
 
+_READ_CHUNK_ROWS = 65536
+
+
 def _loadtxt(path: Path, ncols: int) -> np.ndarray:
     if not path.is_file():
         raise ArtifactError(f"missing artifact {path.name}")
+    chunks = []
     try:
-        arr = np.loadtxt(path, comments="#", ndmin=2)
-    except (ValueError, OSError) as exc:
+        with path.open("r", encoding="utf-8") as stream:
+            while True:
+                raw_slice = list(islice(stream, _READ_CHUNK_ROWS))
+                if not raw_slice:
+                    break
+                lines = [ln for ln in raw_slice if ln.strip() and not ln.lstrip().startswith("#")]
+                if not lines:
+                    continue
+                part = np.loadtxt(lines, comments="#", ndmin=2)
+                if part.shape[1] != ncols:
+                    raise ArtifactError(f"artifact {path.name} has unexpected shape {part.shape}")
+                chunks.append(part)
+    except (ValueError, OSError, UnicodeDecodeError) as exc:
         raise ArtifactError(f"malformed artifact {path.name}: {exc}") from exc
-    if arr.shape[0] == 0 or arr.shape[1] != ncols:
-        raise ArtifactError(f"artifact {path.name} has unexpected shape {arr.shape}")
-    return arr
+    if not chunks:
+        raise ArtifactError(f"artifact {path.name} has unexpected shape (0, 0)")
+    return chunks[0] if len(chunks) == 1 else np.concatenate(chunks, axis=0)
 
 
 def _load_elements(path: Path) -> tuple[str, np.ndarray]:
-    """Read typed rows without retaining every coordinate as a Python string."""
+    """Read typed rows in bounded slices without retaining every line as a Python string."""
     if not path.is_file():
         raise ArtifactError("missing or empty artifact elements.txt")
+    chunks = []
+    geom = None
+    nv = 0
     with path.open() as stream:
         rows = (row for line in stream for row in line.splitlines()
                 if row.strip() and not row.startswith("#"))
@@ -130,18 +148,27 @@ def _load_elements(path: Path) -> tuple[str, np.ndarray]:
         dtype = [("id", np.int64), ("geom", object), ("nv", np.int64),
                  ("coords", np.float64, (nv, 2))]
         converters = {0: int, 2: int, **{i: float for i in range(3, 3 + 2 * nv)}}
-        try:
-            table = np.loadtxt(chain((first,), rows), dtype=dtype, converters=converters,
-                               comments=None, encoding="utf-8", ndmin=1)
-        except (ValueError, OverflowError) as exc:
-            raise ArtifactError(f"malformed elements.txt: {exc}") from exc
-    if not np.all(table["geom"] == geom):
-        raise ArtifactError(f"unsupported/mixed element geometries {set(table['geom'])}")
-    if not np.all(table["nv"] == nv):
-        raise ArtifactError("wrong vertex count in elements.txt")
-    if not np.array_equal(table["id"], np.arange(len(table))):
-        raise ArtifactError("elements.txt element ids are not 0..E-1 in order")
-    return geom, table["coords"].copy()
+        all_rows = chain((first,), rows)
+        offset = 0
+        while True:
+            batch = list(islice(all_rows, _READ_CHUNK_ROWS))
+            if not batch:
+                break
+            try:
+                table = np.loadtxt(batch, dtype=dtype, converters=converters,
+                                   comments=None, encoding="utf-8", ndmin=1)
+            except (ValueError, OverflowError) as exc:
+                raise ArtifactError(f"malformed elements.txt: {exc}") from exc
+            if not np.all(table["geom"] == geom):
+                raise ArtifactError(f"unsupported/mixed element geometries {set(table['geom'])}")
+            if not np.all(table["nv"] == nv):
+                raise ArtifactError("wrong vertex count in elements.txt")
+            if not np.array_equal(table["id"], np.arange(offset, offset + len(table))):
+                raise ArtifactError("elements.txt element ids are not 0..E-1 in order")
+            offset += len(table)
+            chunks.append(table["coords"].copy())
+    coords = chunks[0] if len(chunks) == 1 else np.concatenate(chunks, axis=0)
+    return geom, coords
 
 
 def load_mesh_data(level_dir: Path) -> MeshData:
@@ -249,6 +276,13 @@ def geometry_map(geom: str, verts: np.ndarray, xi: np.ndarray, eta: np.ndarray):
 
 def inverse_map(geom: str, verts: np.ndarray, X: np.ndarray, tol: float = 1e-12) -> np.ndarray:
     """Reference coordinates of physical points X (E,K,2) in element e."""
+    E = X.shape[0]
+    if E > _READ_CHUNK_ROWS:
+        out = np.empty(X.shape, dtype=np.float64)
+        for start in range(0, E, _READ_CHUNK_ROWS):
+            stop = min(start + _READ_CHUNK_ROWS, E)
+            out[start:stop] = inverse_map(geom, verts[start:stop], X[start:stop], tol)
+        return out
     if geom == "tri":
         v0 = verts[:, 0]
         A = np.stack([verts[:, 1] - v0, verts[:, 2] - v0], axis=-1)
@@ -312,7 +346,7 @@ def build_local_basis(mesh: MeshData, p: int) -> LocalBasis:
 
 def repeated_element_period(rows: np.ndarray) -> int:
     """Find an exact one- or two-element pattern, or return the full row count."""
-    bits = rows.view(np.uint64)
+    bits = np.ascontiguousarray(rows).view(np.uint64)
     if np.all(bits == bits[:1]):
         return 1
     if len(rows) > 2 and np.all(bits[2:] == bits[:-2]):
@@ -329,24 +363,40 @@ class QuadData:
     gphi: np.ndarray     # (E,Q,nloc,2) physical gradients
 
 
-def element_quadrature(mesh: MeshData, basis: LocalBasis, m: int) -> QuadData:
-    xi, eta, w = reference_quadrature(mesh.geom, m)
-    X, J = geometry_map(mesh.geom, mesh.verts, xi, eta)
+def evaluate_quadrature_slice(
+    mesh: MeshData,
+    basis: LocalBasis,
+    xi: np.ndarray,
+    eta: np.ndarray,
+    w: np.ndarray,
+    start: int,
+    stop: int,
+    *,
+    monom_cache: tuple[np.ndarray, np.ndarray, np.ndarray] | None = None,
+) -> QuadData:
+    """Evaluate geometry maps, Jacobians, and physical shape gradients for elements [start:stop]."""
+    X, J = geometry_map(mesh.geom, mesh.verts[start:stop], xi, eta)
     # Each straight triangle has one affine Jacobian. Quadrilateral maps
     # can vary across quadrature points even when the basis is shared.
     affine = mesh.geom == "tri"
     jac = J[:, :1] if affine else J
     det = jac[..., 0, 0] * jac[..., 1, 1] - jac[..., 0, 1] * jac[..., 1, 0]
-    E, Q = X.shape[:2]
-    detJ = np.broadcast_to(det, (E, Q))
-    M, dMx, dMy = eval_monomials(basis.exps, xi, eta)  # (Q, nmono)
-    coeffs = basis.coeffs[:1] if basis.coeffs.strides[0] == 0 else basis.coeffs
+    B, Q = X.shape[:2]
+    detJ = np.broadcast_to(det, (B, Q))
+    M, dMx, dMy = monom_cache if monom_cache is not None else eval_monomials(basis.exps, xi, eta)
+    shared = basis.coeffs.strides[0] == 0
+    coeffs = basis.coeffs[:1] if shared else basis.coeffs[start:stop]
     nloc = coeffs.shape[-1]
-    phi = np.broadcast_to(np.einsum("qm,emk->eqk", M, coeffs), (E, Q, nloc))
+    phi = np.broadcast_to(np.einsum("qm,emk->eqk", M, coeffs), (B, Q, nloc))
     if affine and nloc == 3:  # Gradients of linear triangle shapes are constant.
         dMx, dMy = dMx[:1], dMy[:1]
     dphi_ref = np.stack([np.einsum("qm,emk->eqk", dMx, coeffs),
                          np.einsum("qm,emk->eqk", dMy, coeffs)], axis=-1)
     gphi = np.einsum("eqkj,eqji->eqki", dphi_ref, np.linalg.inv(jac))
-    gphi = np.broadcast_to(gphi, (E, Q, nloc, 2))
+    gphi = np.broadcast_to(gphi, (B, Q, nloc, 2))
     return QuadData(X=X, wdet=w[None, :] * np.abs(detJ), detJ=detJ, phi=phi, gphi=gphi)
+
+
+def element_quadrature(mesh: MeshData, basis: LocalBasis, m: int) -> QuadData:
+    xi, eta, w = reference_quadrature(mesh.geom, m)
+    return evaluate_quadrature_slice(mesh, basis, xi, eta, w, 0, mesh.verts.shape[0])
