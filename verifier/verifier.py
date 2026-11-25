@@ -29,7 +29,8 @@ from sciagent.spec import StudySpec
 
 from . import expr
 from .fem import (ArtifactError, MeshData, build_local_basis, cartesian_partition,
-                  element_quadrature, gauss_01, inverse_map, lattice_indices, load_mesh_data)
+                  element_quadrature, gauss_01, inverse_map, lattice_indices, load_mesh_data,
+                  repeated_element_period)
 
 VERIFIER_VERSION = "0.4.0"
 GEOM_TOL = 1e-12
@@ -346,14 +347,7 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
         return rep
     rep.add(Check("mesh_jacobian_positive", bool(np.all(q.detJ > 0)), "INVALID_MESH",
                   "min det J over quadrature points", float(np.min(q.detJ)), 0.0))
-    U = mesh.values[mesh.elem_dofs]                      # (E, nloc)
-    uh = np.einsum("eqk,ek->eq", q.phi, U)
-    guh = np.einsum("eqki,ek->eqi", q.gphi, U)
-    Xq = q.X
-    ue = u_fn(Xq[..., 0], Xq[..., 1])
-    gx, gy = expr.gradient(u_fn, Xq[..., 0], Xq[..., 1])
-    l2 = float(np.sqrt(np.sum(q.wdet * (uh - ue) ** 2)))
-    h1 = float(np.sqrt(np.sum(q.wdet * ((guh[..., 0] - gx) ** 2 + (guh[..., 1] - gy) ** 2))))
+    l2, h1 = _integrated_errors(mesh, q, u_fn)
     rep.l2_error, rep.h1_semi_error = l2, h1
     rep.add(Check("independent_errors_finite", math.isfinite(l2) and math.isfinite(h1),
                   "NON_FINITE_SOLUTION", f"L2={l2:.6e}, H1semi={h1:.6e}"))
@@ -393,18 +387,65 @@ def verify_level(level_dir: Path, problem: ProblemSpec, execution: ExecutionSpec
     return rep
 
 
+def _quadrature_batches(q):
+    """Limit expression and gradient temporaries to about 64K quadrature points."""
+    elements, points = q.wdet.shape
+    batch = max(1, 65536 // points)
+    for start in range(0, elements, batch):
+        yield slice(start, min(start + batch, elements))
+
+
+def _integrated_errors(mesh, q, u_fn):
+    # Preserve NumPy's full-array reduction order and historical error values.
+    l2_density = np.empty_like(q.wdet)
+    h1_density = np.empty_like(q.wdet)
+    for block in _quadrature_batches(q):
+        U = mesh.values[mesh.elem_dofs[block]]
+        uh = np.einsum("eqk,ek->eq", q.phi[block], U)
+        guh = np.einsum("eqki,ek->eqi", q.gphi[block], U)
+        x, y = q.X[block, :, 0], q.X[block, :, 1]
+        ue = u_fn(x, y)
+        gx, gy = expr.gradient(u_fn, x, y)
+        l2_density[block] = q.wdet[block] * (uh - ue) ** 2
+        h1_density[block] = q.wdet[block] * ((guh[..., 0] - gx) ** 2 + (guh[..., 1] - gy) ** 2)
+    return float(np.sqrt(np.sum(l2_density))), float(np.sqrt(np.sum(h1_density)))
+
+
+def _volume_forms(q, variable_kappa, f_fn):
+    E, _, nloc = q.phi.shape
+    # For affine linear triangles, gradients are stored once per element.
+    # Reuse a stiffness integral only after inspecting its actual inputs,
+    # including all weights. Other geometries and coefficients use each row.
+    period = E
+    if variable_kappa is None and q.gphi.strides[1] == 0:
+        period = max(repeated_element_period(q.gphi[:, 0]), repeated_element_period(q.wdet))
+    Ke = np.empty((period, nloc, nloc))
+    Fe = np.empty((E, nloc))
+    for block in _quadrature_batches(q):
+        x, y = q.X[block, :, 0], q.X[block, :, 1]
+        Fe[block] = np.einsum("eq,eq,eqi->ei", q.wdet[block], f_fn(x, y), q.phi[block])
+        if block.start < period:
+            stiffness = slice(block.start, min(block.stop, period))
+            gphi = q.gphi[stiffness]
+            weights = q.wdet[stiffness]
+            if variable_kappa is not None:
+                weights = weights * variable_kappa(x, y)
+            Ke[stiffness] = np.einsum("eq,eqid,eqjd->eij", weights, gphi, gphi)
+    if period < E:
+        Ke = Ke[np.arange(E) % period]
+    return Ke, Fe
+
+
 def reference_solve(mesh, basis, q, problem, coords, on_dir, u_fn, f_fn, m) -> np.ndarray:
     N = coords.shape[0]
-    E, nloc = mesh.elem_dofs.shape
+    nloc = mesh.elem_dofs.shape[1]
     kappa = expr.compile_expr(problem.kappa)
-    weights = q.wdet * kappa(q.X[..., 0], q.X[..., 1])
-    Ke = np.einsum("eq,eqid,eqjd->eij", weights, q.gphi, q.gphi)
-    fq = f_fn(q.X[..., 0], q.X[..., 1])
-    Fe = np.einsum("eq,eq,eqi->ei", q.wdet, fq, q.phi)
+    Ke, Fe = _volume_forms(q, None if problem.kappa == "1" else kappa, f_fn)
     rows = np.repeat(mesh.elem_dofs, nloc, axis=1).ravel()
     cols = np.tile(mesh.elem_dofs, (1, nloc)).ravel()
     K = sp.coo_matrix((Ke.ravel(), (rows, cols)), shape=(N, N)).tocsr()
     F = np.bincount(mesh.elem_dofs.ravel(), weights=Fe.ravel(), minlength=N)
+    del Ke, Fe, rows, cols
 
     # Prescribed outward flux is kappa * grad(u_exact) . n.
     neu = {b.attribute: b.label for b in problem.boundaries if b.kind == "neumann"}

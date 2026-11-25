@@ -14,6 +14,7 @@ Nothing here is shared with, or derived from, the MFEM solver code:
 from __future__ import annotations
 
 from dataclasses import dataclass
+from itertools import chain
 from pathlib import Path
 
 import numpy as np
@@ -106,29 +107,46 @@ def _loadtxt(path: Path, ncols: int) -> np.ndarray:
     return arr
 
 
+def _load_elements(path: Path) -> tuple[str, np.ndarray]:
+    """Read typed rows without retaining every coordinate as a Python string."""
+    if not path.is_file():
+        raise ArtifactError("missing or empty artifact elements.txt")
+    with path.open() as stream:
+        rows = (row for line in stream for row in line.splitlines()
+                if row.strip() and not row.startswith("#"))
+        first = next(rows, None)
+        if first is None:
+            raise ArtifactError("missing or empty artifact elements.txt")
+        fields = first.split()
+        if len(fields) < 3:
+            raise ArtifactError("truncated row in elements.txt")
+        geom = fields[1]
+        if geom not in ("tri", "quad"):
+            raise ArtifactError(f"unsupported/mixed element geometries {geom!r}")
+        nv = 3 if geom == "tri" else 4
+        # Keep the full geometry token. Fixed-width strings could truncate an
+        # invalid label to "quad". Python converters retain the file grammar
+        # (e.g. integer IDs reject "0.0" and "1e0").
+        dtype = [("id", np.int64), ("geom", object), ("nv", np.int64),
+                 ("coords", np.float64, (nv, 2))]
+        converters = {0: int, 2: int, **{i: float for i in range(3, 3 + 2 * nv)}}
+        try:
+            table = np.loadtxt(chain((first,), rows), dtype=dtype, converters=converters,
+                               comments=None, encoding="utf-8", ndmin=1)
+        except (ValueError, OverflowError) as exc:
+            raise ArtifactError(f"malformed elements.txt: {exc}") from exc
+    if not np.all(table["geom"] == geom):
+        raise ArtifactError(f"unsupported/mixed element geometries {set(table['geom'])}")
+    if not np.all(table["nv"] == nv):
+        raise ArtifactError("wrong vertex count in elements.txt")
+    if not np.array_equal(table["id"], np.arange(len(table))):
+        raise ArtifactError("elements.txt element ids are not 0..E-1 in order")
+    return geom, table["coords"].copy()
+
+
 def load_mesh_data(level_dir: Path) -> MeshData:
     level_dir = Path(level_dir)
-    # elements.txt: elem geom nverts coords...
-    lines = [ln.split() for ln in (level_dir / "elements.txt").read_text().splitlines()
-             if ln.strip() and not ln.startswith("#")] if (level_dir / "elements.txt").is_file() else None
-    if not lines:
-        raise ArtifactError("missing or empty artifact elements.txt")
-    if any(len(ln) < 3 for ln in lines):
-        raise ArtifactError("truncated row in elements.txt")
-    geoms = {ln[1] for ln in lines}
-    if len(geoms) != 1 or next(iter(geoms)) not in ("tri", "quad"):
-        raise ArtifactError(f"unsupported/mixed element geometries {geoms}")
-    geom = geoms.pop()
-    nv = 3 if geom == "tri" else 4
-    try:
-        if any(int(ln[2]) != nv or len(ln) != 3 + 2 * nv for ln in lines):
-            raise ArtifactError("wrong vertex count in elements.txt")
-        verts = np.array([[float(v) for v in ln[3:]] for ln in lines]).reshape(-1, nv, 2)
-        eids = np.array([int(ln[0]) for ln in lines])
-    except (ValueError, IndexError) as exc:
-        raise ArtifactError(f"malformed elements.txt: {exc}") from exc
-    if not np.array_equal(eids, np.arange(len(eids))):
-        raise ArtifactError("elements.txt element ids are not 0..E-1 in order")
+    geom, verts = _load_elements(level_dir / "elements.txt")
 
     ed = _loadtxt(level_dir / "element_dofs.txt", 5)
     E = verts.shape[0]
@@ -136,8 +154,8 @@ def load_mesh_data(level_dir: Path) -> MeshData:
         raise ArtifactError("element_dofs.txt row count is not a multiple of the element count")
     nloc = ed.shape[0] // E
     ed = ed.reshape(E, nloc, 5)
-    if not (np.array_equal(ed[:, :, 0], np.repeat(np.arange(E)[:, None], nloc, 1))
-            and np.array_equal(ed[:, :, 1], np.repeat(np.arange(nloc)[None, :], E, 0))):
+    if not (np.all(ed[:, :, 0] == np.arange(E)[:, None])
+            and np.all(ed[:, :, 1] == np.arange(nloc))):
         raise ArtifactError("element_dofs.txt is not ordered by (element, local index)")
     elem_node_xy = ed[:, :, 3:5].copy()
 
@@ -273,19 +291,33 @@ def build_local_basis(mesh: MeshData, p: int) -> LocalBasis:
     if np.any(node_ref < -1e-9) or np.any(node_ref > 1 + 1e-9) or (
             mesh.geom == "tri" and np.any(node_ref.sum(-1) > 1 + 1e-9)):
         raise ArtifactError("exported dof node lies outside its element")
-    # Share a basis only when all exported nodes have exactly the same
-    # reference coordinates in the same local order, including signed zero.
-    shared = np.all(node_ref.view(np.uint64) == node_ref[:1].view(np.uint64))
-    nodes = node_ref[:1] if shared else node_ref
+    # Triangular Cartesian exports often alternate two bitwise node layouts
+    # (e.g. inverse maps with different signed zeros). Check *every* row
+    # before reusing either Vandermonde factorization.
+    period = repeated_element_period(node_ref)
+    nodes = node_ref[:period]
     V, _, _ = eval_monomials(exps, nodes[..., 0], nodes[..., 1])
     cond = np.linalg.cond(V)
     max_cond = float(np.max(cond))
     if not np.isfinite(max_cond) or max_cond > 1e10:
         raise ArtifactError(f"local node set is not unisolvent (max cond {max_cond:.3e})")
     coeffs = np.linalg.inv(V)  # V[e,i,m] C[e,m,k] = delta_ik
-    if shared:
+    if len(coeffs) <= 2 and np.all(coeffs.view(np.uint64) == coeffs[:1].view(np.uint64)):
+        coeffs = coeffs[:1]
         coeffs = np.broadcast_to(coeffs, (len(node_ref), nloc, nloc))
+    elif period < len(node_ref):
+        coeffs = coeffs[np.arange(len(node_ref)) % period]
     return LocalBasis(exps=exps, coeffs=coeffs, max_cond=max_cond, node_ref=node_ref)
+
+
+def repeated_element_period(rows: np.ndarray) -> int:
+    """Find an exact one- or two-element pattern, or return the full row count."""
+    bits = rows.view(np.uint64)
+    if np.all(bits == bits[:1]):
+        return 1
+    if len(rows) > 2 and np.all(bits[2:] == bits[:-2]):
+        return 2
+    return len(rows)
 
 
 @dataclass
