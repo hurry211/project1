@@ -8,6 +8,8 @@ An optional RT1 flux reconstruction can certify the same P1 field after a proof 
 
 The stopping study compares fixed residual stopping, certified algebraic error balancing and CFAC at identical energy tolerances. The experiment measures delivery of the checked field from a fresh process and records failed attempts. [Matched-accuracy results and replay](docs/CFAC_STOPPING_RESULTS.md) · [Frozen comparison protocol](docs/CFAC_STOPPING_PROTOCOL.md)
 
+An optional CFAC schedule reserves four actions for a checked trial when progress slows on a sufficient refined pair. It recovered the strict signed-stripe case in six of six runs. On three new load families, both CFAC schedules delivered 30 of 36 submissions and classical stopping delivered all 36. [Reserve study, timings and replay](docs/CFAC_RESERVE_RESULTS.md)
+
 ```
 StudySpec (JSON) ─► schema + MMS consistency ─► freeze & hash ─► environment probe ─► capability matrix
      ─► bind to compiled C++ case ─► MFEM poisson_mms (per mesh level, time/memory limited)

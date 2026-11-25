@@ -4,6 +4,8 @@ This report records the P1/RT0 foundation. The subsequent RT1 stage adds an inde
 
 The stopping study adds a certified algebraic stopping rule and a fixed-residual baseline to the shared controller. It measures all seven scheduling variants through delivery of the verified field and records the strict signed-load case where CFAC exhausts its budget. [Stopping rules, implementation and results](CFAC_STOPPING_RESULTS.md)
 
+The optional `cfac_reserve` policy detects two consecutive slow corrections on a refined sufficient pair and reserves actions for primal smoothing and RT1 certification. Its archive records every decision, its checked result, and outcomes on six held-out cases. [Reserve policy and measurements](CFAC_RESERVE_RESULTS.md)
+
 The research branch adds an independent numerical acceptance contract for two-dimensional Poisson energy error and a proof-based decision about continuing on a fixed P1/RT0 pair. The runnable demonstration has no exact solution input. Its decisions and costs can be reproduced from the frozen problems. [Experiment results](CFAC_EXPERIMENTAL_EVIDENCE.md) · [Proofs and scope](CFAC_MATHEMATICAL_SPEC.md)
 
 ## Repository and inputs

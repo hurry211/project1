@@ -1,5 +1,7 @@
 # CFAC experiments and replay
 
+The sufficient-pair reserve study archives 252 submissions. It recovers the previously diagnosed budget failure, and retains the held-out checkerboard case where both CFAC variants stop at action 16 with work still available. [Measurements, raw journals and commands](CFAC_RESERVE_RESULTS.md)
+
 The matched-accuracy stopping study archives 392 timed submissions, including 98 unsuccessful outcomes. Its report gives the digest and commands for replaying the checked fields and regenerating the case-level results. [Matched-accuracy evidence and reproduction](CFAC_STOPPING_RESULTS.md)
 
 ## Supplied sine experiment

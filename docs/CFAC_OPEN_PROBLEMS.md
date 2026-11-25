@@ -14,7 +14,9 @@ The matched small-mesh study now compares a fixed relative residual with a certi
 
 ## Matched-accuracy experiment
 
-The first frozen comparison includes two held-out P0 load families, a fixed energy norm, identical action limits and single-core interleaved runs. On the signed stripes at tolerance 1/9, classical stopping delivered a checked solution in all seven blocks and CFAC exhausted all seven budgets. CFAC spent 84 of its 128 actions per run on ordinary and tight inspections. The next scheduling experiment should test a bound on repeated probing and reserve actions for primal smoothing and an independently checked RT1 trial. Freeze the trigger and evaluate it on fresh load patterns as well as replaying the diagnosed failure. Preserve the original study as the baseline. [Protocol](CFAC_STOPPING_PROTOCOL.md) · [Paired timings, failures and peak memory](CFAC_STOPPING_RESULTS.md)
+The original comparison found that CFAC spent 84 of 128 actions on inspections on the signed stripes at tolerance 1/9. A second frozen study tested a four-action reserve when the current refined pair is sufficient and progress is slow. It recovered the diagnosed case and retained the original policy's coverage on three new load families. [Original paired comparison](CFAC_STOPPING_RESULTS.md) · [Reserve study](CFAC_RESERVE_RESULTS.md)
+
+The tight checkerboard at tolerance 1/12 exposes a different decision. The refined P1/RT0 pair is futile, the first refined RT1 certificate misses the target, and both CFAC schedules stop with 112 actions remaining. Classical stopping obtains a certificate on that mesh after more primal work. A next comparison should freeze a rule for additional primal work before a refined RT1 check and test its coverage and full cost on new load patterns.
 
 ## Proofs and representations to extend
 
