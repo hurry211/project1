@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "archives": [
+    {
+      "filename": "adaptive-evidence.tar.gz",
+      "bytes": 133193213,
+      "sha256": "731e22c4bd02086e1e24d174bf282858a6603b2e24128b69df285b6716902552",
+      "tar_members": 16818
+    },
+    {
+      "filename": "e2-current-aa.tar.gz",
+      "bytes": 8023981,
+      "sha256": "7fcf49f9ab0e6300a9d546632a3240057b16df65f9e60b9d1a20a52496e07295",
+      "tar_members": 441
+    },
+    {
+      "filename": "endpoint-e3-e4.tar.gz",
+      "bytes": 79345040,
+      "sha256": "1133f5f6b46c826b70326167d17d69c231c6b899efd609357331fe5c1d7f9135",
+      "tar_members": 1480
+    },
+    {
+      "filename": "field-families.tar.gz",
+      "bytes": 7973821,
+      "sha256": "5812ed1e585c5a51fb909254ae8486ce8558152b2e194d271d953b9221a0e058",
+      "tar_members": 206
+    },
+    {
+      "filename": "gaussian-assembly-interrupted.tar.gz",
+      "bytes": 21598433,
+      "sha256": "5d60d5efe36db892a375fc006e40323967c6fb916afb593109540728d304651a",
+      "tar_members": 330
+    },
+    {
+      "filename": "gaussian-hosted.tar.gz",
+      "bytes": 156564303,
+      "sha256": "928c8e4271a6c81112728ea20bd9c95412cddb1559d5b185c94a23ba6f745dab",
+      "tar_members": 857
+    },
+    {
+      "filename": "geometry.tar.gz",
+      "bytes": 4985332,
+      "sha256": "5e5803e2976456485bfe8bb90c4e481867ddc2baa6dab72aec8e34f64c842bfc",
+      "tar_members": 64
+    },
+    {
+      "filename": "irregular-q3.tar.gz",
+      "bytes": 2800050,
+      "sha256": "f45ce4dc51c27d76ce0113a97206d93a01749a80f7f6fbbf9c374d2b802f21d4",
+      "tar_members": 57
+    },
+    {
+      "filename": "mpi-qualified.tar.gz",
+      "bytes": 86692131,
+      "sha256": "8478910501230465aa87e2969550909d06a405d9d67af52f772eb866007b7e8d",
+      "tar_members": 1448
+    },
+    {
+      "filename": "mpi-small-release.tar.gz",
+      "bytes": 27240937,
+      "sha256": "128bf1f68e2480c01a0da372a78a3d46f682a9b430c4e7b6d62682e3999400ce",
+      "tar_members": 1408
+    },
+    {
+      "filename": "planner-repeat.tar.gz",
+      "bytes": 57171114,
+      "sha256": "cc3f59b9ec05c53d66fe6c682d5e8345108606a501e14bb9b00086e0336c74c6",
+      "tar_members": 9971
+    },
+    {
+      "filename": "scale-n1024.tar.gz",
+      "bytes": 137155874,
+      "sha256": "ad9a16cdd7183d0ae981e542d7c7b57b4f9d37bf9f742963a3217d7df8aa690d",
+      "tar_members": 55
+    },
+    {
+      "filename": "scale-n1280.tar.gz",
+      "bytes": 240130248,
+      "sha256": "d8d59c8d3b5336d3078f84c896afedad7077848481f7ee7d176155af1fb2603e",
+      "tar_members": 55
+    },
+    {
+      "filename": "streaming-source.tar.gz",
+      "bytes": 326589,
+      "sha256": "e40faaa56cacc0a3edc1c35712f768e5374057b4a19bd59fb94fa733ef7303a4",
+      "tar_members": 60
+    }
+  ]
+}

@@ -112,6 +112,23 @@ On 2026-11-25 this procedure checked all 52 original inventories and replayed fo
 
 A fresh current-code functional control used two identical source trees as the two arms, compact C1, one warm-up pair and two scored pairs. All six records passed, the audit replayed both block-zero fields, and all runs had the same normalized numerical digest. The median paired wall-time difference for these identical arms was +0.229 s on the measured host. The run tests acquisition, independent replay and timing noise. Use `--workloads C1 --scale compact --blocks 2` with both revision arguments pointing at the current checkout to reproduce the control. [Current A/A receipt](../evidence/e4/e2-replay.json)
 
+## Fresh E3 and E4 endpoints on the same binary
+
+On 2026-11-25 both arms used the E4 controller and timing driver from `56eccf5` and the same serial MFEM binary (SHA-256 `fdbe3f731f7ad158d086b9cd4409111a29b7eb3f2a8511f0af32fd02999cf65b`). The baseline used the verifier tree from `07dca40`, and the candidate used the E4 verifier from `56eccf5`. Fresh H1 and H2 solves ran under identical requests on logical CPU 10, with one thread and no concurrent local solver jobs. Each workload had one excluded warm-up pair and four counterbalanced scored pairs. [Driver](../benchmarks/verified_revision.py) · [Timings, source hashes and numerical receipts](../evidence/e4/endpoint-e3-e4.json.gz)
+
+| Workload | Verifier | Endpoint median (s) | Native processes (s) | Verification phases (s) | Other endpoint work (s) | Verifier peak (MiB) |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| H1, 263,169 DOFs | E3 | 19.117 | 9.611 | 8.585 | 0.843 | 674.9 |
+| H1, 263,169 DOFs | E4 | 18.586 | 9.605 | 8.004 | 0.877 | 673.7 |
+| H2, 16,641 DOFs | E3 | 1.917 | 0.471 | 0.745 | 0.703 | 133.0 |
+| H2, 16,641 DOFs | E4 | 1.932 | 0.468 | 0.741 | 0.735 | 133.1 |
+
+The endpoint starts at request preparation and ends after the worker exits with a qualified study. The native column covers all four native levels, including assembly, solve and export. The verification column sums the non-overlapping verification phases including the verifier process overhead. The remaining time covers startup, controller work and archiving. Column medians are computed independently and need not add to the endpoint median. The median of the maximum native process peak per trial was about 160 MiB for H1 and 47 MiB for H2.
+
+All 20 studies passed the frozen accuracy, reference and process gates. The offline audits checked all 20 inventories and numerically replayed both block-zero fields of each workload. Each workload had one identical normalized numerical fingerprint across both verifier versions and all repetitions. The median within-block E4 minus E3 endpoint difference was **−0.595 s** for H1 (95% paired bootstrap interval **−0.992 to +1.564 s**) and **+0.007 s** for H2 (**−0.082 to +0.079 s**). Both intervals include zero. The lower observed H1 verification median therefore supports a phase-level observation, while the fresh endpoints leave the overall speed advantage unresolved at four pairs. H1 spent about half its endpoint in the unchanged native driver.
+
+The raw archive also retains a separate interrupted initial H1 acquisition. Eight studies completed with matching numerical fingerprints, followed by a WSL kernel stall during the ninth worker. The local host was also running Gaussian and MPI work on other cores. That acquisition has no completed campaign score. After WSL recovered, the complete H1 and H2 schedules above ran from fresh directories.
+
 ## Facts resolved from the local revision
 
 The benchmark host exposed 22 logical CPUs in WSL2. The serial measurements bound each study to one logical CPU. The MPI diagnostic used four logical CPUs on different physical cores. The MPI driver writes owned partitions on each rank and the Python verifier merges them. CG timing includes lazy BoomerAMG setup. The stored launcher time also covers partitioning, assembly, export and shutdown. These boundaries explain why a break-even rank count or problem size cannot be extrapolated from a single CG measurement. [MPI driver](../cpp/mpi/poisson_mpi.cpp) · [Rank-local diagnostics](../evidence/e1/mpi-phases.json)

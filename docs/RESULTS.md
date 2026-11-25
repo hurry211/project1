@@ -4,6 +4,8 @@
 
 The November 2026 follow-up integrates the E3 history, validates three additional equation families, and measures streaming verification, MPI selection, a GPU field audit and live model decisions. All reported speed comparisons specify the timed endpoint and accepted workload. [Review findings, measurements and remaining experiments](ISSUE_RESOLUTION.md) · [Per-trial evidence](../evidence/e4/)
 
+The hosted Q2 offset-Gaussian panel verified full and partial assembly at 66,049 and 263,169 DOFs. Full assembly was faster in all six measured pairs. For the larger size, full and partial verified wall-time medians were 28.632 and 35.618 s; peak native RSS decreased from 178.55 to 96.92 MiB under partial assembly. The independent verifier used about 1.26 GiB for either arm. [Assembly experiment and replay](ADAPTIVE_REPAIRS.md) · [Linux workflow](https://github.com/rodriguezrobertbfrkx6857-sudo/project/actions/runs/45616524974)
+
 ## E3: 1M-DOF verifier scaling, unstructured/AMR & adaptive strategy optimization
 
 Branch `research/e3-scaling-adaptive` extends the verified pipeline across three empirical campaigns ([Full E3 report and curves](E3_PERFORMANCE_ADAPTIVE.md) · [Raw archives and SVGs](../evidence/e3/)):

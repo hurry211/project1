@@ -61,3 +61,30 @@ python -m benchmarks.adaptive_audit --report ../adaptive-final-report/adaptive_c
 ```
 
 The recorded replay authenticated 12,048 files and all 126 strategy receipts. It independently reproduced 290 complete numerical verdicts, including calibration runs, pilot fields and unsuccessful intermediate attempts. Of these, 221 were accepted, 51 were rejected and 18 were retry-eligible. The endpoint for a strategy is its last qualified attempt.
+
+## Local Q2 assembly control at 263,169 DOFs
+
+This acquisition repeats the historical offset-Gaussian Q2 workload with CG–Jacobi at relative tolerance 1e-12, exact Dirichlet data, and grid divisions 64, 128 and 256. Both arms use the same three independent reference solves, convergence gates, and an explicit finest L2 target of 1e-6 from the historical Gaussian strategy search. The original assembly table used the same formulation and convergence checks with no additional absolute L2 target. The new run uses the E4 verifier on WSL2, a single worker bound to logical CPU 6 with one BLAS thread, and four blocks in the order partial/full, full/partial, partial/full, full/partial. The first block warms both paths. Each timing ends after writing the controller manifest. Three measured replications per arm were scheduled. Other host workloads can still share processor cache and memory bandwidth. [Original configuration and results](../evidence/scaling-stage/gaussian.json)
+
+Before the first solve, the frozen E4 predictor selected full assembly from the two admissible Q2 choices. Its forecasts were 11.03 s for full, 11.75 s for partial and 257 MiB for each. The calibration topped out at 16,641 DOFs, so this 263,169-DOF prediction extrapolates beyond the fitted scale. The first matched pair already required about 1.25 GiB for the verifier. A kernel watchdog subsequently reported soft lockups on this WSL2 host, and Ubuntu required a restart. The entire local timing cohort is excluded from speedup and deployment decisions. Five of the eight scheduled runs produced authenticated accepted verdicts. The archive also contains the unfinished sixth run. Every slot appears in the receipt, and all 275 archived files were verified after extraction. [Interrupted local campaign and raw archive digest](../evidence/e4/gaussian-assembly-interrupted.json)
+
+## Hosted Q2 full versus partial assembly
+
+The same offset Gaussian was tested on an Ubuntu 24.04 GitHub Actions runner with an Intel Xeon 6975P-C. The workflow pinned the entire benchmark to logical CPU 0 with one BLAS thread. Both arms used Q2, CG–Jacobi, the same independent reference solves, and the original convergence checks. The workflow required finest L2 error at most 1e-6 and equivalent per-level L2 and H1 errors for each measured pair. The CLI exited successfully. The 16 runs include two warmups and six scored trials at each size. [Workflow and pinned acquisition source](https://github.com/rodriguezrobertbfrkx6857-sudo/project/actions/runs/45616524974)
+
+| Finest DOFs | Assembly | Assembly across levels (ms) | CG across levels (s) | Verification (s) | Verified total (s) | Native / verifier peak (MiB) |
+| ---: | --- | ---: | ---: | ---: | ---: | ---: |
+| 66,049 | Full | 72.75 | 0.831 | 3.807 | 5.257 | 51.27 / 419.28 |
+| 66,049 | Partial | 22.16 | 1.712 | 3.796 | 6.128 | 31.46 / 419.26 |
+| 263,169 | Full | 308.52 | 7.607 | 18.786 | 28.632 | 178.55 / 1,286.65 |
+| 263,169 | Partial | 88.67 | 14.697 | 18.752 | 35.618 | 96.92 / 1,287.61 |
+
+Entries are medians across three measured pairs at each size. The paired full/partial end-to-end time ratios were 0.860, 0.857 and 0.861 at 66,049 DOFs and 0.808, 0.808 and 0.804 at 263,169 DOFs. The two assemblers took the same number of finest-level CG iterations (849 and 1,677 at the two sizes), with verified finest L2 errors of approximately 4.68e-7 and 5.85e-8. Partial assembly saved native memory and assembly time, while its more expensive CG iterations increased the time to a verified answer. Full assembly was faster in every measured pair on this host. The predeclared local predictor also nominated full at 263,169 DOFs, but its 11 s absolute forecast substantially underestimated both hosted medians. Generalization to other preconditioners, accelerators or smaller memory limits requires measurements under those conditions.
+
+The released tarball retains the runner's original bytes and SHA-256. The public receipt contains the source commit, GitHub artifact digest, archive digest, 16 individual manifest pins, paired measurements and four independent cross-host replays. Replays use the final full/partial pair at each size and compare acceptance, individually named numerical checks, thresholds and per-level errors to the stored records. [Hosted summary and replay receipts](../evidence/e4/gaussian-hosted.json)
+
+```bash
+OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 OMP_NUM_THREADS=1 \
+  taskset -c 0 python -m benchmarks.performance --gaussian --repeats 3 \
+  --output /tmp/gaussian-reproduction
+```

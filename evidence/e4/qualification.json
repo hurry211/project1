@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "source_release": "56eccf5dc5c73f195e38f29f6f9a307a11d487f1",
+  "inherited": {
+    "source_commit": "07dca409cb71d096c732f3a9825e88930c6ca79d",
+    "tests": 463,
+    "skipped": 0,
+    "seconds": 211.64
+  },
+  "local": {
+    "scope": "pre-publication working tree with serial and MPI native drivers",
+    "command": "python -m pytest -q --require-mfem --require-mpi",
+    "tests": 517,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 285.909,
+    "junit_sha256": "8afd621f3ac772fbe84b989ada36cb1a197bc092ee5dcb78b3527208a825613a"
+  },
+  "hosted_serial": {
+    "actions_run": 45614554971,
+    "commit": "56eccf5dc5c73f195e38f29f6f9a307a11d487f1",
+    "unit_passed": 393,
+    "mfem_marked_passed": 114,
+    "conclusion": "success"
+  },
+  "extra_local_run": {
+    "state": "interrupted",
+    "details": "A second simultaneous checkout test and two timing experiments encountered WSL2 kernel watchdog and RCU stalls. The local first suite and independently archived scientific studies had already completed. The VM was restarted after confirming only this task had active WSL clients."
+  },
+  "gpu_replay": {
+    "backend": "Windows FP64 OpenCL",
+    "levels": 3,
+    "original_norms_and_negative_controls_reproduced_identically": true
+  },
+  "hosted_mpi": {
+    "actions_run": 45614554981,
+    "source_commit": "56eccf5dc5c73f195e38f29f6f9a307a11d487f1",
+    "tests": 517,
+    "failures": 0,
+    "skipped": 0,
+    "seconds": 135.42,
+    "conclusion": "success",
+    "fresh_mpi_study_and_digest_replay": "passed"
+  }
+}

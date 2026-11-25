@@ -2,6 +2,8 @@
 
 All five stages of this handoff have reached their stated acceptance criteria locally. Stages 0 and 1 completed on 2026-11-20, Stage 2 on 2026-11-23, and Stages 3 and 4 on 2026-11-24. Stage 4 restricts the optional local model to nine reviewed serial requests and measures its selections against the rule baseline. The broader research agenda remains a separate planning document. [Implementation status](docs/IMPLEMENTATION_STATUS.md) · [Serial matrix](evidence/stage2/coverage.json) · [Parallel results](evidence/stage3/results.json) · [Planner comparison](docs/RESULTS.md#stage-4-controlled-planning-2026-11-24)
 
+The E4 follow-up on the original main branch adds the larger serial/MPI benchmarks, independently verified heat, wave and elasticity studies, and a matched real-model ablation. The review ledger maps all sixteen external findings to measured outcomes and identifies the experiments that still need another host or a native GPU build. [Review ledger](docs/ISSUE_RESOLUTION.md)
+
 ## Project goal
 
 Turn the **existing** deterministic, verified MFEM Poisson vertical slice into a robust, extensible scientific-computing agent system. Keep the principle **planner proposes, independent verifier accepts**. Preserve scientific correctness, explicit failure modes, and reproducible evidence over breadth or agent count.
