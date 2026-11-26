@@ -1,0 +1,11 @@
+{
+  "schema": "cfac-sparse-screen-v1",
+  "description": "A new transfer cohort after diagnosis of the unproductive coarse RT1 solves. Inputs specify the PDE and states are not seeded with earlier numerical fields.",
+  "budget": {"iterations_per_stream": 128, "timeout_s": 90, "holdout_blocks": 8, "child_refinements": 1},
+  "held_out": [
+    {"id": "ring_gap", "n": 4, "load": "ring", "epsilon": "1/17", "diffusion": "1"},
+    {"id": "offset_quadrants", "n": 4, "load": "quadrants", "epsilon": "1/15", "diffusion": "3/2"},
+    {"id": "opposed_offcenter", "n": 6, "load": "cross", "epsilon": "1/15", "diffusion": "2/3"},
+    {"id": "two_cell_islands", "n": 6, "load": "staggered", "epsilon": "1/18", "diffusion": "1"}
+  ]
+}
