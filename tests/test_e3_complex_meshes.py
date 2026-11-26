@@ -3,6 +3,10 @@
 from __future__ import annotations
 
 import hashlib
+import json
+import os
+from pathlib import Path
+
 import numpy as np
 import pytest
 
@@ -181,3 +185,181 @@ def test_ex6_amr_q2_hanging_nodes_and_negative_controls(tmp_path):
     ver_src = verify_amr_run(out_src, prob, ValidationSpec())
     assert ver_src["verdict"] == REJECTED
     assert "REFERENCE_MISMATCH" in ver_src["failure_codes"]
+
+
+def _lshape_problem():
+    return {
+        "id": "lshape_singularity",
+        "equation": "-laplacian(u) = f",
+        "domain": "lshape_2d",
+        "exact_solution": "((x-0.5)**2+(y-0.5)**2)**(1/3)*sin((2/3)*theta_lshape)",
+        "source": "0",
+        "boundaries": [
+            {"attribute": 1, "label": "lshape_outer", "kind": "dirichlet", "value": "from_exact_solution"}
+        ],
+    }
+
+
+@pytest.mark.mfem
+@requires_mfem
+def test_amr_mixed_neumann_controller_retry_and_reverify(tmp_path):
+    """Non-zero Neumann mixed BCs + kappa='1+x' + bounded AMR RETRY_ELIGIBLE + offline reverify."""
+    spec_tight = {
+        "schema_version": "0.4",
+        "problem": _var_problem(("right", "top")),
+        "execution": {
+            "mesh_type": "quad",
+            "mesh_topology": "amr",
+            "polynomial_order": 2,
+            "mesh_levels": [4],
+            "assembly": "full",
+            "solver": "cg_gs",
+            "amr_max_steps": 2,
+            "amr_max_dofs": 800,
+        },
+        "validation": {"max_l2_error_finest": 2e-3},
+        "policy": {"max_attempts": 3, "max_dofs_per_level": 20000},
+    }
+    sp = tmp_path / "amr_var_mixed.json"
+    sp.write_text(json.dumps(spec_tight))
+    res = controller.run_study(sp, tmp_path / "runs")
+    assert res["final_state"] == "ACCEPTED", res
+    assert len(res["attempts"]) >= 2
+    assert res["attempts"][0]["verdict"] == "RETRY_ELIGIBLE"
+    assert res["attempts"][-1]["verdict"] == "ACCEPTED"
+
+    run_dir = Path(res["run_dir"])
+    fin_att = run_dir / f"attempts/attempt_{len(res['attempts']):02d}"
+    fin_ver = json.loads((fin_att / "verdict.json").read_text())
+    assert fin_ver["verifier"] == "verifier.amr"
+    assert any(s["hanging_dof_count"] > 0 for s in fin_ver["steps"])
+    assert max(s["reference_rel_diff"] for s in fin_ver["steps"]) < 1e-8
+
+    rep = controller.reverify(fin_att)
+    assert rep["verdict"] == ACCEPTED
+    assert rep["integrity"]["passed"] is True
+
+    # Tampering one AMR DOF value must fail reverify CLOSED
+    target_txt = fin_att / "amr/step_01/dof_values.txt"
+    orig_txt = target_txt.read_text()
+    lines = orig_txt.splitlines()
+    idx, val = lines[1].split()
+    lines[1] = f"{idx} {float(val) + 0.05:.12g}"
+    target_txt.write_text("\n".join(lines) + "\n")
+    tampered = controller.reverify(fin_att)
+    assert tampered["verdict"] == REJECTED
+    assert "EVIDENCE_INTEGRITY" in tampered["failure_codes"]
+
+
+@pytest.mark.mfem
+@requires_mfem
+def test_amr_lshape_controller_end_to_end_and_strict_self_report(tmp_path):
+    """L-shape singularity end-to-end via controller.run_study + reverify at strict 1e-6 self-report tol."""
+    lshape_src = Path(__file__).resolve().parent.parent / "third_party/mfem-src/data/l-shape.mesh"
+    assert lshape_src.is_file(), f"missing {lshape_src}"
+    mbytes = lshape_src.read_bytes()
+    (tmp_path / "l-shape.mesh").write_bytes(mbytes)
+    spec = {
+        "schema_version": "0.4",
+        "problem": _lshape_problem(),
+        "execution": {
+            "mesh_type": "quad",
+            "mesh_topology": "amr",
+            "polynomial_order": 2,
+            "mesh_levels": [4],
+            "assembly": "full",
+            "solver": "cg_gs",
+            "amr_max_steps": 5,
+            "amr_max_dofs": 6000,
+        },
+        "external_mesh": {"file": "l-shape.mesh", "sha256": hashlib.sha256(mbytes).hexdigest()},
+    }
+    sp = tmp_path / "lshape_amr.json"
+    sp.write_text(json.dumps(spec))
+    res = controller.run_study(sp, tmp_path / "runs")
+    assert res["final_state"] == "ACCEPTED", res
+    att = Path(res["run_dir"]) / "attempts/attempt_01"
+    ver = json.loads((att / "verdict.json").read_text())
+    assert ver["verdict"] == ACCEPTED
+    for st in ver["steps"]:
+        self_l2 = [c for c in st["checks"] if c["name"] == "self_report_l2"][0]
+        self_h1 = [c for c in st["checks"] if c["name"] == "self_report_h1_semi"][0]
+        assert self_l2["passed"] and self_l2["threshold"] == pytest.approx(1e-6)
+        assert self_h1["passed"] and self_h1["threshold"] == pytest.approx(1e-6)
+    rep = controller.reverify(att)
+    assert rep["integrity"]["passed"] is True and rep["verdict"] == ACCEPTED
+
+
+@pytest.mark.mfem
+@requires_mfem
+@pytest.mark.parametrize(
+    "fault,expected_code",
+    [
+        ("wrong_kappa", "REFERENCE_MISMATCH"),
+        ("omit_neumann_coefficient", "REFERENCE_MISMATCH"),
+        ("swap_boundary_attr", "BOUNDARY_LABEL_MISMATCH"),
+        ("missing_element", "MESH_MISMATCH"),
+    ],
+)
+def test_amr_negative_fault_modes_rejected(tmp_path, fault, expected_code):
+    """Negative AMR controls: wrong kappa, wrong Neumann flux, swapped bdr attr, missing element."""
+    prob_dict = _var_problem(("right",))
+    prob = StudySpec.model_validate({
+        "schema_version": "0.4",
+        "problem": prob_dict,
+        "execution": {"mesh_type": "quad", "mesh_topology": "amr", "polynomial_order": 2, "mesh_levels": [4]},
+    }).problem
+    out_dir = tmp_path / f"fault_{fault}"
+    run_res = mfem_runner.run_amr(
+        "sin_sin_variable", "quad", 2, out_dir,
+        n=4, dirichlet="1,3,4", neumann="2", max_steps=3, max_dofs=3000, inject_fault=fault,
+    )
+    assert run_res["exit_code"] == 0
+    ver = verify_amr_run(out_dir, prob, ValidationSpec())
+    assert ver["verdict"] == REJECTED
+    assert expected_code in ver["failure_codes"]
+
+
+@pytest.mark.mfem
+@requires_mfem
+@pytest.mark.parametrize("tamper", ["claim_kappa", "claim_conforming", "claim_true_dofs", "drop_bdr_row"])
+def test_amr_negative_untrusted_result_and_boundary_tampering(tmp_path, tamper):
+    """Verify AMR rejects tampered solver claims, constraint counts, and missing boundary segments."""
+    prob = StudySpec.model_validate({
+        "schema_version": "0.4",
+        "problem": _var_problem(("right",)),
+        "execution": {"mesh_type": "quad", "mesh_topology": "amr", "polynomial_order": 2, "mesh_levels": [4]},
+    }).problem
+    out_dir = tmp_path / f"tamper_{tamper}"
+    run_res = mfem_runner.run_amr(
+        "sin_sin_variable", "quad", 2, out_dir,
+        n=4, dirichlet="1,3,4", neumann="2", max_steps=4, max_dofs=4000,
+    )
+    assert run_res["exit_code"] == 0
+    step_dir = out_dir / "step_01"
+    rpath = step_dir / "result.json"
+    res = json.loads(rpath.read_text())
+    if tamper == "claim_kappa":
+        res["case_diffusivity"] = "1"
+        expected = "CLAIM_SPEC_MISMATCH"
+    elif tamper == "claim_conforming":
+        res["conforming"] = True
+        expected = "MESH_MISMATCH"
+    elif tamper == "claim_true_dofs":
+        res["num_true_dofs"] = int(res["num_true_dofs"]) + 1
+        expected = "MESH_MISMATCH"
+    else:
+        bpath = step_dir / "boundary.txt"
+        header, *rows = bpath.read_text().splitlines()
+        kept = []
+        for idx_new, row in enumerate(rows[1:]):
+            toks = row.split()
+            toks[0] = str(idx_new)
+            kept.append(" ".join(toks))
+        bpath.write_text("\n".join([header, *kept]) + "\n")
+        res["num_boundary_elements"] = len(kept)
+        expected = "BOUNDARY_COVERAGE"
+    rpath.write_text(json.dumps(res, indent=2))
+    ver = verify_amr_run(out_dir, prob, ValidationSpec())
+    assert ver["verdict"] == REJECTED
+    assert expected in ver["failure_codes"]

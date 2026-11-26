@@ -40,6 +40,12 @@ inline constexpr Formulation UnitSquarePoisson =
    "u_exact", "grad(u_exact).n"
 };
 
+inline constexpr Formulation LShapePoisson =
+{
+   "-laplacian(u) = f", "lshape_2d", "scalar_H1", "DiffusionIntegrator",
+   "u_exact", "grad(u_exact).n"
+};
+
 inline constexpr Formulation UnitSquareVariableDiffusion =
 {
    "-div(kappa*grad(u)) = f", "unit_square_2d", "scalar_H1", "DiffusionIntegrator",
@@ -260,6 +266,86 @@ inline mfem::real_t variable_f(const mfem::Vector &p)
           - M_PI * std::cos(M_PI * p(0)) * std::sin(2.0 * M_PI * p(1));
 }
 
+inline mfem::real_t sin_3x_2y_u(const mfem::Vector &p)
+{
+   return std::sin(3.0 * M_PI * p(0)) * std::sin(2.0 * M_PI * p(1));
+}
+inline void sin_3x_2y_grad(const mfem::Vector &p, mfem::Vector &g)
+{
+   g.SetSize(2);
+   g(0) = 3.0 * M_PI * std::cos(3.0 * M_PI * p(0)) * std::sin(2.0 * M_PI * p(1));
+   g(1) = 2.0 * M_PI * std::sin(3.0 * M_PI * p(0)) * std::cos(2.0 * M_PI * p(1));
+}
+inline mfem::real_t sin_3x_2y_f(const mfem::Vector &p) { return 13.0 * M_PI * M_PI * sin_3x_2y_u(p); }
+
+inline mfem::real_t var22_u(const mfem::Vector &p)
+{
+   return std::sin(2.0 * M_PI * p(0)) * std::sin(2.0 * M_PI * p(1));
+}
+inline void var22_grad(const mfem::Vector &p, mfem::Vector &g)
+{
+   g.SetSize(2);
+   g(0) = 2.0 * M_PI * std::cos(2.0 * M_PI * p(0)) * std::sin(2.0 * M_PI * p(1));
+   g(1) = 2.0 * M_PI * std::sin(2.0 * M_PI * p(0)) * std::cos(2.0 * M_PI * p(1));
+}
+inline mfem::real_t var22_laplacian_term(const mfem::Vector &p)
+{
+   return 8.0 * M_PI * M_PI * one_plus_x(p) * var22_u(p);
+}
+inline mfem::real_t var22_f(const mfem::Vector &p)
+{
+   return var22_laplacian_term(p) - 2.0 * M_PI * std::cos(2.0 * M_PI * p(0)) * std::sin(2.0 * M_PI * p(1));
+}
+
+inline double gaussian_sharp_r2(const mfem::Vector &p)
+{
+   const double x = p(0) - 0.625, y = p(1) - 0.375;
+   return x * x + y * y;
+}
+inline mfem::real_t gaussian_sharp_u(const mfem::Vector &p) { return std::exp(-80.0 * gaussian_sharp_r2(p)); }
+inline void gaussian_sharp_grad(const mfem::Vector &p, mfem::Vector &g)
+{
+   g.SetSize(2);
+   const double scale = -160.0 * gaussian_sharp_u(p);
+   g(0) = scale * (p(0) - 0.625);
+   g(1) = scale * (p(1) - 0.375);
+}
+inline mfem::real_t gaussian_sharp_f(const mfem::Vector &p)
+{
+   return (320.0 - 25600.0 * gaussian_sharp_r2(p)) * gaussian_sharp_u(p);
+}
+
+inline mfem::real_t sin_cos_u(const mfem::Vector &p)
+{
+   return std::sin(M_PI * p(0)) * std::cos(M_PI * p(1));
+}
+inline void sin_cos_grad(const mfem::Vector &p, mfem::Vector &g)
+{
+   g.SetSize(2);
+   g(0) = M_PI * std::cos(M_PI * p(0)) * std::cos(M_PI * p(1));
+   g(1) = -M_PI * std::sin(M_PI * p(0)) * std::sin(M_PI * p(1));
+}
+inline mfem::real_t sin_cos_f(const mfem::Vector &p) { return 2.0 * M_PI * M_PI * sin_cos_u(p); }
+
+inline mfem::real_t cos_2x_sin_y_var_u(const mfem::Vector &p)
+{
+   return std::cos(2.0 * M_PI * p(0)) * std::sin(M_PI * p(1));
+}
+inline void cos_2x_sin_y_var_grad(const mfem::Vector &p, mfem::Vector &g)
+{
+   g.SetSize(2);
+   g(0) = -2.0 * M_PI * std::sin(2.0 * M_PI * p(0)) * std::sin(M_PI * p(1));
+   g(1) = M_PI * std::cos(2.0 * M_PI * p(0)) * std::cos(M_PI * p(1));
+}
+inline mfem::real_t cos_2x_sin_y_var_lap(const mfem::Vector &p)
+{
+   return 5.0 * M_PI * M_PI * one_plus_x(p) * cos_2x_sin_y_var_u(p);
+}
+inline mfem::real_t cos_2x_sin_y_var_f(const mfem::Vector &p)
+{
+   return cos_2x_sin_y_var_lap(p) + 2.0 * M_PI * std::sin(2.0 * M_PI * p(0)) * std::sin(M_PI * p(1));
+}
+
 inline const std::vector<ManufacturedCase> &Registry()
 {
    static const std::vector<ManufacturedCase> cases =
@@ -298,7 +384,41 @@ inline const std::vector<ManufacturedCase> &Registry()
          "((x-0.5)**2+(y-0.5)**2)**(1/3)*sin((2/3)*theta_lshape)",
          "0",
          lshape_u, lshape_grad, zero_source,
+         LShapePoisson, nullptr, nullptr, 1.0, false, true
+      },
+      {
+         "sin_3x_2y", "sin(3*pi*x)*sin(2*pi*y)",
+         "13*pi**2*sin(3*pi*x)*sin(2*pi*y)",
+         sin_3x_2y_u, sin_3x_2y_grad, sin_3x_2y_f,
          UnitSquarePoisson, nullptr, nullptr, 1.0, false, true
+      },
+      {
+         "sin_2x_2y_var",
+         "sin(2*pi*x)*sin(2*pi*y)",
+         "8*pi**2*(1+x)*sin(2*pi*x)*sin(2*pi*y)-2*pi*cos(2*pi*x)*sin(2*pi*y)",
+         var22_u, var22_grad, var22_f,
+         UnitSquareVariableDiffusion, one_plus_x, var22_laplacian_term, 1.0, false, true
+      },
+      {
+         "gaussian_sharp",
+         "exp(-80*((x-0.625)**2+(y-0.375)**2))",
+         "(320-25600*((x-0.625)**2+(y-0.375)**2))*exp(-80*((x-0.625)**2+(y-0.375)**2))",
+         gaussian_sharp_u, gaussian_sharp_grad, gaussian_sharp_f,
+         UnitSquarePoisson, nullptr, nullptr, 1.0, false, true
+      },
+      {
+         "sin_cos",
+         "sin(pi*x)*cos(pi*y)",
+         "2*pi**2*sin(pi*x)*cos(pi*y)",
+         sin_cos_u, sin_cos_grad, sin_cos_f,
+         UnitSquarePoisson, nullptr, nullptr, 1.0, false, true
+      },
+      {
+         "cos_2x_sin_y_var",
+         "cos(2*pi*x)*sin(pi*y)",
+         "5*pi**2*(1+x)*cos(2*pi*x)*sin(pi*y)+2*pi*sin(2*pi*x)*sin(pi*y)",
+         cos_2x_sin_y_var_u, cos_2x_sin_y_var_grad, cos_2x_sin_y_var_f,
+         UnitSquareVariableDiffusion, one_plus_x, cos_2x_sin_y_var_lap, 1.0, false, true
       },
       {
          "sin_sin",

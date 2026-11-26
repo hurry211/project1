@@ -34,7 +34,10 @@ SPECIAL_REPORTS = {
     "gaussian_offset": "docs/VERIFIER_SCALING.md",
     "layered_unit_drop_10000": "docs/VERIFIER_SCALING.md",
 }
-E3_CASE_IDS = ("gaussian_steep", "lshape_singularity", "gaussian_mid", "sin_2x_2y", "sin_2x_3y")
+E3_CASE_IDS = (
+    "gaussian_steep", "gaussian_sharp", "lshape_singularity",
+    "gaussian_mid", "sin_2x_2y", "sin_2x_3y", "sin_3x_2y", "sin_2x_2y_var", "sin_cos", "cos_2x_sin_y_var",
+)
 ALL_CASE_IDS = (*CASE_IDS, *SPECIAL_REPORTS)
 MESH_SOURCES = ("cartesian", "gmsh22")
 REPORT = "evidence/stage2/coverage.json"
@@ -140,9 +143,8 @@ def evaluate(execution: ExecutionSpec, env: dict | None = None, equation: str = 
             or any(n not in GAUSSIAN_LEVELS for n in execution.mesh_levels)):
         return CapabilityDecision("not_verified", "NOT_VERIFIED_COMBINATION",
                                   f"localized Gaussian is tested with Q2 CG+Jacobi on n={GAUSSIAN_LEVELS}")
-    if execution.inject_fault == "wrong_diffusion" and case_id != "layered_unit_drop_10000":
-        return CapabilityDecision("unsupported", "UNSUPPORTED_COMBINATION",
-                                  "the wrong_diffusion control targets the layered coefficient")
+    if execution.inject_fault in ("omit_coefficient_gradient", "omit_neumann_coefficient", "wrong_kappa") and case_id == "layered_unit_drop_10000":
+        return CapabilityDecision("unsupported", "UNSUPPORTED_COMBINATION", "incompatible layered fault")
     if case_id == "layered_unit_drop_10000" and (
             key != ("quad", 1, "full", "cg_gs") or any(n not in LAYERED_LEVELS for n in execution.mesh_levels)):
         return CapabilityDecision("not_verified", "NOT_VERIFIED_COMBINATION",
@@ -159,6 +161,9 @@ def evaluate(execution: ExecutionSpec, env: dict | None = None, equation: str = 
     if key not in allowed or mesh_source not in valid_sources or (case_id is not None and case_id not in valid_cases):
         return CapabilityDecision("not_verified", "NOT_VERIFIED_COMBINATION",
                                   f"no coverage for case={case_id}, mesh_source={mesh_source}, combination={key}")
+    if execution.inject_fault == "wrong_diffusion" and case_id != "layered_unit_drop_10000":
+        return CapabilityDecision("unsupported", "UNSUPPORTED_COMBINATION",
+                                  "the wrong_diffusion control targets the layered coefficient")
     if env is not None:
         mismatch = _build_mismatch(mfem, catalog)
         if mismatch:

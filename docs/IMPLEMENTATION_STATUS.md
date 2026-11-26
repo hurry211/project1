@@ -1,12 +1,14 @@
 # Implementation Status
 
-## E4 on the original main branch
+## E4 & CFAC Foundation Integrated on main
 
-The November 2026 follow-up integrates the E3 history, validates three additional equation families, and measures streaming verification, MPI selection, a GPU field audit and live model decisions. All reported speed comparisons specify the timed endpoint and accepted workload. [Review findings, measurements and remaining experiments](ISSUE_RESOLUTION.md) · [Per-trial evidence](../evidence/e4/)
+This repository integrates E4 (`fd2cade`) and CFAC (`research/cfac-foundation`, `3132347`) with E3.1 reliability hardening (`b0c281e`):
+- **E4 (`fd2cade`)**: Multi-physics Heat/Wave/Elasticity families (`cpp/field_family.cpp`, `verifier/field_family.py`), 4-rank MPI/hypre scaling (`15.933 s -> 11.064 s`), Windows Intel Arc FP64 OpenCL GPU field audit (`benchmarks/gpu_mpi_norms.py`), element-weighted geometry kernels (`benchmarks/geometry_kernels.py`), and 7-task E4 adaptive repair benchmark ([Review findings & E4 outcomes](ISSUE_RESOLUTION.md) · [E4 adaptive study](ADAPTIVE_REPAIRS.md)).
+- **CFAC Foundation (`research/cfac-foundation`, `3132347`)**: Exact rational P1/RT0 equilibrated hypercircle certificates, RT1 vertex-patch enrichment, and certified algebraic stopping (`research/cfac/`, [CFAC report](CFAC_IMPLEMENTATION_REPORT.md)).
 
-## E3 Deep Performance Optimization & Adaptive Decision Research
+## E3.1 Performance Scalability, Independent AMR & Risk-Aware Adaptive Status
 
-Branch `research/e3-scaling-adaptive` adds: (1) chunked 65k-row streaming I/O/assembly ([`verifier/fem.py`](../verifier/fem.py), [`verifier/verifier.py`](../verifier/verifier.py)) paired with Oettli–Prager residual-verified SA-AMG-PCG ([`verifier/reference_solver.py`](../verifier/reference_solver.py)) scaling independent verification to **1,050,625 DOFs** under a 3 GiB cap; (2) unstructured Gmsh MSH 2.2 `P1–P4`/`Q1–Q4` support ([`sciagent/gmsh.py`](../sciagent/gmsh.py)), MFEM Example 6 `ZienkiewiczZhuEstimator` AMR ([`cpp/poisson_amr.cpp`](../cpp/poisson_amr.cpp)), and independent T-junction hanging-node $C^T K C$ verification ([`verifier/amr.py`](../verifier/amr.py)); and (3) accuracy/memory-constrained adaptive solver/mesh selection evaluated across a disjoint 4-task calibration / 5-task held-out campaign ([`sciagent/adaptive.py`](../sciagent/adaptive.py)). Full report and curves: [`E3_PERFORMANCE_ADAPTIVE.md`](E3_PERFORMANCE_ADAPTIVE.md) · [`../evidence/e3/`](../evidence/e3/).
+Branch `main` delivers: (1) real frozen E2 (`ceb485cb`) vs E3 streaming + `SA-AMG-PCG` + `pyamg==5.4.1` scaling verified up to `1,640,961` DOFs under `4096 MiB` cap (`evidence/e3/scaling_4k_to_1m.json`); (2) full controller-integrated Ex6 AMR + non-zero Neumann/hanging-node $C^T K C$ verification strictly from frozen specs (`verifier/amr.py`, `sciagent/controller.py`); and (3) observable-feature logistic risk-constrained search (`hybrid_guardrail_predictor`, `30/30` held-out acceptance) (`sciagent/adaptive_e31.py`). Full report: [`E3_PERFORMANCE_ADAPTIVE.md`](E3_PERFORMANCE_ADAPTIVE.md) · [`导师阶段汇报-第三阶段-E3.1.md`](导师阶段汇报-第三阶段-E3.1.md).
 
 ## Independent verification on the large P1 benchmark
 

@@ -25,7 +25,17 @@ from sciagent.spec import (ANISOTROPIC, GAUSSIAN_EXACT, LAYERED, LAYERED_EXACT, 
                            ValidationSpec, compact_expression)
 from sciagent.evidence import artifact_hashes, sha256_file
 from sciagent.profiling import mark, phase
-from sciagent.gmsh import ARCHIVED_MESH, CartesianGmsh, UnstructuredGmsh, inspect_gmsh, inspect_gmsh_unstructured, read_mesh
+from sciagent.gmsh import (
+    ARCHIVED_MESH,
+    ARCHIVED_MFEM_MESH,
+    CartesianGmsh,
+    UnstructuredGmsh,
+    archived_mesh_path,
+    inspect_gmsh,
+    inspect_gmsh_unstructured,
+    inspect_mfem_mesh_file,
+    read_mesh,
+)
 
 from . import expr, layered
 from .fem import (ArtifactError, MeshData, build_local_basis, cartesian_partition,
@@ -109,7 +119,15 @@ def check_mms_consistency(problem: ProblemSpec, rel_tol: float) -> Check:
         return Check("layered_exact_unit_drop", match and error <= 1e-14, "MMS_INCONSISTENT",
                      "registered solution matches the continuous unit drop with constant a*du/dx", error, 1e-14)
     rng = np.random.default_rng(12345)
-    pts = rng.uniform(0.05, 0.95, size=(256, 2))
+    if problem.domain == "lshape_2d":
+        pts_list = []
+        while len(pts_list) < 256:
+            cand = rng.uniform(0.05, 0.95, size=(512, 2))
+            keep = (cand[:, 0] < 0.47) | (cand[:, 1] < 0.47)
+            pts_list.extend(cand[keep].tolist())
+        pts = np.asarray(pts_list[:256], dtype=np.float64)
+    else:
+        pts = rng.uniform(0.05, 0.95, size=(256, 2))
     x, y = pts.T
     operator = expr.neg_laplacian(u, x, y, diffusion_x=1000.0 if problem.equation == ANISOTROPIC else 1.0)
     description = "(-div(A grad u_exact))" if problem.equation == ANISOTROPIC else "(-lap u_exact)"
@@ -895,6 +913,26 @@ def verify_attempt(attempt_dir: Path, *, require_run_records: bool = False,
                 != ("quad", 1, "serial_cpu", "full", "cg_gs") or any(n not in LAYERED_LEVELS for n in execution.mesh_levels)):
             raise ValueError("frozen execution is outside the reviewed aligned layered Q1 case")
         request_path = run_dir / "request/study_spec.json"
+        if execution.mesh_topology == "amr":
+            if (run_dir / ARCHIVED_MESH).exists():
+                raise ValueError("AMR runs do not use Gmsh frozen/mesh.msh")
+            if request_path.exists():
+                request = StudySpec.model_validate_json(request_path.read_text())
+                if request.external_mesh is not None:
+                    mesh_rel = archived_mesh_path(request.external_mesh)
+                    if mesh_rel != ARCHIVED_MFEM_MESH:
+                        raise ValueError("AMR external_mesh must be an MFEM .mesh file")
+                    data = read_mesh(run_dir / mesh_rel, request.external_mesh)
+                    inspect_mfem_mesh_file(data, problem, execution)
+                elif (run_dir / ARCHIVED_MFEM_MESH).exists():
+                    raise ValueError("the request did not declare the archived external mesh")
+            elif (run_dir / ARCHIVED_MFEM_MESH).exists():
+                raise ValueError("the request did not declare the archived external mesh")
+            from .amr import verify_amr_attempt
+            return verify_amr_attempt(attempt_dir, require_run_records=require_run_records)
+
+        if (run_dir / ARCHIVED_MFEM_MESH).exists():
+            raise ValueError("unexpected frozen MFEM .mesh archive on non-AMR run")
         if request_path.exists() or (run_dir / ARCHIVED_MESH).exists():
             request = StudySpec.model_validate_json(request_path.read_text())
             if request.external_mesh is not None:

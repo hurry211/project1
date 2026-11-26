@@ -121,14 +121,14 @@ def checker_controls(controls, *, check_profiling=False):
     original = verifier.reference_solve
     records = []
     for mutation in ("negate_reference_volume_load", "scale_reference_stiffness"):
-        def altered(mesh, basis, q, problem, coords, on_dir, u, f, m, **solve_options):
+        def altered(mesh, basis, q, problem, coords, on_dir, u, f, m, *args, **solve_options):
             if mutation == "negate_reference_volume_load":
                 def load(x, y):
                     return -f(x, y)
             else:
                 load = f
                 q = replace(q, gphi=q.gphi * np.sqrt(1.25))
-            return original(mesh, basis, q, problem, coords, on_dir, u, load, m, **solve_options)
+            return original(mesh, basis, q, problem, coords, on_dir, u, load, m, *args, **solve_options)
         with patch.object(verifier, "reference_solve", altered):
             for case, control in controls.items():
                 report = _verdict(check_profiling, verifier.verify_attempt, control.run / ATTEMPT,

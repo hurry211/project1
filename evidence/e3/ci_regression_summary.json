@@ -1,0 +1,111 @@
+{
+  "schema": "e31_ci_ledger_v1",
+  "checks": [
+    {
+      "name": "pytest_full_non_mpi",
+      "cmd": "/home/fy/project1-stage/.venv/bin/python -m pytest -q -m not mpi --require-mfem",
+      "status": "PASSED",
+      "exit_code": 0,
+      "wall_seconds": 118.82,
+      "summary": "464 passed, 9 deselected in 118.41s (0:01:58)",
+      "output_tail": "........................................................................ [ 15%]\n........................................................................ [ 31%]\n........................................................................ [ 46%]\n........................................................................ [ 62%]\n........................................................................ [ 77%]\n........................................................................ [ 93%]\n................................                                         [100%]\n464 passed, 9 deselected in 118.41s (0:01:58)"
+    },
+    {
+      "name": "cli_quickstart",
+      "cmd": "/home/fy/project1-stage/.venv/bin/python -m sciagent quickstart",
+      "status": "PASSED",
+      "exit_code": 0,
+      "wall_seconds": 1.52,
+      "summary": "}",
+      "output_tail": "  },\n  \"finest_orders\": {\n    \"n_coarse\": 32,\n    \"n_fine\": 64,\n    \"l2_order\": 1.9983631008284015,\n    \"h1_semi_order\": 0.999311941962252\n  }\n}"
+    },
+    {
+      "name": "cli_stage4_plan",
+      "cmd": "/home/fy/project1-stage/.venv/bin/python -m sciagent plan --directory /tmp/e31_ci_ju6hru97/stage4_plan specs/stage4/choose_diffusion.json --execute",
+      "status": "PASSED",
+      "exit_code": 0,
+      "wall_seconds": 1.48,
+      "summary": "}",
+      "output_tail": "  },\n  \"proposal_retries\": 0,\n  \"numerical_retries\": 0,\n  \"child_manifest_sha256\": \"4a885ebff6906f64f08864c659a0d5e11b5907266bb6e09745700043ae300cbd\",\n  \"directory\": \"/tmp/e31_ci_ju6hru97/stage4_plan\",\n  \"manifest_sha256\": \"20d4023f1ca0923e385a65b1cfaba2230122d549d10af0a43a8b8945a211b949\",\n  \"wall_seconds\": 1.1413625089999755\n}"
+    },
+    {
+      "name": "stage2_coverage",
+      "cmd": "/home/fy/project1-stage/.venv/bin/python -m benchmarks.stage2 --directory /tmp/e31_ci_ju6hru97/stage2_dir --report /tmp/e31_ci_ju6hru97/stage2_report.json",
+      "status": "PASSED",
+      "exit_code": 0,
+      "wall_seconds": 41.95,
+      "summary": "PASS sin_sin_variable_gmsh22_tri_2_full_cg_gs",
+      "output_tail": "PASS sin_sin_variable_cartesian_tri_2_full_cg_gs\nPASS sin_sin_variable_gmsh22_quad_1_full_cg_gs\nPASS sin_sin_variable_gmsh22_quad_1_partial_cg_jacobi\nPASS sin_sin_variable_gmsh22_quad_2_full_cg_gs\nPASS sin_sin_variable_gmsh22_quad_2_partial_cg_jacobi\nPASS sin_sin_variable_gmsh22_tri_1_full_cg_gs\nPASS sin_sin_variable_gmsh22_tri_1_full_cg_jacobi\nPASS sin_sin_variable_gmsh22_tri_2_full_cg_gs"
+    },
+    {
+      "name": "stage1_robustness_284_plus_14_controls",
+      "cmd": "/home/fy/project1-stage/.venv/bin/python -m benchmarks.robustness --generate-controls /tmp/e31_ci_ju6hru97/controls --report /tmp/e31_ci_ju6hru97/robustness.json --check-profiling",
+      "status": "PASSED",
+      "exit_code": 0,
+      "wall_seconds": 41.01,
+      "summary": "14 reference checker controls; saved /tmp/e31_ci_ju6hru97/robustness.json",
+      "output_tail": "panel {'numerical_fault': (98, {'REJECTED': 98}), 'numerical_clean': (14, {'ACCEPTED': 14}), 'archive_fault': (21, {'REJECTED': 21}), 'archive_clean': (7, {'ACCEPTED': 7})}\niid {'numerical_fault': (64, {'REJECTED': 64}), 'numerical_clean': (32, {'ACCEPTED': 32}), 'archive_fault': (32, {'REJECTED': 32}), 'archive_clean': (16, {'ACCEPTED': 16})}\n14 reference checker controls; saved /tmp/e31_ci_ju6hru97/robustness.json",
+      "details": {
+        "panel": null,
+        "panel_total": null,
+        "iid": null,
+        "iid_total": null,
+        "reference_controls": 0,
+        "profiling_check": null
+      }
+    },
+    {
+      "name": "e1_paired_compact",
+      "cmd": "/home/fy/project1-stage/.venv/bin/python -m benchmarks.e1 --directory /tmp/e31_ci_ju6hru97/e1_compact --scale compact --workloads C1 H2 --warmups 0 --repetitions 1 --cpu 0",
+      "status": "PASSED",
+      "exit_code": 0,
+      "wall_seconds": 5.04,
+      "summary": "H2_block000_gs OK 0.777s",
+      "output_tail": "C1_block000_jacobi OK 0.733s\nC1_block000_gs_repeat OK 0.741s\nC1_block000_gs OK 0.730s\nH2_block000_jacobi OK 0.792s\nH2_block000_gs_repeat OK 0.776s\nH2_block000_gs OK 0.777s"
+    },
+    {
+      "name": "e1_offline_audit",
+      "cmd": "/home/fy/project1-stage/.venv/bin/python -m benchmarks.e1_audit --directory /tmp/e31_ci_ju6hru97/e1_compact --campaign-sha256 6fb5fdba4444cd129b4cd3974960505199d0ae7ce4dc19611885391f85d46814 --output /tmp/e31_ci_ju6hru97/e1_audit.json --all",
+      "status": "PASSED",
+      "exit_code": 0,
+      "wall_seconds": 1.98,
+      "summary": "exit=0",
+      "output_tail": ""
+    },
+    {
+      "name": "verified_revision_compact",
+      "cmd": "/home/fy/project1-stage/.venv/bin/python -m benchmarks.verified_revision --baseline . --candidate . --directory /tmp/e31_ci_ju6hru97/verified_rev --scale compact --workloads C1 --blocks 2 --cpu 0",
+      "status": "PASSED",
+      "exit_code": 0,
+      "wall_seconds": 5.27,
+      "summary": "C1 1 baseline OK 0.746",
+      "output_tail": "C1 -1 candidate OK 0.754\nC1 -1 baseline OK 0.735\nC1 0 baseline OK 0.729\nC1 0 candidate OK 0.732\nC1 1 candidate OK 0.733\nC1 1 baseline OK 0.746"
+    },
+    {
+      "name": "verified_revision_offline_audit",
+      "cmd": "/home/fy/project1-stage/.venv/bin/python -m benchmarks.verified_revision_audit --directory /tmp/e31_ci_ju6hru97/verified_rev --design-sha256 7b9d74c4e9cfaccdf955fdf83aac0b9e67203a8d6a3cf1a2907f75df0ec4aa3d --report-sha256 38d523d98fd55a86a8f5a9b0af4d8db33c3e8c68933f1f9b5afd336f94bad3b3 --output /tmp/e31_ci_ju6hru97/vrev_audit.json",
+      "status": "PASSED",
+      "exit_code": 0,
+      "wall_seconds": 0.86,
+      "summary": "exit=0",
+      "output_tail": ""
+    },
+    {
+      "name": "performance_mixed_repeats2",
+      "cmd": "/home/fy/project1-stage/.venv/bin/python -m benchmarks.performance --output /tmp/e31_ci_ju6hru97/perf --repeats 2 --mixed-boundary",
+      "status": "PASSED",
+      "exit_code": 0,
+      "wall_seconds": 11.7,
+      "summary": "{\"passed\": true, \"report\": \"/tmp/e31_ci_ju6hru97/perf/performance.json\"}",
+      "output_tail": "{\"passed\": true, \"report\": \"/tmp/e31_ci_ju6hru97/perf/performance.json\"}"
+    },
+    {
+      "name": "mpi_integration_suite",
+      "cmd": "pytest -q --require-mfem --require-mpi && sciagent mpi-study && sciagent verify-mpi",
+      "status": "BLOCKED",
+      "exit_code": null,
+      "wall_seconds": 0.0,
+      "summary": "Blocked cleanly in local WSL2: system packages openmpi-bin, libopenmpi3t64, libhypre-2.28.0, libmetis5 not installed (sudo apt-get required)."
+    }
+  ]
+}

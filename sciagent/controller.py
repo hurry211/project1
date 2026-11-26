@@ -28,7 +28,15 @@ from . import capability, environment, mfem_runner, profiling
 from .evidence import EvidenceStore, artifact_hashes, check_archive, sha256_file, utc_now
 from .spec import ExecutionSpec, RetryPolicy, StudySpec, canonical_json, sha256_of
 from .verification_process import verify_bounded
-from .gmsh import ARCHIVED_MESH, inspect_gmsh, inspect_gmsh_unstructured, read_mesh
+from .gmsh import (
+    ARCHIVED_MESH,
+    ARCHIVED_MFEM_MESH,
+    archived_mesh_path,
+    inspect_gmsh,
+    inspect_gmsh_unstructured,
+    inspect_mfem_mesh_file,
+    read_mesh,
+)
 
 TERMINAL = {"ACCEPTED", "FAILED", "BLOCKED", "BUDGET_EXHAUSTED", "INVALID_SPEC"}
 STRUCTURAL_EXITS = {"INVALID_ARGUMENTS", "BOUNDARY_COVERAGE", "UNSUPPORTED_COMBINATION", "ARTIFACT_WRITE_ERROR", "TIMEOUT"}
@@ -80,19 +88,24 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
         return finish("INVALID_SPEC", mms.code, f"{mms.name}: {mms.detail} (value={mms.value})")
 
     mesh = None
+    mesh_rel: str | None = None
     if study.external_mesh is not None:
         try:
+            mesh_rel = archived_mesh_path(study.external_mesh)
+            if (mesh_rel == ARCHIVED_MFEM_MESH) != (study.execution.mesh_topology == "amr"):
+                raise ValueError("MFEM .mesh external inputs apply only to mesh_topology='amr'; use MSH 2.2 .msh otherwise")
             data = read_mesh(spec_path.parent / study.external_mesh.file, study.external_mesh)
-            mesh = (
-                inspect_gmsh_unstructured(data, study.problem, study.execution)
-                if study.execution.mesh_topology == "unstructured"
-                else inspect_gmsh(data, study.problem, study.execution)
-            )
+            if mesh_rel == ARCHIVED_MFEM_MESH:
+                mesh = inspect_mfem_mesh_file(data, study.problem, study.execution)
+            elif study.execution.mesh_topology == "unstructured":
+                mesh = inspect_gmsh_unstructured(data, study.problem, study.execution)
+            else:
+                mesh = inspect_gmsh(data, study.problem, study.execution)
         except (OSError, ValueError) as exc:
             return finish("INVALID_SPEC", "INVALID_EXTERNAL_MESH", str(exc))
-        store.write_bytes_once(ARCHIVED_MESH, data)
+        store.write_bytes_once(mesh_rel, data)
         base_n = getattr(mesh, "subdivisions_hint", None) or mesh.subdivisions
-        manifest["external_mesh"] = {"sha256": study.external_mesh.sha256, "base_n": base_n}
+        manifest["external_mesh"] = {"sha256": study.external_mesh.sha256, "base_n": base_n, "path": mesh_rel}
 
     frozen = {"problem": study.problem, "validation": study.validation, "policy": study.policy}
     hashes = {}
@@ -108,24 +121,41 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
     store.write_json_once("environment.json", env)
     manifest["environment"] = {"mfem_version": env["mfem"].get("version"), "mfem_git": env["mfem"].get("git"),
                                "solver_binary_sha256": env["solver_binary_sha256"], "cxx": env["cxx"]}
+    is_amr = study.execution.mesh_topology == "amr"
+    amr_bin = mfem_runner.amr_binary()
+    if is_amr:
+        manifest["environment"]["amr_binary"] = str(amr_bin)
+        manifest["environment"]["amr_binary_sha256"] = sha256_file(amr_bin)
     store.event("ENVIRONMENT_CHECKED", mfem_found=env["mfem"]["found"],
                 solver_binary=env["solver_binary_sha256"] is not None)
     if not env["mfem"]["found"]:
         return finish("BLOCKED", "MFEM_NOT_FOUND", "; ".join(env["mfem"]["notes"]))
     if env["solver_binary_sha256"] is None:
         return finish("BLOCKED", "BUILD_MISSING", f"solver binary not found at {env['solver_binary']}")
+    if is_amr and not amr_bin.is_file():
+        return finish("BLOCKED", "BUILD_MISSING", f"AMR solver binary not found at {amr_bin}")
 
     # ---- READY: capability + case binding -------------------------------------
+    is_e3 = (study.schema_version == "0.4") or (study.execution.mesh_topology != "cartesian")
     try:
-        cases = mfem_runner.list_cases(include_e3=True) if study.schema_version == "0.4" else mfem_runner.list_cases()
+        if is_amr:
+            cases = mfem_runner.list_cases(binary=amr_bin, include_e3=True)
+        elif is_e3:
+            cases = mfem_runner.list_cases(include_e3=True)
+        else:
+            cases = mfem_runner.list_cases()
     except mfem_runner.BuildError as exc:
         return finish("BLOCKED", "BUILD_FAILURE", str(exc))
     store.write_json_once("case_registry.json", cases)
     case_id = mfem_runner.bind_case(study.problem, cases)
-    mesh_source = "gmsh22" if study.external_mesh is not None else "cartesian"
+    if is_amr:
+        mesh_source = "amr"
+    elif study.external_mesh is not None:
+        mesh_source = "gmsh22"
+    else:
+        mesh_source = "cartesian"
     decision = capability.evaluate(study.execution, env, study.problem.equation, exact_solution=study.problem.exact_solution,
-                                   case_id=case_id, mesh_source=mesh_source, catalog=cases,
-                                   e3_verified=(study.schema_version == "0.4"))
+                                   case_id=case_id, mesh_source=mesh_source, catalog=cases, e3_verified=is_e3)
     manifest["capability"] = decision.__dict__
     if decision.status != "tested":
         state = "BLOCKED" if decision.code in {"UNSUPPORTED_BACKEND", "NOT_VERIFIED_BUILD"} else "FAILED"
@@ -143,57 +173,93 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
     reusable = {}
     source_attempt = None
     for attempt in range(1, pol.max_attempts + 1):
-        if execution.estimated_dofs(execution.mesh_levels[-1]) > pol.max_dofs_per_level:
+        if is_amr:
+            if execution.amr_max_dofs > pol.max_dofs_per_level:
+                return finish("BUDGET_EXHAUSTED", "RESOURCE_LIMIT", "requested AMR max DOFs exceeds max_dofs_per_level")
+        elif execution.estimated_dofs(execution.mesh_levels[-1]) > pol.max_dofs_per_level:
             return finish("BUDGET_EXHAUSTED", "RESOURCE_LIMIT", "requested mesh exceeds max_dofs_per_level")
         adir = f"attempts/attempt_{attempt:02d}"
         store.write_once(f"{adir}/execution.json", canonical_json(execution))
         pinned = {store.path("frozen", f"{name}.json"): h for name, h in hashes.items()}
         pinned[store.path(adir, "execution.json")] = sha256_of(execution)
-        if mesh is not None:
-            pinned[store.path(ARCHIVED_MESH)] = study.external_mesh.sha256
+        if mesh is not None and mesh_rel is not None:
+            pinned[store.path(mesh_rel)] = study.external_mesh.sha256
         if any(sha256_file(p) != h for p, h in pinned.items()):
             return finish("FAILED", "SPEC_TAMPERED", "frozen inputs changed before solver execution")
         store.event("RUNNING", attempt=attempt, mesh_levels=list(execution.mesh_levels),
                     execution_sha256=sha256_of(execution))
         level_runs = []
         carried = {}
-        for n in execution.mesh_levels:
+        if is_amr:
             elapsed = time.monotonic() - started
             remaining = pol.max_total_wall_seconds - elapsed
             if remaining <= 0:
                 manifest["attempts"].append({"attempt": attempt, "levels": level_runs, "verdict": None})
                 return finish("BUDGET_EXHAUSTED", "RESOURCE_LIMIT", f"wall budget exceeded ({elapsed:.1f}s)")
-            mesh_args = {"mesh_path": store.path(ARCHIVED_MESH), "refinements": mesh.refinements(n)} if mesh else {}
-            level_dir = store.path(adir, "levels", f"n{n:04d}")
-            if n in reusable:
-                origin = source_attempt / "levels" / level_dir.name
-                copied = time.monotonic()
-                try:
-                    shutil.copytree(origin, level_dir, symlinks=True)
-                except OSError as exc:
-                    return finish("FAILED", "EVIDENCE_INTEGRITY", f"could not copy level {n}: {exc}")
-                carried[n] = reusable[n]
-                relative_origin = origin.relative_to(store.run_dir).as_posix()
-                level_runs.append({"n": n, "exit_code": 0, "exit_meaning": "OK",
-                                   "wall_seconds": time.monotonic() - copied,
-                                   "reused_from": relative_origin})
-                store.event("LEVEL_REUSED", attempt=attempt, n=n, origin=relative_origin)
-                continue
-            lr = mfem_runner.run_level(study.problem, execution, case_id, n, level_dir,
-                                       timeout_s=min(pol.per_level_timeout_seconds, remaining),
-                                       mem_mb=pol.per_level_memory_mb, **mesh_args)
-            level_runs.append({"n": n, "exit_code": lr.exit_code, "exit_meaning": lr.exit_meaning,
-                               "wall_seconds": lr.wall_seconds})
-            store.event("LEVEL_DONE", attempt=attempt, n=n, exit=lr.exit_meaning, seconds=lr.wall_seconds)
-            if lr.exit_meaning in STRUCTURAL_EXITS:
-                break
+            amr_dir = store.path(adir, "amr")
+            ar = mfem_runner.run_amr(
+                case_id,
+                execution.mesh_type,
+                execution.polynomial_order,
+                amr_dir,
+                n=execution.mesh_levels[0],
+                assembly=execution.assembly,
+                solver=execution.solver,
+                dirichlet=",".join(map(str, study.problem.dirichlet_attributes())) or "none",
+                neumann=",".join(map(str, study.problem.neumann_attributes())) or "none",
+                mesh_path=store.path(mesh_rel) if mesh_rel is not None else None,
+                max_steps=execution.amr_max_steps,
+                max_dofs=execution.amr_max_dofs,
+                theta=execution.amr_theta,
+                rel_tol=execution.rel_tol,
+                max_iter=execution.max_iter,
+                inject_fault=execution.inject_fault,
+                timeout_s=min(pol.per_level_timeout_seconds, remaining),
+                mem_mb=pol.per_level_memory_mb,
+                binary=amr_bin,
+            )
+            level_runs.append({"n": execution.mesh_levels[0], "exit_code": ar["exit_code"],
+                               "exit_meaning": ar["exit_meaning"], "wall_seconds": ar["wall_seconds"]})
+            store.event("LEVEL_DONE", attempt=attempt, n=execution.mesh_levels[0],
+                        exit=ar["exit_meaning"], seconds=ar["wall_seconds"])
+        else:
+            for n in execution.mesh_levels:
+                elapsed = time.monotonic() - started
+                remaining = pol.max_total_wall_seconds - elapsed
+                if remaining <= 0:
+                    manifest["attempts"].append({"attempt": attempt, "levels": level_runs, "verdict": None})
+                    return finish("BUDGET_EXHAUSTED", "RESOURCE_LIMIT", f"wall budget exceeded ({elapsed:.1f}s)")
+                mesh_args = {"mesh_path": store.path(mesh_rel), "refinements": mesh.refinements(n)} if (mesh and mesh_rel) else {}
+                level_dir = store.path(adir, "levels", f"n{n:04d}")
+                if n in reusable:
+                    origin = source_attempt / "levels" / level_dir.name
+                    copied = time.monotonic()
+                    try:
+                        shutil.copytree(origin, level_dir, symlinks=True)
+                    except OSError as exc:
+                        return finish("FAILED", "EVIDENCE_INTEGRITY", f"could not copy level {n}: {exc}")
+                    carried[n] = reusable[n]
+                    relative_origin = origin.relative_to(store.run_dir).as_posix()
+                    level_runs.append({"n": n, "exit_code": 0, "exit_meaning": "OK",
+                                       "wall_seconds": time.monotonic() - copied,
+                                       "reused_from": relative_origin})
+                    store.event("LEVEL_REUSED", attempt=attempt, n=n, origin=relative_origin)
+                    continue
+                lr = mfem_runner.run_level(study.problem, execution, case_id, n, level_dir,
+                                           timeout_s=min(pol.per_level_timeout_seconds, remaining),
+                                           mem_mb=pol.per_level_memory_mb, **mesh_args)
+                level_runs.append({"n": n, "exit_code": lr.exit_code, "exit_meaning": lr.exit_meaning,
+                                   "wall_seconds": lr.wall_seconds})
+                store.event("LEVEL_DONE", attempt=attempt, n=n, exit=lr.exit_meaning, seconds=lr.wall_seconds)
+                if lr.exit_meaning in STRUCTURAL_EXITS:
+                    break
         store.event("VERIFYING", attempt=attempt)
         if any(sha256_file(p) != h for p, h in pinned.items()):
             return finish("FAILED", "SPEC_TAMPERED", "frozen inputs changed during solver execution")
         attempt_path = store.path(adir)
         # Snapshot complete level directories before verification when they may be reused.
         snapshot = {}
-        if (reuse_levels and attempt < pol.max_attempts
+        if (not is_amr and reuse_levels and attempt < pol.max_attempts
                 and study.validation.max_l2_error_finest is not None
                 and len(level_runs) == len(execution.mesh_levels)
                 and all(lr["exit_meaning"] == "OK" for lr in level_runs)):
@@ -237,6 +303,26 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
         if attempt == pol.max_attempts:
             return finish("BUDGET_EXHAUSTED", "BUDGET_EXHAUSTED",
                           f"accuracy target not met after {attempt} attempt(s) (max_attempts={pol.max_attempts})")
+        if is_amr:
+            next_steps = min(20, execution.amr_max_steps + 2)
+            next_dofs = min(pol.max_dofs_per_level, execution.amr_max_dofs * 2)
+            if next_steps == execution.amr_max_steps and next_dofs == execution.amr_max_dofs:
+                return finish("BUDGET_EXHAUSTED", "RESOURCE_LIMIT",
+                              f"AMR retry budget already at ceiling (steps={execution.amr_max_steps}, dofs={execution.amr_max_dofs})")
+            new_exec = ExecutionSpec.model_validate({
+                **execution.model_dump(), "amr_max_steps": next_steps, "amr_max_dofs": next_dofs,
+            })
+            decision = capability.evaluate(new_exec, env, study.problem.equation,
+                                           exact_solution=study.problem.exact_solution, case_id=case_id,
+                                           mesh_source=mesh_source, catalog=cases, e3_verified=is_e3)
+            if decision.status != "tested":
+                return finish("BLOCKED", decision.code, decision.reason)
+            store.event("RETRY_ALLOWED", attempt=attempt, action=pol.action,
+                        old_amr_steps=execution.amr_max_steps, new_amr_steps=next_steps,
+                        old_amr_dofs=execution.amr_max_dofs, new_amr_dofs=next_dofs,
+                        unchanged=["problem", "validation", "policy"], reason="ACCURACY_NOT_MET")
+            execution = new_exec
+            continue
         n_next = 2 * execution.mesh_levels[-1]
         if execution.estimated_dofs(n_next) > pol.max_dofs_per_level:
             return finish("BUDGET_EXHAUSTED", "RESOURCE_LIMIT",
@@ -244,8 +330,7 @@ def run_study(spec_path: str | Path, runs_dir: str | Path = "runs", *,
                           f"> max_dofs_per_level={pol.max_dofs_per_level}")
         new_exec = ExecutionSpec.model_validate({**execution.model_dump(), "mesh_levels": [*execution.mesh_levels, n_next]})
         decision = capability.evaluate(new_exec, env, study.problem.equation, exact_solution=study.problem.exact_solution,
-                                       case_id=case_id, mesh_source=mesh_source, catalog=cases,
-                                       e3_verified=(study.schema_version == "0.4"))
+                                       case_id=case_id, mesh_source=mesh_source, catalog=cases, e3_verified=is_e3)
         if decision.status != "tested":
             return finish("BLOCKED", decision.code, decision.reason)
         store.event("RETRY_ALLOWED", attempt=attempt, action=pol.action, old_levels=list(execution.mesh_levels),
@@ -263,7 +348,9 @@ def reverify(attempt_dir: str | Path, expected_digest: str | None = None) -> dic
         mode, saved, changed = check_archive(attempt, expected_digest)
         # Retain numerical diagnostics for damaged level files. A changed spec
         # or archive record must never authorize a different verification job.
-        level_prefix = f"attempts/{attempt.name}/levels/"
+        exec_data = json.loads((attempt / "execution.json").read_text())
+        subdir = "amr" if exec_data.get("mesh_topology") == "amr" else "levels"
+        level_prefix = f"attempts/{attempt.name}/{subdir}/"
         if any(not p.startswith(level_prefix) for p in changed):
             raise ValueError(f"changed archive files: {', '.join(changed)}")
         policy = RetryPolicy.model_validate_json((attempt.parent.parent / "frozen/policy.json").read_text())

@@ -1,19 +1,19 @@
 # Numerical results
 
-## E4 verified time, accuracy and coverage
+## E4 verified time, accuracy, CFAC certificates, and coverage
 
-The November 2026 follow-up integrates the E3 history, validates three additional equation families, and measures streaming verification, MPI selection, a GPU field audit and live model decisions. All reported speed comparisons specify the timed endpoint and accepted workload. [Review findings, measurements and remaining experiments](ISSUE_RESOLUTION.md) · [Per-trial evidence](../evidence/e4/)
+The November 2026 integration unifies E4, the `research/cfac-foundation` branch, and E3.1 reliability hardening:
+- **E4 Multi-Physics, Streaming, MPI, GPU Audit & Hosted Q2** ([Review findings](ISSUE_RESOLUTION.md) · [Per-trial evidence](../evidence/e4/)): Validates Heat/Wave/2D&3D Elasticity, shared-quadrature streaming verification (`53.178 s` at 1.05M DOFs), 4-rank MPI/hypre speedup (`15.933 -> 11.064 s`), Windows Intel Arc FP64 OpenCL partition checks, and hosted Xeon Q2 offset-Gaussian (`28.632 s` Full vs `35.618 s` Partial at 263,169 DOFs; [Assembly study](ADAPTIVE_REPAIRS.md)).
+- **CFAC (`research/cfac/`)**: Exact rational P1/RT0 equilibrated hypercircle certificates and RT1 enrichment across 18 physical cases ([CFAC report](CFAC_IMPLEMENTATION_REPORT.md)).
 
-The hosted Q2 offset-Gaussian panel verified full and partial assembly at 66,049 and 263,169 DOFs. Full assembly was faster in all six measured pairs. For the larger size, full and partial verified wall-time medians were 28.632 and 35.618 s; peak native RSS decreased from 178.55 to 96.92 MiB under partial assembly. The independent verifier used about 1.26 GiB for either arm. [Assembly experiment and replay](ADAPTIVE_REPAIRS.md) · [Linux workflow](https://github.com/rodriguezrobertbfrkx6857-sudo/project/actions/runs/45616524974)
+## E3.1: Strict Paired Scaling to >1M DOFs, AMR Hardening & Risk-Aware Decision
 
-## E3: 1M-DOF verifier scaling, unstructured/AMR & adaptive strategy optimization
+Integrates E3.1 reliability hardening on `main` extending E2 (`ceb485cb`) cleanly ([Full E3.1 Report](E3_PERFORMANCE_ADAPTIVE.md) · [Advisor Report](导师阶段汇报-第三阶段-E3.1.md) · [Raw Evidence](../evidence/e3/)):
 
-Branch `research/e3-scaling-adaptive` extends the verified pipeline across three empirical campaigns ([Full E3 report and curves](E3_PERFORMANCE_ADAPTIVE.md) · [Raw archives and SVGs](../evidence/e3/)):
-
-- **Verifier scaling to 1,050,625 DOFs** (`RLIMIT_AS = 3072 MiB`): chunked streaming I/O and Oettli–Prager backward-stability verified SA-AMG-PCG (`verifier/reference_solver.py`) cut `n=512` (263k DOFs) peak RSS by **4.14x** (`1,334.1 -> 322.2 MiB`), and pass full verification at `n=1024` (**1,050,625 DOFs**) in `38.36 s` and `1,081.4 MiB` peak RSS (`reference_rel_diff = 5.44e-14`) where both direct baselines OOM ([Scaling data](../evidence/e3/scaling_4k_to_1m.json)).
-- **Unstructured Gmsh (`P1–P4`/`Q1–Q4`), MFEM Example 6 AMR & period degradation**: all 8/8 `sin_sin_variable` (`kappa = 1+x`) unstructured sweeps converge at optimal rates (`tri` L2 `1.97–4.97`, `quad` L2 `2.00–5.01`); independent geometric hanging-node $C^T K C$ verification accepts all 5 Example 6 AMR runs (`gaussian_steep` `Q2` AMR reaches `H1_semi = 0.0443` in 557 true DOFs vs 16,641 DOFs uniform `Q1`); `repeated_element_period` speedup (95x–1,087x) requires constant coefficients and repeated geometry ([Complex mesh & AMR data](../evidence/e3/complex_meshes_and_amr.json)).
-- In 15 E3 held-out trials per strategy, the predictor and the offline adviser each passed 12, expert rules passed 9, and the fixed baseline passed zero. Equal-quality speedup against the fixed baseline is undefined. The recorded peak RSS covers the native solver. [Trial records](../evidence/e3/adaptive_comparison.json)
-- **Non-MPI regression gate**: `python -m pytest -q -m "not mpi" --require-mfem` passes **454 tests** (with 9 MPI tests deselected where OpenMPI/HYPRE is absent).
+- **Strict 4k -> 1.64M DOF Paired Scaling** (`scaling_4k_to_1m.json`, 5 randomized blocks under `RLIMIT_AS=4096 MiB`): Frozen E2 direct hits OOM above `~590k` DOFs, whereas E3 `e3_sa_amg_pcg` verifies `1,050,625` DOFs in `70.30 s` (`1507.5 MiB`) and mature `e3_pyamg` (`pyamg==5.4.1`) verifies `1,050,625` DOFs in `66.41 s` (`1182.2 MiB`) and reaches `1,640,961` DOFs (`n=1280`, `5/5` accepted, `122.26 s`, `1833.8 MiB`).
+- **Independent AMR & Complex Meshes** (`complex_meshes_and_amr.json`): Unstructured Delaunay/quad variable-`kappa` `P1–P4`/`Q1–Q4`, strict non-zero Neumann Ex6 AMR & `lshape_2d` verified from frozen specs (`1e-6` self-report tol).
+- **Separated Risk-Aware Adaptive Search** (`adaptive_comparison_e31.json`, `sciagent/adaptive_e31.py`, 6 calibration -> 6 held-out × 5 repeats): `hybrid_guardrail_predictor` achieves `30/30` completion rate (`100.0%`, failed cost `0.00 s`) vs strong `fixed_baseline` Q2 (`15/30`), with accepted-only paired speedup `2.435x` across `15` mutually accepted pairs.
+- **Historical E3 Baseline Ledger** ([`evidence/e3/adaptive_comparison.json`](../evidence/e3/adaptive_comparison.json)): In historical E3 (`07dca40`), the predictor and offline adviser each passed 12/15 while Q1 fixed passed 0/15 (equal-quality speedup undefined); superseded by both E3.1 (`30/30`) and E4 (`21/21` in [`ADAPTIVE_REPAIRS.md`](ADAPTIVE_REPAIRS.md)).
 
 ## Verifier revision at 263169 degrees of freedom
 

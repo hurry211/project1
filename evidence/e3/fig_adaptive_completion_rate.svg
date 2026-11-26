@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="420" viewBox="0 0 760 420">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="380.0" y="28" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="16" font-weight="600" fill="#111">Held-Out Task Completion Rate (% Accepted Under Strict Accuracy &amp; Memory Gates)</text>
+<rect x="78" y="48" width="652" height="286" fill="#fafafa" stroke="#cbd5e1"/>
+<line x1="78" y1="334.0" x2="730" y2="334.0" stroke="#e2e8f0" stroke-dasharray="3,3"/>
+<text x="70" y="338.0" text-anchor="end" font-family="monospace" font-size="11" fill="#475569">0</text>
+<line x1="78" y1="212.8" x2="730" y2="212.8" stroke="#e2e8f0" stroke-dasharray="3,3"/>
+<text x="70" y="216.8" text-anchor="end" font-family="monospace" font-size="11" fill="#475569">50</text>
+<line x1="78" y1="91.6" x2="730" y2="91.6" stroke="#e2e8f0" stroke-dasharray="3,3"/>
+<text x="70" y="95.6" text-anchor="end" font-family="monospace" font-size="11" fill="#475569">100</text>
+<text x="20" y="191.0" transform="rotate(-90 20 191.0)" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="13" fill="#1e293b">Acceptance Rate (%)</text>
+<rect x="111.2" y="212.8" width="64.0" height="121.2" fill="#1f77b4" fill-opacity="0.88" rx="3"/>
+<text x="143.2" y="206.8" text-anchor="middle" font-family="monospace" font-size="11" fill="#0f172a">50</text>
+<text x="143.2" y="354" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="11.5" fill="#1e293b">Fixed Q2</text>
+<text x="143.2" y="370" text-anchor="middle" font-family="monospace" font-size="10" fill="#64748b">acc_med=1.1098s</text>
+<rect x="241.6" y="172.3" width="64.0" height="161.7" fill="#d62728" fill-opacity="0.88" rx="3"/>
+<text x="273.6" y="166.3" text-anchor="middle" font-family="monospace" font-size="11" fill="#0f172a">66.7</text>
+<text x="273.6" y="354" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="11.5" fill="#1e293b">Expert Rules</text>
+<text x="273.6" y="370" text-anchor="middle" font-family="monospace" font-size="10" fill="#64748b">acc_med=0.6518s</text>
+<rect x="372.0" y="132.1" width="64.0" height="201.9" fill="#2ca02c" fill-opacity="0.88" rx="3"/>
+<text x="404.0" y="126.1" text-anchor="middle" font-family="monospace" font-size="11" fill="#0f172a">83.3</text>
+<text x="404.0" y="354" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="11.5" fill="#1e293b">Predictive</text>
+<text x="404.0" y="370" text-anchor="middle" font-family="monospace" font-size="10" fill="#64748b">acc_med=1.483s</text>
+<rect x="502.4" y="132.1" width="64.0" height="201.9" fill="#9467bd" fill-opacity="0.88" rx="3"/>
+<text x="534.4" y="126.1" text-anchor="middle" font-family="monospace" font-size="11" fill="#0f172a">83.3</text>
+<text x="534.4" y="354" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="11.5" fill="#1e293b">Pilot Autotuner</text>
+<text x="534.4" y="370" text-anchor="middle" font-family="monospace" font-size="10" fill="#64748b">acc_med=2.5928s</text>
+<rect x="632.8" y="91.6" width="64.0" height="242.4" fill="#ff7f0e" fill-opacity="0.88" rx="3"/>
+<text x="664.8" y="85.6" text-anchor="middle" font-family="monospace" font-size="11" fill="#0f172a">100</text>
+<text x="664.8" y="354" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="11.5" fill="#1e293b">Hybrid Guardrail</text>
+<text x="664.8" y="370" text-anchor="middle" font-family="monospace" font-size="10" fill="#64748b">acc_med=1.4156s</text>
+</svg>
