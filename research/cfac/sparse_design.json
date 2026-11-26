@@ -1,0 +1,14 @@
+{
+  "schema": "cfac-sparse-phase1-v1",
+  "description": "Development compares two archived misses and all inherited cases. New loads are a deterministic transfer cohort, not a randomized population.",
+  "budget": {"iterations_per_stream": 128, "candidate_workers": 1, "timeout_s": 90, "paired_blocks": 6, "holdout_blocks": 6, "child_refinements": 1},
+  "held_out": [
+    {"id": "alternating_cell_orientation", "n": 4, "load": "alternating", "epsilon": "1/16", "diffusion": "1"},
+    {"id": "rotated_notch", "n": 4, "load": "notch", "epsilon": "1/12", "diffusion": "3/2"},
+    {"id": "offcenter_signed_pair", "n": 5, "load": "pair", "epsilon": "1/18", "diffusion": "2/3"},
+    {"id": "disconnected_islands", "n": 5, "load": "islands", "epsilon": "1/14", "diffusion": "1"}
+  ],
+  "scale_n": [32, 64, 100, 160, 320],
+  "scale_capped_seconds": 100,
+  "success_criterion": "Every delivered field passes the same original checker on the frozen PDE and tolerance. Performance claim requires matched coverage and upper 95% paired CI at or below 0.90 on the transfer cohort. Failures retain elapsed time."
+}
