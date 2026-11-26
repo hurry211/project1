@@ -14,6 +14,9 @@ evidence/e4/*.gz binary
 research/cfac/microcheck.py text eol=lf
 evidence/cfac/** text eol=lf
 evidence/cfac/*.gz binary
+evidence/cfac/sparse-20261126/*.xz binary
+research/cfac/sparse_design.json text eol=lf
+research/cfac/sparse_screen_design.json text eol=lf
 research/cfac/stopping_design.json text eol=lf
 research/cfac/reserve_design.json text eol=lf
 research/cfac/futile_design.json text eol=lf

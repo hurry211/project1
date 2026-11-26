@@ -99,7 +99,36 @@ def _bounds(rows, residual, distance, edge_bound, gap, tight):
     return Bounds(lower, min(gap, lower + edge_bound * rest**2))
 
 
-def _assemble(problem, primal, flux):
+def _sparse_bounds(rows, residual, distance, edge_bound, masses, gap, neumann, iterations):
+    """Enclose the residual energy of a floating trial using exact P1 operations."""
+    import numpy as np
+
+    from .sparse_linear import cg_steps, dyadic_field, sparse_rows
+
+    old = _bounds(rows, residual, distance, edge_bound, gap, False)
+    if not any(residual):
+        return old
+    trial = None
+    for _, trial, _ in cg_steps(sparse_rows(rows), np.array(residual, dtype=float), iterations):
+        pass
+    if trial is None or not np.isfinite(trial).all():
+        return old
+    trial = dyadic_field(trial)
+    image = _matvec(rows, trial)
+    gain = 2 * _dot(residual, trial) - _dot(trial, image)
+    remainder = [r - y for r, y in zip(residual, image, strict=True)]
+    if neumann:
+        # Restore the omitted reaction. It vanishes against constants in the quotient space.
+        remainder = [-sum(remainder), *remainder]
+    # Consistent P1 mass >= one quarter of lumped mass. On the unit square
+    # Poincare gives 1/18 (Dirichlet) or 1/9 (mean-zero Neumann), before diffusion scaling.
+    weight = masses[1]
+    correction = 4 * sum(r*r/m for r, m in zip(remainder, masses[0], strict=True))
+    correction /= weight * (9 if neumann else 18)
+    return Bounds(max(old.lower, gain), min(old.upper, gain + correction))
+
+
+def _assemble(problem, primal, flux, *, include_masses=False):
     """Assemble variational residuals directly from cell means and nodal fields."""
     vertices = problem.mesh.vertices
     edge_list = edges(problem.mesh)
@@ -109,6 +138,7 @@ def _assemble(problem, primal, flux):
     stiffness = [{} for _ in vertices]
     primal_rhs = [ZERO] * count
     dual_rhs = [ZERO] * count
+    masses = [ZERO] * count if include_masses else None
     neighbors = [set() for _ in vertices]
     multiplicity = dict.fromkeys(edge_list, 0)
     max_edge = ZERO
@@ -135,6 +165,8 @@ def _assemble(problem, primal, flux):
             qx += outward * (cx-vertices[opposite][0]) / det
             qy += outward * (cy-vertices[opposite][1]) / det
         for i, (v, (gx, gy)) in enumerate(zip(cell, gradients)):
+            if masses is not None:
+                masses[v] += area / 3
             primal_rhs[v] += load * area / 3
             dual_rhs[v] -= area * (qx*gy - qy*gx) / a
             for w, gw in zip(cell, gradients):
@@ -153,7 +185,10 @@ def _assemble(problem, primal, flux):
         rows = [{index[w]: k * weight for w, k in stiffness[v].items() if w in index} for v in free]
         return rows, [rhs[v] for v in free], [distance[v] for v in free], max_edge / weight
 
-    return reduce(boundary, primal_rhs, a), reduce({0}, dual_rhs, 1 / a), multiplicity
+    systems = (reduce(boundary, primal_rhs, a), reduce({0}, dual_rhs, 1 / a), multiplicity)
+    if masses is None:
+        return systems
+    return (*systems, ([m for v, m in enumerate(masses) if v not in boundary], a), (masses, 1 / a))
 
 
 def _probe(problem, trusted_digest, primal, multiplicity):
@@ -163,13 +198,15 @@ def _probe(problem, trusted_digest, primal, multiplicity):
     return witness_lower_sq(problem, trusted_digest, primal, vertex_values, midpoints)
 
 
-def assess(problem, trusted_digest, primal, flux, *, tight=False, witness=False):
+def assess(problem, trusted_digest, primal, flux, *, tight=False, witness=False, sparse_iterations=0):
     """Inspect one frozen state. Inputs contain no manufactured or reference truth.
 
     The default uses a Jacobi trial and a conservative graph upper bound. Tight
     mode evaluates both residual energies by exact Schur elimination on small meshes.
     The optional P2 diagnostic never modifies the P1 state.
     """
+    if type(sparse_iterations) is not int or sparse_iterations < 0 or (tight and sparse_iterations):
+        raise ValueError("select exact elimination or a nonnegative sparse iteration count")
     try:
         primal, flux = ordered(primal), ordered(flux)
     except (TypeError, ValueError):
@@ -181,10 +218,15 @@ def assess(problem, trusted_digest, primal, flux, *, tight=False, witness=False)
         return FloorAssessment(certificate, "ACCEPTED" if accepted else "UNDETERMINED")
     primal = tuple(map(rational, primal))
     flux = tuple(map(rational, flux))
-    p_system, d_system, multiplicity = _assemble(problem, primal, flux)
     gap = certificate.gap_sq
-    p = _bounds(*p_system, gap, tight)
-    d = _bounds(*d_system, gap, tight)
+    if sparse_iterations:
+        p_system, d_system, multiplicity, p_mass, d_mass = _assemble(problem, primal, flux, include_masses=True)
+        p = _sparse_bounds(*p_system, p_mass, gap, False, sparse_iterations)
+        d = _sparse_bounds(*d_system, d_mass, gap, True, sparse_iterations)
+    else:
+        p_system, d_system, multiplicity = _assemble(problem, primal, flux)
+        p = _bounds(*p_system, gap, tight)
+        d = _bounds(*d_system, gap, tight)
     floor = Bounds(max(ZERO, gap - p.upper - d.upper), gap - p.lower - d.lower)
     witness_sq = _probe(problem, trusted_digest, primal, multiplicity) if witness else ZERO
     primal_floor = max(ZERO, witness_sq - p.upper)

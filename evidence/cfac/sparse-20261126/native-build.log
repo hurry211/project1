@@ -1,0 +1,12 @@
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/g++-13 - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (4.7s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/fy/project1-cfac-next/native-build
+[ 50%] Building CXX object CMakeFiles/cfac_pcg.dir/cfac_pcg.cpp.o
+[100%] Linking CXX executable cfac_pcg
+[100%] Built target cfac_pcg

@@ -54,6 +54,11 @@ jobs:
           python -m pip install --require-hashes --only-binary=:all: -r requirements-challenge.lock
       - run: ./scripts/build_mfem.sh
       - run: ./scripts/build_solver.sh
+      - name: Check sparse CFAC algebraic bounds and MFEM primal proposal
+        run: |
+          cmake --build build/cpp --target cfac_pcg
+          python -m pytest -q tests/test_cfac_sparse.py
+          python -m research.cfac.sparse_diagnostics --scale 8 --binary build/cpp/cfac_pcg --directory runs/cfac-native-smoke
       - run: python -m pytest -q -m mfem --require-mfem
       - name: Replay a transient field study
         run: |

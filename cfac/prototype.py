@@ -63,6 +63,44 @@ class _Cell:
     faces: tuple
 
 
+def feasible_rt0(cell_faces, cell_balances, edge_count):
+    """Route exact cell balances to the exterior along a dual spanning tree."""
+    outside = len(cell_faces)
+    owners = [[] for _ in range(edge_count)]
+    for k, faces in enumerate(cell_faces):
+        for edge, sign in faces:
+            owners[edge].append((k, sign))
+    adjacency = [[] for _ in range(outside + 1)]
+    for edge, incident in enumerate(owners):
+        if len(incident) == 1:
+            k, sign = incident[0]
+            incident = [(k, sign), (outside, -sign)]
+        (k, sk), (j, sj) = incident
+        if sk != -sj:
+            raise ValueError("incompatible adjacent cells")
+        adjacency[k].append((j, edge, sj))
+        adjacency[j].append((k, edge, sk))
+    parent = {outside: None}
+    order = []
+    queue = deque([outside])
+    while queue:
+        k = queue.popleft()
+        for j, edge, child_sign in adjacency[k]:
+            if j not in parent:
+                parent[j] = (k, edge, child_sign)
+                order.append(j)
+                queue.append(j)
+    if len(order) != outside:
+        raise ValueError("cell adjacency does not reach the boundary")
+    balance = [*cell_balances, Fraction(0)]
+    flux = [Fraction(0)] * edge_count
+    for child in reversed(order):
+        k, edge, sign = parent[child]
+        flux[edge] = sign * balance[child]
+        balance[k] += balance[child]
+    return tuple(flux)
+
+
 class ReferenceSystem:
     """Dense assembly for small meshes. The independent checker owns acceptance."""
 
@@ -102,45 +140,9 @@ class ReferenceSystem:
         self.load = tuple(load)
         self.primal_matrix = tuple(tuple(diffusion * x for x in row) for row in stiffness)
         self.stream_matrix = tuple(tuple(x / diffusion for x in row) for row in stiffness)
-        self.feasible_flux = self._lift_load()
-
-    def _lift_load(self):
-        """Route exact cell balances to the exterior along a dual spanning tree."""
-        outside = len(self.cells)
-        owners = [[] for _ in self.edges]
-        for k, cell in enumerate(self.cells):
-            for edge, sign in cell.faces:
-                owners[edge].append((k, sign))
-        adjacency = [[] for _ in range(outside + 1)]
-        for edge, incident in enumerate(owners):
-            if len(incident) == 1:
-                k, sign = incident[0]
-                incident = [(k, sign), (outside, -sign)]
-            (k, sk), (j, sj) = incident
-            if sk != -sj:
-                raise ValueError("incompatible adjacent cells")
-            adjacency[k].append((j, edge, sj))
-            adjacency[j].append((k, edge, sk))
-        parent = {outside: None}
-        order = []
-        queue = deque([outside])
-        while queue:
-            k = queue.popleft()
-            for j, edge, child_sign in adjacency[k]:
-                if j not in parent:
-                    parent[j] = (k, edge, child_sign)
-                    order.append(j)
-                    queue.append(j)
-        if len(order) != outside:
-            raise ValueError("cell adjacency does not reach the boundary")
-        balance = [-c.area * f for c, f in zip(self.cells, self.problem.loads, strict=True)]
-        balance.append(Fraction(0))
-        flux = [Fraction(0)] * len(self.edges)
-        for child in reversed(order):
-            k, edge, sign = parent[child]
-            flux[edge] = sign * balance[child]
-            balance[k] += balance[child]
-        return tuple(flux)
+        self.feasible_flux = feasible_rt0([c.faces for c in self.cells],
+                                         [-c.area * f for c, f in zip(self.cells, problem.loads, strict=True)],
+                                         len(self.edges))
 
     def zero_primal(self):
         return (Fraction(0),) * len(self.vertices)

@@ -1,0 +1,153 @@
+{
+  "archive_sha256": "5575b36678ca37aaebda8d126fecbee41f91a4d87c700b6d008db0c82de0cdd1",
+  "cohort": "transfer",
+  "submitted": 264,
+  "policies": {
+    "cfac": {
+      "accepted": 12,
+      "submitted": 24,
+      "median_submission_seconds": 2.4154376414999916,
+      "total_failure_seconds": 51.54810671799994,
+      "max_peak_rss_kib": 25192,
+      "certified_futile_levels_skipped": 0,
+      "median_checker_calls": null
+    },
+    "cfac_geometric": {
+      "accepted": 24,
+      "submitted": 24,
+      "median_submission_seconds": 0.6455056624999855,
+      "total_failure_seconds": 0,
+      "max_peak_rss_kib": 60420,
+      "certified_futile_levels_skipped": 0,
+      "median_checker_calls": 15.5
+    },
+    "cfac_no_coarse": {
+      "accepted": 24,
+      "submitted": 24,
+      "median_submission_seconds": 0.7367109160000069,
+      "total_failure_seconds": 0,
+      "max_peak_rss_kib": 59656,
+      "certified_futile_levels_skipped": 0,
+      "median_checker_calls": 18.0
+    },
+    "cfac_reserve": {
+      "accepted": 12,
+      "submitted": 24,
+      "median_submission_seconds": 2.3898403869999925,
+      "total_failure_seconds": 55.10515989300001,
+      "max_peak_rss_kib": 25172,
+      "certified_futile_levels_skipped": 0,
+      "median_checker_calls": null
+    },
+    "cfac_retry": {
+      "accepted": 12,
+      "submitted": 24,
+      "median_submission_seconds": 2.585849817499991,
+      "total_failure_seconds": 49.13787251400004,
+      "max_peak_rss_kib": 25248,
+      "certified_futile_levels_skipped": 0,
+      "median_checker_calls": null
+    },
+    "cfac_sparse": {
+      "accepted": 24,
+      "submitted": 24,
+      "median_submission_seconds": 0.612543569500005,
+      "total_failure_seconds": 0,
+      "max_peak_rss_kib": 60420,
+      "certified_futile_levels_skipped": 0,
+      "median_checker_calls": 15.5
+    },
+    "classical": {
+      "accepted": 24,
+      "submitted": 24,
+      "median_submission_seconds": 0.6805307494999937,
+      "total_failure_seconds": 0,
+      "max_peak_rss_kib": 25680,
+      "certified_futile_levels_skipped": 0,
+      "median_checker_calls": null
+    },
+    "classical_patch": {
+      "accepted": 24,
+      "submitted": 24,
+      "median_submission_seconds": 0.7821001609999882,
+      "total_failure_seconds": 0,
+      "max_peak_rss_kib": 59332,
+      "certified_futile_levels_skipped": 0,
+      "median_checker_calls": 4.0
+    },
+    "classical_sparse": {
+      "accepted": 24,
+      "submitted": 24,
+      "median_submission_seconds": 0.5953288449999974,
+      "total_failure_seconds": 0,
+      "max_peak_rss_kib": 60456,
+      "certified_futile_levels_skipped": 0,
+      "median_checker_calls": 12.5
+    },
+    "fixed": {
+      "accepted": 12,
+      "submitted": 24,
+      "median_submission_seconds": 0.7053127920000151,
+      "total_failure_seconds": 10.077982383000105,
+      "max_peak_rss_kib": 25392,
+      "certified_futile_levels_skipped": 0,
+      "median_checker_calls": null
+    },
+    "fixed_sparse": {
+      "accepted": 24,
+      "submitted": 24,
+      "median_submission_seconds": 0.568572951500002,
+      "total_failure_seconds": 0,
+      "max_peak_rss_kib": 60440,
+      "certified_futile_levels_skipped": 0,
+      "median_checker_calls": 12.5
+    }
+  },
+  "contrasts": {
+    "classical": {
+      "eligible_pairs": 24,
+      "cases": 4,
+      "ratio_of_paired_times_median": 0.9246831849560426,
+      "nested_percentile_95pct": [
+        0.6883247358837934,
+        1.7386672880837422
+      ],
+      "case_ratios": {
+        "alternating_cell_orientation": 0.9476886922160968,
+        "rotated_notch": 0.9246831849560426,
+        "offcenter_signed_pair": 0.6408176013191509,
+        "disconnected_islands": 1.7886770852097111
+      }
+    },
+    "classical_sparse": {
+      "eligible_pairs": 24,
+      "cases": 4,
+      "ratio_of_paired_times_median": 1.0795469218645992,
+      "nested_percentile_95pct": [
+        1.014926966348031,
+        1.1251629539608852
+      ],
+      "case_ratios": {
+        "alternating_cell_orientation": 1.1190877426325736,
+        "rotated_notch": 1.0974691452632963,
+        "offcenter_signed_pair": 1.0878304840244035,
+        "disconnected_islands": 0.9960882173184047
+      }
+    },
+    "fixed_sparse": {
+      "eligible_pairs": 24,
+      "cases": 4,
+      "ratio_of_paired_times_median": 1.1513014083273019,
+      "nested_percentile_95pct": [
+        1.0668667079231717,
+        1.2285320091136243
+      ],
+      "case_ratios": {
+        "alternating_cell_orientation": 1.1268121478052753,
+        "rotated_notch": 1.1915825061956542,
+        "offcenter_signed_pair": 1.1768522211207402,
+        "disconnected_islands": 1.060055017253314
+      }
+    }
+  }
+}

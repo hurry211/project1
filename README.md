@@ -1,5 +1,7 @@
 # MFEM scientific agent for verified finite-element studies
 
+CFAC 稀疏研发记录包括两例历史失败的 RT1 恢复、原空间下限筛查、原生 MFEM PCG 与等精度对照。[阶段汇报](docs/CFAC_SPARSE_RESULTS.md) · [数学推导](docs/CFAC_SPARSE_METHOD.md)
+
 A deterministic workflow that turns a frozen, machine-checked problem specification into **real MFEM computations** and lets an **independent verifier** decide whether the result is accepted. No LLM is used anywhere in the numerical path.
 
 The CFAC research branch adds a small CPU prototype that certifies energy error for P1 Poisson fields without an exact solution. It can also determine whether further iteration on a fixed P1/RT0 pair can meet a tolerance. [Mathematical specification](docs/CFAC_MATHEMATICAL_SPEC.md) · [Implementation report](docs/CFAC_IMPLEMENTATION_REPORT.md) · [Experiments and replay](docs/CFAC_EXPERIMENTAL_EVIDENCE.md) · [Open problems](docs/CFAC_OPEN_PROBLEMS.md)

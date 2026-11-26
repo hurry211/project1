@@ -1,0 +1,29 @@
+{
+  "affinity": [
+    15
+  ],
+  "peak_rss_kib": 823460,
+  "results": {
+    "n": 320,
+    "free_p1_dofs": 101761,
+    "triangles": 204800,
+    "native_proposal_seconds": 8.599718241999994,
+    "native": {
+      "iterations": 4,
+      "mfem_residual_l2": 0.03194781751156871
+    },
+    "sparse_p1_setup_seconds": 3.743535952000002,
+    "p1_matrix_nonzeros": 718721,
+    "floor_seconds": 63.26441142499999,
+    "floor_verdict": "UNDETERMINED",
+    "floor_peak_rss_kib": 823460,
+    "primal_alg_sq": [
+      0.0014720179410696022,
+      0.05972420575362549
+    ],
+    "dual_alg_sq": [
+      0.0027574424408770347,
+      0.05972420575362549
+    ]
+  }
+}
